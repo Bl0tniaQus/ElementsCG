@@ -1,10 +1,9 @@
 #ifndef CARD_H
 #define CARD_H
 #include "cardcatalog.h"
-#include "player.h"
 #include <cstring>
 class Zone;
-
+class Player;
 
 class Card
 {

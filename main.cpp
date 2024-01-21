@@ -27,7 +27,9 @@ int main(int argc, char *argv[])
     duel.drawField(0);
     duel.combat(duel.getPlayer(0)->getMinionField()[3].getCard(),duel.getPlayer(1)->getMinionField()[2].getCard());
     duel.drawField(0);
-    duel.directAttack(duel.getPlayer(0)->getMinionField()[3].getCard());
-    duel.drawField(0);
+    Deck deck;
+    duel.getPlayer(0)->setDeck(deck.getDeck(),7);
+    duel.drawCard(0);
+    std::cout<<duel.getPlayer(0)->getHand()[duel.getPlayer(0)->getHandSize()-1].getName();
     //todo cardowner,GY,decks,hand,draw
 }

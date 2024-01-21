@@ -73,3 +73,30 @@ void Duel::destruction(Card* card)
     card->setZone(nullptr);
     //card.getOwner()
 }
+void Duel::drawCard(char p)
+{
+    short n_deck = this->getPlayer(p)->getDeckSize();
+    if (n_deck>0)
+    {
+        short n_hand = this->getPlayer(p)->getHandSize();
+        Card* oldHand = this->getPlayer(p)->getHand();
+        Card* newHand = new Card[n_hand+1];
+        Card* newDeck = new Card[n_deck-1];
+        Card* oldDeck = this->getPlayer(p)->getDeck();
+
+        for (int i=0;i<n_hand;i++)
+        {
+            newHand[i] = oldHand[i];
+        }
+        oldDeck[n_deck-1].setPlace(1);
+        newHand[n_hand] = oldDeck[n_deck-1];
+        this->getPlayer(p)->setHand(newHand, n_hand+1);
+        for (int i=0;i<n_deck-1;i++)
+        {
+            newDeck[i] = oldDeck[i];
+        }
+        this->getPlayer(p)->setDeck(newDeck,n_deck-1);
+    }
+
+
+}

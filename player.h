@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include "spellzone.h"
 #include "minionzone.h"
+#include "deck.h"
 class Player
 {
 private:
@@ -29,6 +30,15 @@ public:
     Player* getOpponent() {return opponent;}
     void setOpponent(Player *player){this->opponent = player;}
     void summonMinion(Card *minion, short zoneid);
+    short getHandSize() {return this->n_hand;}
+    void setHandSize(short n) {this->n_hand=n;}
+    Card* getHand() {return this->hand;}
+    void setHand(Card* hand, short size);
+    short getDeckSize() {return this->n_deck;}
+    void setDeckSize(short n) {this->n_deck=n;}
+    Card* getDeck() {return this->deck;}
+    void setDeck(Card* deck, short size);
+    void toHand(Card* card);
 };
 
 #endif // PLAYER_H
