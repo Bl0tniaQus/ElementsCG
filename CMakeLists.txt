@@ -36,6 +36,8 @@ set(PROJECT_SOURCES
         effect.h
         effect.cpp
         globals.h
+        deck.h
+        deck.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
