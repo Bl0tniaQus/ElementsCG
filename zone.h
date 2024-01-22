@@ -11,7 +11,7 @@ private:
     Card* card;
     bool used;
 public:
-    Zone() {this->used=false;};
+    Zone() {this->used=false; this->card=nullptr;};
     int getId() {return id;};
     void setZoneType(int type) {this->zoneType = type;}
     void bindCard(Card* card);

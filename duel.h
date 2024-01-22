@@ -1,12 +1,10 @@
 #ifndef DUEL_H
 #define DUEL_H
 #include "player.h"
-#include "effecthandler.h"
 class Duel
 {
 private:
     Player players[2]; //0 - player 1, 1 - player2
-    EffectHandler effectHandler; //przeniesc do player
     short turnCount;
     char turnPlayer;
 public:

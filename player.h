@@ -3,11 +3,14 @@
 #include "spellzone.h"
 #include "minionzone.h"
 #include "deck.h"
+#include "effecthandler.h"
+#include "targetlist.h"
 class Player
 {
 private:
     short hp;
     short mana;
+    EffectHandler effectHandler; //przeniesc do player
     Player *opponent;
     SpellZone spellField[5];
     MinionZone minionField[5];
@@ -19,6 +22,7 @@ private:
     Card* deck;
     Card* servantDeck;
     Card* graveyard;
+    TargetList targetList;
 public:
     Player();
     void changeHp(short val);
@@ -40,6 +44,16 @@ public:
     void setDeck(Card* deck, short size);
     void toHand(Card* card);
     void setDeckOwnership();
+
+    void onSpell(Card* card);
+    void onSummon(Card* card);
+    void onTurnEnd(Card* card);
+    void onDestroy(Card* card);
+    void onCombat(Card* card);
+    void applyContinuous();
+    void generateTargetList();
+    void setTargetList(Card* targets, short n_targets);
+    TargetList getTargetList() {return this->targetList;}
 };
 
 #endif // PLAYER_H

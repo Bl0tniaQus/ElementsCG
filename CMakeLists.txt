@@ -41,6 +41,8 @@ set(PROJECT_SOURCES
         globals.cpp
         deck.h
         deck.cpp
+        targetlist.h
+        targetlist.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
