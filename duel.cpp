@@ -60,9 +60,9 @@ void Duel::directAttack(Card* attacker)
 void Duel::checkWinner()
 {
     short hp1 = players[0].getHp(); short hp2 = players[1].getHp();
-    if (hp1==hp2) {std::cout<<"X";}
-    else if (hp1<=0) {std::cout<<"2";}
-    else if (hp2<=0) {std::cout<<"1";}
+    if ((hp1<=0)&&(hp2<=0)) {std::cout<<"X";}
+    else if ((hp1<=0)&&(hp2>0)) {std::cout<<"2";}
+    else if ((hp2<=0)&&(hp1>0)) {std::cout<<"1";}
 
 }
 void Duel::destruction(Card* card)

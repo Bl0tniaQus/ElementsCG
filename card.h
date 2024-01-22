@@ -12,7 +12,7 @@ Zone* zone;
 Player* owner;
 char place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - servant deck
 char cardType; //0 - spell, 1 - minion, 2 - servant
-int cardId;
+short cardId;
 short cost;
 char* element;
 char* name;
@@ -28,6 +28,8 @@ public:
     Player* getOwner() {return this->owner;}
     short getCost() {return this->cost;}
     void setCost(short cost) {this->cost = cost;}
+    short getCardId() {return this->cardId;}
+    void setCardId(short id) {this->cardId = id;}
     void setPlace(char place) {this->place = place;}
     char getCardType() {return this->cardType;}
     void setCardType(char type) {this->cardType = type;}

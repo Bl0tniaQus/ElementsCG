@@ -14,4 +14,5 @@ if (entry!=nullptr)
     this->setAttack(entry->getAttack());
     this->setDefence(entry->getDefence());
     this->setName(entry->getName());
+    this->setCardId(entry->getId());
 }}

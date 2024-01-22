@@ -39,6 +39,7 @@ public:
     Card* getDeck() {return this->deck;}
     void setDeck(Card* deck, short size);
     void toHand(Card* card);
+    void setDeckOwnership();
 };
 
 #endif // PLAYER_H

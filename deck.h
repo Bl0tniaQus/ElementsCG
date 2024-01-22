@@ -12,6 +12,7 @@ private:
 public:
     Deck();
     Card* getDeck() {return this->mainDeck;}
+    short getDeckSize() {return this->n_cards;}
 };
 
 #endif // DECK_H

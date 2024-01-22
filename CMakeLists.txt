@@ -33,9 +33,12 @@ set(PROJECT_SOURCES
         cardcatalog.cpp
         catalogentry.h
         catalogentry.cpp
-        effect.h
-        effect.cpp
+        effecthandler.h
+        effecthandler.cpp
+        lingeringeffect.h
+        lingeringeffect.cpp
         globals.h
+        globals.cpp
         deck.h
         deck.cpp
 )

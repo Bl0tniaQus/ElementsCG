@@ -40,3 +40,10 @@ void Player::setDeck(Card* deck, short size)
     this->deck = deck;
     this->n_deck = size;
 }
+void Player::setDeckOwnership()
+{
+    for (int i=0;i<this->n_deck;i++)
+    {
+        this->deck[i].setOwner(this);
+    }
+}

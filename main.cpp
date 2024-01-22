@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     //return a.exec();
     Duel duel;
     duel.drawField(0);
-    Card CW(1);
+    Card CW(3);
     Card GW(2);
     CW.setPlace(1);
     GW.setPlace(1);
@@ -28,7 +28,10 @@ int main(int argc, char *argv[])
     duel.combat(duel.getPlayer(0)->getMinionField()[3].getCard(),duel.getPlayer(1)->getMinionField()[2].getCard());
     duel.drawField(0);
     Deck deck;
-    duel.getPlayer(0)->setDeck(deck.getDeck(),7);
+    duel.getPlayer(0)->setDeck(deck.getDeck(),deck.getDeckSize());
+    duel.getPlayer(0)->setDeckOwnership();
+    duel.getPlayer(1)->setDeck(deck.getDeck(),deck.getDeckSize());
+    duel.getPlayer(1)->setDeckOwnership();
     duel.drawCard(0);
     std::cout<<duel.getPlayer(0)->getHand()[duel.getPlayer(0)->getHandSize()-1].getName();
     //todo cardowner,GY,decks,hand,draw
