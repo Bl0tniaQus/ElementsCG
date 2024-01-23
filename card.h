@@ -10,6 +10,7 @@ class Card
 private:
 Zone* zone;
 Player* owner;
+Player* originalOwner;
 char place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - servant deck
 char cardType; //0 - spell, 1 - minion, 2 - servant
 short cardId;
@@ -26,6 +27,8 @@ public:
     Zone* getZone() {return this->zone;}
     void setOwner(Player* owner){this->owner = owner;}
     Player* getOwner() {return this->owner;}
+    void setOriginalOwner(Player* owner){this->originalOwner = owner;}
+    Player* getOriginalOwner() {return this->originalOwner;}
     short getCost() {return this->cost;}
     void setCost(short cost) {this->cost = cost;}
     short getCardId() {return this->cardId;}

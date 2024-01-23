@@ -45,73 +45,8 @@ void Player::setDeckOwnership()
     for (int i=0;i<this->n_deck;i++)
     {
         this->deck[i].setOwner(this);
+        this->deck[i].setOriginalOwner(this);
+        std::cout<<this->getName();
     }
 }
-void Player::onSpell(Card* card)
-{
-short id = card->getCardId();
-switch (id)
-{
-if (id==4)
-{
 
-}
-}
-}
-void Player::setTargetList(Card* targets, short n_targets)
-{
-    this->targetList.setTargetList(targets);
-    this->targetList.setTargetNumber(n_targets);
-
-}
-void Player::generateTargetList()
-{
-    short n_targets=0;
-    Card* targets = new Card [n_targets];
-
-    //any monster on field
-    for (int i=0;i<5;i++)
-    {
-        if (i==0) {}
-        Card *card = this->getOpponent()->getMinionField()[i].getCard();
-
-        if (card!=nullptr)
-        {
-        n_targets++;
-        Card *newtargets = new Card [n_targets];
-        if (n_targets>1) {
-            for (int j=0;j<n_targets;j++)
-            {
-
-                newtargets[j] = targets[j];
-
-            }
-            newtargets[n_targets-1] = *card;
-            delete [] targets;
-            targets = newtargets;
-        } else {newtargets[0]=*card; targets = newtargets;}
-        }
-    }
-    for (int i=0;i<5;i++)
-    {
-        Card *card = this->getMinionField()[i].getCard();
-        if (card!=nullptr)
-        {
-        n_targets++;
-        Card *newtargets = new Card [n_targets];
-        if (n_targets>1) {
-            for (int j=0;j<n_targets;j++)
-            {
-
-                newtargets[j] = targets[j];
-
-            }
-            newtargets[n_targets-1] = *card;
-            delete [] targets;
-            targets = newtargets;
-        } else {newtargets[0]=*card; targets = newtargets;}
-        }
-    }
-
-    this->setTargetList(targets,n_targets);
-}

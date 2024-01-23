@@ -5,6 +5,8 @@ Duel::Duel()
 {
     players[0].setOpponent(&players[1]);
     players[1].setOpponent(&players[0]);
+    players[0].setName('a');
+    players[1].setName('b');
 }
 void Duel::drawField(char p)
 {
@@ -73,6 +75,27 @@ void Duel::destruction(Card* card)
     card->setZone(nullptr);
     //card.getOwner()
 }
+void Duel::toHand(Card* card)
+{
+    card->setPlace(1);
+    std::cout<<card->getName();
+    card->getZone()->setUsed(false);
+    card->getZone()->destroyCard();
+    card->setZone(nullptr);
+    short n_hand = card->getOriginalOwner()->getHandSize();
+    Card* oldHand = card->getOriginalOwner()->getHand();
+    Card* newHand = new Card[n_hand+1];
+    if (n_hand==1) {newHand[0] = *card;}
+    else{
+    for (int i=0;i<n_hand;i++)
+    {
+        newHand[i] = oldHand[i];
+    }
+    }
+    newHand[n_hand] = *card;
+    card->getOriginalOwner()->setHand(newHand, n_hand+1);
+    card->getOriginalOwner()->setHandSize(n_hand+1);
+}
 void Duel::drawCard(char p)
 {
     short n_deck = this->getPlayer(p)->getDeckSize();
@@ -84,9 +107,12 @@ void Duel::drawCard(char p)
         Card* newDeck = new Card[n_deck-1];
         Card* oldDeck = this->getPlayer(p)->getDeck();
 
+        if (n_hand==0) {newHand[0] = oldDeck[n_deck-1];}
+        else{
         for (int i=0;i<n_hand;i++)
         {
             newHand[i] = oldHand[i];
+        }
         }
         oldDeck[n_deck-1].setPlace(1);
         newHand[n_hand] = oldDeck[n_deck-1];
@@ -95,8 +121,102 @@ void Duel::drawCard(char p)
         {
             newDeck[i] = oldDeck[i];
         }
+        this->getPlayer(p)->setHandSize(n_hand+1);
+        this->getPlayer(p)->setDeckSize(n_deck-1);
         this->getPlayer(p)->setDeck(newDeck,n_deck-1);
     }
 
 
+}
+bool Duel::checkEffectRequirements(short id)
+{
+//any monster on field
+if (id==4)
+{
+this->generateTargetList();
+    if (this->targetList.getTargetsNumber()>0) {return true;}
+}
+return false;
+}
+void Duel::onSpell(Card* card)
+{
+short id = card->getCardId();
+if (id==4) //Whirlwind
+{
+    bool usable = this->checkEffectRequirements(id);
+    if (usable)
+    {
+        Card* targets = this->targetList.getTargetList();
+        int target;
+        for (int i=0;i<this->targetList.getTargetsNumber();i++)
+        {
+            std::cout<<i<<" - "<<targets[i].getName()<<std::endl;
+        }
+        std::cout<<"Target: ";
+        std::cin>>target;
+        target=0;
+        card->getOwner()->changeMana(-card->getCost());
+        Card* targetCard = &targets[target];
+        this->toHand(targetCard);
+    }
+}
+}
+
+void Duel::setTargetList(Card* targets, short n_targets)
+{
+    this->targetList.setTargetList(targets);
+    this->targetList.setTargetNumber(n_targets);
+
+}
+
+void Duel::generateTargetList()
+{
+    short n_targets=0;
+    Card* targets = new Card [n_targets];
+
+    //any monster on field
+    for (int i=0;i<5;i++)
+    {
+        if (i==0) {}
+        Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
+
+        if (card!=nullptr)
+        {
+        n_targets++;
+        Card *newtargets = new Card [n_targets];
+        if (n_targets>1) {
+            for (int j=0;j<n_targets;j++)
+            {
+
+                newtargets[j] = targets[j];
+
+            }
+            newtargets[n_targets-1] = *card;
+            delete [] targets;
+            targets = newtargets;
+        } else {newtargets[0]=*card; targets = newtargets;}
+        }
+    }
+    for (int i=0;i<5;i++)
+    {
+        Card *card = this->players[getTurnPlayer()].getMinionField()[i].getCard();
+        if (card!=nullptr)
+        {
+        n_targets++;
+        Card *newtargets = new Card [n_targets];
+        if (n_targets>1) {
+            for (int j=0;j<n_targets;j++)
+            {
+
+                newtargets[j] = targets[j];
+
+            }
+            newtargets[n_targets-1] = *card;
+            delete [] targets;
+            targets = newtargets;
+        } else {newtargets[0]=*card; targets = newtargets;}
+        }
+    }
+
+    this->setTargetList(targets,n_targets);
 }

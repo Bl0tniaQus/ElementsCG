@@ -6,7 +6,7 @@ CardCatalog::CardCatalog()
     this->catalogEntries = new CatalogEntry[0];
     //id,name,element,cost,type,level,atk,def
     this->addEntry(CatalogEntry(1,"Copper Worm", "Earth", 1, 1,1,1,1));
-    this->addEntry(CatalogEntry(2,"Silver Wolf", "Earth", 2, 1,3,4,3));
+    this->addEntry(CatalogEntry(2,"Silver Wolf", "Earth", 4, 1,3,4,3));
     this->addEntry(CatalogEntry(3,"Dragonoid Infantry", "Wind", 2, 1,3,3,4));
     this->addEntry(CatalogEntry(4,"Whirlwind", "Wind", 5, 0,-1,-1,-1));
 
