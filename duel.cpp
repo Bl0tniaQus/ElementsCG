@@ -75,10 +75,30 @@ void Duel::destruction(Card* card)
     card->setZone(nullptr);
     //card.getOwner()
 }
+short Duel::getEmptyMinionZone(Player* player)
+{
+    Zone* zones = player->getMinionField();
+    for (int i=0;i<5;i++)
+    {
+        if (zones[i].getUsed()==false) {return i;}
+        std::cout<<i;
+    }
+    return -1;
+}
+void Duel::summonMinion(Card *minion, short zoneid)
+{
+    if ((minion->getCardType()>0)&&(minion->getPlace()==1))
+    {
+
+        minion->getOwner()->getMinionField()->bindCard(minion);
+        minion->getOwner()->getMinionField()[zoneid].setUsed(true);
+        this->onSummon(minion);
+    }
+}
+
 void Duel::toHand(Card* card)
 {
     card->setPlace(1);
-    std::cout<<card->getName();
     card->getZone()->setUsed(false);
     card->getZone()->destroyCard();
     card->setZone(nullptr);
@@ -128,12 +148,13 @@ void Duel::drawCard(char p)
 
 
 }
-bool Duel::checkEffectRequirements(short id)
+bool Duel::checkEffectRequirements(Card* card)
 {
 //any monster on field
+    short id = card->getCardId();
 if (id==4)
 {
-this->generateTargetList();
+this->generateTargetList(card);
     if (this->targetList.getTargetsNumber()>0) {return true;}
 }
 return false;
@@ -143,7 +164,7 @@ void Duel::onSpell(Card* card)
 short id = card->getCardId();
 if (id==4) //Whirlwind
 {
-    bool usable = this->checkEffectRequirements(id);
+    bool usable = this->checkEffectRequirements(card);
     if (usable)
     {
         Card* targets = this->targetList.getTargetList();
@@ -154,7 +175,6 @@ if (id==4) //Whirlwind
         }
         std::cout<<"Target: ";
         std::cin>>target;
-        target=0;
         card->getOwner()->changeMana(-card->getCost());
         Card* targetCard = &targets[target];
         this->toHand(targetCard);
@@ -169,54 +189,105 @@ void Duel::setTargetList(Card* targets, short n_targets)
 
 }
 
-void Duel::generateTargetList()
+void Duel::generateTargetList(Card* effect)
 {
     short n_targets=0;
     Card* targets = new Card [n_targets];
-
+    short effectId = effect->getCardId();
     //any monster on field
-    for (int i=0;i<5;i++)
+    if (effectId==4)
     {
-        if (i==0) {}
-        Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
-
-        if (card!=nullptr)
+        for (int i=0;i<5;i++)
         {
-        n_targets++;
-        Card *newtargets = new Card [n_targets];
-        if (n_targets>1) {
-            for (int j=0;j<n_targets;j++)
+            Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
+
+            if (card!=nullptr)
             {
+            n_targets++;
+            Card *newtargets = new Card [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
 
-                newtargets[j] = targets[j];
+                    newtargets[j] = targets[j];
 
+                }
+                newtargets[n_targets-1] = *card;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=*card; targets = newtargets;}
             }
-            newtargets[n_targets-1] = *card;
-            delete [] targets;
-            targets = newtargets;
-        } else {newtargets[0]=*card; targets = newtargets;}
+        }
+        for (int i=0;i<5;i++)
+        {
+            Card *card = this->players[getTurnPlayer()].getMinionField()[i].getCard();
+            if (card!=nullptr)
+            {
+            n_targets++;
+            Card *newtargets = new Card [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
+
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = *card;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=*card; targets = newtargets;}
+            }
         }
     }
-    for (int i=0;i<5;i++)
+    //Monster in hand with the same name
+    else if (effectId==1)
     {
-        Card *card = this->players[getTurnPlayer()].getMinionField()[i].getCard();
-        if (card!=nullptr)
+        for (int i=0;i<effect->getOwner()->getHandSize();i++)
         {
-        n_targets++;
-        Card *newtargets = new Card [n_targets];
-        if (n_targets>1) {
-            for (int j=0;j<n_targets;j++)
+            Card *card = &effect->getOwner()->getHand()[i];
+
+            if (card!=nullptr)
             {
+            n_targets++;
+            Card *newtargets = new Card [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
 
-                newtargets[j] = targets[j];
+                    newtargets[j] = targets[j];
 
+                }
+                newtargets[n_targets-1] = *card;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=*card; targets = newtargets;}
             }
-            newtargets[n_targets-1] = *card;
-            delete [] targets;
-            targets = newtargets;
-        } else {newtargets[0]=*card; targets = newtargets;}
         }
     }
 
     this->setTargetList(targets,n_targets);
+}
+void Duel::playFromHand(Card* card)
+{
+    char type = card->getCardType();
+    short cost = card->getCost();
+    if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
+    {
+        if (type='0')
+        {
+           short zoneid = this->getEmptyMinionZone(card->getOwner());
+
+           if (zoneid!=-1)
+           {
+                this->summonMinion(card, zoneid);
+           }
+        }
+        else if (type=='1')
+        {
+
+        }
+
+        this->getPlayer(this->getTurnPlayer())->changeMana(-cost);
+    }
+
 }

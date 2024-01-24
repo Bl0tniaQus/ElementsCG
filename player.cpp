@@ -17,17 +17,7 @@ void Player::changeHp(short val)
 void Player::changeMana(short val)
 {
     this->mana = this->mana + val;
-}
-void Player::summonMinion(Card* minion, short zoneid)
-{
-    short cost = minion->getCost();
-    if ((minion->getCardType()>0)&&(minion->getPlace()==1)&&(cost<=this->mana))
-    {
-        this->minionField[zoneid].bindCard(minion);
-        this->minionField[zoneid].setUsed(true);
-        this->mana-=cost;
-    }
-}
+}  
 void Player::setHand(Card* hand, short size)
 {
     delete[] this->hand;
@@ -46,7 +36,6 @@ void Player::setDeckOwnership()
     {
         this->deck[i].setOwner(this);
         this->deck[i].setOriginalOwner(this);
-        std::cout<<this->getName();
     }
 }
 

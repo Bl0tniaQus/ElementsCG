@@ -22,17 +22,19 @@ public:
     void destruction(Card* card);
     void toHand(Card* card);
     void checkWinner();
-
+    short getEmptyMinionZone(Player* player);
+    void summonMinion(Card *minion, short zoneid);
+    void playFromHand(Card* card);
     void onSpell(Card* card);
-    void onSummon(Card* card);
+    void onSummon(Card* card) {};
     void onTurnEnd(Card* card);
     void onDestroy(Card* card);
     void onCombat(Card* card);
     void applyContinuous();
-    void generateTargetList();
+    void generateTargetList(Card* effect);
     void setTargetList(Card* targets, short n_targets);
     TargetList getTargetList() {return this->targetList;}
-    bool checkEffectRequirements(short id);
+    bool checkEffectRequirements(Card* card);
 
     static Card* selectFieldTarget();
 };

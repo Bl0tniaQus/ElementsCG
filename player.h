@@ -35,7 +35,6 @@ public:
     MinionZone* getMinionField() {return minionField;}
     Player* getOpponent() {return opponent;}
     void setOpponent(Player *player){this->opponent = player;}
-    void summonMinion(Card *minion, short zoneid);
     short getHandSize() {return this->n_hand;}
     void setHandSize(short n) {this->n_hand=n;}
     Card* getHand() {return this->hand;}
