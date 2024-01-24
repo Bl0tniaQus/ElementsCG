@@ -23,9 +23,11 @@ public:
     void toHand(Card* card);
     void checkWinner();
     short getEmptyMinionZone(Player* player);
+    short getEmptySpellZone(Player* player);
     void summonMinion(Card *minion, short zoneid);
+    void activateSpell(Card* spell, short zoneid);
     void playFromHand(Card* card);
-    void onSpell(Card* card);
+    void onSpell(Card* card, short zoneid);
     void onSummon(Card* card) {};
     void onTurnEnd(Card* card);
     void onDestroy(Card* card);

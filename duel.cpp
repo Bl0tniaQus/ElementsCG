@@ -85,6 +85,16 @@ short Duel::getEmptyMinionZone(Player* player)
     }
     return -1;
 }
+short Duel::getEmptySpellZone(Player* player)
+{
+    Zone* zones = player->getSpellField();
+    for (int i=0;i<5;i++)
+    {
+        if (zones[i].getUsed()==false) {return i;}
+        std::cout<<i;
+    }
+    return -1;
+}
 void Duel::summonMinion(Card *minion, short zoneid)
 {
     if ((minion->getCardType()>0)&&(minion->getPlace()==1))
@@ -95,7 +105,13 @@ void Duel::summonMinion(Card *minion, short zoneid)
         this->onSummon(minion);
     }
 }
-
+void Duel::activateSpell(Card *spell, short zoneid)
+{
+    if ((spell->getCardType()==0)&&(spell->getPlace()==1))
+    {
+        this->onSpell(spell);
+    }
+}
 void Duel::toHand(Card* card)
 {
     card->setPlace(1);
@@ -159,7 +175,7 @@ this->generateTargetList(card);
 }
 return false;
 }
-void Duel::onSpell(Card* card)
+void Duel::onSpell(Card* card, short zoneid)
 {
 short id = card->getCardId();
 if (id==4) //Whirlwind
@@ -271,11 +287,12 @@ void Duel::playFromHand(Card* card)
 {
     char type = card->getCardType();
     short cost = card->getCost();
+    short zoneid;
     if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
     {
-        if (type='0')
+        if (type=='0')
         {
-           short zoneid = this->getEmptyMinionZone(card->getOwner());
+            zoneid = this->getEmptyMinionZone(card->getOwner());
 
            if (zoneid!=-1)
            {
