@@ -25,14 +25,18 @@ int main(int argc, char *argv[])
     duel.drawCard(0); duel.drawCard(1);
     duel.drawCard(0); duel.drawCard(1);
     duel.drawCard(0); duel.drawCard(1);
+    duel.drawCard(0);
     duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
-    duel.playFromHand(duel.getPlayer(1)->getHand()[0]);
-    duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
-    duel.drawField(0);
-    duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
-    duel.drawField(0);
-    //zony jak karty na stałe
-
+    duel.drawField(0); std::cout<<"Hand: ";
+    for (int i=0;i<duel.getPlayer(0)->getHandSize();i++)
+    {
+        std::cout<<duel.getPlayer(0)->getHand()[i]->getName()<<"; ";
+    }std::cout<<std::endl<<"Field: ";
+    for (int i=0;i<5;i++)
+    {
+        if (duel.getPlayer(0)->getMinionField()[i].getCard()!=nullptr)
+        std::cout<<duel.getPlayer(0)->getMinionField()[i].getCard()->getName()<<"; ";
+    }std::cout<<std::endl;
     //todo cardowner,GY,decks,hand,draw
     //bot - sprawdzaj wszystkie mozliwosci, zapisuj pierwszy element i stos wyborów
 }

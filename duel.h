@@ -27,9 +27,9 @@ public:
     void summonMinion(Card *minion, short zoneid);
     void activateSpell(Card* spell, short zoneid);
     void playFromHand(Card* card);
-    void summonFromhand(Card* minion, short zoneid);
+    void summonFromHand(Card* minion, short zoneid);
     void onSpell(Card* card, short zoneid);
-    void onSummon(Card* card) {};
+    void onSummon(Card* card, short zoneid);
     void onTurnEnd(Card* card);
     void onDestroy(Card* card);
     void onCombat(Card* card);

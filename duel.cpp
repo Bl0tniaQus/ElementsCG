@@ -101,7 +101,7 @@ void Duel::summonMinion(Card *minion, short zoneid)
         minion->setPlace(2);
         minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
         minion->getOwner()->getMinionField()[zoneid].setUsed(true);
-        this->onSummon(minion);
+
     }
 }
 void Duel::activateSpell(Card *spell, short zoneid)
@@ -165,12 +165,19 @@ void Duel::drawCard(char p)
 }
 bool Duel::checkEffectRequirements(Card* card)
 {
-//any monster on field
+    this->setTargetList(nullptr,0);
     short id = card->getCardId();
+    //any monster on field
 if (id==4)
 {
 this->generateTargetList(card);
     if (this->targetList.getTargetsNumber()>0) {return true;}
+}
+//monster with the same name in hand
+else if (id==1)
+{
+    this->generateTargetList(card);
+        if (this->targetList.getTargetsNumber()>0) {return true;}
 }
 return false;
 }
@@ -195,7 +202,22 @@ if (id==4) //Whirlwind
     }
 }
 }
+void Duel::onSummon(Card* card, short zoneid)
+{
+    short id = card->getCardId();
+    //summon minion from hand
+    if (id==1)
+    {
+        bool usable = this->checkEffectRequirements(card);
+        if (usable)
+        {
+            Card** targets = this->targetList.getTargetList();
+            Card* targetCard = targets[0];
+            this->summonFromHand(targetCard, this->getEmptyMinionZone(card->getOwner()));
+        }
+    }
 
+}
 void Duel::setTargetList(Card** targets, short n_targets)
 {
     this->targetList.setTargetList(targets);
@@ -215,7 +237,7 @@ void Duel::generateTargetList(Card* effect)
         {
             Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
 
-            if (card!=nullptr)
+            if ((card!=nullptr)&&(card!=effect))
             {
             n_targets++;
             Card **newtargets = new Card* [n_targets];
@@ -256,12 +278,13 @@ void Duel::generateTargetList(Card* effect)
     //Monster in hand with the same name
     else if (effectId==1)
     {
+
         for (int i=0;i<effect->getOwner()->getHandSize();i++)
         {
             Card *card = effect->getOwner()->getHand()[i];
-
-            if (card!=nullptr)
+            if ((card!=nullptr)&&(card->getCardId()==effectId)&&(card!=effect))
             {
+
             n_targets++;
             Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
@@ -276,9 +299,8 @@ void Duel::generateTargetList(Card* effect)
                 targets = newtargets;
             } else {newtargets[0]=card; targets = newtargets;}
             }
-        }
-    }
 
+    }}
     this->setTargetList(targets,n_targets);
 }
 void Duel::playFromHand(Card* card)
@@ -286,7 +308,7 @@ void Duel::playFromHand(Card* card)
     char type = card->getCardType();
     short cost = card->getCost();
     short zoneid;
-    std::cout<<card->getOwner()->getHandSize();
+
     if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
     {
         if (type==1)
@@ -317,20 +339,19 @@ void Duel::playFromHand(Card* card)
 
         card->getOriginalOwner()->setHand(newHand, n_hand-1);//tu problem
         card->getOriginalOwner()->setHandSize(n_hand-1);
-
+        if (type==1) {this->onSummon(card, zoneid);}
         card->getOwner()->changeMana(-cost);
     }
 
 }
-void Duel::summonFromhand(Card* minion, short zoneid)
+void Duel::summonFromHand(Card* minion, short zoneid)
 {
-    if ((minion->getCardType()>0)&&(minion->getPlace()==1))
+    if ((minion->getCardType()==1)&&(minion->getPlace()==1))
     {
+
         minion->setPlace(2);
         minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
         minion->getOwner()->getMinionField()[zoneid].setUsed(true);
-        this->onSummon(minion);
-
         short n_hand = minion->getOriginalOwner()->getHandSize();
         Card** oldHand = minion->getOriginalOwner()->getHand();
         Card** newHand = new Card*[n_hand-1];
@@ -340,9 +361,8 @@ void Duel::summonFromhand(Card* minion, short zoneid)
             if (oldHand[i]==minion) {bias = 1; continue;}
             newHand[i-bias] = oldHand[i];
         }
-
-        minion->getOriginalOwner()->setHand(newHand, n_hand-1);//tu problem
+        minion->getOriginalOwner()->setHand(newHand, n_hand-1);
         minion->getOriginalOwner()->setHandSize(n_hand-1);
-
+        this->onSummon(minion,this->getEmptyMinionZone(minion->getOwner()));
     }
 }
