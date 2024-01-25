@@ -7,6 +7,7 @@ Duel::Duel()
     players[1].setOpponent(&players[0]);
     players[0].setName('a');
     players[1].setName('b');
+    this->turnPlayer = 0;
 }
 void Duel::drawField(char p)
 {
@@ -81,7 +82,6 @@ short Duel::getEmptyMinionZone(Player* player)
     for (int i=0;i<5;i++)
     {
         if (zones[i].getUsed()==false) {return i;}
-        std::cout<<i;
     }
     return -1;
 }
@@ -91,16 +91,15 @@ short Duel::getEmptySpellZone(Player* player)
     for (int i=0;i<5;i++)
     {
         if (zones[i].getUsed()==false) {return i;}
-        std::cout<<i;
     }
     return -1;
 }
 void Duel::summonMinion(Card *minion, short zoneid)
 {
-    if ((minion->getCardType()>0)&&(minion->getPlace()==1))
+    if ((minion->getCardType()>0)&&(minion->getPlace()!=2))
     {
-
-        minion->getOwner()->getMinionField()->bindCard(minion);
+        minion->setPlace(2);
+        minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
         minion->getOwner()->getMinionField()[zoneid].setUsed(true);
         this->onSummon(minion);
     }
@@ -109,7 +108,7 @@ void Duel::activateSpell(Card *spell, short zoneid)
 {
     if ((spell->getCardType()==0)&&(spell->getPlace()==1))
     {
-        this->onSpell(spell);
+        this->onSpell(spell,zoneid);
     }
 }
 void Duel::toHand(Card* card)
@@ -119,16 +118,16 @@ void Duel::toHand(Card* card)
     card->getZone()->destroyCard();
     card->setZone(nullptr);
     short n_hand = card->getOriginalOwner()->getHandSize();
-    Card* oldHand = card->getOriginalOwner()->getHand();
-    Card* newHand = new Card[n_hand+1];
-    if (n_hand==1) {newHand[0] = *card;}
+    Card** oldHand = card->getOriginalOwner()->getHand();
+    Card** newHand = new Card*[n_hand+1];
+    if (n_hand==1) {newHand[0] = card;}
     else{
     for (int i=0;i<n_hand;i++)
     {
         newHand[i] = oldHand[i];
     }
     }
-    newHand[n_hand] = *card;
+    newHand[n_hand] = card;
     card->getOriginalOwner()->setHand(newHand, n_hand+1);
     card->getOriginalOwner()->setHandSize(n_hand+1);
 }
@@ -138,10 +137,10 @@ void Duel::drawCard(char p)
     if (n_deck>0)
     {
         short n_hand = this->getPlayer(p)->getHandSize();
-        Card* oldHand = this->getPlayer(p)->getHand();
-        Card* newHand = new Card[n_hand+1];
-        Card* newDeck = new Card[n_deck-1];
-        Card* oldDeck = this->getPlayer(p)->getDeck();
+        Card** oldHand = this->getPlayer(p)->getHand();
+        Card** newHand = new Card*[n_hand+1];
+        Card** newDeck = new Card*[n_deck-1];
+        Card** oldDeck = this->getPlayer(p)->getDeck();
 
         if (n_hand==0) {newHand[0] = oldDeck[n_deck-1];}
         else{
@@ -150,7 +149,7 @@ void Duel::drawCard(char p)
             newHand[i] = oldHand[i];
         }
         }
-        oldDeck[n_deck-1].setPlace(1);
+        oldDeck[n_deck-1]->setPlace(1);
         newHand[n_hand] = oldDeck[n_deck-1];
         this->getPlayer(p)->setHand(newHand, n_hand+1);
         for (int i=0;i<n_deck-1;i++)
@@ -183,22 +182,21 @@ if (id==4) //Whirlwind
     bool usable = this->checkEffectRequirements(card);
     if (usable)
     {
-        Card* targets = this->targetList.getTargetList();
+        Card** targets = this->targetList.getTargetList();
         int target;
         for (int i=0;i<this->targetList.getTargetsNumber();i++)
         {
-            std::cout<<i<<" - "<<targets[i].getName()<<std::endl;
+            std::cout<<i<<" - "<<targets[i]->getName()<<std::endl;
         }
         std::cout<<"Target: ";
         std::cin>>target;
-        card->getOwner()->changeMana(-card->getCost());
-        Card* targetCard = &targets[target];
+        Card* targetCard = targets[target];
         this->toHand(targetCard);
     }
 }
 }
 
-void Duel::setTargetList(Card* targets, short n_targets)
+void Duel::setTargetList(Card** targets, short n_targets)
 {
     this->targetList.setTargetList(targets);
     this->targetList.setTargetNumber(n_targets);
@@ -208,7 +206,7 @@ void Duel::setTargetList(Card* targets, short n_targets)
 void Duel::generateTargetList(Card* effect)
 {
     short n_targets=0;
-    Card* targets = new Card [n_targets];
+    Card** targets = new Card* [n_targets];
     short effectId = effect->getCardId();
     //any monster on field
     if (effectId==4)
@@ -220,7 +218,7 @@ void Duel::generateTargetList(Card* effect)
             if (card!=nullptr)
             {
             n_targets++;
-            Card *newtargets = new Card [n_targets];
+            Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
                 for (int j=0;j<n_targets;j++)
                 {
@@ -228,10 +226,10 @@ void Duel::generateTargetList(Card* effect)
                     newtargets[j] = targets[j];
 
                 }
-                newtargets[n_targets-1] = *card;
+                newtargets[n_targets-1] = card;
                 delete [] targets;
                 targets = newtargets;
-            } else {newtargets[0]=*card; targets = newtargets;}
+            } else {newtargets[0]=card; targets = newtargets;}
             }
         }
         for (int i=0;i<5;i++)
@@ -240,7 +238,7 @@ void Duel::generateTargetList(Card* effect)
             if (card!=nullptr)
             {
             n_targets++;
-            Card *newtargets = new Card [n_targets];
+            Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
                 for (int j=0;j<n_targets;j++)
                 {
@@ -248,10 +246,10 @@ void Duel::generateTargetList(Card* effect)
                     newtargets[j] = targets[j];
 
                 }
-                newtargets[n_targets-1] = *card;
+                newtargets[n_targets-1] = card;
                 delete [] targets;
                 targets = newtargets;
-            } else {newtargets[0]=*card; targets = newtargets;}
+            } else {newtargets[0]=card; targets = newtargets;}
             }
         }
     }
@@ -260,12 +258,12 @@ void Duel::generateTargetList(Card* effect)
     {
         for (int i=0;i<effect->getOwner()->getHandSize();i++)
         {
-            Card *card = &effect->getOwner()->getHand()[i];
+            Card *card = effect->getOwner()->getHand()[i];
 
             if (card!=nullptr)
             {
             n_targets++;
-            Card *newtargets = new Card [n_targets];
+            Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
                 for (int j=0;j<n_targets;j++)
                 {
@@ -273,10 +271,10 @@ void Duel::generateTargetList(Card* effect)
                     newtargets[j] = targets[j];
 
                 }
-                newtargets[n_targets-1] = *card;
+                newtargets[n_targets-1] = card;
                 delete [] targets;
                 targets = newtargets;
-            } else {newtargets[0]=*card; targets = newtargets;}
+            } else {newtargets[0]=card; targets = newtargets;}
             }
         }
     }
@@ -288,23 +286,63 @@ void Duel::playFromHand(Card* card)
     char type = card->getCardType();
     short cost = card->getCost();
     short zoneid;
+    std::cout<<card->getOwner()->getHandSize();
     if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
     {
-        if (type=='0')
+        if (type==1)
         {
             zoneid = this->getEmptyMinionZone(card->getOwner());
 
            if (zoneid!=-1)
            {
-                this->summonMinion(card, zoneid);
+
+               this->summonMinion(card, zoneid);
            }
         }
-        else if (type=='1')
+        else if (type==0)
         {
-
+            zoneid = this->getEmptyMinionZone(card->getOwner());
+            this->activateSpell(card,zoneid);
         }
 
-        this->getPlayer(this->getTurnPlayer())->changeMana(-cost);
+        short n_hand = card->getOriginalOwner()->getHandSize();
+        Card** oldHand = card->getOriginalOwner()->getHand();
+        Card** newHand = new Card*[n_hand-1];
+        short bias = 0;
+        for (int i=0;i<n_hand;i++)
+        {
+            if (oldHand[i]==card) {bias = 1; continue;}
+            newHand[i-bias] = oldHand[i];
+        }
+
+        card->getOriginalOwner()->setHand(newHand, n_hand-1);//tu problem
+        card->getOriginalOwner()->setHandSize(n_hand-1);
+
+        card->getOwner()->changeMana(-cost);
     }
 
+}
+void Duel::summonFromhand(Card* minion, short zoneid)
+{
+    if ((minion->getCardType()>0)&&(minion->getPlace()==1))
+    {
+        minion->setPlace(2);
+        minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
+        minion->getOwner()->getMinionField()[zoneid].setUsed(true);
+        this->onSummon(minion);
+
+        short n_hand = minion->getOriginalOwner()->getHandSize();
+        Card** oldHand = minion->getOriginalOwner()->getHand();
+        Card** newHand = new Card*[n_hand-1];
+        short bias = 0;
+        for (int i=0;i<n_hand;i++)
+        {
+            if (oldHand[i]==minion) {bias = 1; continue;}
+            newHand[i-bias] = oldHand[i];
+        }
+
+        minion->getOriginalOwner()->setHand(newHand, n_hand-1);//tu problem
+        minion->getOriginalOwner()->setHandSize(n_hand-1);
+
+    }
 }

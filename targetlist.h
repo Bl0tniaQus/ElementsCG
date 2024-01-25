@@ -5,14 +5,14 @@
 class TargetList
 {
 private:
-    Card* targetList;
+    Card** targetList;
     short n_targets;
 public:
     TargetList();
-    TargetList(Card* targetList, short n_targets);
-    Card* getTargetList() {return this->targetList;}
+    TargetList(Card** targetList, short n_targets);
+    Card** getTargetList() {return this->targetList;}
     short getTargetsNumber() {return this->n_targets;}
-    void setTargetList(Card* targets);
+    void setTargetList(Card** targets);
     void setTargetNumber(short n_targets) {this->n_targets = n_targets;}
 };
 

@@ -27,6 +27,7 @@ public:
     void summonMinion(Card *minion, short zoneid);
     void activateSpell(Card* spell, short zoneid);
     void playFromHand(Card* card);
+    void summonFromhand(Card* minion, short zoneid);
     void onSpell(Card* card, short zoneid);
     void onSummon(Card* card) {};
     void onTurnEnd(Card* card);
@@ -34,7 +35,7 @@ public:
     void onCombat(Card* card);
     void applyContinuous();
     void generateTargetList(Card* effect);
-    void setTargetList(Card* targets, short n_targets);
+    void setTargetList(Card** targets, short n_targets);
     TargetList getTargetList() {return this->targetList;}
     bool checkEffectRequirements(Card* card);
 

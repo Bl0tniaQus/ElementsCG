@@ -21,10 +21,6 @@ set(PROJECT_SOURCES
         zone.cpp
         player.h
         player.cpp
-        spellzone.h
-        spellzone.cpp
-        minionzone.h
-        minionzone.cpp
         card.h
         card.cpp
         duel.h
