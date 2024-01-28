@@ -21,6 +21,8 @@ public:
     void directAttack(Card* attacker);
     void destruction(Card* card);
     void toHand(Card* card);
+    void toGraveyard(Card* card);
+    void removeFromField(Card* card);
     void checkWinner();
     short getEmptyMinionZone(Player* player);
     short getEmptySpellZone(Player* player);

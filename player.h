@@ -46,6 +46,10 @@ public:
     void setDeckSize(short n) {this->n_deck=n;}
     Card** getDeck() {return this->deck;}
     void setDeck(Card** deck, short size);
+    short getGraveyardSize() {return this->n_graveyard;}
+    void setGraveyardSize(short n) {this->n_graveyard=n;}
+    Card** getGraveyard() {return this->graveyard;}
+    void setGraveyard(Card** graveyard, short size);
     void setOriginalDeck(Card* deck, short size);
     Card* getOriginalDeck() {return this->originalDeck;}
     void setDeckOwnership();

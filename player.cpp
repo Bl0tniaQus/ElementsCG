@@ -46,6 +46,12 @@ void Player::setDeck(Card** deck, short size)
     this->deck = deck;
     this->n_deck = size;
 }
+void Player::setGraveyard(Card** graveyard, short size)
+{
+    delete[] this->graveyard;
+    this->graveyard = graveyard;
+    this->n_graveyard = size;
+}
 void Player::setDeckOwnership()
 {
     for (int i=0;i<this->n_deck;i++)

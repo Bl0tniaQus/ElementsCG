@@ -70,11 +70,34 @@ void Duel::checkWinner()
 }
 void Duel::destruction(Card* card)
 {
+    this->toGraveyard(card);
+    this->onDestroy(card);
+}
+void Duel::toGraveyard(Card* card)
+{
     card->setPlace(3);
+    Player* owner = card->getOriginalOwner();
+    short n_graveyard = owner->getGraveyardSize();
+    Card** oldGraveyard = owner->getHand();
+    Card** newGraveyard = new Card*[n_graveyard+1];
+
+
+    if (n_graveyard==0) {newGraveyard[0] = card;}
+    else{
+    for (int i=0;i<n_graveyard;i++)
+    {
+        newGraveyard[i] = oldGraveyard[i];
+    }
+    newGraveyard[n_graveyard] = card;
+    }
+    owner->setGraveyard(newGraveyard, n_graveyard+1);
+
+}
+void Duel::removeFromField(Card* card)
+{
     card->getZone()->setUsed(false);
     card->getZone()->destroyCard();
     card->setZone(nullptr);
-    //card.getOwner()
 }
 short Duel::getEmptyMinionZone(Player* player)
 {
@@ -114,9 +137,7 @@ void Duel::activateSpell(Card *spell, short zoneid)
 void Duel::toHand(Card* card)
 {
     card->setPlace(1);
-    card->getZone()->setUsed(false);
-    card->getZone()->destroyCard();
-    card->setZone(nullptr);
+    this->removeFromField(card);
     short n_hand = card->getOriginalOwner()->getHandSize();
     Card** oldHand = card->getOriginalOwner()->getHand();
     Card** newHand = new Card*[n_hand+1];
@@ -126,14 +147,16 @@ void Duel::toHand(Card* card)
     {
         newHand[i] = oldHand[i];
     }
-    }
     newHand[n_hand] = card;
+    }
+
     card->getOriginalOwner()->setHand(newHand, n_hand+1);
     card->getOriginalOwner()->setHandSize(n_hand+1);
 }
 void Duel::drawCard(char p)
 {
     short n_deck = this->getPlayer(p)->getDeckSize();
+
     if (n_deck>0)
     {
         short n_hand = this->getPlayer(p)->getHandSize();
@@ -141,16 +164,17 @@ void Duel::drawCard(char p)
         Card** newHand = new Card*[n_hand+1];
         Card** newDeck = new Card*[n_deck-1];
         Card** oldDeck = this->getPlayer(p)->getDeck();
-
+        oldDeck[n_deck-1]->setPlace(1);
         if (n_hand==0) {newHand[0] = oldDeck[n_deck-1];}
         else{
         for (int i=0;i<n_hand;i++)
         {
             newHand[i] = oldHand[i];
         }
-        }
-        oldDeck[n_deck-1]->setPlace(1);
         newHand[n_hand] = oldDeck[n_deck-1];
+        }
+
+
         this->getPlayer(p)->setHand(newHand, n_hand+1);
         for (int i=0;i<n_deck-1;i++)
         {
@@ -168,7 +192,7 @@ bool Duel::checkEffectRequirements(Card* card)
     this->setTargetList(nullptr,0);
     short id = card->getCardId();
     //any monster on field
-if (id==4)
+    if (id==4)
 {
 this->generateTargetList(card);
     if (this->targetList.getTargetsNumber()>0) {return true;}
@@ -218,6 +242,7 @@ void Duel::onSummon(Card* card, short zoneid)
     }
 
 }
+void Duel::onDestroy(Card* card){}
 void Duel::setTargetList(Card** targets, short n_targets)
 {
     this->targetList.setTargetList(targets);
@@ -229,7 +254,56 @@ void Duel::generateTargetList(Card* effect)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
-    short effectId = effect->getCardId();
+    short effectId;
+
+    //list of end of turn effects
+    if (effect == nullptr)
+    {
+        for (int i=0;i<5;i++)
+        {
+            Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
+
+            if ((card!=nullptr)&&(card!=effect))
+            {
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
+
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = card;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=card; targets = newtargets;}
+            }
+        }
+        for (int i=0;i<5;i++)
+        {
+            Card *card = this->players[getTurnPlayer()].getMinionField()[i].getCard();
+            if (card!=nullptr)
+            {
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
+
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = card;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=card; targets = newtargets;}
+            }
+        }
+
+
+
+    } else {effectId = effect->getCardId();}
     //any monster on field
     if (effectId==4)
     {
