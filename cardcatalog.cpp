@@ -7,8 +7,10 @@ CardCatalog::CardCatalog()
     //id,name,element,cost,type,level,atk,def
     this->addEntry(CatalogEntry(1,"Copper Worm", "Earth", 1, 1,1,1,1));
     this->addEntry(CatalogEntry(2,"Silver Wolf", "Earth", 4, 1,3,4,3));
-    this->addEntry(CatalogEntry(3,"Dragonoid Squire", "Wind", 2, 1,3,3,4));
+    this->addEntry(CatalogEntry(3,"Dragonoid Soldier", "Wind", 2, 1,3,3,4));
     this->addEntry(CatalogEntry(4,"Whirlwind", "Wind", 5, 0,-1,-1,-1));
+    this->addEntry(CatalogEntry(5,"Dragonoid Sage", "Wind", 3, 1,3,2,3));
+    this->addEntry(CatalogEntry(6,"Tungsten Firefly", "Earth", 2, 1,2,2,2));
 
 
 }

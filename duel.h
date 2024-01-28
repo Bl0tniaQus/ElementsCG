@@ -14,9 +14,9 @@ public:
     short getTurnCount() {return this->turnCount;}
     char getTurnPlayer() {return this->turnPlayer;}
     Player* getPlayer(char p) {return &this->players[p];}
-    void passTurn() {this->turnPlayer = !this->turnPlayer;}
+    void passTurn();
     void drawField(char p);
-    void drawCard(char p);
+    void drawCard(Player* player);
     void combat(Card* attacker, Card* defender);
     void directAttack(Card* attacker);
     void destruction(Card* card);

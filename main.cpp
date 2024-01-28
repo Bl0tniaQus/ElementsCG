@@ -22,12 +22,18 @@ int main(int argc, char *argv[])
     duel.getPlayer(0)->setDeckOwnership();
     duel.getPlayer(1)->setOriginalDeck(deck2.getDeck(),deck2.getDeckSize());
     duel.getPlayer(1)->setDeckOwnership();
-    duel.drawCard(0); duel.drawCard(1);
-    duel.drawCard(0); duel.drawCard(1);
-    duel.drawCard(0); duel.drawCard(1);
-    duel.drawCard(0);
+    Player* player1 = duel.getPlayer(0);
+    Player* player2 = duel.getPlayer(1);
+    duel.drawCard(player1); duel.drawCard(player2);
+    duel.drawCard(player1); duel.drawCard(player2);
+    duel.drawCard(player1); duel.drawCard(player2);
+    duel.drawCard(player1);
     duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
-    duel.drawField(0); std::cout<<"Hand: ";
+    duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
+    duel.passTurn();
+    duel.passTurn();
+    duel.drawField(0);
+    std::cout<<"Hand: ";
     for (int i=0;i<duel.getPlayer(0)->getHandSize();i++)
     {
         std::cout<<duel.getPlayer(0)->getHand()[i]->getName()<<"; ";
@@ -37,6 +43,9 @@ int main(int argc, char *argv[])
         if (duel.getPlayer(0)->getMinionField()[i].getCard()!=nullptr)
         std::cout<<duel.getPlayer(0)->getMinionField()[i].getCard()->getName()<<"; ";
     }std::cout<<std::endl;
-    //todo cardowner,GY,decks,hand,draw
-    //bot - sprawdzaj wszystkie mozliwosci, zapisuj pierwszy element i stos wyborów
+    //todo Servants, multiple targeting, duel control
+    //lingering and continuous effects, effect negation, stats and element manipulation, search and tutoring
+    //bot - create a sandbox-like copy of a gamestate, calculate position factor(s), then check all possible moves,
+    //calculate factor(s) for new gamestates and perform best action on real gamestate
+    //goal - make it possible to play full duel with AI in cli
 }
