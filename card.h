@@ -15,11 +15,11 @@ short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - servant deck
 short cardType; //0 - spell, 1 - minion, 2 - servant
 short cardId;
 short cost;
-char* element;
+char* element; char* originalElement;
 char* name;
-short level;
-short attack;
-short defence;
+short level; short originalLevel;
+short attack; short originalAttack;
+short defence; short originalDefence;
 public:
     Card();
     Card(int entryId);
@@ -45,5 +45,13 @@ public:
     void setAttack(short atk) {this->attack = atk;}
     short getDefence() {return this->defence;}
     void setDefence(short def) {this->defence = def;}
+    short getOriginalAttack() {return this->originalAttack;}
+    void setOriginalAttack(short atk) {this->originalAttack = atk;}
+    short getOriginalDefence() {return this->originalDefence;}
+    void setOriginalDefence(short def) {this->originalDefence = def;}
+    short getLevel() {return this->level;}
+    void setLevel(short lvl) {this->level = lvl;}
+    short getOriginalLevel() {return this->originalLevel;}
+    void setOriginalLevel(short lvl) {this->originalLevel = lvl;}
 };
 #endif // CARD_H

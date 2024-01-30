@@ -37,9 +37,11 @@ public:
     void onCombat(Card* card);
     void applyContinuous();
     void generateTargetList(Card* effect);
+    void generateServantMaterialList(Card* servant, short n);
     void setTargetList(Card** targets, short n_targets);
     TargetList getTargetList() {return this->targetList;}
     bool checkEffectRequirements(Card* card);
+    void summonServant(Card *servant, short zoneid);
 
     static Card* selectFieldTarget();
 };

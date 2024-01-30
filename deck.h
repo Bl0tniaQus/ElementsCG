@@ -6,7 +6,7 @@ class Deck
 {
 private:
     Card* mainDeck;
-    Card* ServantDeck;
+    Card* servantDeck;
     short n_cards;
     short n_servants;
 public:

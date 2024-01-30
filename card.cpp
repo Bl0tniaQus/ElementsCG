@@ -2,8 +2,7 @@
 #include "globals.h"
 Card::Card()
 {
-    this->cost = 10;
-    this->zone = nullptr;
+
 }
 Card::Card(int entryId)
 {
@@ -16,5 +15,8 @@ if (entry!=nullptr)
     this->setDefence(entry->getDefence());
     this->setName(entry->getName());
     this->setCardId(entry->getId());
+    this->setOriginalAttack(this->attack);
+    this->setOriginalDefence(this->defence);
+    this->setOriginalLevel(this->level);
     this->zone = nullptr;
 }}

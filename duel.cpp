@@ -77,6 +77,7 @@ void Duel::toGraveyard(Card* card)
 {
     card->setPlace(3);
     Player* owner = card->getOriginalOwner();
+    card->setOwner(owner);
     short n_graveyard = owner->getGraveyardSize();
     Card** oldGraveyard = owner->getHand();
     Card** newGraveyard = new Card*[n_graveyard+1];
@@ -127,6 +128,91 @@ void Duel::summonMinion(Card *minion, short zoneid)
 
     }
 }
+void Duel::summonServant(Card *servant, short zoneid)
+{
+    this->setTargetList(nullptr,0);
+    short id = servant->getCardId();
+    //two requirements tree
+    if (id==8)
+    {
+        this->generateServantMaterialList(servant,1);
+        Card** targets1 = this->getTargetList().getTargetList();
+        short n_targets1 = this->getTargetList().getTargetsNumber();
+        this->generateServantMaterialList(servant,2);
+        Card** targets2 = this->getTargetList().getTargetList();
+        short n_targets2 = this->getTargetList().getTargetsNumber();
+
+        if ((n_targets1==0)||(n_targets2==0)) {return;}
+        else if ((n_targets1==1)&&(n_targets2==1))
+        {
+            if (targets1[0]==targets2[0]) {return;}
+        }
+        else if ((n_targets1==1)&&(n_targets2>1))
+        {
+            for (int i=0;i<n_targets2;i++)
+            {
+                if (targets2[i]==targets1[0]) {return;}
+            }
+        }
+        else if ((n_targets2==1)&&(n_targets1>1))
+        {
+            for (int i=0;i<n_targets2;i++)
+            {
+                if (targets2[i]==targets1[0]) {return;}
+            }
+        }
+        int target;
+        for (int i=0;i<n_targets1;i++)
+        {
+            std::cout<<i<<" - "<<targets1[i]->getName()<<std::endl;
+        }
+        std::cout<<"First minion: ";
+        std::cin>>target;
+        Card* targetCard = targets1[target];
+        Card* targetCard2;
+        Card** new_targets2;
+        short duplicate=0;
+        for (int i=0;i<n_targets2;i++)
+        {
+            if (targets2[i]==targetCard)
+            {
+                duplicate=1;
+                new_targets2 = new Card* [n_targets2-1];
+                short bias=0;
+                for (int j=1;j<n_targets2;j++)
+                {
+                   if (targets2[j]==targetCard) {bias=1; continue;}
+                   new_targets2[j-bias]=targets2[j];
+                }
+            }
+        }
+        if (duplicate==1)
+        {
+            for (int i=0;i<n_targets2-1;i++)
+            {
+                std::cout<<i<<" - "<<new_targets2[i]->getName()<<std::endl;
+            }
+            std::cout<<"Second minion: ";
+            std::cin>>target;
+            targetCard2 = new_targets2[target];
+        }
+        else
+        {
+            for (int i=0;i<n_targets2-1;i++)
+            {
+                std::cout<<i<<" - "<<new_targets2[i]->getName()<<std::endl;
+            }
+            std::cout<<"Second minion: ";
+            std::cin>>target;
+            targetCard2 = new_targets2[target];
+        }
+        this->removeFromField(targetCard);
+        this->removeFromField(targetCard2);
+        this->toGraveyard(targetCard);
+        this->toGraveyard(targetCard2);
+        this->summonMinion(servant,this->getEmptyMinionZone(servant->getOriginalOwner()));
+    }
+}
 void Duel::activateSpell(Card *spell, short zoneid)
 {
     if ((spell->getCardType()==0)&&(spell->getPlace()==1))
@@ -149,9 +235,10 @@ void Duel::toHand(Card* card)
     }
     newHand[n_hand] = card;
     }
-
-    card->getOriginalOwner()->setHand(newHand, n_hand+1);
-    card->getOriginalOwner()->setHandSize(n_hand+1);
+    Player* owner = card->getOriginalOwner();
+    card->setOwner(owner);
+    owner->setHand(newHand, n_hand+1);
+    owner->setHandSize(n_hand+1);
 }
 void Duel::drawCard(Player* player)
 {
@@ -240,6 +327,11 @@ void Duel::onSummon(Card* card, short zoneid)
             this->summonFromHand(targetCard, this->getEmptyMinionZone(card->getOwner()));
         }
     }
+    //Draw a card
+    else if (id==7)
+    {
+        this->drawCard(card->getOwner());
+    }
 
 }
 void Duel::onDestroy(Card* card){}
@@ -261,6 +353,41 @@ void Duel::setTargetList(Card** targets, short n_targets)
     this->targetList.setTargetList(targets);
     this->targetList.setTargetNumber(n_targets);
 
+}
+void Duel::generateServantMaterialList(Card* servant, short n)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    short servantId = servant->getCardId();
+    Player* owner = servant->getOriginalOwner();
+    //Brass Beetle
+    if (servantId==8)
+    {
+        for (int i=0;i<5;i++)
+        {
+            Card* card = owner->getMinionField()[i].getCard();
+            if (card!=nullptr)
+            {
+                if (card->getElement()[0]=='E')//Earth minion
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = card;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=card; targets = newtargets;}
+                }
+            }
+        }
+        }
+    this->setTargetList(targets,n_targets);
 }
 
 void Duel::generateTargetList(Card* effect)

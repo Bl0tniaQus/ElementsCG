@@ -15,4 +15,6 @@ Deck::Deck()
     {
         this->mainDeck[i].setPlace(0);
     }
+    servantDeck new Card[1];
+    servantDeck[0] = Card(8);
 }

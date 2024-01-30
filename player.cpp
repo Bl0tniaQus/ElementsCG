@@ -7,9 +7,14 @@ Player::Player()
     this->mana=15;
     this->n_hand=0;
     this->n_deck = 0;
+    this->n_originalDeck=0;
+    this->n_originalServantDeck=;
+    this->n_servant;
     this->hand = new Card* [0];
     this->deck = new Card* [0];
+    this->servantDeck = new Card* [0];
     this->originalDeck = new Card [0];
+    this->originalServantDeck = new Card [0];
     this->spellField = new Zone [5];
     this->minionField = new Zone [5];
 }

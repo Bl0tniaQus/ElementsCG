@@ -47,5 +47,5 @@ int main(int argc, char *argv[])
     //lingering and continuous effects, effect negation, stats and element manipulation, search and tutoring
     //bot - create a sandbox-like copy of a gamestate, calculate position factor(s), then check all possible moves,
     //calculate factor(s) for new gamestates and perform best action on real gamestate
-    //goal - make it possible to play full duel with AI in cli
+    //goal - make it possible to play full duel with AI in cli, then proceed with gui
 }
