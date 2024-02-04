@@ -13,6 +13,7 @@ if (entry!=nullptr)
     this->setCardType(entry->getType());
     this->setAttack(entry->getAttack());
     this->setDefence(entry->getDefence());
+    this->setElement(entry->getElement());
     this->setName(entry->getName());
     this->setCardId(entry->getId());
     this->setOriginalAttack(this->attack);

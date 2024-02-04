@@ -8,8 +8,8 @@ Player::Player()
     this->n_hand=0;
     this->n_deck = 0;
     this->n_originalDeck=0;
-    this->n_originalServantDeck=;
-    this->n_servant;
+    this->n_originalServantDeck=0;
+    this->n_servant=0;
     this->hand = new Card* [0];
     this->deck = new Card* [0];
     this->servantDeck = new Card* [0];
@@ -25,7 +25,7 @@ void Player::changeHp(short val)
 void Player::changeMana(short val)
 {
     this->mana = this->mana + val;
-}  
+}
 void Player::setHand(Card** hand, short size)
 {
     delete[] this->hand;
@@ -44,6 +44,19 @@ void Player::setOriginalDeck(Card* deck, short size)
         this->deck[i] = &originalDeck[i];
     }
     this->n_deck = size;
+}
+void Player::setOriginalServantDeck(Card* deck, short size)
+{
+    delete[] this->originalServantDeck;
+    this->originalServantDeck = deck;
+    this->n_originalServantDeck = size;
+    delete [] this->servantDeck;
+    this->servantDeck = new Card* [size];
+    for (int i=0;i<n_originalServantDeck;i++)
+    {
+        this->servantDeck[i] = &originalServantDeck[i];
+    }
+    this->n_servant = size;
 }
 void Player::setDeck(Card** deck, short size)
 {
@@ -64,5 +77,16 @@ void Player::setDeckOwnership()
         this->deck[i]->setOwner(this);
         this->deck[i]->setOriginalOwner(this);
     }
+    for (int i=0;i<this->n_servant;i++)
+    {
+        this->servantDeck[i]->setOwner(this);
+        this->servantDeck[i]->setOriginalOwner(this);
+    }
+}
+void Player::setServantDeck(Card** deck, short size)
+{
+    delete[] this->servantDeck;
+    this->servantDeck = deck;
+    this->n_servant = size;
 }
 

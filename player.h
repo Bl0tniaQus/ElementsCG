@@ -52,6 +52,9 @@ public:
     void setGraveyard(Card** graveyard, short size);
     void setOriginalDeck(Card* deck, short size);
     Card* getOriginalDeck() {return this->originalDeck;}
+    void setServantDeck(Card** deck, short size);
+    void setOriginalServantDeck(Card* deck, short size);
+    Card** getServantDeck() {return this->servantDeck;}
     void setDeckOwnership();
 };
 

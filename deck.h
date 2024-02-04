@@ -13,6 +13,8 @@ public:
     Deck();
     Card* getDeck() {return this->mainDeck;}
     short getDeckSize() {return this->n_cards;}
+    Card* getServantDeck() {return this->servantDeck;}
+    short getServantDeckSize() {return this->n_servants;}
 };
 
 #endif // DECK_H

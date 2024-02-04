@@ -136,11 +136,22 @@ void Duel::summonServant(Card *servant, short zoneid)
     if (id==8)
     {
         this->generateServantMaterialList(servant,1);
-        Card** targets1 = this->getTargetList().getTargetList();
+
         short n_targets1 = this->getTargetList().getTargetsNumber();
+        Card** temp_targets = this->getTargetList().getTargetList();
+        Card** targets1 = new Card* [n_targets1];
+        for (int i=0;i<n_targets1;i++)
+        {
+            targets1[i] = temp_targets[i];
+        } delete []temp_targets;
         this->generateServantMaterialList(servant,2);
-        Card** targets2 = this->getTargetList().getTargetList();
         short n_targets2 = this->getTargetList().getTargetsNumber();
+        temp_targets = this->getTargetList().getTargetList();
+        Card** targets2 = new Card* [n_targets2];
+        for (int i=0;i<n_targets2;i++)
+        {
+            targets2[i] = temp_targets[i];
+        } delete []temp_targets;
 
         if ((n_targets1==0)||(n_targets2==0)) {return;}
         else if ((n_targets1==1)&&(n_targets2==1))
@@ -179,7 +190,7 @@ void Duel::summonServant(Card *servant, short zoneid)
                 duplicate=1;
                 new_targets2 = new Card* [n_targets2-1];
                 short bias=0;
-                for (int j=1;j<n_targets2;j++)
+                for (int j=0;j<n_targets2;j++)
                 {
                    if (targets2[j]==targetCard) {bias=1; continue;}
                    new_targets2[j-bias]=targets2[j];

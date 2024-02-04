@@ -19,8 +19,10 @@ int main(int argc, char *argv[])
     Deck deck;
     Deck deck2;
     duel.getPlayer(0)->setOriginalDeck(deck.getDeck(),deck.getDeckSize());
+    duel.getPlayer(0)->setOriginalServantDeck(deck.getServantDeck(),deck.getServantDeckSize());
     duel.getPlayer(0)->setDeckOwnership();
     duel.getPlayer(1)->setOriginalDeck(deck2.getDeck(),deck2.getDeckSize());
+    duel.getPlayer(1)->setOriginalServantDeck(deck2.getServantDeck(),deck2.getServantDeckSize());
     duel.getPlayer(1)->setDeckOwnership();
     Player* player1 = duel.getPlayer(0);
     Player* player2 = duel.getPlayer(1);
@@ -30,8 +32,10 @@ int main(int argc, char *argv[])
     duel.drawCard(player1);
     duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
     duel.playFromHand(duel.getPlayer(0)->getHand()[0]);
-    duel.passTurn();
-    duel.passTurn();
+    duel.playFromHand(duel.getPlayer(1)->getHand()[0]);
+    duel.playFromHand(duel.getPlayer(1)->getHand()[0]);
+    duel.drawField(0);
+    duel.summonServant(duel.getPlayer(0)->getServantDeck()[0],4);
     duel.drawField(0);
     std::cout<<"Hand: ";
     for (int i=0;i<duel.getPlayer(0)->getHandSize();i++)

@@ -12,6 +12,7 @@ CardCatalog::CardCatalog()
     this->addEntry(CatalogEntry(5,"Dragonoid Sage", "Air", 3, 1,3,2,3));
     this->addEntry(CatalogEntry(6,"Tungsten Firefly", "Earth", 2, 1,2,2,2));
     this->addEntry(CatalogEntry(7,"Dragonoid Scout", "Air", 3, 1,3,3,2));
+    this->addEntry(CatalogEntry(8,"Brass Beetle", "Earth", -1, 1,5,4,5));
 
 
 }
