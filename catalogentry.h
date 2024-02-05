@@ -13,7 +13,6 @@ private:
     short level;
     short attack;
     short defence;
-    public:
 public:
     CatalogEntry();
     CatalogEntry(int id, char const* cardName, char const* cardElement, short cardCost, char cardType, short level, short attack, short defence);

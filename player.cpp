@@ -8,15 +8,16 @@ Player::Player()
     this->n_hand=0;
     this->n_deck = 0;
     this->n_originalDeck=0;
-    this->n_originalServantDeck=0;
-    this->n_servant=0;
+    this->n_originalSpecialDeck=0;
+    this->n_special=0;
+    this->n_graveyard=0;
     this->hand = new Card* [0];
     this->deck = new Card* [0];
-    this->servantDeck = new Card* [0];
+    this->specialDeck = new Card* [0];
     this->originalDeck = new Card [0];
-    this->originalServantDeck = new Card [0];
-    this->spellField = new Zone [5];
+    this->originalSpecialDeck = new Card [0];
     this->minionField = new Zone [5];
+    this->graveyard = new Card* [0];
 }
 void Player::changeHp(short val)
 {
@@ -45,18 +46,18 @@ void Player::setOriginalDeck(Card* deck, short size)
     }
     this->n_deck = size;
 }
-void Player::setOriginalServantDeck(Card* deck, short size)
+void Player::setOriginalSpecialDeck(Card* deck, short size)
 {
-    delete[] this->originalServantDeck;
-    this->originalServantDeck = deck;
-    this->n_originalServantDeck = size;
-    delete [] this->servantDeck;
-    this->servantDeck = new Card* [size];
-    for (int i=0;i<n_originalServantDeck;i++)
+    delete[] this->originalSpecialDeck;
+    this->originalSpecialDeck = deck;
+    this->n_originalSpecialDeck = size;
+    delete [] this->specialDeck;
+    this->specialDeck = new Card* [size];
+    for (int i=0;i<n_originalSpecialDeck;i++)
     {
-        this->servantDeck[i] = &originalServantDeck[i];
+        this->specialDeck[i] = &originalSpecialDeck[i];
     }
-    this->n_servant = size;
+    this->n_special = size;
 }
 void Player::setDeck(Card** deck, short size)
 {
@@ -77,16 +78,16 @@ void Player::setDeckOwnership()
         this->deck[i]->setOwner(this);
         this->deck[i]->setOriginalOwner(this);
     }
-    for (int i=0;i<this->n_servant;i++)
+    for (int i=0;i<this->n_special;i++)
     {
-        this->servantDeck[i]->setOwner(this);
-        this->servantDeck[i]->setOriginalOwner(this);
+        this->specialDeck[i]->setOwner(this);
+        this->specialDeck[i]->setOriginalOwner(this);
     }
 }
-void Player::setServantDeck(Card** deck, short size)
+void Player::setSpecialDeck(Card** deck, short size)
 {
-    delete[] this->servantDeck;
-    this->servantDeck = deck;
-    this->n_servant = size;
+    delete[] this->specialDeck;
+    this->specialDeck = deck;
+    this->n_special = size;
 }
 

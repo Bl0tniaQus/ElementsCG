@@ -21,11 +21,11 @@ public:
     void directAttack(Card* attacker);
     void destruction(Card* card);
     void toHand(Card* card);
+    void toSpecialDeck(Card* card);
     void toGraveyard(Card* card);
     void removeFromField(Card* card);
     void checkWinner();
     short getEmptyMinionZone(Player* player);
-    short getEmptySpellZone(Player* player);
     void summonMinion(Card *minion, short zoneid);
     void activateSpell(Card* spell, short zoneid);
     void playFromHand(Card* card);
@@ -37,11 +37,11 @@ public:
     void onCombat(Card* card);
     void applyContinuous();
     void generateTargetList(Card* effect);
-    void generateServantMaterialList(Card* servant, short n);
+    void generateSpecialMinionMaterialList(Card* servant, short n);
     void setTargetList(Card** targets, short n_targets);
     TargetList getTargetList() {return this->targetList;}
     bool checkEffectRequirements(Card* card);
-    void summonServant(Card *servant, short zoneid);
+    void summonSpecialMinion(Card *minion);
 
     static Card* selectFieldTarget();
 };

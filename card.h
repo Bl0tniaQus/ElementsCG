@@ -11,8 +11,8 @@ private:
 Zone* zone;
 Player* owner;
 Player* originalOwner;
-short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - servant deck
-short cardType; //0 - spell, 1 - minion, 2 - servant
+short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - special deck
+short cardType; //0 - spell, 1 - minion, 2 - special minion
 short cardId;
 short cost;
 char* element; char* originalElement;

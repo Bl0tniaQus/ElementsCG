@@ -14,22 +14,12 @@ void Duel::drawField(char p)
     std::cout<<this->getPlayer(!p)->getHp()<<"/"<<getPlayer(!p)->getMana()<<std::endl;
     for (int i=4;i>=0;i--)
     {
-        std::cout<<this->getPlayer(!p)->getSpellField()[i].getUsed()<<" ";
-    }
-    std::cout<<std::endl;
-    for (int i=4;i>=0;i--)
-    {
         std::cout<<this->getPlayer(!p)->getMinionField()[i].getUsed()<<" ";
     }
     std::cout<<std::endl<<"---------"<<std::endl;
     for (int i=0;i<5;i++)
     {
         std::cout<<this->getPlayer(p)->getMinionField()[i].getUsed()<<" ";
-    }
-    std::cout<<std::endl;
-    for (int i=0;i<5;i++)
-    {
-        std::cout<<this->getPlayer(p)->getSpellField()[i].getUsed()<<" ";
     }
     std::cout<<std::endl;
     std::cout<<this->getPlayer(p)->getHp()<<"/"<<getPlayer(p)->getMana()<<std::endl;
@@ -79,7 +69,7 @@ void Duel::toGraveyard(Card* card)
     Player* owner = card->getOriginalOwner();
     card->setOwner(owner);
     short n_graveyard = owner->getGraveyardSize();
-    Card** oldGraveyard = owner->getHand();
+    Card** oldGraveyard = owner->getGraveyard();
     Card** newGraveyard = new Card*[n_graveyard+1];
 
 
@@ -92,7 +82,26 @@ void Duel::toGraveyard(Card* card)
     newGraveyard[n_graveyard] = card;
     }
     owner->setGraveyard(newGraveyard, n_graveyard+1);
+}
+void Duel::toSpecialDeck(Card* card)
+{
+    card->setPlace(3);
+    Player* owner = card->getOriginalOwner();
+    card->setOwner(owner);
+    short n_graveyard = owner->getGraveyardSize();
+    Card** oldGraveyard = owner->getGraveyard();
+    Card** newGraveyard = new Card*[n_graveyard+1];
 
+
+    if (n_graveyard==0) {newGraveyard[0] = card;}
+    else{
+    for (int i=0;i<n_graveyard;i++)
+    {
+        newGraveyard[i] = oldGraveyard[i];
+    }
+    newGraveyard[n_graveyard] = card;
+    }
+    owner->setGraveyard(newGraveyard, n_graveyard+1);
 }
 void Duel::removeFromField(Card* card)
 {
@@ -109,15 +118,6 @@ short Duel::getEmptyMinionZone(Player* player)
     }
     return -1;
 }
-short Duel::getEmptySpellZone(Player* player)
-{
-    Zone* zones = player->getSpellField();
-    for (int i=0;i<5;i++)
-    {
-        if (zones[i].getUsed()==false) {return i;}
-    }
-    return -1;
-}
 void Duel::summonMinion(Card *minion, short zoneid)
 {
     if ((minion->getCardType()>0)&&(minion->getPlace()!=2))
@@ -128,14 +128,14 @@ void Duel::summonMinion(Card *minion, short zoneid)
 
     }
 }
-void Duel::summonServant(Card *servant, short zoneid)
+void Duel::summonSpecialMinion(Card *minion)
 {
     this->setTargetList(nullptr,0);
-    short id = servant->getCardId();
+    short id = minion->getCardId();
     //two requirements tree
     if (id==8)
     {
-        this->generateServantMaterialList(servant,1);
+        this->generateSpecialMinionMaterialList(minion,1);
 
         short n_targets1 = this->getTargetList().getTargetsNumber();
         Card** temp_targets = this->getTargetList().getTargetList();
@@ -144,7 +144,7 @@ void Duel::summonServant(Card *servant, short zoneid)
         {
             targets1[i] = temp_targets[i];
         } delete []temp_targets;
-        this->generateServantMaterialList(servant,2);
+        this->generateSpecialMinionMaterialList(minion,2);
         short n_targets2 = this->getTargetList().getTargetsNumber();
         temp_targets = this->getTargetList().getTargetList();
         Card** targets2 = new Card* [n_targets2];
@@ -221,7 +221,7 @@ void Duel::summonServant(Card *servant, short zoneid)
         this->removeFromField(targetCard2);
         this->toGraveyard(targetCard);
         this->toGraveyard(targetCard2);
-        this->summonMinion(servant,this->getEmptyMinionZone(servant->getOriginalOwner()));
+        this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
     }
 }
 void Duel::activateSpell(Card *spell, short zoneid)
@@ -365,12 +365,12 @@ void Duel::setTargetList(Card** targets, short n_targets)
     this->targetList.setTargetNumber(n_targets);
 
 }
-void Duel::generateServantMaterialList(Card* servant, short n)
+void Duel::generateSpecialMinionMaterialList(Card* minion, short n)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
-    short servantId = servant->getCardId();
-    Player* owner = servant->getOriginalOwner();
+    short servantId = minion->getCardId();
+    Player* owner = minion->getOriginalOwner();
     //Brass Beetle
     if (servantId==8)
     {

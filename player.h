@@ -11,20 +11,19 @@ private:
     char name;
     EffectHandler effectHandler; //przeniesc do player
     Player *opponent;
-    Zone* spellField;
     Zone* minionField;
     short n_hand;
     short n_deck;
     short n_originalDeck;
-    short n_originalServantDeck;
-    short n_servant;
+    short n_originalSpecialDeck;
+    short n_special;
     short n_graveyard;
     Card** hand;
     Card** deck;
-    Card** servantDeck;
+    Card** specialDeck;
     Card** graveyard;
     Card* originalDeck;
-    Card* originalServantDeck;
+    Card* originalSpecialDeck;
 
 public:
     Player();
@@ -34,7 +33,6 @@ public:
     int getHp() {return this->hp;}
     void setName(char name) {this->name = name;}
     char getName() {return this->name;}
-    Zone* getSpellField() {return spellField;}
     Zone* getMinionField() {return minionField;}
     Player* getOpponent() {return opponent;}
     void setOpponent(Player *player){this->opponent = player;}
@@ -52,9 +50,9 @@ public:
     void setGraveyard(Card** graveyard, short size);
     void setOriginalDeck(Card* deck, short size);
     Card* getOriginalDeck() {return this->originalDeck;}
-    void setServantDeck(Card** deck, short size);
-    void setOriginalServantDeck(Card* deck, short size);
-    Card** getServantDeck() {return this->servantDeck;}
+    void setSpecialDeck(Card** deck, short size);
+    void setOriginalSpecialDeck(Card* deck, short size);
+    Card** getSpecialDeck() {return this->specialDeck;}
     void setDeckOwnership();
 };
 

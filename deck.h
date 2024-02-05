@@ -6,15 +6,15 @@ class Deck
 {
 private:
     Card* mainDeck;
-    Card* servantDeck;
+    Card* specialDeck;
     short n_cards;
-    short n_servants;
+    short n_special;
 public:
     Deck();
     Card* getDeck() {return this->mainDeck;}
     short getDeckSize() {return this->n_cards;}
-    Card* getServantDeck() {return this->servantDeck;}
-    short getServantDeckSize() {return this->n_servants;}
+    Card* getSpecialDeck() {return this->specialDeck;}
+    short getSpecialDeckSize() {return this->n_special;}
 };
 
 #endif // DECK_H
