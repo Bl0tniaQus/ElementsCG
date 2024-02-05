@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include "deck.h"
 #include "zone.h"
+#include "bot.h"
 #include "effecthandler.h"
 class Player
 {
@@ -18,6 +19,7 @@ private:
     short n_originalSpecialDeck;
     short n_special;
     short n_graveyard;
+    Bot* bot;
     Card** hand;
     Card** deck;
     Card** specialDeck;
@@ -53,7 +55,11 @@ public:
     void setSpecialDeck(Card** deck, short size);
     void setOriginalSpecialDeck(Card* deck, short size);
     Card** getSpecialDeck() {return this->specialDeck;}
+    short getSpecialDeckSize() {return this->n_special;}
+    void setSpecialDeckSize(short n) {this->n_special=n;}
     void setDeckOwnership();
+    void setBot();
+    bool checkBot() {return this->bot!=nullptr;}
 };
 
 #endif // PLAYER_H

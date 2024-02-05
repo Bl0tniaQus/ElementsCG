@@ -1,6 +1,7 @@
 #ifndef DUEL_H
 #define DUEL_H
 #include "player.h"
+#include "deck.h"
 #include "targetlist.h"
 class Duel
 {
@@ -42,7 +43,7 @@ public:
     TargetList getTargetList() {return this->targetList;}
     bool checkEffectRequirements(Card* card);
     void summonSpecialMinion(Card *minion);
-
+    void DuelControl(Deck *deck0, Deck* deck1);
     static Card* selectFieldTarget();
 };
 

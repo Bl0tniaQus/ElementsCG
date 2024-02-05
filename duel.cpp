@@ -11,18 +11,52 @@ Duel::Duel()
 }
 void Duel::drawField(char p)
 {
-    std::cout<<this->getPlayer(!p)->getHp()<<"/"<<getPlayer(!p)->getMana()<<std::endl;
+    Player* player = this->getPlayer(p);
+    Player* opponent = this->getPlayer(!p);
+    std::cout<<"Cards in opponent's hand: "<<opponent->getHandSize()<<std::endl;
+    std::cout<<"Opponent's field: ";
     for (int i=4;i>=0;i--)
     {
-        std::cout<<this->getPlayer(!p)->getMinionField()[i].getUsed()<<" ";
+        if (opponent->getMinionField()[i].getCard()!=nullptr)
+        std::cout<<opponent->getMinionField()[i].getCard()->getName()<<"; ";
+    }std::cout<<std::endl;
+    std::cout<<"Opponent's graveyard: ";
+    for (int i=0;i<opponent->getGraveyardSize();i++)
+    {
+        std::cout<<opponent->getGraveyard()[i]->getName()<<"; ";
+    }std::cout<<std::endl<<std::endl;
+    std::cout<<opponent->getHp()<<"/"<<opponent->getMana()<<std::endl;
+    for (int i=4;i>=0;i--)
+    {
+        std::cout<<opponent->getMinionField()[i].getUsed()<<" ";
     }
     std::cout<<std::endl<<"---------"<<std::endl;
     for (int i=0;i<5;i++)
     {
-        std::cout<<this->getPlayer(p)->getMinionField()[i].getUsed()<<" ";
+        std::cout<<player->getMinionField()[i].getUsed()<<" ";
     }
-    std::cout<<std::endl;
-    std::cout<<this->getPlayer(p)->getHp()<<"/"<<getPlayer(p)->getMana()<<std::endl;
+    std::cout<<std::endl<<std::endl;
+    std::cout<<player->getHp()<<"/"<<player->getMana()<<std::endl;
+    std::cout<<"Hand: ";
+    for (int i=0;i<player->getHandSize();i++)
+    {
+        std::cout<<player->getHand()[i]->getName()<<"; ";
+    }std::cout<<std::endl<<"Field: ";
+    for (int i=0;i<5;i++)
+    {
+        if (player->getMinionField()[i].getCard()!=nullptr)
+        std::cout<<player->getMinionField()[i].getCard()->getName()<<"; ";
+    }std::cout<<std::endl;
+    std::cout<<"Graveyard: ";
+    for (int i=0;i<player->getGraveyardSize();i++)
+    {
+        std::cout<<player->getGraveyard()[i]->getName()<<"; ";
+    }std::cout<<std::endl;
+    std::cout<<"Sp. deck: ";
+    for (int i=0;i<player->getSpecialDeckSize();i++)
+    {
+        std::cout<<player->getSpecialDeck()[i]->getName()<<"; ";
+    }std::cout<<std::endl<<std::endl;
 }
 void Duel::combat(Card* attacker, Card* defender)
 {
@@ -85,23 +119,24 @@ void Duel::toGraveyard(Card* card)
 }
 void Duel::toSpecialDeck(Card* card)
 {
-    card->setPlace(3);
+    card->setPlace(4);
+    if (card->getZone()!=nullptr) {this->removeFromField(card);}
     Player* owner = card->getOriginalOwner();
     card->setOwner(owner);
-    short n_graveyard = owner->getGraveyardSize();
-    Card** oldGraveyard = owner->getGraveyard();
-    Card** newGraveyard = new Card*[n_graveyard+1];
+    short n_special = owner->getSpecialDeckSize();
+    Card** oldSpecial = owner->getSpecialDeck();
+    Card** newSpecial = new Card*[n_special+1];
 
 
-    if (n_graveyard==0) {newGraveyard[0] = card;}
+    if (n_special==0) {newSpecial[0] = card;}
     else{
-    for (int i=0;i<n_graveyard;i++)
+    for (int i=0;i<n_special;i++)
     {
-        newGraveyard[i] = oldGraveyard[i];
+        newSpecial[i] = oldSpecial[i];
     }
-    newGraveyard[n_graveyard] = card;
+    newSpecial[n_special] = card;
     }
-    owner->setGraveyard(newGraveyard, n_graveyard+1);
+    owner->setSpecialDeck(newSpecial, n_special+1);
 }
 void Duel::removeFromField(Card* card)
 {
@@ -233,23 +268,27 @@ void Duel::activateSpell(Card *spell, short zoneid)
 }
 void Duel::toHand(Card* card)
 {
-    card->setPlace(1);
-    this->removeFromField(card);
-    short n_hand = card->getOriginalOwner()->getHandSize();
-    Card** oldHand = card->getOriginalOwner()->getHand();
-    Card** newHand = new Card*[n_hand+1];
-    if (n_hand==1) {newHand[0] = card;}
+    if (card->getCardType()==2) {this->toSpecialDeck(card);}
     else{
-    for (int i=0;i<n_hand;i++)
-    {
-        newHand[i] = oldHand[i];
+        card->setPlace(1);
+        if (card->getZone()!=nullptr) {this->removeFromField(card);}
+        short n_hand = card->getOriginalOwner()->getHandSize();
+        Card** oldHand = card->getOriginalOwner()->getHand();
+        Card** newHand = new Card*[n_hand+1];
+        if (n_hand==1) {newHand[0] = card;}
+        else{
+        for (int i=0;i<n_hand;i++)
+        {
+            newHand[i] = oldHand[i];
+        }
+        newHand[n_hand] = card;
+        }
+        Player* owner = card->getOriginalOwner();
+        card->setOwner(owner);
+        owner->setHand(newHand, n_hand+1);
+        owner->setHandSize(n_hand+1);
     }
-    newHand[n_hand] = card;
-    }
-    Player* owner = card->getOriginalOwner();
-    card->setOwner(owner);
-    owner->setHand(newHand, n_hand+1);
-    owner->setHandSize(n_hand+1);
+
 }
 void Duel::drawCard(Player* player)
 {
@@ -553,6 +592,7 @@ void Duel::playFromHand(Card* card)
         {
             zoneid = this->getEmptyMinionZone(card->getOwner());
             this->activateSpell(card,zoneid);
+            this->toGraveyard(card);
         }
 
         short n_hand = card->getOriginalOwner()->getHandSize();
@@ -607,4 +647,54 @@ void Duel::passTurn()
     this->getPlayer(!this->turnPlayer)->changeMana(2);
     this->turnPlayer = !this->turnPlayer;
     this->drawCard(this->getPlayer(this->turnPlayer));
+}
+void Duel::DuelControl(Deck *deck0, Deck* deck1)
+{
+    short choice;
+    this->turnPlayer=0; //wylosuj kto 1
+    this->turnCount=1;
+    this->getPlayer(0)->setOriginalDeck(deck0->getDeck(),deck0->getDeckSize());
+    this->getPlayer(0)->setOriginalSpecialDeck(deck0->getSpecialDeck(),deck0->getSpecialDeckSize());
+    this->getPlayer(0)->setDeckOwnership();
+    this->getPlayer(1)->setOriginalDeck(deck1->getDeck(),deck1->getDeckSize());
+    this->getPlayer(1)->setOriginalSpecialDeck(deck1->getSpecialDeck(),deck1->getSpecialDeckSize());
+    this->getPlayer(1)->setDeckOwnership();
+    for (int i=0;i<5;i++)
+    {
+        this->drawCard(&this->players[0]);
+        this->drawCard(&this->players[1]);
+    }
+
+    while (true)
+    {
+        Player* turnPlayer = this->getPlayer(this->turnPlayer);
+        if (this->turnCount!=1) {this->drawCard(turnPlayer);}
+
+        if (turnPlayer->checkBot()) //AI
+        {}
+        else //player
+        {
+           this->drawField(this->turnPlayer);
+
+            std::cout<<"0 - play from hand, 1 - play from sp. deck, 2 - battle, 3 - pass turn"<<std::endl;
+            std::cout<<"Action: ";
+            std::cin>>choice;
+            if ((choice>=0)&&(choice<=3))
+            {
+                if (choice==0)
+                {
+                    short target;
+                    for (int i=0;i<turnPlayer->getHandSize();i++)
+                    {
+                        std::cout<<i<<" - "<<turnPlayer->getHand()[i]->getName()<<std::endl;
+                    }
+                    std::cout<<"Choice: ";
+                    std::cin>>target;
+                    if((target>=0)&&(target<=turnPlayer->getHandSize()))
+                    {this->playFromHand(turnPlayer->getHand()[target]);}
+
+                }
+            }
+        }
+    }
 }

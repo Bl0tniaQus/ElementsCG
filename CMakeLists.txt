@@ -39,6 +39,8 @@ set(PROJECT_SOURCES
         deck.cpp
         targetlist.h
         targetlist.cpp
+        bot.h
+        bot.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

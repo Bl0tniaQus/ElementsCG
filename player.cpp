@@ -11,6 +11,7 @@ Player::Player()
     this->n_originalSpecialDeck=0;
     this->n_special=0;
     this->n_graveyard=0;
+    this->bot = nullptr;
     this->hand = new Card* [0];
     this->deck = new Card* [0];
     this->specialDeck = new Card* [0];
@@ -89,5 +90,9 @@ void Player::setSpecialDeck(Card** deck, short size)
     delete[] this->specialDeck;
     this->specialDeck = deck;
     this->n_special = size;
+}
+void Player::setBot()
+{
+    this->bot = new Bot [1];
 }
 
