@@ -178,7 +178,7 @@ void Duel::summonSpecialMinion(Card *minion)
         for (int i=0;i<n_targets1;i++)
         {
             targets1[i] = temp_targets[i];
-        } delete []temp_targets;
+        } ;
         this->generateSpecialMinionMaterialList(minion,2);
         short n_targets2 = this->getTargetList().getTargetsNumber();
         temp_targets = this->getTargetList().getTargetList();
@@ -244,13 +244,13 @@ void Duel::summonSpecialMinion(Card *minion)
         }
         else
         {
-            for (int i=0;i<n_targets2-1;i++)
+            for (int i=0;i<n_targets2;i++)
             {
-                std::cout<<i<<" - "<<new_targets2[i]->getName()<<std::endl;
+                std::cout<<i<<" - "<<targets2[i]->getName()<<std::endl;
             }
             std::cout<<"Second minion: ";
             std::cin>>target;
-            targetCard2 = new_targets2[target];
+            targetCard2 = targets2[target];
         }
         this->removeFromField(targetCard);
         this->removeFromField(targetCard2);
@@ -365,6 +365,7 @@ if (id==4) //Whirlwind
 }
 void Duel::onSummon(Card* card, short zoneid)
 {
+
     short id = card->getCardId();
     //summon minion from hand
     if (id==1)
@@ -387,6 +388,7 @@ void Duel::onSummon(Card* card, short zoneid)
 void Duel::onDestroy(Card* card){}
 void Duel::onTurnEnd(Card* card)
 {
+
     short id = card->getCardId();
     if (id==5)
     {
@@ -684,15 +686,29 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
                 if (choice==0)
                 {
                     short target;
+                    std::cout<<"0 - cancel"<<std::endl;
                     for (int i=0;i<turnPlayer->getHandSize();i++)
                     {
-                        std::cout<<i<<" - "<<turnPlayer->getHand()[i]->getName()<<std::endl;
+                        std::cout<<i+1<<" - "<<turnPlayer->getHand()[i]->getName()<<std::endl;
                     }
                     std::cout<<"Choice: ";
                     std::cin>>target;
-                    if((target>=0)&&(target<=turnPlayer->getHandSize()))
-                    {this->playFromHand(turnPlayer->getHand()[target]);}
+                    if((target>0)&&(target<=turnPlayer->getHandSize()+1))
+                    {this->playFromHand(turnPlayer->getHand()[target-1]);}
 
+                }
+                if (choice==1)
+                {
+                    short target;
+                    std::cout<<"0 - cancel"<<std::endl;
+                    for (int i=0;i<turnPlayer->getSpecialDeckSize();i++)
+                    {
+                        std::cout<<i+1<<" - "<<turnPlayer->getSpecialDeck()[i]->getName()<<std::endl;
+                    }
+                    std::cout<<"Choice: ";
+                    std::cin>>target;
+                    if((target>0)&&(target<=turnPlayer->getSpecialDeckSize()+1))
+                    {this->summonSpecialMinion(turnPlayer->getSpecialDeck()[target-1]);}
                 }
             }
         }
