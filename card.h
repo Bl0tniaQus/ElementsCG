@@ -20,6 +20,7 @@ char* name;
 short level; short originalLevel;
 short attack; short originalAttack;
 short defence; short originalDefence;
+short attacks;
 public:
     Card();
     Card(int entryId);
@@ -53,5 +54,7 @@ public:
     void setLevel(short lvl) {this->level = lvl;}
     short getOriginalLevel() {return this->originalLevel;}
     void setOriginalLevel(short lvl) {this->originalLevel = lvl;}
+    void setAttacks(short atk) {this->attacks=atk;}
+    short getAttacks() {return attacks;}
 };
 #endif // CARD_H

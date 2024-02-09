@@ -11,6 +11,7 @@ if (entry!=nullptr)
 {
     this->setCost(entry->getCost());
     this->setCardType(entry->getType());
+    this->attacks=1;
     if (this->cardType==2) {this->setPlace(4);}
     else {this->setPlace(0);}
     this->setAttack(entry->getAttack());

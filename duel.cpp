@@ -80,12 +80,14 @@ void Duel::combat(Card* attacker, Card* defender)
 
     if (atk>def){this->players[this->turnPlayer].getOpponent()->changeHp(-damage);}
     if (def>atk){this->players[this->turnPlayer].changeHp(-damage);}
+    attacker->setAttacks(attacker->getAttacks()-1);
     checkWinner();
 }
 void Duel::directAttack(Card* attacker)
 {
     short damage = attacker->getAttack();
     this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
+    attacker->setAttacks(attacker->getAttacks()-1);
     checkWinner();
 }
 void Duel::checkWinner()
@@ -98,6 +100,7 @@ void Duel::checkWinner()
 }
 void Duel::destruction(Card* card)
 {
+    this->removeFromField(card);
     this->toGraveyard(card);
     this->onDestroy(card);
 }
@@ -663,15 +666,25 @@ void Duel::passTurn()
 {
     generateTargetList(nullptr);
     Card** eotTargets = this->getTargetList().getTargetList();
+    Player* turnPlayer = this->getPlayer(this->getTurnPlayer());
+    Player* opponent = this->getPlayer(!this->getTurnPlayer());
     short n_targets = this->getTargetList().getTargetsNumber();
     for (int i=0;i<n_targets;i++)
     {
         this->onTurnEnd(eotTargets[i]);
     }
-    this->getPlayer(this->turnPlayer)->changeMana(2);
-    this->getPlayer(!this->turnPlayer)->changeMana(2);
+    Card* minion;
+    for (int i=0;i<5;i++)
+    {
+        minion = turnPlayer->getMinionField()[i].getCard();
+        if (minion!=nullptr) {minion->setAttacks(1);}
+        minion = opponent->getMinionField()[i].getCard();
+        if (minion!=nullptr) {minion->setAttacks(1);}
+
+    }
+    opponent->changeMana(2);
     this->turnPlayer = !this->turnPlayer;
-    this->drawCard(this->getPlayer(this->turnPlayer));
+    this->drawCard(opponent);
 }
 void Duel::DuelControl(Deck *deck0, Deck* deck1)
 {
@@ -735,6 +748,77 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
                     std::cin>>target;
                     if((target>0)&&(target<=turnPlayer->getSpecialDeckSize()+1))
                     {this->summonSpecialMinion(turnPlayer->getSpecialDeck()[target-1]);}
+                }
+                if (choice==2)
+                {
+                    bool Battle = true;
+                    while (Battle)
+                    {
+                        short attacker;
+
+                        Card* minion;
+                        std::cout<<"0 - pass turn"<<std::endl;
+                        for (int i=0;i<5;i++)
+                        {
+                            minion = turnPlayer->getMinionField()[i].getCard();
+                            if (minion!=nullptr)
+                            {
+                                if (minion->getAttacks()>0)
+                                {
+                                    std::cout<<i+1<<" - "<<minion->getName()<<" ("<<minion->getAttack()<<")"<<std::endl;
+                                }
+                            }
+
+                        }
+                        std::cout<<"Choice: ";
+                        std::cin>>attacker;
+                        if (attacker==0){ Battle=false; break;}
+                        if((attacker>0)&&(attacker<6))
+                        {
+                            minion = turnPlayer->getMinionField()[attacker-1].getCard();
+                            if (minion!=nullptr)
+                            {
+                                if (minion->getAttacks()>0)
+                                {
+                                    Card* attackerMinion = minion;
+                                    short defender;
+                                    bool targets = false;
+                                    Player* opponent = this->getPlayer(!getTurnPlayer());
+                                    std::cout<<"0 - cancel"<<std::endl;
+                                    for (int i=0;i<5;i++)
+                                    {
+                                        minion = opponent->getMinionField()[i].getCard();
+                                        if (minion!=nullptr)
+                                        {
+                                                std::cout<<i+1<<" - "<<minion->getName()<<" ("<<minion->getDefence()<<")"<<std::endl;
+                                                targets=true;
+                                        }
+                                    }
+                                    if (targets==false)
+                                    {
+                                        std::cout<<"1 - direct attack"<<std::endl;
+                                    }
+                                    std::cout<<"Choice: ";
+                                    std::cin>>defender;
+                                    if (targets==false)
+                                    {
+                                        if (defender==1) {this->directAttack(attackerMinion);continue;}
+                                    }
+                                    if((defender>0)&&(defender<6))
+                                    {
+                                        minion = opponent->getMinionField()[defender-1].getCard();
+                                        if (minion!=nullptr)
+                                        {
+                                            this->combat(attackerMinion,minion);
+                                        }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                    if (!Battle) {passTurn();}
                 }
                 if (choice==3)
                 {
