@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     //w.show();
     //return a.exec();
     Duel duel;
-    Deck deck;
-    Deck deck2;
+    Deck deck(1);
+    Deck deck2(2);
     /*
     Player* player1 = duel.getPlayer(0);
     Player* player2 = duel.getPlayer(1);

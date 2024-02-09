@@ -13,7 +13,10 @@ void Duel::drawField(char p)
 {
     Player* player = this->getPlayer(p);
     Player* opponent = this->getPlayer(!p);
+    std::cout<<"TURN: "<<this->getTurnCount()<<std::endl<<std::endl;
     std::cout<<"Cards in opponent's hand: "<<opponent->getHandSize()<<std::endl;
+    std::cout<<"Cards in opponent's deck: "<<opponent->getDeckSize()<<std::endl;
+    std::cout<<"Cards in opponent's sp. deck: "<<opponent->getSpecialDeckSize()<<std::endl;
     std::cout<<"Opponent's field: ";
     for (int i=4;i>=0;i--)
     {
@@ -37,6 +40,7 @@ void Duel::drawField(char p)
     }
     std::cout<<std::endl<<std::endl;
     std::cout<<player->getHp()<<"/"<<player->getMana()<<std::endl;
+    std::cout<<"Cards in deck: "<<player->getDeckSize()<<std::endl;
     std::cout<<"Hand: ";
     for (int i=0;i<player->getHandSize();i++)
     {
@@ -257,6 +261,18 @@ void Duel::summonSpecialMinion(Card *minion)
         this->toGraveyard(targetCard);
         this->toGraveyard(targetCard2);
         this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
+        short n_special = minion->getOriginalOwner()->getSpecialDeckSize();
+        Card** oldSpecial = minion->getOriginalOwner()->getSpecialDeck();
+        Card** newSpecial = new Card*[n_special-1];
+        short bias = 0;
+        for (int i=0;i<n_special;i++)
+        {
+            if (oldSpecial[i]==minion) {bias = 1; continue;}
+            newSpecial[i-bias] = oldSpecial[i];
+        }
+
+        minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
+        minion->getOriginalOwner()->setSpecialDeckSize(n_special-1);
     }
 }
 void Duel::activateSpell(Card *spell, short zoneid)
@@ -577,6 +593,7 @@ void Duel::playFromHand(Card* card)
     char type = card->getCardType();
     short cost = card->getCost();
     short zoneid;
+    short success =0;
 
     if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
     {
@@ -588,6 +605,7 @@ void Duel::playFromHand(Card* card)
            {
 
                this->summonMinion(card, zoneid);
+               success=1;
            }
         }
         else if (type==0)
@@ -595,22 +613,27 @@ void Duel::playFromHand(Card* card)
             zoneid = this->getEmptyMinionZone(card->getOwner());
             this->activateSpell(card,zoneid);
             this->toGraveyard(card);
+            success=1;
         }
-
-        short n_hand = card->getOriginalOwner()->getHandSize();
-        Card** oldHand = card->getOriginalOwner()->getHand();
-        Card** newHand = new Card*[n_hand-1];
-        short bias = 0;
-        for (int i=0;i<n_hand;i++)
+        if (success==1)
         {
-            if (oldHand[i]==card) {bias = 1; continue;}
-            newHand[i-bias] = oldHand[i];
+            short n_hand = card->getOriginalOwner()->getHandSize();
+            Card** oldHand = card->getOriginalOwner()->getHand();
+            Card** newHand = new Card*[n_hand-1];
+            short bias = 0;
+            for (int i=0;i<n_hand;i++)
+            {
+                if (oldHand[i]==card) {bias = 1; continue;}
+                newHand[i-bias] = oldHand[i];
+            }
+
+            card->getOriginalOwner()->setHand(newHand, n_hand-1);
+            card->getOriginalOwner()->setHandSize(n_hand-1);
+            if (type==1) {this->onSummon(card, zoneid);}
+            card->getOwner()->changeMana(-cost);
+
         }
 
-        card->getOriginalOwner()->setHand(newHand, n_hand-1);//tu problem
-        card->getOriginalOwner()->setHandSize(n_hand-1);
-        if (type==1) {this->onSummon(card, zoneid);}
-        card->getOwner()->changeMana(-cost);
     }
 
 }
@@ -673,7 +696,10 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         if (this->turnCount!=1) {this->drawCard(turnPlayer);}
 
         if (turnPlayer->checkBot()) //AI
-        {}
+        {
+            this->playFromHand(turnPlayer->getHand()[0]);
+            this->passTurn();
+        }
         else //player
         {
            this->drawField(this->turnPlayer);
@@ -689,7 +715,7 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
                     std::cout<<"0 - cancel"<<std::endl;
                     for (int i=0;i<turnPlayer->getHandSize();i++)
                     {
-                        std::cout<<i+1<<" - "<<turnPlayer->getHand()[i]->getName()<<std::endl;
+                        std::cout<<i+1<<" - "<<turnPlayer->getHand()[i]->getName()<<" ("<<turnPlayer->getHand()[i]->getCost()<<")"<<std::endl;
                     }
                     std::cout<<"Choice: ";
                     std::cin>>target;
@@ -709,6 +735,10 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
                     std::cin>>target;
                     if((target>0)&&(target<=turnPlayer->getSpecialDeckSize()+1))
                     {this->summonSpecialMinion(turnPlayer->getSpecialDeck()[target-1]);}
+                }
+                if (choice==3)
+                {
+                    this->passTurn();
                 }
             }
         }

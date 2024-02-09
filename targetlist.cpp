@@ -12,6 +12,8 @@ this->n_targets=n_targets;
 }
 void TargetList::setTargetList(Card** targets)
 {
-    if (this->targetList!=nullptr) {delete [] this->targetList;}
+
+    //delete [] this->targetList;
+    this->targetList=nullptr;
     this->targetList = targets;
 }
