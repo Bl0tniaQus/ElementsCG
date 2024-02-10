@@ -683,6 +683,7 @@ void Duel::passTurn()
 
     }
     opponent->changeMana(2);
+    this->turnCount++;
     this->turnPlayer = !this->turnPlayer;
     this->drawCard(opponent);
 }
