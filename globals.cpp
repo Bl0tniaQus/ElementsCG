@@ -1,6 +1,5 @@
 #include "globals.h"
+#include "card.h"
 CardCatalog catalog;
-Card* selectFieldTarget()
-{
-    //return
-}
+int Card::COPYID = 0;
+

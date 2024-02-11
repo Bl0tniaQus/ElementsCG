@@ -41,6 +41,8 @@ set(PROJECT_SOURCES
         targetlist.cpp
         bot.h
         bot.cpp
+        gamestate.h
+        gamestate.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

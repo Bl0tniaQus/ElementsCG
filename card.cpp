@@ -9,6 +9,7 @@ Card::Card(int entryId)
 CatalogEntry* entry = catalog.getEntryByCardId(entryId);
 if (entry!=nullptr)
 {
+    this->copyId = ++Card::COPYID;
     this->setCost(entry->getCost());
     this->setCardType(entry->getType());
     this->attacks=1;

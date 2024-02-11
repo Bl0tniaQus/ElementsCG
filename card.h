@@ -7,13 +7,17 @@ class Player;
 
 class Card
 {
+protected:
+
 private:
+    static int COPYID;
 Zone* zone;
 Player* owner;
 Player* originalOwner;
 short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - special deck
 short cardType; //0 - spell, 1 - minion, 2 - special minion
 short cardId;
+int copyId;
 short cost;
 char* element; char* originalElement;
 char* name;
