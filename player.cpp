@@ -8,6 +8,7 @@ Player::Player()
     this->n_hand=0;
     this->n_deck = 0;
     this->n_originalDeck=0;
+    this->summonLimit=1;
     this->n_originalSpecialDeck=0;
     this->n_special=0;
     this->n_graveyard=0;

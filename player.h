@@ -19,6 +19,7 @@ private:
     short n_originalSpecialDeck;
     short n_special;
     short n_graveyard;
+    short summonLimit;
     Bot* bot;
     Card** hand;
     Card** deck;
@@ -59,6 +60,8 @@ public:
     void setSpecialDeckSize(short n) {this->n_special=n;}
     void setDeckOwnership();
     void setBot();
+    void setSummonLimit(short limit) {this->summonLimit=limit;}
+    short getSummonLimit() {return this->summonLimit;}
     bool checkBot() {return this->bot!=nullptr;}
 };
 

@@ -600,7 +600,7 @@ void Duel::playFromHand(Card* card)
 
     if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
     {
-        if (type==1)
+        if ((type==1)&&(card->getOwner()->getSummonLimit()>0))
         {
             zoneid = this->getEmptyMinionZone(card->getOwner());
 
@@ -632,7 +632,7 @@ void Duel::playFromHand(Card* card)
 
             card->getOriginalOwner()->setHand(newHand, n_hand-1);
             card->getOriginalOwner()->setHandSize(n_hand-1);
-            if (type==1) {this->onSummon(card, zoneid);}
+            if (type==1) {card->getOriginalOwner()->setSummonLimit(card->getOriginalOwner()->getSummonLimit()-1);this->onSummon(card, zoneid);}
             card->getOwner()->changeMana(-cost);
 
         }
@@ -684,8 +684,8 @@ void Duel::passTurn()
     }
     opponent->changeMana(2);
     this->turnCount++;
+    turnPlayer->setSummonLimit(1);
     this->turnPlayer = !this->turnPlayer;
-    this->drawCard(opponent);
 }
 void Duel::DuelControl(Deck *deck0, Deck* deck1)
 {
