@@ -3,14 +3,12 @@
 #include "deck.h"
 #include "zone.h"
 #include "bot.h"
-#include "effecthandler.h"
 class Player
 {
 private:
     short hp;
     short mana;
     char name;
-    EffectHandler effectHandler; //przeniesc do player
     Player *opponent;
     Zone* minionField;
     short n_hand;
@@ -33,7 +31,9 @@ public:
     void changeHp(short val);
     void changeMana(short val);
     int getMana() {return this->mana;}
+    void setMana(short mana) {this->mana = mana;}
     int getHp() {return this->hp;}
+    void setHp(short hp) {this->hp = hp;}
     void setName(char name) {this->name = name;}
     char getName() {return this->name;}
     Zone* getMinionField() {return minionField;}
@@ -55,6 +55,11 @@ public:
     Card* getOriginalDeck() {return this->originalDeck;}
     void setSpecialDeck(Card** deck, short size);
     void setOriginalSpecialDeck(Card* deck, short size);
+    Card* getOriginalSpecialDeck() {return this->originalSpecialDeck;}
+    void setOriginalSpecialDeckSize(short size) {this->n_originalSpecialDeck=size;}
+    short getOriginalSpecialDeckSize() {return this->n_originalSpecialDeck;}
+    void setOriginalDeckSize(short size) {this->n_originalDeck=size;}
+    short getOriginalDeckSize() {return this->n_originalDeck;}
     Card** getSpecialDeck() {return this->specialDeck;}
     short getSpecialDeckSize() {return this->n_special;}
     void setSpecialDeckSize(short n) {this->n_special=n;}

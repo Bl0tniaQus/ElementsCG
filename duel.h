@@ -13,7 +13,9 @@ private:
 public:
     Duel();
     short getTurnCount() {return this->turnCount;}
+    void setTurnCount(short turnCount) {this->turnCount=turnCount;}
     char getTurnPlayer() {return this->turnPlayer;}
+    void setTurnPlayer(char turnPlayer) {this->turnPlayer=turnPlayer;}
     Player* getPlayer(char p) {return &this->players[p];}
     void passTurn();
     void drawField(char p);

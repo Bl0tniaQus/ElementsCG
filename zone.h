@@ -6,13 +6,14 @@ class Card;
 class Zone
 {
 private:
-    int id;
+    short id;
     char zoneType; //0 - spell, 1 - minion
     Card* card;
     bool used;
 public:
     Zone() {this->used=false; this->card=nullptr;};
-    int getId() {return id;};
+    short getId() {return id;};
+    void setId(short id) {this->id = id;}
     void setZoneType(int type) {this->zoneType = type;}
     void bindCard(Card* card);
     void destroyCard();

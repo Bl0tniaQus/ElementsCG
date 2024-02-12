@@ -19,6 +19,10 @@ Player::Player()
     this->originalDeck = new Card [0];
     this->originalSpecialDeck = new Card [0];
     this->minionField = new Zone [5];
+    for (int i=0;i<5;i++)
+    {
+        this->minionField[i].setId(i);
+    }
     this->graveyard = new Card* [0];
 }
 void Player::changeHp(short val)

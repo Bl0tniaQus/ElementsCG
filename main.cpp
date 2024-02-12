@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "zone.h"
-#include "spellzone.h"
-#include "minionzone.h"
 #include "player.h"
 #include "card.h"
 #include "duel.h"

@@ -29,10 +29,6 @@ set(PROJECT_SOURCES
         cardcatalog.cpp
         catalogentry.h
         catalogentry.cpp
-        effecthandler.h
-        effecthandler.cpp
-        lingeringeffect.h
-        lingeringeffect.cpp
         globals.h
         globals.cpp
         deck.h
