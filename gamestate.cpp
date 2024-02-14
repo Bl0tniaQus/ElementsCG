@@ -23,6 +23,11 @@ Gamestate::Gamestate(Duel* duel)
         for (int i=0;i<handSize;i++)
         {cardsInHand[i] = hand[i]->getCopyId();}
 
+        short cardsOnField = 0;
+        Zone *field = player->getMinionField();
+        //zrobić!!!
+
+
         short graveyardSize = player->getGraveyardSize();
         this->players[i].setGraveyardSize(graveyardSize);
         int* cardsInGraveyard = new int [graveyardSize];
