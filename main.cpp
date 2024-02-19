@@ -4,6 +4,7 @@
 #include "card.h"
 #include "duel.h"
 #include "cardcatalog.h"
+#include "targetlist.h"
 #include <iostream>
 #include <QApplication>
 

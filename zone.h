@@ -1,6 +1,5 @@
 #ifndef ZONE_H
 #define ZONE_H
-
 class Card;
 
 class Zone

@@ -1,7 +1,6 @@
 #ifndef CATALOGENTRY_H
 #define CATALOGENTRY_H
-#include "cstring"
-
+#include <cstring>
 class CatalogEntry
 {
 private:

@@ -1,16 +1,14 @@
 #ifndef CARD_H
 #define CARD_H
-#include "cardcatalog.h"
 #include <cstring>
 class Zone;
 class Player;
-
 class Card
 {
 protected:
 
 private:
-    static int COPYID;
+static int COPYID;
 Zone* zone;
 Player* owner;
 Player* originalOwner;

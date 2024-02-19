@@ -1,8 +1,9 @@
+#pragma once
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "deck.h"
-#include "zone.h"
-#include "bot.h"
+class Zone;
+class Card;
+class Bot;
 class Player
 {
 private:
@@ -65,6 +66,7 @@ public:
     void setSpecialDeckSize(short n) {this->n_special=n;}
     void setDeckOwnership();
     void setBot();
+    Bot* getBot() {return this->bot;}
     void setSummonLimit(short limit) {this->summonLimit=limit;}
     short getSummonLimit() {return this->summonLimit;}
     bool checkBot() {return this->bot!=nullptr;}

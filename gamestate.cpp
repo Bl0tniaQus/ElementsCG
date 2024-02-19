@@ -1,5 +1,6 @@
 #include "gamestate.h"
-
+#include "zone.h"
+#include "card.h"
 Gamestate::Gamestate()
 {
 
@@ -24,9 +25,38 @@ Gamestate::Gamestate(Duel* duel)
         {cardsInHand[i] = hand[i]->getCopyId();}
 
         short cardsOnField = 0;
+        short* usedZones = new short[0];
+        int* fieldCards = new int[0];
         Zone *field = player->getMinionField();
-        //zrobić!!!
+        for (int i=0;i<5;i++)
+        {
+            if (field[i].getUsed())
+            {
+                cardsOnField++;
+                short *new_usedZones = new short[cardsOnField];
+                int *new_fieldCards = new int[cardsOnField];
+                if (cardsOnField>1)
+                {
+                    for (int j=0;j<cardsOnField-1;j++)
+                    {
+                        new_usedZones[j] = usedZones[j];
+                        new_fieldCards[j] = fieldCards[j];
+                    }
+                    new_usedZones[cardsOnField] = field->getId();
+                    new_fieldCards[cardsOnField] = field->getCard()->getCopyId();
+                }
+                else
+                {
+                    new_usedZones[0] = field->getId();
+                    new_fieldCards[0] = field->getCard()->getCopyId();
+                }
+                delete[] usedZones;
+                delete[] fieldCards;
+                fieldCards = new_fieldCards;
+                usedZones = new_usedZones;
 
+            }
+        }
 
         short graveyardSize = player->getGraveyardSize();
         this->players[i].setGraveyardSize(graveyardSize);
@@ -54,6 +84,13 @@ Gamestate::Gamestate(Duel* duel)
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
 
         this->players[i].setOriginalDeck(new Card [originalDeckSize],originalDeckSize);
+        Card* originalDeckCopy = this->players[i].getOriginalDeck();
+        for (int i=0;i<originalDeckSize;i++)
+        {
+            originalDeckCopy[i].copyProperties(&originalDeck[i]);
+        }
+
+
         this->players[i].setOriginalSpecialDeck(new Card [originalSpecialDeckSize],originalSpecialDeckSize);
 
     }

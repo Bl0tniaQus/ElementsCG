@@ -1,5 +1,7 @@
 #include "duel.h"
+#include "bot.h"
 #include "card.h"
+#include "zone.h"
 #include <iostream>
 Duel::Duel()
 {
@@ -711,6 +713,7 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
 
         if (turnPlayer->checkBot()) //AI
         {
+            turnPlayer->getBot()->generateGamestate(this);
             this->playFromHand(turnPlayer->getHand()[0]);
             this->passTurn();
         }

@@ -1,5 +1,7 @@
 #include "player.h"
 #include "card.h"
+#include "bot.h"
+#include "zone.h"
 #include <iostream>
 Player::Player()
 {

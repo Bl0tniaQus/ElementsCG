@@ -1,7 +1,6 @@
 #ifndef TARGETLIST_H
 #define TARGETLIST_H
-#include "card.h"
-
+class Card;
 class TargetList
 {
 private:
