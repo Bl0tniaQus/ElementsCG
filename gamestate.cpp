@@ -89,9 +89,26 @@ Gamestate::Gamestate(Duel* duel)
         {
             originalDeckCopy[i].copyProperties(&originalDeck[i]);
         }
-
-
         this->players[i].setOriginalSpecialDeck(new Card [originalSpecialDeckSize],originalSpecialDeckSize);
-
+        Card* originalSpecialDeckCopy = this->players[i].getOriginalSpecialDeck();
+        for (int i=0;i<originalSpecialDeckSize;i++)
+        {
+            originalSpecialDeckCopy[i].copyProperties(&originalSpecialDeck[i]);
+        }
+        Card** deckCopy = new Card* [deckSize];
+        for (int i=0;i<deckSize;i++)
+        {
+            int id = cardsInDeck[i];
+            for (int j=0;j<originalDeckSize;j++)
+            {
+                int originalId = originalDeckCopy[j].getCopyId();
+                if (id==originalId)
+                {
+                    deckCopy[i] = &originalDeckCopy[j]; break;
+                }
+            }
+        }
+        this->players[i].setDeck(deckCopy,deckSize);
+        //ownerzy kart do poprawy, potem zrobić kopie GY, handu, pola i sp decku i powinno być wszystko
     }
 }

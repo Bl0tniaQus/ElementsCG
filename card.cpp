@@ -17,6 +17,7 @@ if (entry!=nullptr)
     else {this->place = 0;}
     this->attack = entry->getAttack();
     this->defence = entry->getDefence();
+    this->level = entry->getLevel();
     this->setElement(entry->getElement());
     this->setName(entry->getName());
     this->cardId = entry->getId();
@@ -34,6 +35,7 @@ void Card::copyProperties(Card* card)
     this->place = card->place;
     this->attack = card->getAttack();
     this->defence = card->getDefence();
+    this->level = card->getLevel();
     this->setElement(card->getElement());
     this->setName(card->getName());
     this->cardId = card->getCardId();
