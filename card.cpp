@@ -42,7 +42,7 @@ void Card::copyProperties(Card* card)
     this->originalAttack = card->getOriginalAttack();
     this->originalDefence = card->getOriginalDefence();
     this->originalLevel = card->getOriginalLevel();
-    this->owner = card->getOwner();
-    this->originalOwner = card->getOriginalOwner();
+    //this->owner = card->getOwner();
+    //this->originalOwner = card->getOriginalOwner();
     //this->zone = card->getZone();
 }
