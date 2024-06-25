@@ -13,32 +13,32 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        zone.h
-        zone.cpp
-        player.h
-        player.cpp
-        card.h
-        card.cpp
-        duel.h
-        duel.cpp
-        cardcatalog.h
-        cardcatalog.cpp
-        catalogentry.h
-        catalogentry.cpp
-        globals.h
-        globals.cpp
-        deck.h
-        deck.cpp
-        targetlist.h
-        targetlist.cpp
-        bot.h
-        bot.cpp
-        gamestate.h
-        gamestate.cpp
+        src/main.cpp
+        src/mainwindow.cpp
+        src/mainwindow.ui
+        src/mainwindow.h
+        src/zone.h
+        src/zone.cpp
+        src/player.h
+        src/player.cpp
+        src/card.h
+        src/card.cpp
+        src/duel.h
+        src/duel.cpp
+        src/cardcatalog.h
+        src/cardcatalog.cpp
+        src/catalogentry.h
+        src/catalogentry.cpp
+        src/globals.h
+        src/globals.cpp
+        src/deck.h
+        src/deck.cpp
+        src/targetlist.h
+        src/targetlist.cpp
+        src/bot.h
+        src/bot.cpp
+        src/gamestate.h
+        src/gamestate.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
