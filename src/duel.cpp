@@ -391,13 +391,14 @@ void Duel::onSummon(Card* card, short zoneid)
     //summon minion from hand
     if (id==1)
     {
-        bool usable = this->checkEffectRequirements(card);
-        if (usable)
-        {
-            Card** targets = this->targetList.getTargetList();
-            Card* targetCard = targets[0];
-            this->summonFromHand(targetCard, this->getEmptyMinionZone(card->getOwner()));
-        }
+        card->getCardName()->onSummon(this, card);
+      //  bool usable = this->checkEffectRequirements(card);
+      //  if (usable)
+      //  {
+      //      Card** targets = this->targetList.getTargetList();
+      //      Card* targetCard = targets[0];
+      //      this->summonFromHand(targetCard, this->getEmptyMinionZone(card->getOwner()));
+      //  }
     }
     //Draw a card
     else if (id==7)
@@ -467,7 +468,7 @@ void Duel::generateTargetList(Card* effect)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
-    short effectId;
+    short effectId = -1;
 
     //list of end of turn effects
     if (effect == nullptr)

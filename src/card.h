@@ -1,6 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 #include <cstring>
+#include "cards/cardbase.h"
 class Zone;
 class Player;
 class Card
@@ -12,16 +13,13 @@ static int COPYID;
 Zone* zone;
 Player* owner;
 Player* originalOwner;
+CardBase* cardName; //name of the card in database
 short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - special deck
-short cardType; //0 - spell, 1 - minion, 2 - special minion
-short cardId;
 int copyId;
 short cost;
-char* element; char* originalElement;
-char* name;
-short level; short originalLevel;
-short attack; short originalAttack;
-short defence; short originalDefence;
+short level;
+short attack;
+short defence;
 short attacks;
 public:
     Card();
@@ -34,32 +32,26 @@ public:
     Player* getOriginalOwner() {return this->originalOwner;}
     short getCost() {return this->cost;}
     void setCost(short cost) {this->cost = cost;}
-    short getCardId() {return this->cardId;}
-    void setCardId(short id) {this->cardId = id;}
+    short getCardId() {return this->cardName->getCardId();}
     void setPlace(short place) {this->place = place;}
-    char getCardType() {return this->cardType;}
-    void setCardType(short type) {this->cardType = type;}
+    char getCardType() {return this->cardName->getCardType();}
     char getPlace() {return this->place;}
-    char* getElement() {return this->element;}
-    char* getName() {return this->name;}
-    void setElement(char const* element) {this->element = new char[strlen(element)+1];strcpy(this->element,element);}
-    void setName(char const* name) {this->name = new char[strlen(name)+1];strcpy(this->name,name);}
+    const char* getElement() {return this->cardName->getElement();}
+    const char* getName() {return this->cardName->getName();}
     short getAttack() {return this->attack;}
     void setAttack(short atk) {this->attack = atk;}
     short getDefence() {return this->defence;}
     void setDefence(short def) {this->defence = def;}
-    short getOriginalAttack() {return this->originalAttack;}
-    void setOriginalAttack(short atk) {this->originalAttack = atk;}
-    short getOriginalDefence() {return this->originalDefence;}
-    void setOriginalDefence(short def) {this->originalDefence = def;}
+    short getOriginalAttack() {return this->cardName->getAttack();}
+    short getOriginalDefence() {return this->cardName->getDefence();}
     short getLevel() {return this->level;}
     void setLevel(short lvl) {this->level = lvl;}
-    short getOriginalLevel() {return this->originalLevel;}
-    void setOriginalLevel(short lvl) {this->originalLevel = lvl;}
+    short getOriginalLevel() {return this->cardName->getLevel();}
     void setAttacks(short atk) {this->attacks=atk;}
     short getAttacks() {return this->attacks;}
     int getCopyId() {return this->copyId;}
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);
+    CardBase* getCardName() {return this->cardName;}
 };
 #endif // CARD_H

@@ -19,12 +19,10 @@ int main(int argc, char *argv[])
     Deck deck2(2);
     duel.getPlayer(1)->setBot();
     duel.DuelControl(&deck,&deck2);
-
-    //lingering and continuous effects, effect negation, stats and element manipulation, search and tutoring
-    //bot - create a sandbox-like copy of a gamestate, calculate position factor(s), then check all possible moves,
-    //calculate factor(s) for new gamestates and perform best action on real gamestate
-    //goal - make it possible to play full duel with AI in cli, then proceed with gui
-
-    //servants - remove from servant deck, bounce to servant deck,
+    //todo
+    //remake cards for new system
+    //cards with new mechanics(search, barrier, stat modify, destruction, multiple attacks, search, GY interaction)
+    //bot
+    //gui
 
 }

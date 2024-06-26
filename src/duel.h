@@ -8,15 +8,16 @@ class Duel
 private:
     Player players[2]; //0 - player 1, 1 - player2
     short turnCount;
-    char turnPlayer;
+    unsigned char turnPlayer;
     TargetList targetList;
 public:
     Duel();
     short getTurnCount() {return this->turnCount;}
     void setTurnCount(short turnCount) {this->turnCount=turnCount;}
-    char getTurnPlayer() {return this->turnPlayer;}
+    unsigned char getTurnPlayer() {return this->turnPlayer;}
     void setTurnPlayer(char turnPlayer) {this->turnPlayer=turnPlayer;}
-    Player* getPlayer(char p) {return &this->players[p];}
+    Player* getPlayer(unsigned char p) {return &this->players[p];}
+    TargetList* getTargetListDuel() {return &this->targetList;}
     void passTurn();
     void drawField(char p);
     void drawCard(Player* player);

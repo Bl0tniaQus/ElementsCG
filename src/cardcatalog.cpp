@@ -41,3 +41,14 @@ CatalogEntry* CardCatalog::getEntryByCardId(int id)
     }
     return nullptr;
 }
+CardBase* CardCatalog::getCardNameById(int id)
+{
+    CardBase* cardbase;
+    switch (id)
+    {
+        case 1: cardbase = new CopperWorm;break;
+        case 2: cardbase = new SilverWolf;break;
+    }
+    return cardbase;
+}
+

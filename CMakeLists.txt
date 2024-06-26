@@ -39,6 +39,12 @@ set(PROJECT_SOURCES
         src/bot.cpp
         src/gamestate.h
         src/gamestate.cpp
+        src/cards/cardbase.h
+        src/cards/cardbase.cpp
+        src/cards/copperworm.h
+        src/cards/copperworm.cpp
+        src/cards/silverwolf.h
+        src/cards/silverwolf.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
