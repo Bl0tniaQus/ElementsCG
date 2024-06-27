@@ -37,4 +37,4 @@ public:
 
 };
 
-#endif // CARDBASE_H
+#endif

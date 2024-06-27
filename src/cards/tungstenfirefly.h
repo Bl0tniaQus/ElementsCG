@@ -1,19 +1,19 @@
-#ifndef SILVERWOLF_H
-#define SILVERWOLF_H
+#ifndef TUNGSTENFIREFLY_H
+#define TUNGSTENFIREFLY_H
 #include "cardbase.h"
 #include <iostream>
-class SilverWolf : public CardBase
+class TungstenFirefly : public CardBase
 {
 public:
-    SilverWolf():CardBase(
-        2, //card id
-        4, //cost
+    TungstenFirefly():CardBase(
+        6, //card id
+        3, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         3, //level
-        5, //attack
-        3, //defence
+        2, //attack
+        2, //defence
         "Earth", //element
-        "Silver Wolf" //name
+        "Tungsten Firefly" //name
     ) {};
     void onSummon(Duel* duel, Card* card);
     void onSpell(Duel* duel, Card* card);

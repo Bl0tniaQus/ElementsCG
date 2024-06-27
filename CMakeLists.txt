@@ -15,36 +15,25 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 set(PROJECT_SOURCES
         src/main.cpp
         src/mainwindow.cpp
-        src/mainwindow.ui
-        src/mainwindow.h
-        src/zone.h
         src/zone.cpp
-        src/player.h
         src/player.cpp
-        src/card.h
         src/card.cpp
-        src/duel.h
         src/duel.cpp
-        src/cardcatalog.h
         src/cardcatalog.cpp
-        src/catalogentry.h
         src/catalogentry.cpp
-        src/globals.h
         src/globals.cpp
-        src/deck.h
         src/deck.cpp
-        src/targetlist.h
         src/targetlist.cpp
-        src/bot.h
         src/bot.cpp
-        src/gamestate.h
         src/gamestate.cpp
-        src/cards/cardbase.h
         src/cards/cardbase.cpp
-        src/cards/copperworm.h
         src/cards/copperworm.cpp
-        src/cards/silverwolf.h
         src/cards/silverwolf.cpp
+        src/cards/dragonoidwarrior.cpp
+        src/cards/whirlwind.cpp
+        src/cards/dragonoidsage.cpp
+        src/cards/tungstenfirefly.cpp
+        src/cards/dragonoidscout.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

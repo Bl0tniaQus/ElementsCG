@@ -23,4 +23,4 @@ public:
     void onTurnEnd(Duel* duel, Card* card);
 };
 
-#endif // COPPERWORM_H
+#endif

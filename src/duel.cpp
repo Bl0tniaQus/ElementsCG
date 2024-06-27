@@ -365,61 +365,24 @@ return false;
 }
 void Duel::onSpell(Card* card, short zoneid)
 {
-short id = card->getCardId();
-if (id==4) //Whirlwind
+if (card->getCardType()==0)
 {
-    bool usable = this->checkEffectRequirements(card);
-    if (usable)
-    {
-        Card** targets = this->targetList.getTargetList();
-        int target;
-        for (int i=0;i<this->targetList.getTargetsNumber();i++)
-        {
-            std::cout<<i<<" - "<<targets[i]->getName()<<std::endl;
-        }
-        std::cout<<"Target: ";
-        std::cin>>target;
-        Card* targetCard = targets[target];
-        this->toHand(targetCard);
-    }
+    card->getCardName()->onSpell(this, card);
 }
+
 }
 void Duel::onSummon(Card* card, short zoneid)
 {
-
-    short id = card->getCardId();
-    //summon minion from hand
-    if (id==1)
+    if (card->getCardType()!=0)
     {
         card->getCardName()->onSummon(this, card);
-      //  bool usable = this->checkEffectRequirements(card);
-      //  if (usable)
-      //  {
-      //      Card** targets = this->targetList.getTargetList();
-      //      Card* targetCard = targets[0];
-      //      this->summonFromHand(targetCard, this->getEmptyMinionZone(card->getOwner()));
-      //  }
     }
-    //Draw a card
-    else if (id==7)
-    {
-        this->drawCard(card->getOwner());
-    }
-
 }
 void Duel::onDestroy(Card* card){}
 void Duel::onTurnEnd(Card* card)
 {
 
-    short id = card->getCardId();
-    if (id==5)
-    {
-        card->getOwner()->changeMana(2);
-    }
-    else if (id==6)
-    {
-        this->drawCard(card->getOwner());
-    }
+    card->getCardName()->onTurnEnd(this, card);
 
 }
 void Duel::setTargetList(Card** targets, short n_targets)
