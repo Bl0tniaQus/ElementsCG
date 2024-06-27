@@ -1,7 +1,6 @@
 #ifndef COPPERWORM_H
 #define COPPERWORM_H
 #include "cardbase.h"
-#include <iostream>
 class CopperWorm : public CardBase
 {
 public:
@@ -16,11 +15,7 @@ public:
         "Copper Worm" //name
     ) {};
     void onSummon(Duel* duel, Card* card);
-    void onSpell(Duel* duel, Card* card);
-    void onDestroy(Duel* duel, Card* card);
-    void onAttack(Duel* duel, Card* card);
-    void onDefence(Duel* duel, Card* card);
-    void onTurnEnd(Duel* duel, Card* card);
+    void getOnSummonTargetList(Duel* duel, Card* card);
 };
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef SILVERWOLF_H
 #define SILVERWOLF_H
 #include "cardbase.h"
-#include <iostream>
 class SilverWolf : public CardBase
 {
 public:
@@ -15,12 +14,6 @@ public:
         "Earth", //element
         "Silver Wolf" //name
     ) {};
-    void onSummon(Duel* duel, Card* card);
-    void onSpell(Duel* duel, Card* card);
-    void onDestroy(Duel* duel, Card* card);
-    void onAttack(Duel* duel, Card* card);
-    void onDefence(Duel* duel, Card* card);
-    void onTurnEnd(Duel* duel, Card* card);
 };
 
 #endif

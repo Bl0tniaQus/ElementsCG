@@ -1,7 +1,6 @@
 #ifndef WHIRLWIND_H
 #define WHIRLWIND_H
 #include "cardbase.h"
-#include <iostream>
 class Whirlwind : public CardBase
 {
 public:
@@ -15,12 +14,9 @@ public:
         "Air", //element
         "Whirlwind" //name
     ) {};
-    void onSummon(Duel* duel, Card* card);
-    void onSpell(Duel* duel, Card* card);
-    void onDestroy(Duel* duel, Card* card);
-    void onAttack(Duel* duel, Card* card);
-    void onDefence(Duel* duel, Card* card);
-    void onTurnEnd(Duel* duel, Card* card);
+    bool onSpell(Duel* duel, Card* card);
+    void getOnSpellTargetList(Duel* duel, Card* card);
+
 };
 
 #endif // WHIRLWIND_H

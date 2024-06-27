@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     duel.getPlayer(1)->setBot();
     duel.DuelControl(&deck,&deck2);
     //todo
+    //todo WAŻNE copper worm nie działa
     //remake cards for new system
     //cards with new mechanics(search, barrier, stat modify, destruction, multiple attacks, search, GY interaction)
     //bot

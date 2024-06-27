@@ -1,16 +1,17 @@
 #include "whirlwind.h"
 #include "../duel.h"
 #include "../card.h"
-void Whirlwind::onSummon(Duel* duel, Card* card){}
-void Whirlwind::onSpell(Duel* duel, Card* card)
+#include "../zone.h"
+#include <iostream>
+bool Whirlwind::onSpell(Duel* duel, Card* card)
 {
-
-    bool usable = duel->checkEffectRequirements(card);
-    if (usable)
+    this->getOnSpellTargetList(duel, card);
+    Card** targets = this->getTargetList()->getTargetList();
+    short nt = this->getTargetList()->getTargetsNumber();
+    if (nt>0)
     {
-        Card** targets = duel->getTargetList().getTargetList();
         int target;
-        for (int i=0;i<duel->getTargetList().getTargetsNumber();i++)
+        for (int i=0;i<nt;i++)
         {
             std::cout<<i<<" - "<<targets[i]->getName()<<std::endl;
         }
@@ -18,9 +19,13 @@ void Whirlwind::onSpell(Duel* duel, Card* card)
         std::cin>>target;
         Card* targetCard = targets[target];
         duel->toHand(targetCard);
+        this->setTargetList(nullptr,0);
+        return true;
     }
+    return false;
 }
-void Whirlwind::onDestroy(Duel* duel, Card* card) {}
-void Whirlwind::onAttack(Duel* duel, Card* card) {}
-void Whirlwind::onDefence(Duel* duel, Card* card) {}
-void Whirlwind::onTurnEnd(Duel* duel, Card* card) {}
+void Whirlwind::getOnSpellTargetList(Duel* duel, Card* card)
+{
+    this->minionsOnField(duel, card);
+}
+
