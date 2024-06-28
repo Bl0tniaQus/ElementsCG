@@ -10,6 +10,7 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, cons
     this->cardId = cid;
     this->cost = c;
     this->cardType = ct;
+    this->level = l;
     this->attack = a;
     this->defence = d;
     this->targetList = new TargetList;
