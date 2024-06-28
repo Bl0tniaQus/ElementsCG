@@ -280,12 +280,6 @@ void Duel::onTurnEnd(Card* card)
     card->getCardName()->onTurnEnd(this, card);
 
 }
-void Duel::setTargetList(Card** targets, short n_targets)
-{
-    this->targetList.setTargetList(targets);
-    this->targetList.setTargetNumber(n_targets);
-
-}
 void Duel::playFromHand(Card* card)
 {
     char type = card->getCardType();

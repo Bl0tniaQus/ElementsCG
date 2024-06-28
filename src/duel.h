@@ -9,7 +9,6 @@ private:
     Player players[2]; //0 - player 1, 1 - player2
     short turnCount;
     unsigned char turnPlayer;
-    TargetList targetList;
 public:
     Duel();
     short getTurnCount() {return this->turnCount;}
@@ -17,7 +16,6 @@ public:
     unsigned char getTurnPlayer() {return this->turnPlayer;}
     void setTurnPlayer(char turnPlayer) {this->turnPlayer=turnPlayer;}
     Player* getPlayer(unsigned char p) {return &this->players[p];}
-    TargetList* getTargetListDuel() {return &this->targetList;}
     void passTurn();
     void drawField(char p);
     void drawCard(Player* player);
@@ -40,11 +38,6 @@ public:
     void onDestroy(Card* card);
     void onCombat(Card* card);
     void applyContinuous();
-    void generateTargetList(Card* effect);
-    void generateSpecialMinionMaterialList(Card* servant, short n);
-    void setTargetList(Card** targets, short n_targets);
-    TargetList getTargetList() {return this->targetList;}
-    bool checkEffectRequirements(Card* card);
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
     static Card* selectFieldTarget();
