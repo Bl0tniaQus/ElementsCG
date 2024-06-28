@@ -8,9 +8,12 @@ void CopperWorm::onSummon(Duel* duel, Card* card)
         {
             Card** targets = this->getTargetList()->getTargetList();
             Card* targetCard = targets[0];
-            duel->summonFromHand(targetCard, duel->getEmptyMinionZone(card->getOwner()));
+            short zoneid = duel->getEmptyMinionZone(card->getOwner());
+            if (zoneid!=-1) {duel->summonFromHand(targetCard, zoneid);}
+
 
         }
+        this->setTargetList(nullptr,0);
 }
 void CopperWorm::getOnSummonTargetList(Duel* duel, Card* card)
 {

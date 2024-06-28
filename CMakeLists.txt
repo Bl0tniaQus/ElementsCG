@@ -34,6 +34,7 @@ set(PROJECT_SOURCES
         src/cards/dragonoidsage.cpp
         src/cards/tungstenfirefly.cpp
         src/cards/dragonoidscout.cpp
+        src/cards/brassbeetle.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

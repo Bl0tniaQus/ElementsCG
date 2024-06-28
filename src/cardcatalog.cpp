@@ -53,6 +53,7 @@ CardBase* CardCatalog::getCardNameById(int id)
         case 5: cardbase = new DragonoidSage;break;
         case 6: cardbase = new TungstenFirefly;break;
         case 7: cardbase = new DragonoidScout;break;
+        case 8: cardbase = new BrassBeetle;break;
     }
     return cardbase;
 }

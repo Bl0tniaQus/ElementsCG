@@ -32,12 +32,14 @@ public:
     Card* getCardEntity() {return this->cardEntity;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
+
     virtual void onSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};
     virtual void onDestroy(Duel* duel, Card* card) {};
     virtual void onAttack(Duel* duel, Card* card) {};
     virtual void onDefence(Duel* duel, Card* card) {};
     virtual void onTurnEnd(Duel* duel, Card* card) {};
+
     virtual void getOnSummonTargetList(Duel* duel, Card* card) {};
     virtual void getOnSpellTargetList(Duel* duel, Card* card) {};
     virtual void getOnAttackTargetList(Duel* duel, Card* card) {};
@@ -45,9 +47,21 @@ public:
     virtual void getOnDestroyTargetList(Duel* duel, Card* card) {};
     virtual void getOnTurnEndTargetList(Duel* duel, Card* card) {};
 
-    //common Targets
+    //common effect targets
     void minionsOnField(Duel* duel, Card* card);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);
+
+    bool checkSummoningConditions2(Duel* duel, Card* card);
+    bool checkSummoningConditions3(Duel* duel, Card* card);
+    virtual bool specialSummon(Duel* duel, Card* card) {return false;};
+    bool specialSummon2(Duel* duel, Card* card);
+    bool specialSummon3(Duel* duel, Card* card) {return false;};
+    virtual void getFirstMaterialList(Duel* duel, Card* card) {};
+    virtual void getSecondMaterialList(Duel* duel, Card* card) {};
+    virtual void getThirdMaterialList(Duel* duel, Card* card) {};
+    void getMinionsWithSameElement(Duel* duel, Card* card, const char* element);
+
+
 };
 
 #endif

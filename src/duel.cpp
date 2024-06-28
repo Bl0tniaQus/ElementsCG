@@ -164,7 +164,7 @@ short Duel::getEmptyMinionZone(Player* player)
 }
 void Duel::summonMinion(Card *minion, short zoneid)
 {
-    if ((minion->getCardType()>0)&&(minion->getPlace()!=2))
+    if ((minion->getCardType()>0)&&(minion->getPlace()!=2)&&zoneid!=-1)
     {
         minion->setPlace(2);
         minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
@@ -174,111 +174,24 @@ void Duel::summonMinion(Card *minion, short zoneid)
 }
 void Duel::summonSpecialMinion(Card *minion)
 {
-    this->setTargetList(nullptr,0);
-    short id = minion->getCardId();
-    //two requirements tree
-    if (id==8)
-    {
-        this->generateSpecialMinionMaterialList(minion,1);
+        if (minion->getCardName()->specialSummon(this,minion))
+        {
+            this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
+            short n_special = minion->getOriginalOwner()->getSpecialDeckSize();
+            Card** oldSpecial = minion->getOriginalOwner()->getSpecialDeck();
+            Card** newSpecial = new Card*[n_special-1];
+            short bias = 0;
+            for (int i=0;i<n_special;i++)
+            {
+                if (oldSpecial[i]==minion) {bias = 1; continue;}
+                newSpecial[i-bias] = oldSpecial[i];
+            }
 
-        short n_targets1 = this->getTargetList().getTargetsNumber();
-        Card** temp_targets = this->getTargetList().getTargetList();
-        Card** targets1 = new Card* [n_targets1];
-        for (int i=0;i<n_targets1;i++)
-        {
-            targets1[i] = temp_targets[i];
-        } ;
-        this->generateSpecialMinionMaterialList(minion,2);
-        short n_targets2 = this->getTargetList().getTargetsNumber();
-        temp_targets = this->getTargetList().getTargetList();
-        Card** targets2 = new Card* [n_targets2];
-        for (int i=0;i<n_targets2;i++)
-        {
-            targets2[i] = temp_targets[i];
-        } delete []temp_targets;
+            minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
+            minion->getOriginalOwner()->setSpecialDeckSize(n_special-1);
+            }
 
-        if ((n_targets1==0)||(n_targets2==0)) {return;}
-        else if ((n_targets1==1)&&(n_targets2==1))
-        {
-            if (targets1[0]==targets2[0]) {return;}
-        }
-        else if ((n_targets1==1)&&(n_targets2>1))
-        {
-            for (int i=0;i<n_targets2;i++)
-            {
-                if (targets2[i]==targets1[0]) {return;}
-            }
-        }
-        else if ((n_targets2==1)&&(n_targets1>1))
-        {
-            for (int i=0;i<n_targets2;i++)
-            {
-                if (targets2[i]==targets1[0]) {return;}
-            }
-        }
-        int target;
-        for (int i=0;i<n_targets1;i++)
-        {
-            std::cout<<i<<" - "<<targets1[i]->getName()<<std::endl;
-        }
-        std::cout<<"First minion: ";
-        std::cin>>target;
-        Card* targetCard = targets1[target];
-        Card* targetCard2;
-        Card** new_targets2;
-        short duplicate=0;
-        for (int i=0;i<n_targets2;i++)
-        {
-            if (targets2[i]==targetCard)
-            {
-                duplicate=1;
-                new_targets2 = new Card* [n_targets2-1];
-                short bias=0;
-                for (int j=0;j<n_targets2;j++)
-                {
-                   if (targets2[j]==targetCard) {bias=1; continue;}
-                   new_targets2[j-bias]=targets2[j];
-                }
-            }
-        }
-        if (duplicate==1)
-        {
-            for (int i=0;i<n_targets2-1;i++)
-            {
-                std::cout<<i<<" - "<<new_targets2[i]->getName()<<std::endl;
-            }
-            std::cout<<"Second minion: ";
-            std::cin>>target;
-            targetCard2 = new_targets2[target];
-        }
-        else
-        {
-            for (int i=0;i<n_targets2;i++)
-            {
-                std::cout<<i<<" - "<<targets2[i]->getName()<<std::endl;
-            }
-            std::cout<<"Second minion: ";
-            std::cin>>target;
-            targetCard2 = targets2[target];
-        }
-        this->removeFromField(targetCard);
-        this->removeFromField(targetCard2);
-        this->toGraveyard(targetCard);
-        this->toGraveyard(targetCard2);
-        this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
-        short n_special = minion->getOriginalOwner()->getSpecialDeckSize();
-        Card** oldSpecial = minion->getOriginalOwner()->getSpecialDeck();
-        Card** newSpecial = new Card*[n_special-1];
-        short bias = 0;
-        for (int i=0;i<n_special;i++)
-        {
-            if (oldSpecial[i]==minion) {bias = 1; continue;}
-            newSpecial[i-bias] = oldSpecial[i];
-        }
 
-        minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
-        minion->getOriginalOwner()->setSpecialDeckSize(n_special-1);
-    }
 }
 void Duel::activateSpell(Card *spell, short zoneid)
 {
@@ -345,24 +258,6 @@ void Duel::drawCard(Player* player)
 
 
 }
-bool Duel::checkEffectRequirements(Card* card)
-{
-    this->setTargetList(nullptr,0);
-    short id = card->getCardId();
-    //any monster on field
-    if (id==4)
-{
-this->generateTargetList(card);
-    if (this->targetList.getTargetsNumber()>0) {return true;}
-}
-//monster with the same name in hand
-else if (id==1)
-{
-    this->generateTargetList(card);
-        if (this->targetList.getTargetsNumber()>0) {return true;}
-}
-return false;
-}
 void Duel::onSpell(Card* card, short zoneid)
 {
 if (card->getCardType()==0)
@@ -390,100 +285,6 @@ void Duel::setTargetList(Card** targets, short n_targets)
     this->targetList.setTargetList(targets);
     this->targetList.setTargetNumber(n_targets);
 
-}
-void Duel::generateSpecialMinionMaterialList(Card* minion, short n)
-{
-    short n_targets=0;
-    Card** targets = new Card* [n_targets];
-    short servantId = minion->getCardId();
-    Player* owner = minion->getOriginalOwner();
-    //Brass Beetle
-    if (servantId==8)
-    {
-        for (int i=0;i<5;i++)
-        {
-            Card* card = owner->getMinionField()[i].getCard();
-            if (card!=nullptr)
-            {
-                if (card->getElement()[0]=='E')//Earth minion
-                {
-                    n_targets++;
-                    Card **newtargets = new Card* [n_targets];
-                    if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
-                        {
-
-                            newtargets[j] = targets[j];
-
-                        }
-                        newtargets[n_targets-1] = card;
-                        delete [] targets;
-                        targets = newtargets;
-                    } else {newtargets[0]=card; targets = newtargets;}
-                }
-            }
-        }
-        }
-    this->setTargetList(targets,n_targets);
-}
-
-void Duel::generateTargetList(Card* effect)
-{
-    short n_targets=0;
-    Card** targets = new Card* [n_targets];
-    short effectId = -1;
-
-    //list of end of turn effects
-    if (effect == nullptr)
-    {
-        for (int i=0;i<5;i++)
-        {
-            Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
-
-            if (card!=nullptr)
-            {
-            short cardid = card->getCardId();
-            if (!((cardid==5)||(cardid==6))) {continue;}
-            n_targets++;
-            Card **newtargets = new Card* [n_targets];
-            if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
-                {
-
-                    newtargets[j] = targets[j];
-
-                }
-                newtargets[n_targets-1] = card;
-                delete [] targets;
-                targets = newtargets;
-            } else {newtargets[0]=card; targets = newtargets;}
-            }
-        }
-        for (int i=0;i<5;i++)
-        {
-            Card *card = this->players[getTurnPlayer()].getMinionField()[i].getCard();
-            if (card!=nullptr)
-            {
-            n_targets++;
-            Card **newtargets = new Card* [n_targets];
-            if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
-                {
-
-                    newtargets[j] = targets[j];
-
-                }
-                newtargets[n_targets-1] = card;
-                delete [] targets;
-                targets = newtargets;
-            } else {newtargets[0]=card; targets = newtargets;}
-            }
-        }
-
-
-
-    } else {effectId = effect->getCardId();}
-    this->setTargetList(targets,n_targets);
 }
 void Duel::playFromHand(Card* card)
 {
@@ -558,15 +359,15 @@ void Duel::summonFromHand(Card* minion, short zoneid)
 }
 void Duel::passTurn()
 {
-    generateTargetList(nullptr);
-    Card** eotTargets = this->getTargetList().getTargetList();
+    //generateTargetList(nullptr);
+    //Card** eotTargets = this->getTargetList().getTargetList();
     Player* turnPlayer = this->getPlayer(this->getTurnPlayer());
     Player* opponent = this->getPlayer(!this->getTurnPlayer());
-    short n_targets = this->getTargetList().getTargetsNumber();
-    for (int i=0;i<n_targets;i++)
-    {
-        this->onTurnEnd(eotTargets[i]);
-    }
+    //short n_targets = this->getTargetList().getTargetsNumber();
+    //for (int i=0;i<n_targets;i++)
+   // {
+   //     this->onTurnEnd(eotTargets[i]);
+   // }
     Card* minion;
     for (int i=0;i<5;i++)
     {

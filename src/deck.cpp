@@ -36,9 +36,9 @@ Deck::Deck(short deckid)
         {
             this->mainDeck[i].setPlace(0);
         }
-        this->n_special = 0;
+        this->n_special = 1;
         this->specialDeck = new Card[this->n_special];
-        //this->specialDeck[0] = Card(1);
+        this->specialDeck[0] = Card(8);
     }
     if (deckid==2)
     {
@@ -55,8 +55,8 @@ Deck::Deck(short deckid)
         {
             this->mainDeck[i].setPlace(0);
         }
-        this->n_special = 0;
+        this->n_special = 1;
         this->specialDeck = new Card[this->n_special];
-        //this->specialDeck[0] = Card(8);
+        this->specialDeck[0] = Card(8);
     }
 }
