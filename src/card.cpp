@@ -6,7 +6,7 @@ Card::Card()
 }
 Card::Card(int entryId)
 {
-    this->cardName = catalog.getCardNameById(entryId);
+    this->cardName = this->getCardNameById(entryId);
     this->cardName->bindCard(this);
     this->copyId = ++Card::COPYID;
     this->attacks = 1;
@@ -38,4 +38,20 @@ void Card::copyProperties(Card* card)
     //this->owner = card->getOwner();
     //this->originalOwner = card->getOriginalOwner();
     //this->zone = card->getZone();
+}
+CardBase* Card::getCardNameById(int id)
+{
+    CardBase* cardbase;
+    switch (id)
+    {
+        case 1: cardbase = new CopperWorm;break;
+        case 2: cardbase = new SilverWolf;break;
+        case 3: cardbase = new DragonoidWarrior;break;
+        case 4: cardbase = new Whirlwind;break;
+        case 5: cardbase = new DragonoidSage;break;
+        case 6: cardbase = new TungstenFirefly;break;
+        case 7: cardbase = new DragonoidScout;break;
+        case 8: cardbase = new BrassBeetle;break;
+    }
+    return cardbase;
 }

@@ -280,6 +280,59 @@ void Duel::onTurnEnd(Card* card)
     card->getCardName()->onTurnEnd(this, card);
 
 }
+void Duel::turnEndEffects()
+{
+        short n_effects = 0;
+        Card** effects = new Card* [n_effects];
+
+        for (int i=0;i<5;i++)
+        {
+            Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
+
+            if (card!=nullptr)
+            {
+            n_effects++;
+            Card **neweffects = new Card* [n_effects];
+            if (n_effects>1) {
+                for (int j=0;j<n_effects;j++)
+                {
+
+                    neweffects[j] = effects[j];
+
+                }
+                neweffects[n_effects-1] = card;
+                delete [] effects;
+                effects = neweffects;
+            } else {neweffects[0]=card; effects = neweffects;}
+            }
+        }
+        for (int i=0;i<5;i++)
+        {
+            Card *card = this->players[getTurnPlayer()].getMinionField()[i].getCard();
+
+            if (card!=nullptr)
+            {
+            n_effects++;
+            Card **neweffects = new Card* [n_effects];
+            if (n_effects>1) {
+                for (int j=0;j<n_effects;j++)
+                {
+
+                    neweffects[j] = effects[j];
+
+                }
+                neweffects[n_effects-1] = card;
+                delete [] effects;
+                effects = neweffects;
+            } else {neweffects[0]=card; effects = neweffects;}
+            }
+        }
+
+    for (int i=0;i<n_effects;i++)
+    {
+        this->onTurnEnd(effects[i]);
+    }
+}
 void Duel::playFromHand(Card* card)
 {
     char type = card->getCardType();
@@ -371,6 +424,7 @@ void Duel::passTurn()
         if (minion!=nullptr) {minion->setAttacks(1);}
 
     }
+    turnEndEffects();
     opponent->changeMana(2);
     this->turnCount++;
     turnPlayer->setSummonLimit(1);

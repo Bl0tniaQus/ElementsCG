@@ -2,6 +2,7 @@
 #define CARD_H
 #include <cstring>
 #include "cards/cardbase.h"
+#include "cards/allcardsinclude.h"
 class Zone;
 class Player;
 class Card
@@ -53,5 +54,6 @@ public:
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);
     CardBase* getCardName() {return this->cardName;}
+    CardBase* getCardNameById(int id);
 };
 #endif // CARD_H

@@ -19,8 +19,6 @@ set(PROJECT_SOURCES
         src/player.cpp
         src/card.cpp
         src/duel.cpp
-        src/cardcatalog.cpp
-        src/catalogentry.cpp
         src/globals.cpp
         src/deck.cpp
         src/targetlist.cpp
