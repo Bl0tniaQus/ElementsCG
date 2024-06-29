@@ -25,18 +25,13 @@ void Card::copyProperties(Card* card)
 {
     this->copyId = card->getCopyId();
     this->cost = card->getCost();
-    //this->cardType = card->getCardType();
     this->attacks = card->attacks;
     this->place = card->place;
     this->attack = card->getAttack();
     this->defence = card->getDefence();
     this->level = card->getLevel();
-    //this->setElement(card->getElement());
-    //this->setName(card->getName());
-    //this->cardId = card->getCardId();
-    //this->originalAttack = card->getOriginalAttack();
-    //this->originalDefence = card->getOriginalDefence();
-    //this->originalLevel = card->getOriginalLevel();
+    this->cardName = card->getCardNameById(card->getCardId());
+    this->barrier = card->getBarrier();
     //this->owner = card->getOwner();
     //this->originalOwner = card->getOriginalOwner();
     //this->zone = card->getZone();
