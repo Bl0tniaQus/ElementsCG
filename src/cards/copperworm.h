@@ -14,8 +14,8 @@ public:
         "Earth", //element
         "Copper Worm" //name
     ) {};
-    void onSummon(Duel* duel, Card* card);
-    void getOnSummonTargetList(Duel* duel, Card* card);
+    void onSummon(Duel* duel, Card* card) override;
+    void getOnSummonTargetList(Duel* duel, Card* card) override;
 };
 
 #endif

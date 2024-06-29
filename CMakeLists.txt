@@ -33,6 +33,7 @@ set(PROJECT_SOURCES
         src/cards/tungstenfirefly.cpp
         src/cards/dragonoidscout.cpp
         src/cards/brassbeetle.cpp
+        src/cards/tempestwyvern.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

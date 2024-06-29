@@ -254,3 +254,37 @@ void CardBase::getMinionsWithSameElement(Duel* duel, Card* card, const char* ele
 
     this->setTargetList(targets,n_targets);
 }
+void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
+{
+    {
+    this->setTargetList(nullptr,0);
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Player* owner = card->getOriginalOwner();
+        for (int i=0;i<5;i++)
+        {
+            Card* card = owner->getMinionField()[i].getCard();
+            if (card!=nullptr)
+            {
+                if (strcmp(element, card->getElement())==0&&card->getLevel()>=lvl)
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = card;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=card; targets = newtargets;}
+                }
+            }
+        }
+
+    this->setTargetList(targets,n_targets);
+}
+}

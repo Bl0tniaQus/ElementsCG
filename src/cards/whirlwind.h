@@ -14,8 +14,8 @@ public:
         "Air", //element
         "Whirlwind" //name
     ) {};
-    bool onSpell(Duel* duel, Card* card);
-    void getOnSpellTargetList(Duel* duel, Card* card);
+    bool onSpell(Duel* duel, Card* card) override;
+    void getOnSpellTargetList(Duel* duel, Card* card) override;
 
 };
 

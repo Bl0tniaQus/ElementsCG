@@ -66,6 +66,8 @@ void Duel::drawField(char p)
 }
 void Duel::combat(Card* attacker, Card* defender)
 {
+    defender->getCardName()->onDefence(this,defender,attacker);
+    attacker->getCardName()->onAttack(this,attacker,defender);
     short atk = attacker->getAttack();
     short def = defender->getDefence();
     short damage = 0;
@@ -84,6 +86,7 @@ void Duel::combat(Card* attacker, Card* defender)
     if (def>atk){this->players[this->turnPlayer].changeHp(-damage);}
     attacker->setAttacks(attacker->getAttacks()-1);
     checkWinner();
+    attacker->getCardName()->afterAttack(this,attacker,defender,damage);
 }
 void Duel::directAttack(Card* attacker)
 {
@@ -102,9 +105,15 @@ void Duel::checkWinner()
 }
 void Duel::destruction(Card* card)
 {
-    this->removeFromField(card);
-    this->toGraveyard(card);
-    this->onDestroy(card);
+    short barrier = card->getBarrier();
+    if (barrier>0) {card->setBarrier(barrier-1);}
+    else
+    {
+        this->removeFromField(card);
+        this->toGraveyard(card);
+        this->onDestroy(card);
+    }
+
 }
 void Duel::toGraveyard(Card* card)
 {
@@ -169,7 +178,6 @@ void Duel::summonMinion(Card *minion, short zoneid)
         minion->setPlace(2);
         minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
         minion->getOwner()->getMinionField()[zoneid].setUsed(true);
-
     }
 }
 void Duel::summonSpecialMinion(Card *minion)
@@ -186,18 +194,18 @@ void Duel::summonSpecialMinion(Card *minion)
                 if (oldSpecial[i]==minion) {bias = 1; continue;}
                 newSpecial[i-bias] = oldSpecial[i];
             }
-
             minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
             minion->getOriginalOwner()->setSpecialDeckSize(n_special-1);
+            this->onSummon(minion);
             }
 
 
 }
-void Duel::activateSpell(Card *spell, short zoneid)
+void Duel::activateSpell(Card *spell)
 {
     if ((spell->getCardType()==0)&&(spell->getPlace()==1))
     {
-        this->onSpell(spell,zoneid);
+        this->onSpell(spell);
     }
 }
 void Duel::toHand(Card* card)
@@ -258,7 +266,7 @@ void Duel::drawCard(Player* player)
 
 
 }
-void Duel::onSpell(Card* card, short zoneid)
+void Duel::onSpell(Card* card)
 {
 if (card->getCardType()==0)
 {
@@ -266,7 +274,7 @@ if (card->getCardType()==0)
 }
 
 }
-void Duel::onSummon(Card* card, short zoneid)
+void Duel::onSummon(Card* card)
 {
     if (card->getCardType()!=0)
     {
@@ -410,8 +418,7 @@ void Duel::playFromHand(Card* card)
         }
         else if (type==0)
         {
-            zoneid = this->getEmptyMinionZone(card->getOwner());
-            this->activateSpell(card,zoneid);
+            this->activateSpell(card);
             this->toGraveyard(card);
             success=1;
         }
@@ -429,7 +436,10 @@ void Duel::playFromHand(Card* card)
 
             card->getOriginalOwner()->setHand(newHand, n_hand-1);
             card->getOriginalOwner()->setHandSize(n_hand-1);
-            if (type==1) {card->getOriginalOwner()->setSummonLimit(card->getOriginalOwner()->getSummonLimit()-1);this->onSummon(card, zoneid);}
+            if (type==1) {
+                card->getOriginalOwner()->setSummonLimit(card->getOriginalOwner()->getSummonLimit()-1);
+                this->onSummon(card);
+            }
             card->getOwner()->changeMana(-cost);
 
         }
@@ -456,7 +466,7 @@ void Duel::summonFromHand(Card* minion, short zoneid)
         }
         minion->getOriginalOwner()->setHand(newHand, n_hand-1);
         minion->getOriginalOwner()->setHandSize(n_hand-1);
-        this->onSummon(minion,this->getEmptyMinionZone(minion->getOwner()));
+        this->onSummon(minion);
     }
 }
 void Duel::passTurn()

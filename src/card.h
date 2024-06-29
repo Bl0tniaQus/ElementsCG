@@ -54,6 +54,8 @@ public:
     short getOriginalLevel() {return this->cardName->getLevel();}
     void setAttacks(short atk) {this->attacks=atk;}
     short getAttacks() {return this->attacks;}
+    void setBarrier(short br) {this->barrier=br;}
+    short getBarrier() {return this->barrier;}
     int getCopyId() {return this->copyId;}
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);

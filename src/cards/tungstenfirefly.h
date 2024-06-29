@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Tungsten Firefly" //name
     ) {};
-    void onTurnEnd(Duel* duel, Card* card);
+    void onTurnEnd(Duel* duel, Card* card) override;
 };
 
 #endif

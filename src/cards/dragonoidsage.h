@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Dragonoid Sage" //name
     ) {};
-    void onTurnEnd(Duel* duel, Card* card);
+    void onTurnEnd(Duel* duel, Card* card) override;
 };
 
 #endif

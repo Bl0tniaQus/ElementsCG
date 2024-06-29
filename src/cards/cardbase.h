@@ -36,9 +36,9 @@ public:
     virtual void onSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};
     virtual void onDestroy(Duel* duel, Card* card) {};
-    virtual void onAttack(Duel* duel, Card* card) {};
-    virtual void afterAttack(Duel* duel, Card* card) {};
-    virtual void onDefence(Duel* duel, Card* card) {};
+    virtual void onAttack(Duel* duel, Card* card, Card* target) {};
+    virtual void afterAttack(Duel* duel, Card* card, Card* target, short damage) {};
+    virtual void onDefence(Duel* duel, Card* card, Card* attacker) {};
     virtual void onTurnEnd(Duel* duel, Card* card) {};
     virtual void onTurnStart(Duel* duel, Card* card);
     virtual void getOnSummonTargetList(Duel* duel, Card* card) {};
@@ -62,6 +62,7 @@ public:
     virtual void getSecondMaterialList(Duel* duel, Card* card) {};
     virtual void getThirdMaterialList(Duel* duel, Card* card) {};
     void getMinionsWithSameElement(Duel* duel, Card* card, const char* element);
+    void getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
 
 
 };
