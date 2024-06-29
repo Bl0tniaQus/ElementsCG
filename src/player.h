@@ -65,6 +65,7 @@ public:
     short getSpecialDeckSize() {return this->n_special;}
     void setSpecialDeckSize(short n) {this->n_special=n;}
     void setDeckOwnership();
+    void shuffleDeck();
     void setBot();
     Bot* getBot() {return this->bot;}
     void setSummonLimit(short limit) {this->summonLimit=limit;}

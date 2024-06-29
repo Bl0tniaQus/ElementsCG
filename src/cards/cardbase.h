@@ -37,12 +37,14 @@ public:
     virtual bool onSpell(Duel* duel, Card* card) {return false;};
     virtual void onDestroy(Duel* duel, Card* card) {};
     virtual void onAttack(Duel* duel, Card* card) {};
+    virtual void afterAttack(Duel* duel, Card* card) {};
     virtual void onDefence(Duel* duel, Card* card) {};
     virtual void onTurnEnd(Duel* duel, Card* card) {};
-
+    virtual void onTurnStart(Duel* duel, Card* card);
     virtual void getOnSummonTargetList(Duel* duel, Card* card) {};
     virtual void getOnSpellTargetList(Duel* duel, Card* card) {};
     virtual void getOnAttackTargetList(Duel* duel, Card* card) {};
+    virtual void getAfterAttackTargetList(Duel* duel, Card* card) {};
     virtual void getOnDefenceTargetList(Duel* duel, Card* card) {};
     virtual void getOnDestroyTargetList(Duel* duel, Card* card) {};
     virtual void getOnTurnEndTargetList(Duel* duel, Card* card) {};

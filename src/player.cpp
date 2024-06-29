@@ -102,4 +102,14 @@ void Player::setBot()
 {
     this->bot = new Bot [1];
 }
-
+void Player::shuffleDeck()
+{
+    srand(time(NULL));
+    for (int i=n_deck-1;i>0;i--)
+    {
+        int j = rand() % (i+1);
+        Card* card = this->deck[i];
+        this->deck[i] = this->deck[j];
+        this->deck[j] = card;
+    }
+}

@@ -3,12 +3,14 @@
 #include "player.h"
 #include "card.h"
 #include "duel.h"
+#include "time.h"
 #include "targetlist.h"
 #include <iostream>
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
+
     //QApplication a(argc, argv);
     //MainWindow w;
     //w.show();

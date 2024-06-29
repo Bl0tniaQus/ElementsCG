@@ -16,6 +16,8 @@ Card::Card(int entryId)
     this->attack = this->cardName->getAttack();
     this->defence = this->cardName->getDefence();
     this->level = this->cardName->getLevel();
+    this->barrier = 0;
+    this->isNegated = 0;
     this->zone = nullptr;
 
 }

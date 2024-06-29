@@ -22,6 +22,10 @@ short level;
 short attack;
 short defence;
 short attacks;
+short barrier;
+bool isNegated;
+bool isSpellImmune;
+
 public:
     Card();
     Card(int entryId);

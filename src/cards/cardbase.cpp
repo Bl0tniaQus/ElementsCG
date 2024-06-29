@@ -24,6 +24,13 @@ void CardBase::setTargetList(Card** tl, short n)
     this->targetList->setTargetList(tl);
     this->targetList->setTargetNumber(n);
 }
+void CardBase::onTurnStart(Duel* duel, Card* card)
+{
+    if (card->getCardType()!=0&&card->getPlace()==2)
+    {
+        card->setAttacks(1);
+    }
+}
 void CardBase::minionsOnField(Duel* duel, Card* card)
 {
     short n_targets=0;

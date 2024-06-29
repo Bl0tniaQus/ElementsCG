@@ -35,7 +35,9 @@ public:
     void onSpell(Card* card, short zoneid);
     void onSummon(Card* card, short zoneid);
     void onTurnEnd(Card* card);
+    void onTurnStart(Card* card);
     void turnEndEffects();
+    void turnStartEffects();
     void onDestroy(Card* card);
     void onCombat(Card* card);
     void applyContinuous();
