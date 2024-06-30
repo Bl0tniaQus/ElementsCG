@@ -10,13 +10,15 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt>0)
     {
+        std::cout<<"0 - cancel"<<std::endl;
         int target;
         for (int i=0;i<nt;i++)
         {
-            std::cout<<i<<" - "<<targets[i]->getName()<<std::endl;
+            std::cout<<i+1<<" - "<<targets[i]->getName()<<std::endl;
         }
         std::cout<<"Target: ";
         std::cin>>target;
+        if (target==0) {return false;}
         Card* targetCard = targets[target];
         duel->toHand(targetCard);
         this->setTargetList(nullptr,0);

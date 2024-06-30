@@ -17,7 +17,8 @@ Card::Card(int entryId)
     this->defence = this->cardName->getDefence();
     this->level = this->cardName->getLevel();
     this->barrier = 0;
-    this->isNegated = 0;
+    this->isNegated = false;
+    this->isSpellImmune = false;
     this->zone = nullptr;
 
 }

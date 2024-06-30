@@ -10,7 +10,7 @@ public:
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         3, //level
         3, //attack
-        4, //defence
+        3, //defence
         "Air", //element
         "Dragonoid Warrior" //name
     ) {};

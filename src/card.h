@@ -56,6 +56,10 @@ public:
     short getAttacks() {return this->attacks;}
     void setBarrier(short br) {this->barrier=br;}
     short getBarrier() {return this->barrier;}
+    void setIsNegated(bool ng) {this->isNegated = ng;}
+    bool getIsNegated() {return this->isNegated;}
+    void setIsSpellImmune(bool si) {this->isSpellImmune = si;}
+    bool getIsSpellImmune() {return this->isSpellImmune;}
     int getCopyId() {return this->copyId;}
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);

@@ -201,12 +201,13 @@ void Duel::summonSpecialMinion(Card *minion)
 
 
 }
-void Duel::activateSpell(Card *spell)
+bool Duel::activateSpell(Card *spell)
 {
     if ((spell->getCardType()==0)&&(spell->getPlace()==1))
     {
-        this->onSpell(spell);
+        return this->onSpell(spell);
     }
+    return false;
 }
 void Duel::toHand(Card* card)
 {
@@ -266,13 +267,13 @@ void Duel::drawCard(Player* player)
 
 
 }
-void Duel::onSpell(Card* card)
+bool Duel::onSpell(Card* card)
 {
 if (card->getCardType()==0)
 {
-    card->getCardName()->onSpell(this, card);
+    return card->getCardName()->onSpell(this, card);
 }
-
+return false;
 }
 void Duel::onSummon(Card* card)
 {
@@ -418,9 +419,9 @@ void Duel::playFromHand(Card* card)
         }
         else if (type==0)
         {
-            this->activateSpell(card);
-            this->toGraveyard(card);
-            success=1;
+            if (this->activateSpell(card))
+            {this->toGraveyard(card);
+            success=1;}
         }
         if (success==1)
         {
@@ -475,6 +476,7 @@ void Duel::passTurn()
     Player* opponent = this->getPlayer(!this->getTurnPlayer());
     turnEndEffects();
     opponent->changeMana(2);
+    if (this->turnCount!=1) {this->drawCard(opponent);}
     this->turnCount++;
     turnPlayer->setSummonLimit(1);
     this->turnPlayer = !this->turnPlayer;
@@ -501,7 +503,6 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
     while (true)
     {
         Player* turnPlayer = this->getPlayer(this->turnPlayer);
-        if (this->turnCount!=1) {this->drawCard(turnPlayer);}
 
         turnStartEffects();
 

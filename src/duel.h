@@ -29,10 +29,10 @@ public:
     void checkWinner();
     short getEmptyMinionZone(Player* player);
     void summonMinion(Card *minion, short zoneid);
-    void activateSpell(Card* spell);
+    bool activateSpell(Card* spell);
     void playFromHand(Card* card);
     void summonFromHand(Card* minion, short zoneid);
-    void onSpell(Card* card);
+    bool onSpell(Card* card);
     void onSummon(Card* card);
     void onTurnEnd(Card* card);
     void onTurnStart(Card* card);

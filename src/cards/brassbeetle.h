@@ -10,7 +10,7 @@ public:
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level
         2, //attack
-        4, //defence
+        3, //defence
         "Earth", //element
         "Brass Beetle" //name
     ) {};
