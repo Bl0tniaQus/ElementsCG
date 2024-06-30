@@ -9,6 +9,11 @@ Gamestate::Gamestate(Duel* duel)
 {
     this->setTurnCount(duel->getTurnCount());
     this->setTurnPlayer(duel->getTurnPlayer());
+
+    short** usedZonesArr = new short*[2];
+    short* cardsOnFieldArr = new short[2];
+    int** fieldCardsArr = new int*[2];
+
     for (int i=0;i<2;i++)
     {
         Player *player = duel->getPlayer(i);
@@ -156,8 +161,52 @@ Gamestate::Gamestate(Duel* duel)
                 }
             }
         }
+
         player_new->setHand(handCopy,handSize);
         player_new->setGraveyard(graveyardCopy,graveyardSize);
-        //ownerzy kart do poprawy, potem zrobić kopie GY, handu, pola i sp decku i powinno być wszystko
+
+        usedZonesArr[i] = usedZones;
+        cardsOnFieldArr[i] = cardsOnField;
+        fieldCardsArr[i] = fieldCards;
     }
+    for (int i=0;i<2;i++)
+    {
+        Card* originalDeck = this->getPlayer(i)->getOriginalDeck();
+        short originalDeckSize = this->getPlayer(i)->getOriginalDeckSize();
+        Card* originalDeckOpp = this->getPlayer(!i)->getOriginalDeck();
+        short originalDeckSizeOpp = this->getPlayer(!i)->getOriginalDeckSize();
+        for (int j = 0; j<cardsOnFieldArr[i];j++)
+        {
+            bool found = false;
+            short zone = usedZonesArr[i][j];
+            int id = fieldCardsArr[i][j];
+            for (int k = 0; k<originalDeckSize;k++)
+            {
+                int originalId = originalDeck[k].getCopyId();
+                if (id==originalId)
+                {
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeck[k]);
+                    this->getPlayer(i)->getMinionField()[zone].setUsed(true);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                for (int k = 0; k<originalDeckSizeOpp;k++)
+            {
+                int originalId = originalDeckOpp[k].getCopyId();
+                if (id==originalId)
+                {
+                    originalDeckOpp[k].setOwner(this->getPlayer(i));
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeckOpp[k]);
+                    found = true;
+                    break;
+                }
+            }
+            }
+        }
+
+    }
+
 }

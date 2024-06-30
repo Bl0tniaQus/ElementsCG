@@ -510,8 +510,8 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         {
             int xd;
             turnPlayer->getBot()->generateGamestate(this);
-            //turnPlayer->getBot()->getGamestate()->drawField(this->getTurnPlayer());
-            //std::cin>>xd;
+            turnPlayer->getBot()->getGamestate()->drawField(this->getTurnPlayer());
+            std::cin>>xd;
             this->playFromHand(turnPlayer->getHand()[0]);
 
             this->passTurn();
