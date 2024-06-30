@@ -7,18 +7,19 @@ Gamestate::Gamestate()
 }
 Gamestate::Gamestate(Duel* duel)
 {
-    this->turnCount = duel->getTurnCount();
-    this->turnPlayer = duel->getTurnPlayer();
+    this->setTurnCount(duel->getTurnCount());
+    this->setTurnPlayer(duel->getTurnPlayer());
     for (int i=0;i<2;i++)
     {
         Player *player = duel->getPlayer(i);
-        this->players[i].setHp(player->getHp());
-        this->players[i].setMana(player->getMana());
-        this->players[i].setName(player->getName());
-        this->players[i].setOpponent(duel->getPlayer(!i));
+        Player *player_new = this->getPlayer(i);
+        player_new->setHp(player->getHp());
+        player_new->setMana(player->getMana());
+        player_new->setName(player->getName());
+        player_new->setOpponent(this->getPlayer(!i));
 
         short handSize = player->getHandSize();
-        this->players[i].setHandSize(handSize);
+        player_new->setHandSize(handSize);
         int* cardsInHand = new int [handSize];
         Card** hand = player->getHand();
         for (int i=0;i<handSize;i++)
@@ -59,39 +60,39 @@ Gamestate::Gamestate(Duel* duel)
         }
 
         short graveyardSize = player->getGraveyardSize();
-        this->players[i].setGraveyardSize(graveyardSize);
+        player_new->setGraveyardSize(graveyardSize);
         int* cardsInGraveyard = new int [graveyardSize];
         Card** graveyard = player->getGraveyard();
         for (int j=0;j<graveyardSize;j++){cardsInGraveyard[j] = graveyard[j]->getCopyId();}
 
         short deckSize = player->getDeckSize();
-        this->players[i].setDeckSize(deckSize);
+        player_new->setDeckSize(deckSize);
         int* cardsInDeck = new int [deckSize];
         Card** deck = player->getDeck();
         for (int j=0;j<deckSize;j++){cardsInDeck[j] = deck[j]->getCopyId();}
 
         short specialDeckSize = player->getSpecialDeckSize();
-        this->players[i].setSpecialDeckSize(specialDeckSize);
+        player_new->setSpecialDeckSize(specialDeckSize);
         int* cardsInSpecialDeck = new int [specialDeckSize];
         Card** specialDeck = player->getSpecialDeck();
         for (int j=0;j<specialDeckSize;j++){cardsInSpecialDeck[j] = specialDeck[j]->getCopyId();}
         short originalDeckSize = player->getOriginalDeckSize();
-        this->players[i].setOriginalDeckSize(originalDeckSize);
+        player_new->setOriginalDeckSize(originalDeckSize);
         short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
-        this->players[i].setOriginalDeckSize(originalSpecialDeckSize);
+        player_new->setOriginalDeckSize(originalSpecialDeckSize);
 
         Card* originalDeck = player->getOriginalDeck();
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
 
-        this->players[i].setOriginalDeck(new Card [originalDeckSize],originalDeckSize);
-        Card* originalDeckCopy = this->players[i].getOriginalDeck();
+        player_new->setOriginalDeck(new Card [originalDeckSize],originalDeckSize);
+        Card* originalDeckCopy = player_new->getOriginalDeck();
         for (int j=0;j<originalDeckSize;j++)
         {
             originalDeckCopy[j].copyProperties(&originalDeck[j]);
         }
 
-        this->players[i].setOriginalSpecialDeck(new Card [originalSpecialDeckSize],originalSpecialDeckSize);
-        Card* originalSpecialDeckCopy = this->players[i].getOriginalSpecialDeck();
+        player_new->setOriginalSpecialDeck(new Card [originalSpecialDeckSize],originalSpecialDeckSize);
+        Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
         for (int j=0;j<originalSpecialDeckSize;j++)
         {
             originalSpecialDeckCopy[j].copyProperties(&originalSpecialDeck[j]);
@@ -105,12 +106,58 @@ Gamestate::Gamestate(Duel* duel)
                 int originalId = originalDeckCopy[k].getCopyId();
                 if (id==originalId)
                 {
-                    deckCopy[j] = &originalDeckCopy[k]; break;
+                    deckCopy[j] = &originalDeckCopy[k];
+                    break;
                 }
             }
         }
-        this->players[i].setDeck(deckCopy,deckSize);
-        this->players[i].setDeckOwnership();
+        Card** specialDeckCopy = new Card* [specialDeckSize];
+        for (int j=0;j<specialDeckSize;j++)
+        {
+            int id = cardsInSpecialDeck[j];
+            for (int k=0;k<originalSpecialDeckSize;k++)
+            {
+                int originalId = originalSpecialDeckCopy[k].getCopyId();
+                if (id==originalId)
+                {
+                    specialDeckCopy[j] = &originalSpecialDeckCopy[k];
+                    break;
+                }
+            }
+        }
+        player_new->setDeck(deckCopy,deckSize);
+        player_new->setSpecialDeck(specialDeck,specialDeckSize);
+        player_new->setDeckOwnership();
+        Card** handCopy = new Card* [handSize];
+        for (int j=0;j<handSize;j++)
+        {
+            int id = cardsInHand[j];
+            for (int k=0;k<originalDeckSize;k++)
+            {
+                int originalId = originalDeckCopy[k].getCopyId();
+                if (id==originalId)
+                {
+                    handCopy[j] = &originalDeck[k];
+                    break;
+                }
+            }
+        }
+        Card** graveyardCopy = new Card* [graveyardSize];
+        for (int j=0;j<graveyardSize;j++)
+        {
+            int id = cardsInGraveyard[j];
+            for (int k=0;k<originalDeckSize;k++)
+            {
+                int originalId = originalDeckCopy[k].getCopyId();
+                if (id==originalId)
+                {
+                    graveyardCopy[j] = &originalDeck[k];
+                    break;
+                }
+            }
+        }
+        player_new->setHand(handCopy,handSize);
+        player_new->setGraveyard(graveyardCopy,graveyardSize);
         //ownerzy kart do poprawy, potem zrobić kopie GY, handu, pola i sp decku i powinno być wszystko
     }
 }

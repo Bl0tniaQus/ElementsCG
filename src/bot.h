@@ -8,6 +8,7 @@ private:
 public:
     Bot();
     void generateGamestate(Duel* duel);
+    Gamestate* getGamestate() {return &this->gamestate;}
 };
 
 #endif // BOT_H

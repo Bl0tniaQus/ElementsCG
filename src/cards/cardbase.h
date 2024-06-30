@@ -16,10 +16,9 @@ private:
     char* name;
     Card* cardEntity;
     TargetList* targetList;
-protected:
-    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n);
 public:
     CardBase() {};
+    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n);
     void bindCard(Card* card) {this->cardEntity = card;}
     short getCardId() {return this->cardId;}
     short getCost() {return this->cost;}

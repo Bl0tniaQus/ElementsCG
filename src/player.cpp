@@ -85,11 +85,15 @@ void Player::setDeckOwnership()
     {
         this->deck[i]->setOwner(this);
         this->deck[i]->setOriginalOwner(this);
+        this->originalDeck[i].setOwner(this);
+        this->originalDeck[i].setOriginalOwner(this);
     }
     for (int i=0;i<this->n_special;i++)
     {
         this->specialDeck[i]->setOwner(this);
         this->specialDeck[i]->setOriginalOwner(this);
+        this->originalSpecialDeck[i].setOwner(this);
+        this->originalSpecialDeck[i].setOriginalOwner(this);
     }
 }
 void Player::setSpecialDeck(Card** deck, short size)
@@ -104,7 +108,7 @@ void Player::setBot()
 }
 void Player::shuffleDeck()
 {
-    srand(time(NULL));
+
     for (int i=n_deck-1;i>0;i--)
     {
         int j = rand() % (i+1);
