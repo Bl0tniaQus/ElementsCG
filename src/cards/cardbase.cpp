@@ -58,11 +58,9 @@ short CardBase::singleChoice(Duel* duel, Card* card)
             {
                     for (int i=0;i<nt;i++)
                     {
-                        bot->generateGamestate(duel);
+                        bot->generateTempGamestate(duel);
+
                     }
-
-
-
             }
             else
             {
