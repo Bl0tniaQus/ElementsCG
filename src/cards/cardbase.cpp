@@ -31,6 +31,28 @@ void CardBase::onTurnStart(Duel* duel, Card* card)
         card->setAttacks(1);
     }
 }
+short CardBase::singleChoice(Duel* duel, Card* card)
+{
+    Card** targets = this->getTargetList()->getTargetList();
+    short nt = this->getTargetList()->getTargetsNumber();
+    short target;
+    if (nt>0)
+    {
+        if (card->getOwner()->getBot()==nullptr)
+        {
+            std::cout<<"0 - cancel"<<std::endl;
+            for (int i=0;i<nt;i++)
+            {
+                std::cout<<i+1<<" - "<<targets[i]->getName()<<std::endl;
+            }
+            std::cout<<"Target: ";
+            std::cin>>target;
+            if (target>=0 && target<=nt) {return target-1;}
+            else {return -1;}
+        }
+    }
+    return -1;
+}
 void CardBase::minionsOnField(Duel* duel, Card* card)
 {
     short n_targets=0;

@@ -43,7 +43,8 @@ public:
     void applyContinuous();
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
-    static Card* selectFieldTarget();
+
+    virtual bool isCopy() {return false;}
 };
 
 #endif // DUEL_H
