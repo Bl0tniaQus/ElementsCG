@@ -49,7 +49,6 @@ public:
     virtual void getOnTurnEndTargetList(Duel* duel, Card* card) {};
 
     short singleChoice(Duel* duel, Card* card);
-
     //common effect targets
     void minionsOnField(Duel* duel, Card* card);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);

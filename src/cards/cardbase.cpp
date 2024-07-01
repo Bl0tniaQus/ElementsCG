@@ -4,6 +4,7 @@
 #include "../zone.h"
 #include "../duel.h"
 #include "../card.h"
+#include "../bot.h"
 #include <iostream>
 CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n)
 {
@@ -49,6 +50,24 @@ short CardBase::singleChoice(Duel* duel, Card* card)
             std::cin>>target;
             if (target>=0 && target<=nt) {return target-1;}
             else {return -1;}
+        }
+        else
+        {
+            Bot* bot = card->getOwner()->getBot();
+            if (bot->isTesting())
+            {
+                    for (int i=0;i<nt;i++)
+                    {
+                        bot->generateGamestate(duel);
+                    }
+
+
+
+            }
+            else
+            {
+                return bot->getChosenSingleTarget();
+            }
         }
     }
     return -1;

@@ -2,6 +2,7 @@
 #include "../duel.h"
 #include "../card.h"
 #include "../zone.h"
+#include "../bot.h"
 #include <iostream>
 bool Whirlwind::onSpell(Duel* duel, Card* card)
 {

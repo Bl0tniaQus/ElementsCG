@@ -8,6 +8,7 @@ public:
     Gamestate();
     Gamestate(Duel* duel);
     bool isCopy() override {return true;}
+    float evaluate();
 };
 
 #endif // GAMESTATE_H

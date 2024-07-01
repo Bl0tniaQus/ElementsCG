@@ -4,7 +4,11 @@ Bot::Bot()
 {
 
 }
-void Bot::generateGamestate(Duel* duel)
+void Bot::generateBaseGamestate(Duel* duel)
 {
-    this->gamestate = Gamestate(duel);
+    this->baseGamestate = Gamestate(duel);
+}
+void Bot::generateTempGamestate(Duel* duel)
+{
+    this->tempGamestate = Gamestate(duel);
 }
