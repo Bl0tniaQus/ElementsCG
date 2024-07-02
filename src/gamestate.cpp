@@ -1,6 +1,7 @@
 #include "gamestate.h"
 #include "zone.h"
 #include "card.h"
+#include <iostream>
 Gamestate::Gamestate()
 {
 
@@ -13,11 +14,12 @@ Gamestate::Gamestate(Duel* duel)
     short** usedZonesArr = new short*[2];
     short* cardsOnFieldArr = new short[2];
     int** fieldCardsArr = new int*[2];
-
+    Player* player;
+    Player* player_new;
     for (int i=0;i<2;i++)
     {
-        Player *player = duel->getPlayer(i);
-        Player *player_new = this->getPlayer(i);
+        player = duel->getPlayer(i);
+        player_new = this->getPlayer(i);
         player_new->setHp(player->getHp());
         player_new->setMana(player->getMana());
         player_new->setName(player->getName());
@@ -43,13 +45,13 @@ Gamestate::Gamestate(Duel* duel)
                 int *new_fieldCards = new int[cardsOnField];
                 if (cardsOnField>1)
                 {
-                    for (int k=0;k<cardsOnField-1;k++)
+                    for (int k=0;k<cardsOnField;k++)
                     {
                         new_usedZones[k] = usedZones[k];
                         new_fieldCards[k] = fieldCards[k];
                     }
-                    new_usedZones[cardsOnField] = field->getId();
-                    new_fieldCards[cardsOnField] = field->getCard()->getCopyId();
+                    new_usedZones[cardsOnField-1] = field->getId();
+                    new_fieldCards[cardsOnField-1] = field->getCard()->getCopyId();
                 }
                 else
                 {
@@ -60,7 +62,8 @@ Gamestate::Gamestate(Duel* duel)
                 delete[] fieldCards;
                 fieldCards = new_fieldCards;
                 usedZones = new_usedZones;
-
+                //delete[] new_fieldCards;
+                //delete[] new_usedZones;
             }
         }
 
@@ -88,15 +91,15 @@ Gamestate::Gamestate(Duel* duel)
 
         Card* originalDeck = player->getOriginalDeck();
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
-
-        player_new->setOriginalDeck(new Card [originalDeckSize],originalDeckSize);
+        Card* d = new Card [originalDeckSize];
+        player_new->setOriginalDeck(d, originalDeckSize);
         Card* originalDeckCopy = player_new->getOriginalDeck();
         for (int j=0;j<originalDeckSize;j++)
         {
             originalDeckCopy[j].copyProperties(&originalDeck[j]);
         }
-
-        player_new->setOriginalSpecialDeck(new Card [originalSpecialDeckSize],originalSpecialDeckSize);
+        Card* sd = new Card [originalSpecialDeckSize];
+        player_new->setOriginalSpecialDeck(sd,originalSpecialDeckSize);
         Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
         for (int j=0;j<originalSpecialDeckSize;j++)
         {
@@ -168,6 +171,16 @@ Gamestate::Gamestate(Duel* duel)
         usedZonesArr[i] = usedZones;
         cardsOnFieldArr[i] = cardsOnField;
         fieldCardsArr[i] = fieldCards;
+        //delete[] d;
+        //delete[] sd;
+       // delete[] cardsInHand;
+        //delete[] cardsInGraveyard;
+       // delete[] cardsInDeck;
+       // delete[] cardsInSpecialDeck;
+       // delete[] handCopy;
+       // delete[] graveyardCopy;
+       // delete[] deckCopy;
+       // delete[] specialDeckCopy;
     }
     for (int i=0;i<2;i++)
     {
@@ -208,5 +221,9 @@ Gamestate::Gamestate(Duel* duel)
         }
 
     }
-
 }
+float Gamestate::evaluate()
+{
+    return (float)(rand()%10 + 0);
+}
+

@@ -21,10 +21,6 @@ int main(int argc, char *argv[])
     duel.getPlayer(1)->setBot();
     duel.DuelControl(&deck,&deck2);
     //todo
-    //remake cards for new system
-    //end of turn effects remake
-    //cards with new mechanics(search, barrier, stat modify, destruction, multiple attacks, search, GY interaction)
-    //bot
-    //gui
+    //gamestate poprawić kopiowanie
 
 }

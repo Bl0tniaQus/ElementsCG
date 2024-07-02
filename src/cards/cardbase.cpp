@@ -36,10 +36,13 @@ short CardBase::singleChoice(Duel* duel, Card* card)
 {
     Card** targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
+    Player* owner = card->getOwner();
+    Bot* bot = owner->getBot();
+    if (bot!=nullptr) { if (bot->getTestedNumber()==-1){bot->setChoicesNumber(nt);bot->setTestedNumber(0);}}
     short target;
     if (nt>0)
     {
-        if (card->getOwner()->getBot()==nullptr)
+        if (owner->getBot()==nullptr)
         {
             std::cout<<"0 - cancel"<<std::endl;
             for (int i=0;i<nt;i++)
@@ -53,19 +56,8 @@ short CardBase::singleChoice(Duel* duel, Card* card)
         }
         else
         {
-            Bot* bot = card->getOwner()->getBot();
-            if (bot->isTesting())
-            {
-                    for (int i=0;i<nt;i++)
-                    {
-                        bot->generateTempGamestate(duel);
-
-                    }
-            }
-            else
-            {
-                return bot->getChosenSingleTarget();
-            }
+            if (bot->isTesting()) {return bot->getTestedNumber();}
+            else {return bot->getBestTarget();}
         }
     }
     return -1;

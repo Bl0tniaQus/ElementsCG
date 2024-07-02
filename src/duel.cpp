@@ -476,7 +476,7 @@ void Duel::passTurn()
     Player* opponent = this->getPlayer(!this->getTurnPlayer());
     turnEndEffects();
     opponent->changeMana(2);
-    if (this->turnCount!=1) {this->drawCard(opponent);}
+    this->drawCard(opponent);
     this->turnCount++;
     turnPlayer->setSummonLimit(1);
     this->turnPlayer = !this->turnPlayer;
@@ -508,12 +508,22 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
 
         if (turnPlayer->checkBot()) //AI
         {
+            Bot* bot = turnPlayer->getBot();
             int xd;
-            turnPlayer->getBot()->generateGamestate(this);
-            turnPlayer->getBot()->getGamestate()->drawField(this->getTurnPlayer());
-            std::cin>>xd;
-            this->playFromHand(turnPlayer->getHand()[0]);
+            bot->generateBaseGamestate(this);
+            short n_hand = turnPlayer->getHandSize();
+            for (int z = 0;z<n_hand;z++)
+            {
+                std::cout<<turnPlayer->getHand()[z]->getName()<< " ";
+                bot->testCardFromHand(z);
 
+            } std::cout<<std::endl;
+            for (int y = 0;y<bot->getTestedNumber();y++)
+           {
+
+                std::cout<<bot->getHandOptions()[y]<<" "<<bot->getTargetsForOptions()[y]<<" "<<bot->getHandValues()[y]<<std::endl;
+            }
+            std::cin>>xd;
             this->passTurn();
         }
         else //player

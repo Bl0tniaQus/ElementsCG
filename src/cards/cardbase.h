@@ -14,6 +14,7 @@ private:
     short defence;
     char* element;
     char* name;
+    short input; //no of targets to choose
     Card* cardEntity;
     TargetList* targetList;
 public:
@@ -28,6 +29,7 @@ public:
     short getDefence() {return this->defence;}
     char* getElement() {return this->element;}
     char* getName() {return this->name;}
+    short getInput() {return this->input;}
     Card* getCardEntity() {return this->cardEntity;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
