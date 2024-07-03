@@ -134,6 +134,7 @@ void Duel::toGraveyard(Card* card)
     newGraveyard[n_graveyard] = card;
     }
     owner->setGraveyard(newGraveyard, n_graveyard+1);
+    delete[] newGraveyard;
 }
 void Duel::toSpecialDeck(Card* card)
 {
@@ -155,6 +156,7 @@ void Duel::toSpecialDeck(Card* card)
     newSpecial[n_special] = card;
     }
     owner->setSpecialDeck(newSpecial, n_special+1);
+    delete[] newSpecial;
 }
 void Duel::removeFromField(Card* card)
 {
@@ -195,7 +197,7 @@ void Duel::summonSpecialMinion(Card *minion)
                 newSpecial[i-bias] = oldSpecial[i];
             }
             minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
-            minion->getOriginalOwner()->setSpecialDeckSize(n_special-1);
+            delete[] newSpecial;
             this->onSummon(minion);
             }
 
@@ -229,7 +231,7 @@ void Duel::toHand(Card* card)
         Player* owner = card->getOriginalOwner();
         card->setOwner(owner);
         owner->setHand(newHand, n_hand+1);
-        owner->setHandSize(n_hand+1);
+        delete[] newHand;
     }
 
 }
@@ -260,9 +262,9 @@ void Duel::drawCard(Player* player)
         {
             newDeck[i] = oldDeck[i];
         }
-        player->setHandSize(n_hand+1);
-        player->setDeckSize(n_deck-1);
         player->setDeck(newDeck,n_deck-1);
+        delete[] newHand;
+        delete[] newDeck;
     }
 
 
@@ -295,7 +297,7 @@ void Duel::turnEndEffects()
 {
         short n_effects = 0;
         Card** effects = new Card* [n_effects];
-
+        Card **neweffects;
         for (int i=0;i<5;i++)
         {
             Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
@@ -303,7 +305,7 @@ void Duel::turnEndEffects()
             if (card!=nullptr)
             {
             n_effects++;
-            Card **neweffects = new Card* [n_effects];
+            neweffects = new Card* [n_effects];
             if (n_effects>1) {
                 for (int j=0;j<n_effects;j++)
                 {
@@ -324,7 +326,7 @@ void Duel::turnEndEffects()
             if (card!=nullptr)
             {
             n_effects++;
-            Card **neweffects = new Card* [n_effects];
+            neweffects = new Card* [n_effects];
             if (n_effects>1) {
                 for (int j=0;j<n_effects;j++)
                 {
@@ -343,12 +345,14 @@ void Duel::turnEndEffects()
     {
         this->onTurnEnd(effects[i]);
     }
+
+    delete [] effects;
 }
 void Duel::turnStartEffects()
 {
         short n_effects = 0;
         Card** effects = new Card* [n_effects];
-
+        Card **neweffects;
         for (int i=0;i<5;i++)
         {
             Card *card = this->players[getTurnPlayer()].getOpponent()->getMinionField()[i].getCard();
@@ -356,7 +360,7 @@ void Duel::turnStartEffects()
             if (card!=nullptr)
             {
             n_effects++;
-            Card **neweffects = new Card* [n_effects];
+            neweffects = new Card* [n_effects];
             if (n_effects>1) {
                 for (int j=0;j<n_effects;j++)
                 {
@@ -396,6 +400,7 @@ void Duel::turnStartEffects()
     {
         this->onTurnStart(effects[i]);
     }
+    delete [] effects;
 }
 void Duel::playFromHand(Card* card)
 {
@@ -436,13 +441,12 @@ void Duel::playFromHand(Card* card)
             }
 
             card->getOriginalOwner()->setHand(newHand, n_hand-1);
-            card->getOriginalOwner()->setHandSize(n_hand-1);
             if (type==1) {
                 card->getOriginalOwner()->setSummonLimit(card->getOriginalOwner()->getSummonLimit()-1);
                 this->onSummon(card);
             }
             card->getOwner()->changeMana(-cost);
-
+            delete[] newHand;
         }
 
     }
@@ -466,8 +470,8 @@ void Duel::summonFromHand(Card* minion, short zoneid)
             newHand[i-bias] = oldHand[i];
         }
         minion->getOriginalOwner()->setHand(newHand, n_hand-1);
-        minion->getOriginalOwner()->setHandSize(n_hand-1);
         this->onSummon(minion);
+        delete[] newHand;
     }
 }
 void Duel::passTurn()
@@ -515,12 +519,11 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
             for (int z = 0;z<n_hand;z++)
             {
                 std::cout<<turnPlayer->getHand()[z]->getName()<< " ";
-                bot->testCardFromHand(z);
+                bot->testCardFromHand(z, this);
 
             } std::cout<<std::endl;
-            for (int y = 0;y<bot->getTestedNumber();y++)
+            for (int y = 0;y<bot->getOptionsNumber();y++)
            {
-
                 std::cout<<bot->getHandOptions()[y]<<" "<<bot->getTargetsForOptions()[y]<<" "<<bot->getHandValues()[y]<<std::endl;
             }
             std::cin>>xd;

@@ -38,73 +38,109 @@ void Player::changeMana(short val)
 void Player::setHand(Card** hand, short size)
 {
     delete[] this->hand;
-    this->hand = hand;
+    this->hand = new Card* [size];
+    if (size==1) {this->hand[0] = hand[0];}
+    else{
+    for (int i=0;i<size;i++)
+    {
+        this->hand[i] = hand[i];
+    }
+    }
     this->n_hand = size;
 }
 void Player::setOriginalDeck(Card* deck, short size)
 {
     delete[] this->originalDeck;
-    this->originalDeck = deck;
     this->n_originalDeck = size;
+    this->n_deck = size;
+    this->originalDeck = new Card [size];
     delete [] this->deck;
     this->deck = new Card* [size];
     for (int i=0;i<n_originalDeck;i++)
     {
-        this->deck[i] = &originalDeck[i];
+        this->originalDeck[i].copyProperties(&deck[i]);
+        this->deck[i] = &this->originalDeck[i];
     }
-    this->n_deck = size;
 }
 void Player::setOriginalSpecialDeck(Card* deck, short size)
 {
-    delete[] this->originalSpecialDeck;
-    this->originalSpecialDeck = deck;
-    this->n_originalSpecialDeck = size;
+    delete [] this->originalSpecialDeck;
     delete [] this->specialDeck;
+    this->n_originalSpecialDeck = size;
+    this->originalSpecialDeck = new Card [size];
     this->specialDeck = new Card* [size];
     for (int i=0;i<n_originalSpecialDeck;i++)
     {
-        this->specialDeck[i] = &originalSpecialDeck[i];
+        this->originalSpecialDeck[i].copyProperties(&deck[i]);
+        this->specialDeck[i] = &this->originalSpecialDeck[i];
     }
     this->n_special = size;
 }
 void Player::setDeck(Card** deck, short size)
 {
     delete[] this->deck;
-    this->deck = deck;
+    this->deck = new Card* [size];
+    if (size==1) {this->deck[0] = deck[0];}
+    else{
+    for (int i=0;i<size;i++)
+    {
+        this->deck[i] = deck[i];
+    }
+    }
     this->n_deck = size;
 }
 void Player::setGraveyard(Card** graveyard, short size)
 {
     delete[] this->graveyard;
-    this->graveyard = graveyard;
+    this->graveyard = new Card* [size];
+    if (size==1) {this->graveyard[0] = graveyard[0];}
+    else{
+    for (int i=0;i<size;i++)
+    {
+        this->graveyard[i] = graveyard[i];
+    }
+    }
     this->n_graveyard = size;
 }
 void Player::setDeckOwnership()
 {
+    for (int i=0;i<this->n_originalDeck;i++)
+    {
+        this->originalDeck[i].setOwner(this);
+        this->originalDeck[i].setOriginalOwner(this);
+    }
     for (int i=0;i<this->n_deck;i++)
     {
         this->deck[i]->setOwner(this);
         this->deck[i]->setOriginalOwner(this);
-        this->originalDeck[i].setOwner(this);
-        this->originalDeck[i].setOriginalOwner(this);
+    }
+    for (int i=0;i<this->n_originalSpecialDeck;i++)
+    {
+        this->originalSpecialDeck[i].setOwner(this);
+        this->originalSpecialDeck[i].setOriginalOwner(this);
     }
     for (int i=0;i<this->n_special;i++)
     {
         this->specialDeck[i]->setOwner(this);
         this->specialDeck[i]->setOriginalOwner(this);
-        this->originalSpecialDeck[i].setOwner(this);
-        this->originalSpecialDeck[i].setOriginalOwner(this);
     }
 }
 void Player::setSpecialDeck(Card** deck, short size)
 {
     delete[] this->specialDeck;
-    this->specialDeck = deck;
+    this->specialDeck = new Card* [size];
+    if (size==1) {this->specialDeck[0] = deck[0];}
+    else{
+    for (int i=0;i<size;i++)
+    {
+        this->specialDeck[i] = deck[i];
+    }
+    }
     this->n_special = size;
 }
 void Player::setBot()
 {
-    this->bot = new Bot [1];
+    this->bot = new Bot;
 }
 void Player::shuffleDeck()
 {
@@ -117,3 +153,16 @@ void Player::shuffleDeck()
         this->deck[j] = card;
     }
 }
+Player::~Player()
+{
+    opponent = nullptr;
+    delete [] minionField;
+    delete bot;
+    delete [] hand;
+    delete [] deck;
+    delete [] specialDeck;
+    delete [] graveyard;
+    delete [] originalDeck;
+    delete [] originalSpecialDeck;
+}
+

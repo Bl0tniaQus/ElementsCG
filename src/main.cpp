@@ -21,6 +21,6 @@ int main(int argc, char *argv[])
     duel.getPlayer(1)->setBot();
     duel.DuelControl(&deck,&deck2);
     //todo
-    //gamestate poprawić kopiowanie
+    //testowanie różnych celi singlechoice bota
 
 }

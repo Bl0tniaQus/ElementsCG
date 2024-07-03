@@ -4,8 +4,8 @@
 class Bot
 {
 private:
-    Gamestate baseGamestate;
-    Gamestate tempGamestate;
+    Gamestate* baseGamestate;
+    Gamestate* tempGamestate;
     short chosenSingleTarget = -1;
     short n_choices;
     short tested;
@@ -20,10 +20,11 @@ private:
     int bestOption;
 public:
     Bot();
+    ~Bot();
     void generateBaseGamestate(Duel* duel);
     void generateTempGamestate(Duel* duel);
-    Gamestate* getBaseGamestate() {return &this->baseGamestate;}
-    Gamestate* getTempGamestate() {return &this->tempGamestate;}
+    Gamestate* getBaseGamestate() {return this->baseGamestate;}
+    Gamestate* getTempGamestate() {return this->tempGamestate;}
     short* getHandOptions() {return this->handOptions;}
     float* getHandValues() {return this->handValues;}
     short* getTargetsForOptions() {return this->targetsForOptions;}
@@ -40,7 +41,7 @@ public:
     void setTargetTesting(bool tt) {this->testingTargets = tt;}
     bool isTestingTargets() {return this->testingTargets;}
     short getOptionsNumber() {return this->testedOptions;}
-    void testCardFromHand(short c);
+    void testCardFromHand(short c, Duel* duel);
     void saveOption(short card, short target, float val);
     short getBestTarget() {return this->targetsForOptions[this->bestOption];}
     short getBestCard() {return this->handOptions[this->bestOption];}

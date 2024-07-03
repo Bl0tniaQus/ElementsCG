@@ -12,4 +12,8 @@ void Zone::destroyCard()
 {
     this->card = nullptr;
 }
+Zone::~Zone()
+{
+    this->card = nullptr;
 
+}

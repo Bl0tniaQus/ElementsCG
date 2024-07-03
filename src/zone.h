@@ -10,6 +10,7 @@ private:
     bool used;
 public:
     Zone() {this->used=false; this->card=nullptr;};
+    ~Zone();
     short getId() {return id;};
     void setId(short id) {this->id = id;}
     void bindCard(Card* card);

@@ -6,7 +6,7 @@ Gamestate::Gamestate()
 {
 
 }
-Gamestate::Gamestate(Duel* duel)
+Gamestate::Gamestate(Duel* duel):Duel()
 {
     this->setTurnCount(duel->getTurnCount());
     this->setTurnPlayer(duel->getTurnPlayer());
@@ -23,10 +23,10 @@ Gamestate::Gamestate(Duel* duel)
         player_new->setHp(player->getHp());
         player_new->setMana(player->getMana());
         player_new->setName(player->getName());
-        player_new->setOpponent(this->getPlayer(!i));
+        if (player->getBot()!=nullptr) {player_new->setBot();}
+        //player_new->setOpponent(this->getPlayer(!i));
 
         short handSize = player->getHandSize();
-        player_new->setHandSize(handSize);
         int* cardsInHand = new int [handSize];
         Card** hand = player->getHand();
         for (int i=0;i<handSize;i++)
@@ -35,10 +35,11 @@ Gamestate::Gamestate(Duel* duel)
         short cardsOnField = 0;
         short* usedZones = new short[0];
         int* fieldCards = new int[0];
-        Zone *field = player->getMinionField();
+        Zone *field;
         for (int j=0;j<5;j++)
         {
-            if (field[j].getUsed())
+            field = &player->getMinionField()[j];
+            if (field->getUsed())
             {
                 cardsOnField++;
                 short *new_usedZones = new short[cardsOnField];
@@ -68,43 +69,28 @@ Gamestate::Gamestate(Duel* duel)
         }
 
         short graveyardSize = player->getGraveyardSize();
-        player_new->setGraveyardSize(graveyardSize);
         int* cardsInGraveyard = new int [graveyardSize];
         Card** graveyard = player->getGraveyard();
         for (int j=0;j<graveyardSize;j++){cardsInGraveyard[j] = graveyard[j]->getCopyId();}
 
         short deckSize = player->getDeckSize();
-        player_new->setDeckSize(deckSize);
         int* cardsInDeck = new int [deckSize];
         Card** deck = player->getDeck();
         for (int j=0;j<deckSize;j++){cardsInDeck[j] = deck[j]->getCopyId();}
 
         short specialDeckSize = player->getSpecialDeckSize();
-        player_new->setSpecialDeckSize(specialDeckSize);
         int* cardsInSpecialDeck = new int [specialDeckSize];
         Card** specialDeck = player->getSpecialDeck();
         for (int j=0;j<specialDeckSize;j++){cardsInSpecialDeck[j] = specialDeck[j]->getCopyId();}
-        short originalDeckSize = player->getOriginalDeckSize();
-        player_new->setOriginalDeckSize(originalDeckSize);
-        short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
-        player_new->setOriginalDeckSize(originalSpecialDeckSize);
 
+        short originalDeckSize = player->getOriginalDeckSize();
+        short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
         Card* originalDeck = player->getOriginalDeck();
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
-        Card* d = new Card [originalDeckSize];
-        player_new->setOriginalDeck(d, originalDeckSize);
+        player_new->setOriginalDeck(originalDeck, originalDeckSize);
+        player_new->setOriginalSpecialDeck(originalSpecialDeck,originalSpecialDeckSize);
         Card* originalDeckCopy = player_new->getOriginalDeck();
-        for (int j=0;j<originalDeckSize;j++)
-        {
-            originalDeckCopy[j].copyProperties(&originalDeck[j]);
-        }
-        Card* sd = new Card [originalSpecialDeckSize];
-        player_new->setOriginalSpecialDeck(sd,originalSpecialDeckSize);
-        Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
-        for (int j=0;j<originalSpecialDeckSize;j++)
-        {
-            originalSpecialDeckCopy[j].copyProperties(&originalSpecialDeck[j]);
-        }
+
         Card** deckCopy = new Card* [deckSize];
         for (int j=0;j<deckSize;j++)
         {
@@ -120,6 +106,7 @@ Gamestate::Gamestate(Duel* duel)
             }
         }
         Card** specialDeckCopy = new Card* [specialDeckSize];
+        Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
         for (int j=0;j<specialDeckSize;j++)
         {
             int id = cardsInSpecialDeck[j];
@@ -145,7 +132,7 @@ Gamestate::Gamestate(Duel* duel)
                 int originalId = originalDeckCopy[k].getCopyId();
                 if (id==originalId)
                 {
-                    handCopy[j] = &originalDeck[k];
+                    handCopy[j] = &originalDeckCopy[k];
                     break;
                 }
             }
@@ -159,7 +146,7 @@ Gamestate::Gamestate(Duel* duel)
                 int originalId = originalDeckCopy[k].getCopyId();
                 if (id==originalId)
                 {
-                    graveyardCopy[j] = &originalDeck[k];
+                    graveyardCopy[j] = &originalDeckCopy[k];
                     break;
                 }
             }
@@ -171,16 +158,16 @@ Gamestate::Gamestate(Duel* duel)
         usedZonesArr[i] = usedZones;
         cardsOnFieldArr[i] = cardsOnField;
         fieldCardsArr[i] = fieldCards;
-        //delete[] d;
-        //delete[] sd;
-       // delete[] cardsInHand;
-        //delete[] cardsInGraveyard;
-       // delete[] cardsInDeck;
-       // delete[] cardsInSpecialDeck;
-       // delete[] handCopy;
-       // delete[] graveyardCopy;
-       // delete[] deckCopy;
-       // delete[] specialDeckCopy;
+        player = nullptr;
+        player_new = nullptr;
+        delete[] cardsInHand;
+        delete[] cardsInGraveyard;
+        delete[] cardsInDeck;
+        delete[] cardsInSpecialDeck;
+        delete[] handCopy;
+        delete[] graveyardCopy;
+        delete[] deckCopy;
+        delete[] specialDeckCopy;
     }
     for (int i=0;i<2;i++)
     {

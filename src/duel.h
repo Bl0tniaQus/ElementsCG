@@ -11,6 +11,7 @@ private:
     unsigned char turnPlayer;
 public:
     Duel();
+    virtual ~Duel() {}
     short getTurnCount() {return this->turnCount;}
     void setTurnCount(short turnCount) {this->turnCount=turnCount;}
     unsigned char getTurnPlayer() {return this->turnPlayer;}

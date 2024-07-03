@@ -29,6 +29,7 @@ private:
 
 public:
     Player();
+    ~Player();
     void changeHp(short val);
     void changeMana(short val);
     int getMana() {return this->mana;}

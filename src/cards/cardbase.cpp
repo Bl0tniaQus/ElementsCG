@@ -22,8 +22,7 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, cons
 }
 void CardBase::setTargetList(Card** tl, short n)
 {
-    this->targetList->setTargetList(tl);
-    this->targetList->setTargetNumber(n);
+    this->targetList->setTargetList(tl, n);
 }
 void CardBase::onTurnStart(Duel* duel, Card* card)
 {
@@ -38,7 +37,17 @@ short CardBase::singleChoice(Duel* duel, Card* card)
     short nt = this->getTargetList()->getTargetsNumber();
     Player* owner = card->getOwner();
     Bot* bot = owner->getBot();
-    if (bot!=nullptr) { if (bot->getTestedNumber()==-1){bot->setChoicesNumber(nt);bot->setTestedNumber(0);}}
+    if (bot!=nullptr&&!bot->isTestingTargets())
+    {
+        if (bot->getTestedNumber()==-1)
+        {
+            bot->setChoicesNumber(nt);
+            bot->setTestedNumber(0);
+            bot->setTargetTesting(true);
+
+        }
+
+    }
     short target;
     if (nt>0)
     {
@@ -56,7 +65,10 @@ short CardBase::singleChoice(Duel* duel, Card* card)
         }
         else
         {
-            if (bot->isTesting()) {return bot->getTestedNumber();}
+            if (bot->isTesting())
+            {
+                return bot->getTestedNumber();
+            }
             else {return bot->getBestTarget();}
         }
     }
@@ -66,11 +78,15 @@ void CardBase::minionsOnField(Duel* duel, Card* card)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
+    Zone* zone;
+    Player* player;
+    player = duel->getPlayer(duel->getTurnPlayer())->getOpponent();
     for (int i=0;i<5;i++)
         {
-            Card *card = duel->getPlayer(duel->getTurnPlayer())->getOpponent()->getMinionField()[i].getCard();
+            zone = &player->getMinionField()[i];
+            Card *cardd = zone->getCard();
 
-            if (card!=nullptr)
+            if (cardd!=nullptr)
             {
 
             n_targets++;
@@ -82,16 +98,18 @@ void CardBase::minionsOnField(Duel* duel, Card* card)
                     newtargets[j] = targets[j];
 
                 }
-                newtargets[n_targets-1] = card;
+                newtargets[n_targets-1] = cardd;
                 delete [] targets;
                 targets = newtargets;
-            } else {newtargets[0]=card; targets = newtargets;}
+            } else {newtargets[0]=cardd; targets = newtargets;}
             }
         }
+        player = duel->getPlayer(duel->getTurnPlayer());
         for (int i=0;i<5;i++)
         {
-            Card *card = duel->getPlayer(duel->getTurnPlayer())->getMinionField()[i].getCard();
-            if (card!=nullptr)
+            zone = &player->getMinionField()[i];
+            Card *cardd = zone->getCard();
+            if (cardd!=nullptr)
             {
             n_targets++;
             Card **newtargets = new Card* [n_targets];
@@ -102,10 +120,10 @@ void CardBase::minionsOnField(Duel* duel, Card* card)
                     newtargets[j] = targets[j];
 
                 }
-                newtargets[n_targets-1] = card;
+                newtargets[n_targets-1] = cardd;
                 delete [] targets;
                 targets = newtargets;
-            } else {newtargets[0]=card; targets = newtargets;}
+            } else {newtargets[0]=cardd; targets = newtargets;}
             }
         }
         this->setTargetList(targets,n_targets);

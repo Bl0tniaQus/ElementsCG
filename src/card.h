@@ -28,7 +28,9 @@ bool isSpellImmune;
 
 public:
     Card();
+    ~Card();
     Card(int entryId);
+    void getValuesFromId(int entryId);
     void setZone(Zone* zone){this->zone = zone;}
     Zone* getZone() {return this->zone;}
     void setOwner(Player* owner){this->owner = owner;}

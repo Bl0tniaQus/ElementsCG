@@ -1,5 +1,7 @@
 #include "card.h"
 #include "globals.h"
+#include "zone.h"
+#include "player.h"
 Card::Card()
 {
 
@@ -20,7 +22,23 @@ Card::Card(int entryId)
     this->isNegated = false;
     this->isSpellImmune = false;
     this->zone = nullptr;
-
+}
+void Card::getValuesFromId(int entryId)
+{
+    this->cardName = this->getCardNameById(entryId);
+    this->cardName->bindCard(this);
+    this->copyId = ++Card::COPYID;
+    this->attacks = 1;
+    if (this->getCardType()==2) {this->place = 4;}
+    else {this->place = 0;}
+    this->cost = this->cardName->getCost();
+    this->attack = this->cardName->getAttack();
+    this->defence = this->cardName->getDefence();
+    this->level = this->cardName->getLevel();
+    this->barrier = 0;
+    this->isNegated = false;
+    this->isSpellImmune = false;
+    this->zone = nullptr;
 }
 void Card::copyProperties(Card* card)
 {
@@ -32,6 +50,7 @@ void Card::copyProperties(Card* card)
     this->defence = card->getDefence();
     this->level = card->getLevel();
     this->cardName = card->getCardNameById(card->getCardId());
+    this->cardName->bindCard(this);
     this->barrier = card->getBarrier();
     //this->owner = card->getOwner();
     //this->originalOwner = card->getOriginalOwner();
@@ -53,4 +72,11 @@ CardBase* Card::getCardNameById(int id)
         case 9: cardbase = new TempestWyvern;break;
     }
     return cardbase;
+}
+Card::~Card()
+{
+    this->owner = nullptr;
+    this->originalOwner = nullptr;
+    this->zone = nullptr;
+    delete this->cardName;
 }

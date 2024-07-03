@@ -6,49 +6,60 @@ Bot::Bot()
     this->handOptions = new short [0];
     this->targetsForOptions = new short [0];
     this->handValues = new float [0];
+    this->baseGamestate = new Gamestate;
+    this->tempGamestate = new Gamestate;
+}
+Bot::~Bot()
+{
+    delete baseGamestate;
+    delete tempGamestate;
+    delete [] handOptions;
+    delete [] targetsForOptions;
+    delete [] handValues;
 }
 void Bot::generateBaseGamestate(Duel* duel)
 {
-    this->baseGamestate = Gamestate(duel);
-    this->baseGameStatevalue = this->baseGamestate.evaluate();
+    delete this->baseGamestate;
+    this->baseGamestate = new Gamestate(duel);
+    this->baseGameStatevalue = this->baseGamestate->evaluate();
 }
 void Bot::generateTempGamestate(Duel* duel)
 {
-    this->tempGamestate = Gamestate(duel);
+    delete this->tempGamestate;
+    this->tempGamestate = new Gamestate(duel);
 }
-void Bot::testCardFromHand(short c)
+void Bot::testCardFromHand(short c, Duel* duel)
 {
-
-    Gamestate* bGamestate = this->getBaseGamestate();
-    this->generateTempGamestate(bGamestate);
-    Gamestate* tGamestate = this->getTempGamestate();
     Player* player;
     Card* card;
+    this->generateTempGamestate(duel);
     this->tested = -1;
+    this->n_choices = 0;
     this->testing = true;
-    this->generateTempGamestate(bGamestate);
+    this->testingTargets = false;
     float value;
     float bValue = this->baseGameStatevalue;
-    player = tGamestate->getPlayer(tGamestate->getTurnPlayer());
+    player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
     card = player->getHand()[c];
-    tGamestate->playFromHand(card);
-    if (this->tested>0)
+    this->tempGamestate->playFromHand(card);
+    if (this->testingTargets)
     {
         for (int i=0;i<this->n_choices;i++)
             {
-                this->generateTempGamestate(bGamestate);
-                player = tGamestate->getPlayer(tGamestate->getTurnPlayer());
-                tGamestate->playFromHand(player->getHand()[c]);
-                value = tGamestate->evaluate();
+                this->generateTempGamestate(duel);
+                player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+                this->tempGamestate->playFromHand(player->getHand()[c]);
+                value = this->tempGamestate->evaluate();
                 this->saveOption(c,i,value);
             }
     }
     else
     {
-        value = tGamestate->evaluate();
-        this->saveOption(c,-1,value);
+        value = this->tempGamestate->evaluate();
+        this->saveOption(c,-1,bValue-value);
     }
     this->testing = false;
+    this->testingTargets = false;
 }
 void Bot::saveOption(short card, short target, float val)
 {

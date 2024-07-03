@@ -10,6 +10,7 @@ private:
     short n_special;
 public:
     Deck();
+    ~Deck();
     Deck(short deckid);
     Card* getDeck() {return this->mainDeck;}
     short getDeckSize() {return this->n_cards;}
