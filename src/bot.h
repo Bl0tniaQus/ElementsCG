@@ -16,6 +16,9 @@ private:
     short* handOptions;
     short* targetsForOptions;
     float* handValues;
+    short* battleOptions;
+    short* targetsForBattleOptions;
+    float* battleValues;
     int testedOptions;
     int bestOption;
 public:
@@ -49,6 +52,4 @@ public:
     void getBestOption();
     void endHandTesting();
 };
-// steruj z poziomu tej klasy wyborami
-//dla każdej karty trzymaj licznik, które opcje są już sprawdzone, funkcja CardBase::singleChoice() w fazie testowania zwróci kolejny niesprawdzony cel i aktywuje efekt na tym celu na tymczasowym gameState, dla którego zostanie wyliczony współczynnik. Bot będzie przechowywał najlepszą wartość współczynnika wsp = (evaluate(temp) - evaluate(base)) i dla jakiej kominacji karta - cel został uzyskany. Po sprawdzeniu wszystkich opcji wywoła zwróci najlepszą wybraną opcję do Duel i aktywuje efekt na głównym kontrolerze gry
 #endif // BOT_H

@@ -7,11 +7,13 @@ class Duel
 {
 private:
     Player players[2]; //0 - player 1, 1 - player2
+    TargetList* attackersTargetList;
+    TargetList* defendersTargetList;
     short turnCount;
     unsigned char turnPlayer;
 public:
     Duel();
-    virtual ~Duel() {}
+    virtual ~Duel();
     short getTurnCount() {return this->turnCount;}
     void setTurnCount(short turnCount) {this->turnCount=turnCount;}
     unsigned char getTurnPlayer() {return this->turnPlayer;}
@@ -44,7 +46,10 @@ public:
     void applyContinuous();
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
-
+    void generateAttackersList();
+    void generateDefendersList();
+    TargetList* getAttackersList() {return this->attackersTargetList;}
+    TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}
 };
 

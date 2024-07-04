@@ -10,6 +10,13 @@ Duel::Duel()
     players[0].setName('a');
     players[1].setName('b');
     this->turnPlayer = 0;
+    this->attackersTargetList = new TargetList;
+    this->defendersTargetList = new TargetList;
+}
+Duel::~Duel()
+{
+    delete this->attackersTargetList;
+    delete this->defendersTargetList;
 }
 void Duel::drawField(char p)
 {
@@ -484,6 +491,72 @@ void Duel::passTurn()
     this->turnCount++;
     turnPlayer->setSummonLimit(1);
     this->turnPlayer = !this->turnPlayer;
+}
+void Duel::generateAttackersList()
+{
+    Card** attackers = new Card* [0];
+    short n = 0;
+    Player* player = this->getPlayer(this->turnPlayer);
+    for (int i=0;i<5;i++)
+    {
+        Zone* zone = &player->getMinionField()[i];
+        Card* card = zone->getCard();
+        if (card!=nullptr)
+        {
+            if (card->getAttacks()>0)
+            {
+                n++;
+                Card** newAttackers = new Card* [n];
+                if (n>1)
+                {
+                    for (int j=0;j<n-1;j++)
+                    {
+                        newAttackers[i] = attackers[i];
+                    }
+                    newAttackers[n] = card;
+                }
+                else
+                {
+                    newAttackers[0] = card;
+                }
+                delete[]attackers;
+                attackers = newAttackers;
+
+            }
+        }
+    }
+    this->getAttackersList()->setTargetList(attackers,n);
+}
+void Duel::generateDefendersList()
+{
+    Card** defenders = new Card* [0];
+    short n = 0;
+    Player* player = this->getPlayer(this->turnPlayer)->getOpponent();
+    for (int i=0;i<5;i++)
+    {
+        Zone* zone = &player->getMinionField()[i];
+        Card* card = zone->getCard();
+        if (card!=nullptr)
+        {
+                n++;
+                Card** newDefenders = new Card* [n];
+                if (n>1)
+                {
+                    for (int j=0;j<n-1;j++)
+                    {
+                        newDefenders[i] = defenders[i];
+                    }
+                    newDefenders[n] = card;
+                }
+                else
+                {
+                    newDefenders[0] = card;
+                }
+                delete[]defenders;
+                defenders = newDefenders;
+        }
+    }
+    this->getDefendersList()->setTargetList(defenders,n);
 }
 void Duel::DuelControl(Deck *deck0, Deck* deck1)
 {

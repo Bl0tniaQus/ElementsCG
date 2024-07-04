@@ -6,6 +6,9 @@ Bot::Bot()
     this->handOptions = new short [0];
     this->targetsForOptions = new short [0];
     this->handValues = new float [0];
+    this->battleOptions = new short [0];
+    this->targetsForBattleOptions = new short [0];
+    this->battleValues = new float [0];
     this->baseGamestate = new Gamestate;
     this->tempGamestate = new Gamestate;
 }
@@ -118,17 +121,29 @@ void Bot::getBestOption()
 }
 void Bot::endHandTesting()
 {
-delete [] this->handValues;
-delete [] this->handOptions;
-delete [] this->targetsForOptions;
-this->handOptions = new short [0];
-this->targetsForOptions = new short [0];
-this->handValues = new float [0];
-this->n_choices = 0;
-this->testing = false;
-this->testingTargets = false;
-this->testedOptions = 0;
-this->tested = -1;
+    delete [] this->handValues;
+    delete [] this->handOptions;
+    delete [] this->targetsForOptions;
+    this->handOptions = new short [0];
+    this->targetsForOptions = new short [0];
+    this->handValues = new float [0];
+    this->n_choices = 0;
+    this->testing = false;
+    this->testingTargets = false;
+    this->testedOptions = 0;
+    this->tested = -1;
 }
+void Bot::testBattle(short c, Duel* duel)
+{
+    this->generateTempGamestate(duel);
+    Player* attacker = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+    Player* defender = attacker->getOpponent();
+    Card** attackers = this->tempGamestate->getAttackersList()->getTargetList();
+    short n_attackers = this->tempGamestate->getAttackersList()->getTargetsNumber();
+    Card** defenders = this->tempGamestate->getDefendersList()->getTargetList();
+    short n_defenders = this->tempGamestate->getDefendersList()->getTargetsNumber();
+
+}
+
 
 
