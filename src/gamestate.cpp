@@ -23,7 +23,7 @@ Gamestate::Gamestate(Duel* duel):Duel()
         player_new->setHp(player->getHp());
         player_new->setMana(player->getMana());
         player_new->setName(player->getName());
-        if (player->getBot()!=nullptr) {player_new->setBot();}
+        if (player->getBot()!=nullptr) {player_new->setBot(player->getBot());}
         //player_new->setOpponent(this->getPlayer(!i));
 
         short handSize = player->getHandSize();

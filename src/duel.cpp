@@ -409,7 +409,7 @@ void Duel::playFromHand(Card* card)
     short zoneid;
     short success =0;
 
-    if ((cost<=card->getOwner()->getMana())||(card->getPlace()==1))
+    if ((cost<=card->getOwner()->getMana())&&(card->getPlace()==1))
     {
         if ((type==1)&&(card->getOwner()->getSummonLimit()>0))
         {
@@ -513,20 +513,21 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         if (turnPlayer->checkBot()) //AI
         {
             Bot* bot = turnPlayer->getBot();
-            int xd;
             bot->generateBaseGamestate(this);
             short n_hand = turnPlayer->getHandSize();
             for (int z = 0;z<n_hand;z++)
             {
-                std::cout<<turnPlayer->getHand()[z]->getName()<< " ";
                 bot->testCardFromHand(z, this);
 
-            } std::cout<<std::endl;
-            for (int y = 0;y<bot->getOptionsNumber();y++)
-           {
+            }
+             for (int y = 0;y<bot->getOptionsNumber();y++)
+            {
                 std::cout<<bot->getHandOptions()[y]<<" "<<bot->getTargetsForOptions()[y]<<" "<<bot->getHandValues()[y]<<std::endl;
             }
-            std::cin>>xd;
+            bot->getBestOption();
+            short bc = bot->getBestCard();
+            if (bc>=0&&bc<n_hand) {this->playFromHand(turnPlayer->getHand()[bot->getBestCard()]);}
+            bot->endHandTesting();
             this->passTurn();
         }
         else //player

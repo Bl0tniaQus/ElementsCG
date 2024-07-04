@@ -138,10 +138,6 @@ void Player::setSpecialDeck(Card** deck, short size)
     }
     this->n_special = size;
 }
-void Player::setBot()
-{
-    this->bot = new Bot;
-}
 void Player::shuffleDeck()
 {
 
@@ -157,7 +153,6 @@ Player::~Player()
 {
     opponent = nullptr;
     delete [] minionField;
-    delete bot;
     delete [] hand;
     delete [] deck;
     delete [] specialDeck;

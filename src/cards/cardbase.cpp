@@ -37,14 +37,13 @@ short CardBase::singleChoice(Duel* duel, Card* card)
     short nt = this->getTargetList()->getTargetsNumber();
     Player* owner = card->getOwner();
     Bot* bot = owner->getBot();
-    if (bot!=nullptr&&!bot->isTestingTargets())
+    if (bot!=nullptr&&!bot->isTestingTargets()&&bot->isTesting())
     {
         if (bot->getTestedNumber()==-1)
         {
             bot->setChoicesNumber(nt);
-            bot->setTestedNumber(0);
             bot->setTargetTesting(true);
-
+            return -1;
         }
 
     }
@@ -69,7 +68,10 @@ short CardBase::singleChoice(Duel* duel, Card* card)
             {
                 return bot->getTestedNumber();
             }
-            else {return bot->getBestTarget();}
+            else
+            {
+                return bot->getBestTarget();
+            }
         }
     }
     return -1;

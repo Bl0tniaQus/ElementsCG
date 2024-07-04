@@ -1,5 +1,5 @@
 #include "bot.h"
-
+#include "card.h"
 Bot::Bot()
 {
     this->testedOptions = 0;
@@ -41,22 +41,28 @@ void Bot::testCardFromHand(short c, Duel* duel)
     float bValue = this->baseGameStatevalue;
     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
     card = player->getHand()[c];
-    this->tempGamestate->playFromHand(card);
-    if (this->testingTargets)
-    {
-        for (int i=0;i<this->n_choices;i++)
+    if ((card->getCost()<=player->getMana())||(card->getCardType()==1&&this->tempGamestate->getEmptyMinionZone(player)!=-1)) {
+        this->tempGamestate->playFromHand(card);
+        if (this->testingTargets)
+        {
+            if (this->n_choices!=0)
             {
-                this->generateTempGamestate(duel);
-                player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
-                this->tempGamestate->playFromHand(player->getHand()[c]);
-                value = this->tempGamestate->evaluate();
-                this->saveOption(c,i,value);
+            for (int i=0;i<this->n_choices;i++)
+                {
+                    this->tested = i;
+                    this->generateTempGamestate(duel);
+                    player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+                    this->tempGamestate->playFromHand(player->getHand()[c]);
+                    value = this->tempGamestate->evaluate();
+                    this->saveOption(c,i,value);
+                }
             }
-    }
-    else
-    {
-        value = this->tempGamestate->evaluate();
-        this->saveOption(c,-1,bValue-value);
+        }
+        else
+        {
+            value = this->tempGamestate->evaluate();
+            this->saveOption(c,-1,bValue-value);
+        }
     }
     this->testing = false;
     this->testingTargets = false;
@@ -109,6 +115,20 @@ void Bot::getBestOption()
         }
         this->bestOption = bestOption;
     }
+}
+void Bot::endHandTesting()
+{
+delete [] this->handValues;
+delete [] this->handOptions;
+delete [] this->targetsForOptions;
+this->handOptions = new short [0];
+this->targetsForOptions = new short [0];
+this->handValues = new float [0];
+this->n_choices = 0;
+this->testing = false;
+this->testingTargets = false;
+this->testedOptions = 0;
+this->tested = -1;
 }
 
 

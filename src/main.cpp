@@ -5,6 +5,8 @@
 #include "duel.h"
 #include "time.h"
 #include "targetlist.h"
+#include "globals.h"
+#include "bot.h"
 #include <iostream>
 #include <QApplication>
 
@@ -18,7 +20,8 @@ int main(int argc, char *argv[])
     Duel duel;
     Deck deck(1);
     Deck deck2(2);
-    duel.getPlayer(1)->setBot();
+
+    duel.getPlayer(1)->setBot(&bot);
     duel.DuelControl(&deck,&deck2);
     //todo
     //testowanie różnych celi singlechoice bota
