@@ -13,7 +13,6 @@ void CopperWorm::onSummon(Duel* duel, Card* card)
 
 
         }
-        this->setTargetList(nullptr,0);
 }
 void CopperWorm::getOnSummonTargetList(Duel* duel, Card* card)
 {

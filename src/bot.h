@@ -42,6 +42,7 @@ public:
     bool isTestingTargets() {return this->testingTargets;}
     short getOptionsNumber() {return this->testedOptions;}
     void testCardFromHand(short c, Duel* duel);
+    void testBattle(short c, Duel* duel);
     void saveOption(short card, short target, float val);
     short getBestTarget() {return this->targetsForOptions[this->bestOption];}
     short getBestCard() {return this->handOptions[this->bestOption];}

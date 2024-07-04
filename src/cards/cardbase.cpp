@@ -161,7 +161,6 @@ void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
 bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 {
         bool result = true;
-        this->setTargetList(nullptr,0);
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
         Card** temp_targets = this->getTargetList()->getTargetList();
@@ -170,7 +169,6 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
         {
             targets1[i] = temp_targets[i];
         }
-        this->setTargetList(nullptr,0);
         this->getSecondMaterialList(duel, card);
         short n_targets2 = this->getTargetList()->getTargetsNumber();
         temp_targets = this->getTargetList()->getTargetList();
@@ -178,7 +176,7 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
         for (int i=0;i<n_targets2;i++)
         {
             targets2[i] = temp_targets[i];
-        } delete []temp_targets;
+        }
 
         if ((n_targets1==0)||(n_targets2==0)) {result = false;}
         else if ((n_targets1==1)&&(n_targets2==1))
@@ -201,14 +199,12 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
         }
     delete[] targets1;
     delete[] targets2;
-    this->setTargetList(nullptr,0);
     return result;
 }
 bool CardBase::specialSummon2(Duel* duel, Card* card)
 {
     if (checkSummoningConditions2(duel,card))
     {
-        this->setTargetList(nullptr,0);
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
         Card** targets1 = this->getTargetList()->getTargetList();
@@ -221,7 +217,6 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
         std::cin>>target;
         Card* targetCard = targets1[target];
         Card* targetCard2;
-        this->setTargetList(nullptr,0);
         this->getSecondMaterialList(duel, card);
         short n_targets2 = this->getTargetList()->getTargetsNumber();
         Card** targets2 = this->getTargetList()->getTargetList();
@@ -275,7 +270,6 @@ bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
 }
 void CardBase::getMinionsWithSameElement(Duel* duel, Card* card, const char* element)
 {
-    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
@@ -308,7 +302,6 @@ void CardBase::getMinionsWithSameElement(Duel* duel, Card* card, const char* ele
 void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
     {
-    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
