@@ -20,7 +20,9 @@ private:
     short* targetsForBattleOptions;
     float* battleValues;
     int testedOptions;
+    int testedBattleOptions;
     int bestOption;
+    int bestAttackOption;
 public:
     Bot();
     ~Bot();
@@ -45,11 +47,18 @@ public:
     bool isTestingTargets() {return this->testingTargets;}
     short getOptionsNumber() {return this->testedOptions;}
     void testCardFromHand(short c, Duel* duel);
-    void testBattle(short c, Duel* duel);
-    void saveOption(short card, short target, float val);
+    void testCardBattle(short c, Duel* duel);
+    void testBattlePhase(Duel* duel);
+    void conductBattlePhase(Duel* duel);
+    void saveHandOption(short card, short target, float val);
+    void saveAttackOption(short card, short target, float val);
     short getBestTarget() {return this->targetsForOptions[this->bestOption];}
     short getBestCard() {return this->handOptions[this->bestOption];}
+    short getBestAttacker() {return this->battleOptions[this->bestAttackOption];};
+    short getBestAttackTarget() {return this->targetsForBattleOptions[this->bestAttackOption];};
     void getBestOption();
+    void getBestAttackOption();
     void endHandTesting();
+    void endBattleTesting();
 };
 #endif // BOT_H

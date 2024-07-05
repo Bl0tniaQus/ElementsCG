@@ -273,12 +273,16 @@ void CardBase::getMinionsWithSameElement(Duel* duel, Card* card, const char* ele
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
+    Zone* zone;
+    Card* cardd;
         for (int i=0;i<5;i++)
         {
-            Card* card = owner->getMinionField()[i].getCard();
-            if (card!=nullptr)
+            zone = &owner->getMinionField()[i];
+            cardd = zone->getCard();
+
+            if (cardd!=nullptr)
             {
-                if (strcmp(element, card->getElement())==0)
+                if (strcmp(element, cardd->getElement())==0)
                 {
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
@@ -289,10 +293,10 @@ void CardBase::getMinionsWithSameElement(Duel* duel, Card* card, const char* ele
                             newtargets[j] = targets[j];
 
                         }
-                        newtargets[n_targets-1] = card;
+                        newtargets[n_targets-1] = cardd;
                         delete [] targets;
                         targets = newtargets;
-                    } else {newtargets[0]=card; targets = newtargets;}
+                    } else {newtargets[0]=cardd; targets = newtargets;}
                 }
             }
         }
@@ -307,10 +311,10 @@ void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, 
     Player* owner = card->getOriginalOwner();
         for (int i=0;i<5;i++)
         {
-            Card* card = owner->getMinionField()[i].getCard();
-            if (card!=nullptr)
+            Card* cardd = owner->getMinionField()[i].getCard();
+            if (cardd!=nullptr)
             {
-                if (strcmp(element, card->getElement())==0&&card->getLevel()>=lvl)
+                if (strcmp(element, cardd->getElement())==0&&cardd->getLevel()>=lvl)
                 {
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
@@ -321,10 +325,10 @@ void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, 
                             newtargets[j] = targets[j];
 
                         }
-                        newtargets[n_targets-1] = card;
+                        newtargets[n_targets-1] = cardd;
                         delete [] targets;
                         targets = newtargets;
-                    } else {newtargets[0]=card; targets = newtargets;}
+                    } else {newtargets[0]=cardd; targets = newtargets;}
                 }
             }
         }

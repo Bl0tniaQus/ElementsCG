@@ -1,5 +1,6 @@
 #include "bot.h"
 #include "card.h"
+#include <iostream>
 Bot::Bot()
 {
     this->testedOptions = 0;
@@ -24,12 +25,16 @@ void Bot::generateBaseGamestate(Duel* duel)
 {
     delete this->baseGamestate;
     this->baseGamestate = new Gamestate(duel);
+    this->baseGamestate->generateAttackersList();
+    this->baseGamestate->generateDefendersList();
     this->baseGameStatevalue = this->baseGamestate->evaluate();
 }
 void Bot::generateTempGamestate(Duel* duel)
 {
     delete this->tempGamestate;
     this->tempGamestate = new Gamestate(duel);
+    this->tempGamestate->generateAttackersList();
+    this->tempGamestate->generateDefendersList();
 }
 void Bot::testCardFromHand(short c, Duel* duel)
 {
@@ -57,20 +62,20 @@ void Bot::testCardFromHand(short c, Duel* duel)
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     this->tempGamestate->playFromHand(player->getHand()[c]);
                     value = this->tempGamestate->evaluate();
-                    this->saveOption(c,i,value);
+                    this->saveHandOption(c,i,value);
                 }
             }
         }
         else
         {
             value = this->tempGamestate->evaluate();
-            this->saveOption(c,-1,bValue-value);
+            this->saveHandOption(c,-1,bValue-value);
         }
     }
     this->testing = false;
     this->testingTargets = false;
 }
-void Bot::saveOption(short card, short target, float val)
+void Bot::saveHandOption(short card, short target, float val)
 {
 
     this->testedOptions++;
@@ -102,6 +107,38 @@ void Bot::saveOption(short card, short target, float val)
     this->targetsForOptions = newTargets;
     this->handValues = newValues;
 }
+void Bot::saveAttackOption(short card, short target, float val)
+{
+
+    this->testedBattleOptions++;
+    short *newBattleOptions = new short[this->testedBattleOptions];
+    short *newBattleTargets = new short[this->testedBattleOptions];
+    float *newBattleValues = new float[this->testedBattleOptions];
+    if (this->testedBattleOptions>1)
+    {
+        for (int i=0;i<this->testedBattleOptions;i++)
+        {
+            newBattleOptions[i] = this->battleOptions[i];
+            newBattleTargets[i] = this->targetsForBattleOptions[i];
+            newBattleValues[i] = this->battleValues[i];
+        }
+            newBattleOptions[this->testedBattleOptions-1] = card;
+            newBattleTargets[this->testedBattleOptions-1] = target;
+            newBattleValues[this->testedBattleOptions-1] = val;
+    }
+    else
+    {
+            newBattleOptions[0] = card;
+            newBattleTargets[0] = target;
+            newBattleValues[0] = val;
+    }
+    delete[] this->battleOptions;
+    delete[] this->targetsForBattleOptions;
+    delete[] this->battleValues;
+    this->battleOptions = newBattleOptions;
+    this->targetsForBattleOptions = newBattleTargets;
+    this->battleValues = newBattleValues;
+}
 void Bot::getBestOption()
 {
     if (this->testedOptions>0)
@@ -119,6 +156,23 @@ void Bot::getBestOption()
         this->bestOption = bestOption;
     }
 }
+void Bot::getBestAttackOption()
+{
+    if (this->testedBattleOptions>0)
+    {
+        float bestValue = this->battleValues[0];
+        int bestOption = 0;
+        for (int i=1;i<this->testedBattleOptions;i++)
+        {
+            if (this->battleValues[i]>bestValue)
+            {
+                bestValue = this->battleValues[i];
+                bestOption = i;
+            }
+        }
+        this->bestAttackOption = bestOption;
+    }
+}
 void Bot::endHandTesting()
 {
     delete [] this->handValues;
@@ -133,17 +187,78 @@ void Bot::endHandTesting()
     this->testedOptions = 0;
     this->tested = -1;
 }
-void Bot::testBattle(short c, Duel* duel)
+void Bot::endBattleTesting()
 {
-    this->generateTempGamestate(duel);
-    Player* attacker = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
-    Player* defender = attacker->getOpponent();
-    Card** attackers = this->tempGamestate->getAttackersList()->getTargetList();
-    short n_attackers = this->tempGamestate->getAttackersList()->getTargetsNumber();
-    Card** defenders = this->tempGamestate->getDefendersList()->getTargetList();
-    short n_defenders = this->tempGamestate->getDefendersList()->getTargetsNumber();
-
+    delete [] this->battleValues;
+    delete [] this->battleOptions;
+    delete [] this->targetsForBattleOptions;
+    this->battleOptions = new short [0];
+    this->targetsForBattleOptions = new short [0];
+    this->battleValues = new float [0];
+    this->testedBattleOptions = 0;
 }
+void Bot::testCardBattle(short c, Duel* duel)
+{
+    float bv = this->baseGamestate->evaluate();
+    short n_defenders = this->baseGamestate->getDefendersList()->getTargetsNumber();
+    for (int i=0;i<n_defenders;i++)
+    {
+        this->generateTempGamestate(duel);
+        Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()[c];
+        Card* defender = this->tempGamestate->getDefendersList()->getTargetList()[i];
+        this->tempGamestate->combat(attacker,defender);
+        float v = this->tempGamestate->evaluate();
+        this->saveAttackOption(c,i,bv-v);
+    }
+    if (n_defenders == 0)
+    {
+        this->generateTempGamestate(duel);
+        Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()[c];
+        this->tempGamestate->directAttack(attacker);
+        float v = this->tempGamestate->evaluate();
+        this->saveAttackOption(c,-1,bv-v);
+    }
+}
+void Bot::testBattlePhase(Duel* duel)
+{
+    this->generateBaseGamestate(duel);
+    short n_attackers = this->baseGamestate->getAttackersList()->getTargetsNumber();
+    for (int i=0;i<n_attackers;i++)
+    {
+        this->testCardBattle(i, duel);
+    }
+}
+void Bot::conductBattlePhase(Duel* duel)
+{
+    while(true)
+    {
+        this->generateBaseGamestate(duel);
+        this->testBattlePhase(duel);
+        if (this->testedBattleOptions==0) {this->endBattleTesting(); break;}
+        else
+        {
+            this->getBestAttackOption();
+            short atk = this->getBestAttacker();
+            short target = this->getBestAttackTarget();
+            duel->generateAttackersList();
+            duel->generateDefendersList();
+            Card* attacker = duel->getAttackersList()->getTargetList()[atk];
+            if (target!=-1)
+            {
+                Card* defender = duel->getDefendersList()->getTargetList()[target];
+                duel->combat(attacker,defender);
+                std::cout<<attacker->getName()<<" vs "<<defender->getName()<<std::endl;
+            }
+            else
+            {
+                duel->directAttack(attacker);
+                std::cout<<attacker->getName()<<" direct attack"<<std::endl;
+            }
+        }
+        this->endBattleTesting();
+    }
+}
+
 
 
 

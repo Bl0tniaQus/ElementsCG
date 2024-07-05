@@ -121,7 +121,7 @@ Gamestate::Gamestate(Duel* duel):Duel()
             }
         }
         player_new->setDeck(deckCopy,deckSize);
-        player_new->setSpecialDeck(specialDeck,specialDeckSize);
+        player_new->setSpecialDeck(specialDeckCopy,specialDeckSize);
         player_new->setDeckOwnership();
         Card** handCopy = new Card* [handSize];
         for (int j=0;j<handSize;j++)
@@ -173,8 +173,12 @@ Gamestate::Gamestate(Duel* duel):Duel()
     {
         Card* originalDeck = this->getPlayer(i)->getOriginalDeck();
         short originalDeckSize = this->getPlayer(i)->getOriginalDeckSize();
+        Card* originalSpecialDeck =  this->getPlayer(i)->getOriginalSpecialDeck();
+        short originalSpecialDeckSize = this->getPlayer(i)->getOriginalSpecialDeckSize();
         Card* originalDeckOpp = this->getPlayer(!i)->getOriginalDeck();
         short originalDeckSizeOpp = this->getPlayer(!i)->getOriginalDeckSize();
+        Card* originalSpecialDeckOpp =  this->getPlayer(!i)->getOriginalSpecialDeck();
+        short originalSpecialDeckSizeOpp = this->getPlayer(!i)->getOriginalSpecialDeckSize();
         for (int j = 0; j<cardsOnFieldArr[i];j++)
         {
             bool found = false;
@@ -191,9 +195,20 @@ Gamestate::Gamestate(Duel* duel):Duel()
                     break;
                 }
             }
-            if (!found)
+            if (found) {continue;}
+            for (int k = 0; k<originalSpecialDeckSize;k++)
             {
-                for (int k = 0; k<originalDeckSizeOpp;k++)
+                int originalId = originalSpecialDeck[k].getCopyId();
+                if (id==originalId)
+                {
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeck[k]);
+                    this->getPlayer(i)->getMinionField()[zone].setUsed(true);
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {continue;}
+            for (int k = 0; k<originalDeckSizeOpp;k++)
             {
                 int originalId = originalDeckOpp[k].getCopyId();
                 if (id==originalId)
@@ -204,6 +219,17 @@ Gamestate::Gamestate(Duel* duel):Duel()
                     break;
                 }
             }
+            if (found) {continue;}
+            for (int k = 0; k<originalSpecialDeckSizeOpp;k++)
+            {
+                int originalId = originalSpecialDeckOpp[k].getCopyId();
+                if (id==originalId)
+                {
+                    originalSpecialDeckOpp[k].setOwner(this->getPlayer(i));
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeckOpp[k]);
+                    found = true;
+                    break;
+                }
             }
         }
 

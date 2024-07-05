@@ -509,11 +509,11 @@ void Duel::generateAttackersList()
                 Card** newAttackers = new Card* [n];
                 if (n>1)
                 {
-                    for (int j=0;j<n-1;j++)
+                    for (int j=0;j<n;j++)
                     {
-                        newAttackers[i] = attackers[i];
+                        newAttackers[j] = attackers[j];
                     }
-                    newAttackers[n] = card;
+                    newAttackers[n-1] = card;
                 }
                 else
                 {
@@ -521,7 +521,6 @@ void Duel::generateAttackersList()
                 }
                 delete[]attackers;
                 attackers = newAttackers;
-
             }
         }
     }
@@ -542,11 +541,11 @@ void Duel::generateDefendersList()
                 Card** newDefenders = new Card* [n];
                 if (n>1)
                 {
-                    for (int j=0;j<n-1;j++)
+                    for (int j=0;j<n;j++)
                     {
-                        newDefenders[i] = defenders[i];
+                        newDefenders[j] = defenders[j];
                     }
-                    newDefenders[n] = card;
+                    newDefenders[n-1] = card;
                 }
                 else
                 {
@@ -585,7 +584,7 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
 
         if (turnPlayer->checkBot()) //AI
         {
-            Bot* bot = turnPlayer->getBot();
+           Bot* bot = turnPlayer->getBot();
             bot->generateBaseGamestate(this);
             short n_hand = turnPlayer->getHandSize();
             for (int z = 0;z<n_hand;z++)
@@ -601,6 +600,7 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
             short bc = bot->getBestCard();
             if (bc>=0&&bc<n_hand) {this->playFromHand(turnPlayer->getHand()[bot->getBestCard()]);}
             bot->endHandTesting();
+            bot->conductBattlePhase(this);
             this->passTurn();
         }
         else //player
