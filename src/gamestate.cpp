@@ -247,7 +247,7 @@ float Gamestate::resourceFactor()
 
     if (opponentHp<=0) {return 99999;}
 
-    float f_oppHp = 1 + (30/(opponentHp))/100;
+    float f_oppHp = 1 + ((30/(opponentHp))*1.5)/100;
     float f_pHp = 1 + playerHp/100;
     float f_oppMana = 1 + (15/(opponentMana+0.01) * 2)/20;
     float f_pMana = 1 + (playerMana * 0.7)/30;
@@ -278,7 +278,99 @@ float Gamestate::cardAdvantageFactor()
 }
 float Gamestate::fieldPresenceFactor()
 {
-    float factor = 0;
+    float factor;
+
+    Player* player = this->getPlayer(this->getTurnPlayer());
+    Player* opponent = player->getOpponent();
+
+    Zone* playerField = player->getMinionField();
+    Zone* opponentField = opponent->getMinionField();
+
+    //short n_playerMinions = player->getMinionCount();
+    //short n_opponentMinions = opponent->getMinionCount();
+
+    //short highestLvl = -1, highestLvlOpp = -1;
+    short sumLvl = 0, sumLvlOpp = 0;
+    //short highestAtk = -1, highestAtkOpp = -1, highestDef = -1, highestDefOpp = -1;
+    Card* card;
+    for (int i = 0; i<5; i++)
+    {
+       // short atk;
+       // short def;
+        short lvl;
+        card = playerField[i].getCard();
+        if (card!=nullptr)
+        {
+            //atk = card->getAttack();
+           // def = card->getDefence();
+            lvl = card->getLevel();
+           // if (atk>highestAtk) {highestAtk = atk;}
+           // if (def>highestDef) {highestDef = def;}
+           // if (lvl>highestLvl) {highestLvl = lvl;}
+            sumLvl = sumLvl + lvl;
+        }
+        card = opponentField[i].getCard();
+        if (card!=nullptr)
+        {
+            //atk = card->getAttack();
+            //def = card->getDefence();
+            lvl = card->getLevel();
+            //if (atk>highestAtkOpp) {highestAtkOpp = atk;}
+           // if (def>highestDefOpp) {highestDefOpp = def;}
+           // if (lvl>highestLvlOpp) {highestLvlOpp = lvl;}
+            sumLvlOpp = sumLvlOpp + lvl;
+        }
+    }
+    this->generateAttackersList();
+    this->generateDefendersList();
+    Card** attackers = this->getAttackersList()->getTargetList();
+    short n_attackers = this->getAttackersList()->getTargetsNumber();
+    Card** defenders = this->getDefendersList()->getTargetList();
+    short n_defenders = this->getDefendersList()->getTargetsNumber();
+
+    //offense
+    short vulnerable_defenders = 0;
+    for (int i=0;i<n_defenders;i++)
+    {
+        Card* defender = defenders[i];
+        for (int j=0;j<n_attackers;j++)
+        {
+            Card* attacker = attackers[j];
+            if (attacker->getAttack()>defender->getDefence())
+            {
+                vulnerable_defenders++;
+                break;
+            }
+        }
+    }
+    //defence
+    short possible_attacks = n_attackers * n_defenders;
+    short mitigated_attacks = 0;
+    short barriers = 0;
+    for (int i=0;i<n_attackers;i++)
+    {
+        Card* defender = attackers[i]; //turn player's defence
+        for (int j=0;j<n_defenders;j++)
+        {
+            Card* attacker = defenders[j]; //opponent's offense
+            if (attacker->getDefence()>=defender->getAttack())
+            {
+                mitigated_attacks++;
+            }
+            if (defender->getBarrier()>0)
+            {
+                barriers += defender->getBarrier();
+            }
+        }
+    }
+    float f_pressence = 1 + ((sumLvl - sumLvlOpp) / 50.0);
+    float f_offense = 1 + ((vulnerable_defenders*2.0)/10);
+    float f_defence = 1 + ((mitigated_attacks/(possible_attacks+0.01))*0.6 + barriers/10);
+
+
+    factor = f_pressence * f_offense * f_defence;
+    std::cout<<"f pres "<<f_pressence<<" f off "<<f_offense<<" f def "<<f_defence<<std::endl;
+    //std::cout<<sumLvl<<" "<<sumLvlOpp<<" "<<vulnerable_defenders<<std::endl;
     return factor;
 }
 
@@ -286,11 +378,13 @@ float Gamestate::evaluate()
 {
     float resources = this->resourceFactor();
     float cardAdvantage = this->cardAdvantageFactor();
+    float fieldPresenceFactor = this->fieldPresenceFactor();
 
-    float resourcesW = 1;
-    float cardAdvantageW = 2;
-
-    float value = (resources * resourcesW + cardAdvantage * cardAdvantageW) / (resourcesW + cardAdvantageW);
+    short resourcesW = 0;
+    short cardAdvantageW = 0;
+    short fieldPresenceW = 12;
+   // std::cout<<resources<<" "<<cardAdvantage<<" "<<fieldPresenceFactor<<std::endl;
+    float value = (resources * resourcesW + cardAdvantage * cardAdvantageW + fieldPresenceFactor * fieldPresenceW) / (resourcesW + cardAdvantageW + fieldPresenceW);
 
     //return (float)(rand()%10 + 0);
     return value;

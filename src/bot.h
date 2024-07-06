@@ -56,6 +56,7 @@ public:
     short getBestCard() {return this->handOptions[this->bestOption];}
     short getBestAttacker() {return this->battleOptions[this->bestAttackOption];};
     short getBestAttackTarget() {return this->targetsForBattleOptions[this->bestAttackOption];};
+    float getBestAttackValue() {return this->battleValues[this->bestAttackOption];}
     void getBestOption();
     void getBestAttackOption();
     void endHandTesting();

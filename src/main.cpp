@@ -23,5 +23,5 @@ int main(int argc, char *argv[])
 
     duel.getPlayer(1)->setBot(&bot);
     duel.DuelControl(&deck,&deck2);
-
+    //todo poprawić bota, dowiedzieć się dlaczego whirlwind przeciwnego miniona jest gorzej punktowany od cofnięcia swojego
 }

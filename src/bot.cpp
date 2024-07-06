@@ -46,7 +46,7 @@ void Bot::testCardFromHand(short c, Duel* duel)
     this->testing = true;
     this->testingTargets = false;
     float value;
-    float bValue = this->baseGameStatevalue;
+    float bValue = this->baseGamestate->evaluate();
     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
     card = player->getHand()[c];
     if ((card->getCost()<=player->getMana())||(card->getCardType()==1&&this->tempGamestate->getEmptyMinionZone(player)!=-1)) {
@@ -240,6 +240,8 @@ void Bot::conductBattlePhase(Duel* duel)
             this->getBestAttackOption();
             short atk = this->getBestAttacker();
             short target = this->getBestAttackTarget();
+            float val = this->getBestAttackValue();
+            if (val<0) {break;}
             duel->generateAttackersList();
             duel->generateDefendersList();
             Card* attacker = duel->getAttackersList()->getTargetList()[atk];
@@ -247,12 +249,10 @@ void Bot::conductBattlePhase(Duel* duel)
             {
                 Card* defender = duel->getDefendersList()->getTargetList()[target];
                 duel->combat(attacker,defender);
-                std::cout<<attacker->getName()<<" vs "<<defender->getName()<<std::endl;
             }
             else
             {
                 duel->directAttack(attacker);
-                std::cout<<attacker->getName()<<" direct attack"<<std::endl;
             }
         }
         this->endBattleTesting();
