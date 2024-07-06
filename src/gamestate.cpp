@@ -235,8 +235,64 @@ Gamestate::Gamestate(Duel* duel):Duel()
 
     }
 }
+float Gamestate::resourceFactor()
+{
+    Player* player = this->getPlayer(this->getTurnPlayer());
+    Player* opponent = player->getOpponent();
+
+    short playerHp = player->getHp();
+    short playerMana = player->getMana();
+    short opponentHp = opponent->getHp();
+    short opponentMana = opponent->getMana();
+
+    if (opponentHp<=0) {return 99999;}
+
+    float f_oppHp = 1 + (30/(opponentHp))/100;
+    float f_pHp = 1 + playerHp/100;
+    float f_oppMana = 1 + (15/(opponentMana+0.01) * 2)/20;
+    float f_pMana = 1 + (playerMana * 0.7)/30;
+    float f_hpDiff = 1 + ((playerHp - opponentHp) * 1.2) / 50;
+    float f_manaDiff = 1 + ((playerMana - opponentMana) * 0.3) / 70;
+    float factor = f_oppHp * f_pHp * f_oppMana * f_pMana * f_hpDiff * f_manaDiff;
+
+    return factor;
+
+}
+float Gamestate::cardAdvantageFactor()
+{
+    Player* player = this->getPlayer(this->getTurnPlayer());
+    Player* opponent = player->getOpponent();
+
+    short playerHand = player->getHandSize();
+    short opponentHand = opponent->getHandSize();
+
+    short playerFieldCount = player->getMinionCount();
+    short opponentFieldCount = player->getMinionCount();
+
+
+    float f_cardDiff = 1 + (playerHand + playerFieldCount) / ((opponentHand + opponentFieldCount)+0.01)/10;
+
+    float factor = f_cardDiff;
+
+    return factor;
+}
+float Gamestate::fieldPresenceFactor()
+{
+    float factor = 0;
+    return factor;
+}
+
 float Gamestate::evaluate()
 {
-    return (float)(rand()%10 + 0);
+    float resources = this->resourceFactor();
+    float cardAdvantage = this->cardAdvantageFactor();
+
+    float resourcesW = 1;
+    float cardAdvantageW = 2;
+
+    float value = (resources * resourcesW + cardAdvantage * cardAdvantageW) / (resourcesW + cardAdvantageW);
+
+    //return (float)(rand()%10 + 0);
+    return value;
 }
 

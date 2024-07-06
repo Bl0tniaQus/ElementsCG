@@ -9,6 +9,9 @@ public:
     Gamestate(Duel* duel);
     bool isCopy() override {return true;}
     float evaluate();
+    float resourceFactor();
+    float cardAdvantageFactor();
+    float fieldPresenceFactor();
 };
 
 #endif // GAMESTATE_H

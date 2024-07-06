@@ -149,6 +149,19 @@ void Player::shuffleDeck()
         this->deck[j] = card;
     }
 }
+short Player::getMinionCount()
+{
+    short count = 0;
+
+    for (int i=0;i<5;i++)
+    {
+            if (this->minionField[i].getCard()!=nullptr)
+            {
+                count++;
+            }
+    }
+    return count;
+}
 Player::~Player()
 {
     opponent = nullptr;

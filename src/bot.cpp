@@ -62,14 +62,14 @@ void Bot::testCardFromHand(short c, Duel* duel)
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     this->tempGamestate->playFromHand(player->getHand()[c]);
                     value = this->tempGamestate->evaluate();
-                    this->saveHandOption(c,i,value);
+                    this->saveHandOption(c,i,value-bValue);
                 }
             }
         }
         else
         {
             value = this->tempGamestate->evaluate();
-            this->saveHandOption(c,-1,bValue-value);
+            this->saveHandOption(c,-1,value-bValue);
         }
     }
     this->testing = false;
@@ -208,7 +208,7 @@ void Bot::testCardBattle(short c, Duel* duel)
         Card* defender = this->tempGamestate->getDefendersList()->getTargetList()[i];
         this->tempGamestate->combat(attacker,defender);
         float v = this->tempGamestate->evaluate();
-        this->saveAttackOption(c,i,bv-v);
+        this->saveAttackOption(c,i,v-bv);
     }
     if (n_defenders == 0)
     {
@@ -216,7 +216,7 @@ void Bot::testCardBattle(short c, Duel* duel)
         Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()[c];
         this->tempGamestate->directAttack(attacker);
         float v = this->tempGamestate->evaluate();
-        this->saveAttackOption(c,-1,bv-v);
+        this->saveAttackOption(c,-1,v-bv);
     }
 }
 void Bot::testBattlePhase(Duel* duel)
