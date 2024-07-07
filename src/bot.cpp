@@ -61,6 +61,7 @@ void Bot::testCardFromHand(short c, Duel* duel)
                     this->generateTempGamestate(duel);
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     this->tempGamestate->playFromHand(player->getHand()[c]);
+                    std::cout<<"Whirlwind"<<std::endl;
                     value = this->tempGamestate->evaluate();
                     this->saveHandOption(c,i,value-bValue);
                 }
@@ -199,15 +200,20 @@ void Bot::endBattleTesting()
 }
 void Bot::testCardBattle(short c, Duel* duel)
 {
+    std::cout<<"BATTLE BASE"<<std::endl;
     float bv = this->baseGamestate->evaluate();
+    std::cout<<"BATTLE BASE END"<<std::endl;
     short n_defenders = this->baseGamestate->getDefendersList()->getTargetsNumber();
     for (int i=0;i<n_defenders;i++)
     {
         this->generateTempGamestate(duel);
         Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()[c];
         Card* defender = this->tempGamestate->getDefendersList()->getTargetList()[i];
+
         this->tempGamestate->combat(attacker,defender);
+        std::cout<<"BATTLE TEMP"<<std::endl;
         float v = this->tempGamestate->evaluate();
+        std::cout<<"BATTLE TEMP END"<<std::endl;
         this->saveAttackOption(c,i,v-bv);
     }
     if (n_defenders == 0)
@@ -221,7 +227,9 @@ void Bot::testCardBattle(short c, Duel* duel)
 }
 void Bot::testBattlePhase(Duel* duel)
 {
+
     this->generateBaseGamestate(duel);
+
     short n_attackers = this->baseGamestate->getAttackersList()->getTargetsNumber();
     for (int i=0;i<n_attackers;i++)
     {
@@ -232,6 +240,7 @@ void Bot::conductBattlePhase(Duel* duel)
 {
     while(true)
     {
+        std::cout<<"BATTLE"<<std::endl;
         this->generateBaseGamestate(duel);
         this->testBattlePhase(duel);
         if (this->testedBattleOptions==0) {this->endBattleTesting(); break;}
@@ -257,6 +266,7 @@ void Bot::conductBattlePhase(Duel* duel)
         }
         this->endBattleTesting();
     }
+    std::cout<<"END_BATTLE"<<std::endl;
 }
 
 

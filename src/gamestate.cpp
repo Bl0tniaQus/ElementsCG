@@ -286,39 +286,44 @@ float Gamestate::fieldPresenceFactor()
     Zone* playerField = player->getMinionField();
     Zone* opponentField = opponent->getMinionField();
 
-    //short n_playerMinions = player->getMinionCount();
-    //short n_opponentMinions = opponent->getMinionCount();
+    short n_playerMinions = player->getMinionCount();
+    short n_opponentMinions = opponent->getMinionCount();
 
-    //short highestLvl = -1, highestLvlOpp = -1;
+    short highestLvl = -1, highestLvlOpp = -1;
     short sumLvl = 0, sumLvlOpp = 0;
-    //short highestAtk = -1, highestAtkOpp = -1, highestDef = -1, highestDefOpp = -1;
+    short highestAtk = -1, highestAtkOpp = -1, highestDef = -1, highestDefOpp = -1;
+    short sumAtk = 0, sumDef = 0, sumAtkOpp = 0, sumDefOpp = 0;
     Card* card;
     for (int i = 0; i<5; i++)
     {
-       // short atk;
-       // short def;
+        short atk;
+        short def;
         short lvl;
         card = playerField[i].getCard();
         if (card!=nullptr)
         {
-            //atk = card->getAttack();
-           // def = card->getDefence();
+            atk = card->getAttack();
+            def = card->getDefence();
             lvl = card->getLevel();
-           // if (atk>highestAtk) {highestAtk = atk;}
-           // if (def>highestDef) {highestDef = def;}
-           // if (lvl>highestLvl) {highestLvl = lvl;}
+            if (atk>highestAtk) {highestAtk = atk;}
+            if (def>highestDef) {highestDef = def;}
+            if (lvl>highestLvl) {highestLvl = lvl;}
             sumLvl = sumLvl + lvl;
+            sumAtk = sumAtk + atk;
+            sumDef = sumDef + def;
         }
         card = opponentField[i].getCard();
         if (card!=nullptr)
         {
-            //atk = card->getAttack();
-            //def = card->getDefence();
+            atk = card->getAttack();
+            def = card->getDefence();
             lvl = card->getLevel();
-            //if (atk>highestAtkOpp) {highestAtkOpp = atk;}
-           // if (def>highestDefOpp) {highestDefOpp = def;}
-           // if (lvl>highestLvlOpp) {highestLvlOpp = lvl;}
+            if (atk>highestAtkOpp) {highestAtkOpp = atk;}
+            if (def>highestDefOpp) {highestDefOpp = def;}
+            if (lvl>highestLvlOpp) {highestLvlOpp = lvl;}
             sumLvlOpp = sumLvlOpp + lvl;
+            sumAtkOpp = sumAtkOpp + atk;
+            sumDefOpp = sumDefOpp + def;
         }
     }
     this->generateAttackersList();
@@ -353,7 +358,7 @@ float Gamestate::fieldPresenceFactor()
         for (int j=0;j<n_defenders;j++)
         {
             Card* attacker = defenders[j]; //opponent's offense
-            if (attacker->getDefence()>=defender->getAttack())
+            if (defender->getDefence()>=attacker->getAttack())
             {
                 mitigated_attacks++;
             }
@@ -363,13 +368,20 @@ float Gamestate::fieldPresenceFactor()
             }
         }
     }
-    float f_pressence = 1 + ((sumLvl - sumLvlOpp) / 50.0);
-    float f_offense = 1 + ((vulnerable_defenders*2.0)/10);
-    float f_defence = 1 + ((mitigated_attacks/(possible_attacks+0.01))*0.6 + barriers/10);
+    float f_pressenceLvl = 1 + ((sumLvl - sumLvlOpp) / 50.0);
+    float f_pressenceCount = 1 + (n_playerMinions - n_opponentMinions)/10.0;
+    float f_offense = 1 + (sumAtk - sumDefOpp)/30.0;
+    float f_defence = 1 + (sumDef - sumAtkOpp)/30.0;
+    float f_protection;
+    float f_breakthrough;
+    if (possible_attacks==0) {f_protection = 1;}
+    else {f_protection = 0.5 + (mitigated_attacks/(possible_attacks));}
+    if (n_opponentMinions==0) {f_breakthrough = (1 + (n_attackers/10.0))/1.1;}
+    else {f_breakthrough = (0.5 + (vulnerable_defenders/n_opponentMinions))/1.1;}
 
 
-    factor = f_pressence * f_offense * f_defence;
-    std::cout<<"f pres "<<f_pressence<<" f off "<<f_offense<<" f def "<<f_defence<<std::endl;
+    factor = f_pressenceLvl * f_pressenceCount * f_offense * f_defence;
+    std::cout<<"lvl "<<f_pressenceLvl<<" off "<<f_offense<<" def "<<f_defence<<" count "<<f_pressenceCount<<std::endl;
     //std::cout<<sumLvl<<" "<<sumLvlOpp<<" "<<vulnerable_defenders<<std::endl;
     return factor;
 }
@@ -380,9 +392,9 @@ float Gamestate::evaluate()
     float cardAdvantage = this->cardAdvantageFactor();
     float fieldPresenceFactor = this->fieldPresenceFactor();
 
-    short resourcesW = 0;
-    short cardAdvantageW = 0;
-    short fieldPresenceW = 12;
+    short resourcesW = 1;
+    short cardAdvantageW = 2;
+    short fieldPresenceW = 3;
    // std::cout<<resources<<" "<<cardAdvantage<<" "<<fieldPresenceFactor<<std::endl;
     float value = (resources * resourcesW + cardAdvantage * cardAdvantageW + fieldPresenceFactor * fieldPresenceW) / (resourcesW + cardAdvantageW + fieldPresenceW);
 
