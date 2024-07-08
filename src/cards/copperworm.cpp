@@ -1,6 +1,6 @@
 #include "copperworm.h"
-#include "../duel.h"
-#include "../card.h"
+#include "../engine/duel.h"
+#include "../engine/card.h"
 void CopperWorm::onSummon(Duel* duel, Card* card)
 {
         this->getOnSummonTargetList(duel, card);

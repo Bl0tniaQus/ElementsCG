@@ -1,6 +1,6 @@
 #include "dragonoidsage.h"
-#include "../duel.h"
-#include "../card.h"
+#include "../engine/duel.h"
+#include "../engine/card.h"
 void DragonoidSage::onTurnEnd(Duel* duel, Card* card)
 {
     if (duel->getPlayer(duel->getTurnPlayer())==card->getOwner())

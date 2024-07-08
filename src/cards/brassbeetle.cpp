@@ -1,7 +1,7 @@
 #include "brassbeetle.h"
-#include "../card.h"
-#include "../duel.h"
-#include "../zone.h"
+#include "../engine/card.h"
+#include "../engine/duel.h"
+#include "../engine/zone.h"
 bool BrassBeetle::specialSummon(Duel* duel, Card* card)
 {
     return this->specialSummon2(duel, card);

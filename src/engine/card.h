@@ -1,8 +1,8 @@
 #ifndef CARD_H
 #define CARD_H
 #include <cstring>
-#include "cards/cardbase.h"
-#include "cards/allcardsinclude.h"
+#include "../cards/cardbase.h"
+#include "../cards/allcardsinclude.h"
 class Zone;
 class Player;
 class Card

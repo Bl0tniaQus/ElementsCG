@@ -1,9 +1,8 @@
 #include "whirlwind.h"
-#include "../duel.h"
-#include "../card.h"
-#include "../zone.h"
-#include "../bot.h"
-#include <iostream>
+#include "../engine/duel.h"
+#include "../engine/card.h"
+#include "../engine/zone.h"
+#include "../engine/bot.h"
 bool Whirlwind::onSpell(Duel* duel, Card* card)
 {
     this->getOnSpellTargetList(duel, card);

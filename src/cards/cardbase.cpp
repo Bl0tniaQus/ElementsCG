@@ -1,10 +1,10 @@
 #include "cardbase.h"
 #include <cstring>
-#include "../targetlist.h"
-#include "../zone.h"
-#include "../duel.h"
-#include "../card.h"
-#include "../bot.h"
+#include "../engine/targetlist.h"
+#include "../engine/zone.h"
+#include "../engine/duel.h"
+#include "../engine/card.h"
+#include "../engine/bot.h"
 #include <iostream>
 CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n)
 {

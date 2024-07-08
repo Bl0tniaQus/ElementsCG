@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QPixmap>
+#include "../engine/duel.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -10,12 +12,13 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+private:
+    Ui::MainWindow *ui;
+    Duel* duel;
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void startDuel();
-private:
-    Ui::MainWindow *ui;
+
 };
 #endif // MAINWINDOW_H

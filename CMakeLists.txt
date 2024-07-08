@@ -14,16 +14,16 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         src/main.cpp
-        src/mainwindow.cpp
-        src/zone.cpp
-        src/player.cpp
-        src/card.cpp
-        src/duel.cpp
-        src/globals.cpp
-        src/deck.cpp
-        src/targetlist.cpp
-        src/bot.cpp
-        src/gamestate.cpp
+        src/ui/mainwindow.cpp
+        src/engine/zone.cpp
+        src/engine/player.cpp
+        src/engine/card.cpp
+        src/engine/duel.cpp
+        src/engine/globals.cpp
+        src/engine/deck.cpp
+        src/engine/targetlist.cpp
+        src/engine/bot.cpp
+        src/engine/gamestate.cpp
         src/cards/cardbase.cpp
         src/cards/copperworm.cpp
         src/cards/silverwolf.cpp
