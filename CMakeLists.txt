@@ -15,6 +15,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 set(PROJECT_SOURCES
         src/main.cpp
         src/ui/mainwindow.cpp
+        src/ui/dueluibridge.cpp
         src/engine/zone.cpp
         src/engine/player.cpp
         src/engine/card.cpp
