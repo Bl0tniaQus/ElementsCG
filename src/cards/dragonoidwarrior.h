@@ -12,7 +12,9 @@ public:
         3, //attack
         3, //defence
         "Air", //element
-        "Dragonoid Warrior" //name
+        "Dragonoid Warrior", //name
+        "dragonoidwarrior.jpg",
+        ""
     ) {};
 };
 

@@ -14,13 +14,14 @@ private:
     short defence;
     char* element;
     char* name;
-    short input; //no of targets to choose
+    char* image;
+    char* cardImage;
     Card* cardEntity;
     TargetList* targetList;
 public:
     CardBase() {};
     virtual ~CardBase() {}
-    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n);
+    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char* i, const char* ic);
     void bindCard(Card* card) {this->cardEntity = card;}
     short getCardId() {return this->cardId;}
     short getCost() {return this->cost;}
@@ -30,7 +31,8 @@ public:
     short getDefence() {return this->defence;}
     char* getElement() {return this->element;}
     char* getName() {return this->name;}
-    short getInput() {return this->input;}
+    char* getImage() {return this->image;}
+    char* getCardImage() {return this->cardImage;}
     Card* getCardEntity() {return this->cardEntity;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);

@@ -12,7 +12,9 @@ public:
         1, //attack
         0, //defence
         "Earth", //element
-        "Copper Worm" //name
+        "Copper Worm", //name
+        "copperworm.jpg",
+        ""
     ) {};
     void onSummon(Duel* duel, Card* card) override;
     void getOnSummonTargetList(Duel* duel, Card* card) override;

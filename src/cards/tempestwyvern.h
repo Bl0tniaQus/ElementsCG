@@ -12,7 +12,9 @@ public:
         6, //attack
         4, //defence
         "Air", //element
-        "Tempest Wyvern" //name
+        "Tempest Wyvern", //name
+        "tempestwyvern.jpg",
+        ""
     ) {};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;

@@ -12,7 +12,9 @@ public:
         2, //attack
         2, //defence
         "Air", //element
-        "Dragonoid Sage" //name
+        "Dragonoid Sage", //name
+        "dragonoidsage.jpg",
+        ""
     ) {};
     void onTurnEnd(Duel* duel, Card* card) override;
 };

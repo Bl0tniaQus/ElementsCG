@@ -12,7 +12,9 @@ public:
         3, //attack
         2, //defence
         "Earth", //element
-        "Silver Wolf" //name
+        "Silver Wolf", //name
+        "silverwolf.jpg",
+        ""
     ) {};
 };
 

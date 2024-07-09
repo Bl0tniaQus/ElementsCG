@@ -557,9 +557,8 @@ void Duel::generateDefendersList()
     }
     this->getDefendersList()->setTargetList(defenders,n);
 }
-void Duel::DuelControl(Deck *deck0, Deck* deck1)
+void Duel::startDuel(Deck *deck0, Deck* deck1)
 {
-    short choice;
     this->turnPlayer=0; //wylosuj kto 1
     this->turnCount=1;
     this->getPlayer(0)->setOriginalDeck(deck0->getDeck(),deck0->getDeckSize());
@@ -575,7 +574,11 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         this->drawCard(&this->players[0]);
         this->drawCard(&this->players[1]);
     }
-
+}
+void Duel::DuelControl(Deck *deck0, Deck* deck1)
+{
+    startDuel(deck0,deck1);
+    short choice;
     while (true)
     {
         Player* turnPlayer = this->getPlayer(this->turnPlayer);

@@ -48,6 +48,7 @@ public:
     void DuelControl(Deck *deck0, Deck* deck1);
     void generateAttackersList();
     void generateDefendersList();
+    void startDuel(Deck *deck0, Deck* deck1);
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}

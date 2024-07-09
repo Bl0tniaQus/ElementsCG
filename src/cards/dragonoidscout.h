@@ -12,7 +12,9 @@ public:
         3, //attack
         1, //defence
         "Air", //element
-        "Dragonoid Scout" //name
+        "Dragonoid Scout", //name
+        "dragonoidscout.jpg",
+        ""
     ) {};
     void onSummon(Duel* duel, Card* card) override;
 };
