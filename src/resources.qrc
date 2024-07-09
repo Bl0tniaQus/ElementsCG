@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="dragonoidwarrior.jpg">resources/images/dragonoidwarrior.jpg</file>
+    <file alias="copperworm.jpg">resources/images/copperworm.jpg</file>
+    <file alias="whirlwind.jpg">resources/images/whirlwind.jpg</file>
+    <file alias="brassbeetle.jpg">resources/images/brassbeetle.jpg</file>
+</qresource>
+</RCC>
