@@ -721,3 +721,11 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         }
     }
 }
+void Duel::DuelControlGui(Deck *deck0, Deck* deck1)
+{
+    startDuel(deck0,deck1);
+    while(true)
+    {
+
+    }
+}

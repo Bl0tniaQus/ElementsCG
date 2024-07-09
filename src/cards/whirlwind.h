@@ -13,8 +13,7 @@ public:
         -1, //defence
         "Air", //element
         "Whirlwind", //name
-        "whirlwind.jpg",
-        ""
+        "whirlwind"
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void getOnSpellTargetList(Duel* duel, Card* card) override;

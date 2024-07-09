@@ -13,8 +13,8 @@ public:
         3, //defence
         "Earth", //element
         "Brass Beetle", //name
-        "brassbeetle.jpg",
-        ""
+        "brassbeetle"
+
     ) {};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;

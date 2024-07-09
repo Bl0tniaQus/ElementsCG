@@ -6,7 +6,7 @@
 #include "../engine/card.h"
 #include "../engine/bot.h"
 #include <iostream>
-CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char * i, const char* ic)
+CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char * i)
 {
     this->cardId = cid;
     this->cost = c;
@@ -21,8 +21,6 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, cons
     strcpy(this->name, n);
     this->image = new char[strlen(i)+1];
     strcpy(this->image, i);
-    this->cardImage = new char[strlen(ic)+1];
-    strcpy(this->cardImage, ic);
 }
 void CardBase::setTargetList(Card** tl, short n)
 {

@@ -8,28 +8,40 @@ DuelUiBridge::DuelUiBridge(Duel* duel, Ui::MainWindow* ui)
 {
     this->duel = duel;
     this->ui = ui;
-    this->handImages = new QLabel* [0];
+    this->handImages = new CardLabel* [0];
 }
 void DuelUiBridge::setHandImages()
 {
     Player* player = duel->getPlayer(0);
     short n_hand = player->getHandSize();
-    std::cout<<n_hand;
+
     delete [] this->handImages;
-    this->handImages = new QLabel* [n_hand];
+    this->handImages = new CardLabel* [n_hand];
     int i;
     for (i=0;i<n_hand;i++)
     {
+
         char* img = player->getHand()[i]->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string("/:")+std::string(img));
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
-        handImages[i] = new QLabel(this->ui->scrollArea);
+        handImages[i] = new CardLabel;
+        handImages[i]->setParent(this->ui->scrollArea);
+        handImages[i]->setMainWindowUi(this->ui);
+        handImages[i]->setCard(img);
+        handImages[i]->setId(i);
+        handImages[i]->setStyleSheet("border:none;");
         handImages[i]->setPixmap(pm);
-        handImages[i]->setGeometry(QRect(i*80,0,80,80));
         handImages[i]->setScaledContents(true);
+        handImages[i]->setMouseTracking(true);
+        handImages[i]->setFrameShape(QFrame::Box);
         handImages[i]->setVisible(true);
-        handImages[i]->setContentsMargins(10,10,10,10);
+        handImages[i]->setGeometry((i*80)+15,15,80,80);
+        handImages[i]->setContentsMargins(10,0,10,0);
     }
-    ui->scrollAreaWidgetContents->setGeometry(20,20,i*80,80);
+    ui->scrollAreaWidgetContents->setGeometry(40,40,i*80,200);
+}
+void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
+{
+    this->duel->DuelControlGui(deck0, deck1);
 }
 

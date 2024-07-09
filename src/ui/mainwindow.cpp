@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->duel->getPlayer(1)->setBot(&bot);
     this->duel->startDuel(&deck,&deck2);
     this->bridge = new DuelUiBridge(this->duel,this->ui);
+
+    this->bridge->moveToThread(&this->duelThread);
+    this->duelThread.start();
     this->bridge->setHandImages();
     connect(findChild<QPushButton*>("testButton"), &QPushButton::released, this, &MainWindow::startDuel);
 }
@@ -47,7 +50,7 @@ void MainWindow::startDuel()
    // label->setVisible(true);
    // label->setGeometry(QRect(10,10,30,80));
 
-    this->ui->oppZ0Image->setPixmap(empty);
+   // this->ui->oppZ0Image->setPixmap(empty);
     this->ui->oppZ0Label->setText("L10 10/10 B1 A1 SI N");
     this->ui->oppZ0Image->setScaledContents(true);
 

@@ -17,6 +17,7 @@ set(PROJECT_SOURCES
         src/resources.qrc
         src/ui/mainwindow.cpp
         src/ui/dueluibridge.cpp
+        src/ui/cardlabel.cpp
         src/engine/zone.cpp
         src/engine/player.cpp
         src/engine/card.cpp

@@ -15,13 +15,12 @@ private:
     char* element;
     char* name;
     char* image;
-    char* cardImage;
     Card* cardEntity;
     TargetList* targetList;
 public:
     CardBase() {};
     virtual ~CardBase() {}
-    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char* i, const char* ic);
+    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char* i);
     void bindCard(Card* card) {this->cardEntity = card;}
     short getCardId() {return this->cardId;}
     short getCost() {return this->cost;}
@@ -32,7 +31,6 @@ public:
     char* getElement() {return this->element;}
     char* getName() {return this->name;}
     char* getImage() {return this->image;}
-    char* getCardImage() {return this->cardImage;}
     Card* getCardEntity() {return this->cardEntity;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);

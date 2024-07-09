@@ -13,8 +13,7 @@ public:
         2, //defence
         "Earth", //element
         "Tungsten Firefly", //name
-        "tungstenfirefly.jpg",
-        ""
+        "tungstenfirefly"
     ) {};
     void onTurnEnd(Duel* duel, Card* card) override;
 };

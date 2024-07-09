@@ -94,8 +94,8 @@
        <widget class="QScrollArea" name="scrollArea">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>520</y>
+          <x>430</x>
+          <y>470</y>
           <width>531</width>
           <height>221</height>
          </rect>
@@ -118,7 +118,43 @@
            <height>76</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="leftMargin">
+           <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="frame">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>381</width>
+          <height>731</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="cardHighlight">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>361</width>
+           <height>501</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
         </widget>
        </widget>
       </widget>

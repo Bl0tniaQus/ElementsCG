@@ -14,9 +14,10 @@ int main(int argc, char *argv[])
     Deck deck2(2);
 
     duel.getPlayer(1)->setBot(&bot);
-    //duel.DuelControl(&deck,&deck2);
-    w.show();
-    return a.exec();
+    duel.DuelControl(&deck,&deck2);
+    //w.show();
+   // return a.exec();
    //todo gui, duel threading, ui
+    //field ui, play from hand
 
 }

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QPixmap>
+#include <QThread>
 #include "../engine/duel.h"
 #include "dueluibridge.h"
 QT_BEGIN_NAMESPACE
@@ -17,6 +18,7 @@ private:
     Ui::MainWindow *ui;
     Duel* duel;
     DuelUiBridge* bridge;
+    QThread duelThread;
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();

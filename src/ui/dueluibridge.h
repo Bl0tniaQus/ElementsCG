@@ -1,27 +1,29 @@
 #ifndef DUELUIBRIDGE_H
 #define DUELUIBRIDGE_H
 #include "ui_mainwindow.h"
-#include <QLabel>
-
+#include "cardlabel.h"
+#include "../engine/deck.h"
 class Duel;
-class DuelUiBridge
+class DuelUiBridge : public QObject
 {
 private:
+    Q_OBJECT
     Duel* duel;
     Ui::MainWindow* ui;
-    QLabel** handImages;
-    QLabel** graveyardImages;
-    QLabel** opponentGraveyardImages;
-    QLabel** specialDeckImages;
-    QLabel** playerFieldImages;
-    QLabel** playerFieldLabels;
-    QLabel** opponentFieldImages;
-    QLabel** opponentFieldLabels;
-    QLabel** targetImages;
+    CardLabel** handImages;
+    CardLabel** graveyardImages;
+    CardLabel** opponentGraveyardImages;
+    CardLabel** specialDeckImages;
+    CardLabel** playerFieldImages;
+    CardLabel** playerFieldLabels;
+    CardLabel** opponentFieldImages;
+    CardLabel** opponentFieldLabels;
+    CardLabel** targetImages;
 public:
     DuelUiBridge();
     DuelUiBridge(Duel* duel, Ui::MainWindow* ui);
     void setHandImages();
+    void duelControl(Deck* deck0, Deck* deck1);
 };
 
 #endif
