@@ -14,6 +14,11 @@ void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
 }
 void CardLabel::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {
-    this->setStyleSheet("border: 3px solid red");
+    emit handCardHighlight(this->id);
 }
+CardLabel::~CardLabel()
+{
+    delete[] this->cardName;
+}
+
 
