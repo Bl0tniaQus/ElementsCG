@@ -1,7 +1,12 @@
 #include "cardlabel.h"
+CardLabel::CardLabel()
+{
+    this->cardName = new char[0];
+}
 
 void CardLabel::setCard(const char* c)
 {
+    delete[] this->cardName;
     this->cardName = new char[strlen(c)+1];
     strcpy(this->cardName, c);
 }
@@ -14,7 +19,7 @@ void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
 }
 void CardLabel::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {
-    emit handCardHighlight(this->id);
+    if (this->place==1) {emit handCardHighlight(this->id);}
 }
 CardLabel::~CardLabel()
 {

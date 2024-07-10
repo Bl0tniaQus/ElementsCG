@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "../engine/globals.h"
 #include "../engine/card.h"
+#include "../engine/zone.h"
 #include <iostream>
 #include <QDebug>
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), duelThread(this)
@@ -11,19 +12,20 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->stackedWidget->setCurrentIndex(0);
     this->handImages = new CardLabel* [0];
     this->duel = new Duel;
-
     this->duel->getPlayer(1)->setBot(&bot);
     this->bridge.setDuel(duel);
 
+
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
     connect(&this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
+    connect(&this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
     connect(this, &MainWindow::duelStartSignal, &this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
     connect(this, &MainWindow::handAction, &this->bridge, &DuelUiBridge::playFromHand);
     connect(&this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
     this->bridge.moveToThread(&duelThread);
     duelThread.start();
-    emit duelStartSignal();
+
 
 
 
@@ -40,9 +42,20 @@ MainWindow::~MainWindow()
 }
 void MainWindow::startDuel()
 {
-
-
     this->ui->stackedWidget->setCurrentIndex(1);
+    this->playerFieldImages = new CardLabel* [5];
+    //this->playerFieldLabels = new CardLabel* [5];
+    //this->opponentFieldImages = new CardLabel* [5];
+    //this->opponentFieldLabels = new CardLabel* [5];
+
+    for (int i=0;i<5;i++)
+    {
+        this->playerFieldImages[i] = new CardLabel;
+        //this->playerFieldLabels[i] = new CardLabel;
+        //this->opponentFieldImages[i] = new CardLabel;
+        //this->opponentFieldLabels[i] = new CardLabel;
+    }
+
 
     //ui->scrollAreaWidgetContents->setContentsMargins(20,20,20,20);
     //label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -56,7 +69,7 @@ void MainWindow::startDuel()
    // this->ui->oppZ0Image->setPixmap(empty);
     //this->ui->oppZ0Label->setText("L10 10/10 B1 A1 SI N");
     //this->ui->oppZ0Image->setScaledContents(true);
-
+    emit duelStartSignal();
 }
 void MainWindow::setHandImages()
 {
@@ -81,6 +94,7 @@ void MainWindow::setHandImages()
         handImages[i]->setParent(this->ui->scrollArea);
         handImages[i]->setMainWindowUi(this->ui);
         handImages[i]->setCard(img);
+        handImages[i]->setPlace(1);
         handImages[i]->setId(i);
         handImages[i]->setStyleSheet("border:none;");
         handImages[i]->setPixmap(pm);
@@ -115,5 +129,61 @@ void MainWindow::playFromHand()
     {
         emit handAction(this->selectedHandCard);
     }
+}
+void MainWindow::setFieldImagesAndLabels()
+{
+
+    Player* player1 = duel->getPlayer(0);
+    Player* player2 = duel->getPlayer(1);
+    Zone *playerField = player1->getMinionField();
+    Zone *opponentField = player2->getMinionField();
+    Card* cardPlayer;
+    Card* cardOpp;
+    int i;
+
+    for (i = 0; i<5;i++)
+    {
+       delete this->playerFieldImages[i];
+     //  delete this->playerFieldLabels[i];
+     //  delete this->opponentFieldImages[i];
+     //  delete this->opponentFieldLabels[i];
+
+    }
+       delete[] this->playerFieldImages;
+      // delete[] this->playerFieldLabels;
+      // delete[] this->opponentFieldImages;
+      // delete[] this->opponentFieldLabels;
+    this->playerFieldImages = new CardLabel* [5];
+   // this->playerFieldLabels = new CardLabel* [5];
+    //this->opponentFieldImages = new CardLabel* [5];
+   // this->opponentFieldLabels = new CardLabel* [5];
+    for (i=0; i<5; i++)
+    {
+        cardPlayer = playerField[i].getCard();
+        playerFieldImages[i] = new CardLabel;
+        playerFieldImages[i]->setParent(this->ui->playerField);
+        playerFieldImages[i]->setMainWindowUi(this->ui);
+        playerFieldImages[i]->setStyleSheet("border:none;");
+        playerFieldImages[i]->setScaledContents(true);
+        playerFieldImages[i]->setPlace(2);
+        playerFieldImages[i]->setMouseTracking(true);
+        playerFieldImages[i]->setFrameShape(QFrame::Box);
+        playerFieldImages[i]->setVisible(true);
+        playerFieldImages[i]->setGeometry((i*80)+15,15,80,80);
+        playerFieldImages[i]->setContentsMargins(0,0,0,0);
+        if (cardPlayer!=nullptr)
+        {
+            char* img = cardPlayer->getCardName()->getImage();
+            QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+            QPixmap pm(imgName);
+            playerFieldImages[i]->setCard(img);
+            playerFieldImages[i]->setId(i);
+            playerFieldImages[i]->setPixmap(pm);
+            connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
+        }
+
+    }
+
+
 }
 

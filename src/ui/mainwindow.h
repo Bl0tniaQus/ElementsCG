@@ -36,6 +36,7 @@ public:
     void startDuel();
 public slots:
     void setHandImages();
+    void setFieldImagesAndLabels();
     void handTarget(short id);
     void playFromHand();
 signals:

@@ -11,13 +11,13 @@ private:
 public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
-    void setHandImages();
     void duelControl(Deck* deck0, Deck* deck1);
 public slots:
     void initiateDuel();
     void playFromHand(short id);
 signals:
     void drawHand();
+    void drawField();
     void handCardPlayed(short id = -1);
 };
 

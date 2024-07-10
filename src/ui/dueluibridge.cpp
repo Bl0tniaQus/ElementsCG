@@ -12,6 +12,8 @@ void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
 {
     this->duel->startDuel(deck0,deck1);
     emit drawHand();
+    emit drawField();
+
 }
 void DuelUiBridge::initiateDuel()
 {
@@ -27,12 +29,10 @@ void DuelUiBridge::playFromHand(short id)
         Player* player = duel->getPlayer(0);
         if (id>=0 && id<player->getHandSize())
         {
-
             duel->playFromHand(player->getHand()[id]);
             emit handCardPlayed(-1);
             emit drawHand();
-
-
+            emit drawField();
         }
 
     }
