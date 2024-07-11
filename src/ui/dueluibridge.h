@@ -17,6 +17,7 @@ public slots:
     void playFromHand(short id);
 signals:
     void drawHand();
+    void drawSpecialDeck();
     void drawField();
     void handCardPlayed(short id = -1);
 };

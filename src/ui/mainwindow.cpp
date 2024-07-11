@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->setupUi(this);
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
-    this->handImages = new CardLabel* [0];
     this->duel = new Duel;
     this->duel->getPlayer(1)->setBot(&bot);
     this->bridge.setDuel(duel);
@@ -18,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
     connect(&this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
+    connect(&this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
     connect(&this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
     connect(this, &MainWindow::duelStartSignal, &this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
@@ -43,6 +43,8 @@ MainWindow::~MainWindow()
 void MainWindow::startDuel()
 {
     this->ui->stackedWidget->setCurrentIndex(1);
+    this->handImages = new CardLabel* [0];
+    this->specialDeckImages = new CardLabel* [0];
     this->playerFieldImages = new CardLabel* [5];
     //this->playerFieldLabels = new CardLabel* [5];
     //this->opponentFieldImages = new CardLabel* [5];
@@ -73,14 +75,12 @@ void MainWindow::startDuel()
 }
 void MainWindow::setHandImages()
 {
+
     Player* player = duel->getPlayer(0);
     short n_hand = player->getHandSize();
     int i;
-    QPixmap empty;
     for (i=0; i<this->handSize;i++)
     {
-        this->handImages[i]->setStyleSheet("background:none;");
-        this->handImages[i]->setPixmap(empty);
         delete this->handImages[i];
     }
     delete [] this->handImages;
@@ -91,7 +91,7 @@ void MainWindow::setHandImages()
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         handImages[i] = new CardLabel;
-        handImages[i]->setParent(this->ui->scrollArea);
+        handImages[i]->setParent(this->ui->handCardsArea);
         handImages[i]->setMainWindowUi(this->ui);
         handImages[i]->setCard(img);
         handImages[i]->setPlace(1);
@@ -107,8 +107,46 @@ void MainWindow::setHandImages()
 
         connect(handImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
     }
-    ui->scrollAreaWidgetContents->setGeometry(40,40,i*80,200);
+    ui->handCardsAreaContents->setGeometry(40,40,i*80,200);
     this->handSize = n_hand;
+}
+void MainWindow::setSpecialDeckImages()
+{
+
+    Player* player = duel->getPlayer(0);
+    short n_special = player->getSpecialDeckSize();
+    int i;
+    QPixmap empty;
+    for (i=0; i<this->specialDeckSize;i++)
+    {
+        delete this->specialDeckImages[i];
+    }
+    delete [] this->specialDeckImages;
+    this->specialDeckImages = new CardLabel* [n_special];
+    for (i=0;i<n_special;i++)
+    {
+        char* img = player->getSpecialDeck()[i]->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        specialDeckImages[i] = new CardLabel;
+        specialDeckImages[i]->setParent(this->ui->specialDeckCardsArea);
+        specialDeckImages[i]->setMainWindowUi(this->ui);
+        specialDeckImages[i]->setCard(img);
+        specialDeckImages[i]->setPlace(4);
+        specialDeckImages[i]->setId(i);
+        specialDeckImages[i]->setStyleSheet("border:none;");
+        specialDeckImages[i]->setPixmap(pm);
+        specialDeckImages[i]->setScaledContents(true);
+        specialDeckImages[i]->setMouseTracking(true);
+        specialDeckImages[i]->setFrameShape(QFrame::Box);
+        specialDeckImages[i]->setVisible(true);
+        specialDeckImages[i]->setGeometry((i*80)+15,15,80,80);
+        specialDeckImages[i]->setContentsMargins(0,0,0,0);
+
+        connect(handImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
+    }
+    ui->specialDeckCardsAreaContents->setGeometry(40,40,i*80,200);
+    this->specialDeckSize = n_special;
 }
 void MainWindow::handTarget(short id)
 {

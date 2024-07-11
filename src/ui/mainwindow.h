@@ -30,12 +30,14 @@ private:
     CardLabel** targetImages;
     short selectedHandCard = -1;
     short handSize = 0;
+    short specialDeckSize = 0;
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void startDuel();
 public slots:
     void setHandImages();
+    void setSpecialDeckImages();
     void setFieldImagesAndLabels();
     void handTarget(short id);
     void playFromHand();

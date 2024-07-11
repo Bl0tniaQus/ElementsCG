@@ -45,11 +45,9 @@ Deck::Deck(short deckid)
         {
             this->mainDeck[i].setPlace(0);
         }
-        this->n_special = 3;
+        this->n_special = 1;
         this->specialDeck = new Card[this->n_special];
         this->specialDeck[0].getValuesFromId(8);
-        this->specialDeck[1].getValuesFromId(8);
-        this->specialDeck[2].getValuesFromId(9);
         for (int i=0;i<this->n_special;i++)
         {
             this->specialDeck[i].setPlace(4);
