@@ -46,15 +46,15 @@ void MainWindow::startDuel()
     this->handImages = new CardLabel* [0];
     this->specialDeckImages = new CardLabel* [0];
     this->playerFieldImages = new CardLabel* [5];
-    //this->playerFieldLabels = new CardLabel* [5];
-    //this->opponentFieldImages = new CardLabel* [5];
+    this->playerFieldLabels = new CardLabel* [5];
+    this->opponentFieldImages = new CardLabel* [5];
     //this->opponentFieldLabels = new CardLabel* [5];
 
     for (int i=0;i<5;i++)
     {
         this->playerFieldImages[i] = new CardLabel;
-        //this->playerFieldLabels[i] = new CardLabel;
-        //this->opponentFieldImages[i] = new CardLabel;
+        this->playerFieldLabels[i] = new CardLabel;
+        this->opponentFieldImages[i] = new CardLabel;
         //this->opponentFieldLabels[i] = new CardLabel;
     }
 
@@ -182,24 +182,25 @@ void MainWindow::setFieldImagesAndLabels()
     for (i = 0; i<5;i++)
     {
        delete this->playerFieldImages[i];
-     //  delete this->playerFieldLabels[i];
-     //  delete this->opponentFieldImages[i];
+       delete this->playerFieldLabels[i];
+       delete this->opponentFieldImages[i];
      //  delete this->opponentFieldLabels[i];
 
     }
        delete[] this->playerFieldImages;
-      // delete[] this->playerFieldLabels;
-      // delete[] this->opponentFieldImages;
+       delete[] this->playerFieldLabels;
+       delete[] this->opponentFieldImages;
       // delete[] this->opponentFieldLabels;
     this->playerFieldImages = new CardLabel* [5];
-   // this->playerFieldLabels = new CardLabel* [5];
-    //this->opponentFieldImages = new CardLabel* [5];
+    this->playerFieldLabels = new CardLabel* [5];
+    this->opponentFieldImages = new CardLabel* [5];
    // this->opponentFieldLabels = new CardLabel* [5];
     for (i=0; i<5; i++)
     {
         cardPlayer = playerField[i].getCard();
+        cardOpp = opponentField[4-i].getCard();
         playerFieldImages[i] = new CardLabel;
-        playerFieldImages[i]->setParent(this->ui->playerField);
+        playerFieldImages[i]->setParent(this->ui->playerFieldFrame);
         playerFieldImages[i]->setMainWindowUi(this->ui);
         playerFieldImages[i]->setStyleSheet("border:none;");
         playerFieldImages[i]->setScaledContents(true);
@@ -209,6 +210,33 @@ void MainWindow::setFieldImagesAndLabels()
         playerFieldImages[i]->setVisible(true);
         playerFieldImages[i]->setGeometry((i*80)+15,15,80,80);
         playerFieldImages[i]->setContentsMargins(0,0,0,0);
+
+        playerFieldLabels[i] = new CardLabel;
+        playerFieldLabels[i]->setParent(this->ui->playerFieldLabelsFrame);
+        playerFieldLabels[i]->setMainWindowUi(this->ui);
+        playerFieldLabels[i]->setStyleSheet("border:none;");
+        playerFieldLabels[i]->setScaledContents(true);
+        playerFieldLabels[i]->setPlace(2);
+        playerFieldLabels[i]->setMouseTracking(true);
+        playerFieldLabels[i]->setFrameShape(QFrame::Box);
+        playerFieldLabels[i]->setVisible(true);
+        playerFieldLabels[i]->setGeometry((i*80)+15,15,80,20);
+        playerFieldLabels[i]->setContentsMargins(0,0,0,0);
+
+
+
+        opponentFieldImages[4-i] = new CardLabel;
+        opponentFieldImages[4-i]->setParent(this->ui->opponentFieldFrame);
+        opponentFieldImages[4-i]->setMainWindowUi(this->ui);
+        opponentFieldImages[4-i]->setStyleSheet("border:none;");
+        opponentFieldImages[4-i]->setScaledContents(true);
+        opponentFieldImages[4-i]->setPlace(2);
+        opponentFieldImages[4-i]->setMouseTracking(true);
+        opponentFieldImages[4-i]->setFrameShape(QFrame::Box);
+        opponentFieldImages[4-i]->setVisible(true);
+        opponentFieldImages[4-i]->setGeometry((i*80)+15,15,80,80);
+        opponentFieldImages[4-i]->setContentsMargins(0,0,0,0);
+
         if (cardPlayer!=nullptr)
         {
             char* img = cardPlayer->getCardName()->getImage();
@@ -217,7 +245,22 @@ void MainWindow::setFieldImagesAndLabels()
             playerFieldImages[i]->setCard(img);
             playerFieldImages[i]->setId(i);
             playerFieldImages[i]->setPixmap(pm);
-            connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
+
+            playerFieldLabels[i]->setCard(img);
+            playerFieldLabels[i]->setId(i);
+            playerFieldLabels[i]->setText("tu cos bedzie");
+
+            //connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
+        }
+        if (cardOpp!=nullptr)
+        {
+            char* img = cardOpp->getCardName()->getImage();
+            QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+            QPixmap pm(imgName);
+            opponentFieldImages[i]->setCard(img);
+            opponentFieldImages[i]->setId(i);
+            opponentFieldImages[i]->setPixmap(pm);
+            //connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
         }
 
     }

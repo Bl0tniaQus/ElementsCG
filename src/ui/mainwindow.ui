@@ -71,8 +71,8 @@
        <widget class="QFrame" name="playerField">
         <property name="geometry">
          <rect>
-          <x>450</x>
-          <y>40</y>
+          <x>400</x>
+          <y>230</y>
           <width>791</width>
           <height>211</height>
          </rect>
@@ -83,7 +83,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QWidget" name="horizontalLayoutWidget">
+        <widget class="QFrame" name="playerFieldFrame">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -92,9 +92,25 @@
            <height>161</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="plaerFieldImages"/>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>751</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="playerFieldImages"/>
+         </widget>
         </widget>
-        <widget class="QWidget" name="horizontalLayoutWidget_2">
+        <widget class="QFrame" name="playerFieldLabelsFrame">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -103,14 +119,30 @@
            <height>31</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout"/>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>751</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="playerFieldLabels"/>
+         </widget>
         </widget>
        </widget>
        <widget class="QTabWidget" name="cardTabs">
         <property name="geometry">
          <rect>
-          <x>460</x>
-          <y>260</y>
+          <x>400</x>
+          <y>450</y>
           <width>681</width>
           <height>281</height>
          </rect>
@@ -213,6 +245,76 @@
             </property>
            </layout>
           </widget>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QFrame" name="opponentField">
+        <property name="geometry">
+         <rect>
+          <x>400</x>
+          <y>10</y>
+          <width>791</width>
+          <height>211</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QFrame" name="opponentFieldFrame">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>771</width>
+           <height>161</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>751</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="opponentFieldImages"/>
+         </widget>
+        </widget>
+        <widget class="QFrame" name="opponentFieldLabelsFrame">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>170</y>
+           <width>771</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QWidget" name="horizontalLayoutWidget_4">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>751</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="opponentFieldLabels"/>
          </widget>
         </widget>
        </widget>
