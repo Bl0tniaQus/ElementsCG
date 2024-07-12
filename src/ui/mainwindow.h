@@ -39,6 +39,7 @@ public slots:
     void setHandImages();
     void setSpecialDeckImages();
     void setFieldImagesAndLabels();
+    void setResources();
     void handTarget(short id);
     void playFromHand();
 signals:

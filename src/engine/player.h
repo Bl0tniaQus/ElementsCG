@@ -9,7 +9,7 @@ class Player
 private:
     short hp;
     short mana;
-    char name;
+    char* name;
     Player *opponent;
     Zone* minionField;
     short n_hand;
@@ -36,8 +36,8 @@ public:
     void setMana(short mana) {this->mana = mana;}
     int getHp() {return this->hp;}
     void setHp(short hp) {this->hp = hp;}
-    void setName(char name) {this->name = name;}
-    char getName() {return this->name;}
+    void setName(const char* name);
+    char* getName() {return this->name;}
     Zone* getMinionField() {return minionField;}
     Player* getOpponent() {return opponent;}
     void setOpponent(Player *player){this->opponent = player;}

@@ -12,6 +12,7 @@ public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
     void duelControl(Deck* deck0, Deck* deck1);
+    void updateBoard();
 public slots:
     void initiateDuel();
     void playFromHand(short id);
@@ -19,6 +20,7 @@ signals:
     void drawHand();
     void drawSpecialDeck();
     void drawField();
+    void drawResources();
     void handCardPlayed(short id = -1);
 };
 

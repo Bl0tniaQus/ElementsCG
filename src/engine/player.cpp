@@ -17,6 +17,7 @@ Player::Player()
     this->bot = nullptr;
     this->hand = new Card* [0];
     this->deck = new Card* [0];
+    this->name = new char[0];
     this->specialDeck = new Card* [0];
     this->originalDeck = new Card [0];
     this->originalSpecialDeck = new Card [0];
@@ -27,6 +28,13 @@ Player::Player()
     }
     this->graveyard = new Card* [0];
 }
+void Player::setName(const char* name)
+{
+    delete[] this->name;
+    strcpy(this->name, name);
+    this->name = new char[strlen(name)+1];
+}
+
 void Player::changeHp(short val)
 {
     this->hp = this->hp + val;

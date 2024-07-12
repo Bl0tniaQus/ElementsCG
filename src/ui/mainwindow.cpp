@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     connect(&this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
     connect(&this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
     connect(&this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
+    connect(&this->bridge,&DuelUiBridge::drawResources, this, &MainWindow::setResources);
     connect(this, &MainWindow::duelStartSignal, &this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
     connect(this, &MainWindow::handAction, &this->bridge, &DuelUiBridge::playFromHand);
@@ -208,7 +209,7 @@ void MainWindow::setFieldImagesAndLabels()
         playerFieldImages[i]->setMouseTracking(true);
         playerFieldImages[i]->setFrameShape(QFrame::Box);
         playerFieldImages[i]->setVisible(true);
-        playerFieldImages[i]->setGeometry((i*80)+15,15,80,80);
+        playerFieldImages[i]->setGeometry((i*120)+15,15,120,120);
         playerFieldImages[i]->setContentsMargins(0,0,0,0);
 
         playerFieldLabels[i] = new CardLabel;
@@ -220,7 +221,7 @@ void MainWindow::setFieldImagesAndLabels()
         playerFieldLabels[i]->setMouseTracking(true);
         playerFieldLabels[i]->setFrameShape(QFrame::Box);
         playerFieldLabels[i]->setVisible(true);
-        playerFieldLabels[i]->setGeometry((i*80)+15,15,80,20);
+        playerFieldLabels[i]->setGeometry((i*120)+15,15,120,20);
         playerFieldLabels[i]->setContentsMargins(0,0,0,0);
 
 
@@ -234,7 +235,7 @@ void MainWindow::setFieldImagesAndLabels()
         opponentFieldImages[4-i]->setMouseTracking(true);
         opponentFieldImages[4-i]->setFrameShape(QFrame::Box);
         opponentFieldImages[4-i]->setVisible(true);
-        opponentFieldImages[4-i]->setGeometry((i*80)+15,15,80,80);
+        opponentFieldImages[4-i]->setGeometry((i*120)+15,15,120,120);
         opponentFieldImages[4-i]->setContentsMargins(0,0,0,0);
 
         if (cardPlayer!=nullptr)
@@ -248,7 +249,23 @@ void MainWindow::setFieldImagesAndLabels()
 
             playerFieldLabels[i]->setCard(img);
             playerFieldLabels[i]->setId(i);
-            playerFieldLabels[i]->setText("tu cos bedzie");
+
+            short atk = cardPlayer->getAttack();
+            short def = cardPlayer->getDefence();
+            short lvl = cardPlayer->getLevel();
+            short br = cardPlayer->getBarrier();
+            short negated = cardPlayer->getIsNegated();
+            short attacks = cardPlayer->getAttacks();
+            short si = cardPlayer->getIsSpellImmune();
+            //L10 10/10 B1 A1 SI N
+            std::string str = "L"+std::to_string(lvl);
+            str += " "+std::to_string(atk)+"/"+std::to_string(def);
+            str += " A"+std::to_string(attacks);
+            if (br>0){str += " A"+std::to_string(br);}
+            if (si>0){str += " SI";}
+            if (negated>0){str += " N";}
+
+            playerFieldLabels[i]->setText(QString::fromStdString(str));
 
             //connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
         }
@@ -264,7 +281,24 @@ void MainWindow::setFieldImagesAndLabels()
         }
 
     }
+}
+void MainWindow::setResources()
+{
+    Player* player = this->duel->getPlayer(0);
+    Player* opponent = this->duel->getPlayer(1);
 
+    ui->playerName->setText(QString(player->getName()));
+    ui->playerLifeValue->setText(QString::number(player->getHp()));
+    ui->playerManaValue->setText(QString::number(player->getMana()));
+    ui->playerDeckCount->setText(QString::number(player->getDeckSize()));
+    ui->playerSummonLimitValue->setText(QString::number(player->getSummonLimit()));
 
+    ui->opponentName->setText(QString(opponent->getName()));
+    ui->opponentLifeValue->setText(QString::number(opponent->getHp()));
+    ui->opponentManaValue->setText(QString::number(opponent->getMana()));
+    ui->opponentDeckCount->setText(QString::number(opponent->getDeckSize()));
+    ui->opponentSpecialDeckCount->setText(QString::number(opponent->getSpecialDeckSize()));
+    ui->opponentHandCount->setText(QString::number(opponent->getHandSize()));
+    ui->opponentSummonLimitValue->setText(QString::number(opponent->getSummonLimit()));
 }
 
