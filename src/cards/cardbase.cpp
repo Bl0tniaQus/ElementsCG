@@ -54,15 +54,7 @@ short CardBase::singleChoice(Duel* duel, Card* card)
     {
         if (owner->getBot()==nullptr)
         {
-            std::cout<<"0 - cancel"<<std::endl;
-            for (int i=0;i<nt;i++)
-            {
-                std::cout<<i+1<<" - "<<targets[i]->getName()<<std::endl;
-            }
-            std::cout<<"Target: ";
-            std::cin>>target;
-            if (target>=0 && target<=nt) {return target-1;}
-            else {return -1;}
+                return duel->makeSpellChoice(card);
         }
         else
         {

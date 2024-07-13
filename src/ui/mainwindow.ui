@@ -654,6 +654,56 @@
          </property>
         </widget>
        </widget>
+       <widget class="QGroupBox" name="targetGroupBox">
+        <property name="geometry">
+         <rect>
+          <x>1080</x>
+          <y>510</y>
+          <width>241</width>
+          <height>171</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Select Target</string>
+        </property>
+        <widget class="QScrollArea" name="targetsArea">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>221</width>
+           <height>121</height>
+          </rect>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>false</bool>
+         </property>
+         <widget class="QWidget" name="targetsAreaContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>300</width>
+            <height>76</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="leftMargin">
+            <number>6</number>
+           </property>
+           <property name="topMargin">
+            <number>6</number>
+           </property>
+          </layout>
+         </widget>
+        </widget>
+       </widget>
       </widget>
      </widget>
     </item>

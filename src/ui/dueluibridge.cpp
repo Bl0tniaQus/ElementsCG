@@ -41,6 +41,17 @@ void DuelUiBridge::updateBoard()
     emit drawField();
     emit drawResources();
 }
+short DuelUiBridge::makeSpellChoice(Card* card)
+{
+    qDebug()<<"xD";
+    emit drawSpellTargets(card);
+    while (this->spellTarget==-2)
+    {
+
+    }
+    return -1;
+}
+
 
 
 

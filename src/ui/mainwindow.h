@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
 private:
     Ui::MainWindow *ui;
     Duel* duel;
-    DuelUiBridge bridge;
+    DuelUiBridge* bridge;
     QThread duelThread;
     CardLabel** handImages;
     CardLabel** graveyardImages;
@@ -29,8 +29,10 @@ private:
     CardLabel** opponentFieldLabels;
     CardLabel** targetImages;
     short selectedHandCard = -1;
+    short selectedTargetCard = -1;
     short handSize = 0;
     short specialDeckSize = 0;
+    short n_targets = 0;
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -42,6 +44,7 @@ public slots:
     void setResources();
     void handTarget(short id);
     void playFromHand();
+    void setTargetImages(Card* card);
 signals:
     void duelStartSignal();
     void handAction(short id);

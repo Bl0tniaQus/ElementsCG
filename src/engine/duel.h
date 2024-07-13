@@ -3,12 +3,14 @@
 #include "player.h"
 #include "deck.h"
 #include "targetlist.h"
+#include "../ui/dueluibridge.h"
 class Duel
 {
 private:
     Player players[2]; //0 - player 1, 1 - player2
     TargetList* attackersTargetList;
     TargetList* defendersTargetList;
+    DuelUiBridge* uiBridge;
     short turnCount;
     unsigned char turnPlayer;
 public:
@@ -30,6 +32,7 @@ public:
     void toGraveyard(Card* card);
     void removeFromField(Card* card);
     void checkWinner();
+    void setUiBridge(DuelUiBridge* bridge) {this->uiBridge = bridge;}
     short getEmptyMinionZone(Player* player);
     void summonMinion(Card *minion, short zoneid);
     bool activateSpell(Card* spell);
@@ -50,6 +53,7 @@ public:
     void generateAttackersList();
     void generateDefendersList();
     void startDuel(Deck *deck0, Deck* deck1);
+    short makeSpellChoice(Card* card);
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}

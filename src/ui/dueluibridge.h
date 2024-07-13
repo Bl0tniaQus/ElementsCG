@@ -8,11 +8,15 @@ class DuelUiBridge : public QObject
 private:
     Q_OBJECT
     Duel* duel;
+    short spellTarget = -2;
 public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
+    void setSpellTarget(short t) {this->spellTarget = t;}
+    short getSpellTarget() {return this->spellTarget;}
     void duelControl(Deck* deck0, Deck* deck1);
     void updateBoard();
+    short makeSpellChoice(Card* card);
 public slots:
     void initiateDuel();
     void playFromHand(short id);
@@ -22,6 +26,7 @@ signals:
     void drawField();
     void drawResources();
     void handCardPlayed(short id = -1);
+    void drawSpellTargets(Card* card);
 };
 
 #endif

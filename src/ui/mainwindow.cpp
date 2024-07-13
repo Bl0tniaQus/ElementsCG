@@ -10,22 +10,12 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->setupUi(this);
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
-    this->duel = new Duel;
-    this->duel->getPlayer(1)->setBot(&bot);
-    this->bridge.setDuel(duel);
+
 
 
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
-    connect(&this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
-    connect(&this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
-    connect(&this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
-    connect(&this->bridge,&DuelUiBridge::drawResources, this, &MainWindow::setResources);
-    connect(this, &MainWindow::duelStartSignal, &this->bridge, &DuelUiBridge::initiateDuel);
-    connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
-    connect(this, &MainWindow::handAction, &this->bridge, &DuelUiBridge::playFromHand);
-    connect(&this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
-    this->bridge.moveToThread(&duelThread);
-    duelThread.start();
+
+
 
 
 
@@ -43,8 +33,28 @@ MainWindow::~MainWindow()
 }
 void MainWindow::startDuel()
 {
+    this->bridge = new DuelUiBridge;
+    this->duel = new Duel;
+    this->duel->getPlayer(1)->setBot(&bot);
+    this->bridge->setDuel(duel);
+    this->duel->setUiBridge(this->bridge);
+
+    connect(this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
+    connect(this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
+    connect(this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
+    connect(this->bridge,&DuelUiBridge::drawResources, this, &MainWindow::setResources);
+    connect(this->bridge,&DuelUiBridge::drawSpellTargets, this, &MainWindow::setTargetImages);
+    connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
+    connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
+    connect(this, &MainWindow::handAction, this->bridge, &DuelUiBridge::playFromHand);
+    connect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
+
+    this->bridge->moveToThread(&duelThread);
+    duelThread.start();
+
     this->ui->stackedWidget->setCurrentIndex(1);
     this->handImages = new CardLabel* [0];
+    this->targetImages = new CardLabel* [0];
     this->specialDeckImages = new CardLabel* [0];
     this->playerFieldImages = new CardLabel* [5];
     this->playerFieldLabels = new CardLabel* [5];
@@ -301,4 +311,44 @@ void MainWindow::setResources()
     ui->opponentHandCount->setText(QString::number(opponent->getHandSize()));
     ui->opponentSummonLimitValue->setText(QString::number(opponent->getSummonLimit()));
 }
+void MainWindow::setTargetImages(Card* card)
+{
+
+
+    Card** targets = card->getCardName()->getTargetList()->getTargetList();
+    short nt = card->getCardName()->getTargetList()->getTargetsNumber();
+    Card* c;
+    int i;
+
+    for (i=0;i<this->n_targets;i++)
+    {
+        delete this->targetImages[i];
+    }
+    delete [] this->targetImages;
+    this->targetImages = new CardLabel* [nt];
+    for (i=0;i<nt;i++)
+    {
+        c = targets[i];
+        char* img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        this->targetImages[i] = new CardLabel;
+        this->targetImages[i]->setParent(this->ui->targetsArea);
+        this->targetImages[i]->setMainWindowUi(this->ui);
+        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setPlace(5);
+        this->targetImages[i]->setId(i);
+        this->targetImages[i]->setStyleSheet("border:none;");
+        this->targetImages[i]->setPixmap(pm);
+        this->targetImages[i]->setScaledContents(true);
+        this->targetImages[i]->setMouseTracking(true);
+        this->targetImages[i]->setFrameShape(QFrame::Box);
+        this->targetImages[i]->setVisible(true);
+        this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
+        this->targetImages[i]->setContentsMargins(0,0,0,0);
+    }
+
+
+}
+
 

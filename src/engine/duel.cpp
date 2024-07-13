@@ -729,3 +729,25 @@ void Duel::DuelControlGui(Deck *deck0, Deck* deck1)
 
     }
 }
+short Duel::makeSpellChoice(Card* card)
+{
+    if (this->uiBridge!=nullptr)
+    {
+        return this->uiBridge->makeSpellChoice(card);
+    }
+    else
+    {
+        Card** targets = card->getCardName()->getTargetList()->getTargetList();
+        short nt = card->getCardName()->getTargetList()->getTargetsNumber();
+        short target;
+        std::cout<<"0 - cancel"<<std::endl;
+        for (int i=0;i<nt;i++)
+        {
+            std::cout<<i+1<<" - "<<targets[i]->getName()<<std::endl;
+        }
+        std::cout<<"Target: ";
+        std::cin>>target;
+        if (target>=0 && target<=nt) {return target-1;}
+        else {return -1;}
+    }
+}
