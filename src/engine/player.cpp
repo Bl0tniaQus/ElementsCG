@@ -17,7 +17,7 @@ Player::Player()
     this->bot = nullptr;
     this->hand = new Card* [0];
     this->deck = new Card* [0];
-    this->name = new char[0];
+   // this->name = new char[0];
     this->specialDeck = new Card* [0];
     this->originalDeck = new Card [0];
     this->originalSpecialDeck = new Card [0];

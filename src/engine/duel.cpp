@@ -7,8 +7,8 @@ Duel::Duel()
 {
     players[0].setOpponent(&players[1]);
     players[1].setOpponent(&players[0]);
-    players[0].setName("Player 1");
-    players[1].setName("Player 2");
+   // players[0].setName("Player 1");
+    //players[1].setName("Player 2");
     this->turnPlayer = 0;
     this->attackersTargetList = new TargetList;
     this->defendersTargetList = new TargetList;
