@@ -29,6 +29,7 @@ public:
 signals:
     void handCardHighlight(short id);
     void targetCardHighlight(short id);
+    void specialDeckCardHighlight(short id);
 };
 
 #endif // CARDLABEL_H

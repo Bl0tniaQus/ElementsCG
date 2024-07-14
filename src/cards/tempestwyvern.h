@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Tempest Wyvern", //name
         "tempestwyvern"
-    ) {};
+    ) {this->setMaterialNumber(2);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

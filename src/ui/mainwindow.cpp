@@ -37,9 +37,12 @@ void MainWindow::startDuel()
     connect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
     connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
+    connect(this->ui->playSpecialMinionButton, &QPushButton::released, this, &MainWindow::playSpecialMinion);
     connect(this, &MainWindow::handAction, this->bridge, &DuelUiBridge::playFromHand);
+    connect(this, &MainWindow::specialDeckAction, this->bridge, &DuelUiBridge::playSpecialMinion);
     connect(this, &MainWindow::turnEndSignal, this->bridge, &DuelUiBridge::passTurn);
     connect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
+    connect(this->bridge,&DuelUiBridge::specialMinionPlayed,this, &MainWindow::specialDeckTarget);
 
     connect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
 
@@ -68,6 +71,7 @@ void MainWindow::startDuel()
 }
 void MainWindow::setHandImages()
 {
+    this->selectedHandCard = -1;
     Player* player = duel->getPlayer(0);
     short n_hand = player->getHandSize();
     int i;
@@ -105,7 +109,7 @@ void MainWindow::setHandImages()
 }
 void MainWindow::setSpecialDeckImages()
 {
-
+    this->selectedSpecialDeckCard = -1;
     Player* player = duel->getPlayer(0);
     short n_special = player->getSpecialDeckSize();
     int i;
@@ -137,7 +141,7 @@ void MainWindow::setSpecialDeckImages()
         specialDeckImages[i]->setGeometry((i*80)+15,15,80,80);
         specialDeckImages[i]->setContentsMargins(0,0,0,0);
 
-        connect(handImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
+        connect(specialDeckImages[i],&CardLabel::specialDeckCardHighlight, this, &MainWindow::specialDeckTarget);
     }
     ui->specialDeckCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
     this->specialDeckSize = n_special;
@@ -230,6 +234,22 @@ void MainWindow::handTarget(short id)
         }
     }
 }
+void MainWindow::specialDeckTarget(short id)
+{
+    if (!targeting)
+    {
+    this->selectedSpecialDeckCard = id;
+    short sd_size = this->duel->getPlayer(0)->getSpecialDeckSize();
+        for (int i=0;i<sd_size;i++)
+        {
+            this->specialDeckImages[i]->setStyleSheet("border:none;");
+        }
+        if (id!=-1)
+        {
+            this->specialDeckImages[id]->setStyleSheet("border: 3px solid red;");
+        }
+    }
+}
 void MainWindow::targetingTarget(short id)
 {
     if (targeting)
@@ -250,6 +270,13 @@ void MainWindow::playFromHand()
     if (this->selectedHandCard!=-1&&!targeting)
     {
         emit handAction(this->selectedHandCard);
+    }
+}
+void MainWindow::playSpecialMinion()
+{
+    if (this->selectedSpecialDeckCard!=-1&&!targeting)
+    {
+        emit specialDeckAction(this->selectedSpecialDeckCard);
     }
 }
 void MainWindow::setFieldImagesAndLabels()
@@ -355,7 +382,7 @@ void MainWindow::setFieldImagesAndLabels()
             std::string str = "L"+std::to_string(lvl);
             str += " "+std::to_string(atk)+"/"+std::to_string(def);
             str += " A"+std::to_string(attacks);
-            if (br>0){str += " A"+std::to_string(br);}
+            if (br>0){str += " B"+std::to_string(br);}
             if (si>0){str += " SI";}
             if (negated>0){str += " N";}
             playerFieldLabels[i]->setText(QString::fromStdString(str));
@@ -381,7 +408,7 @@ void MainWindow::setFieldImagesAndLabels()
             std::string str = "L"+std::to_string(lvl);
             str += " "+std::to_string(atk)+"/"+std::to_string(def);
             str += " A"+std::to_string(attacks);
-            if (br>0){str += " A"+std::to_string(br);}
+            if (br>0){str += " B"+std::to_string(br);}
             if (si>0){str += " SI";}
             if (negated>0){str += " N";}
 
@@ -484,10 +511,14 @@ void MainWindow::clearTargets()
     delete [] this->targetImages;
     this->n_targets = 0;
     this->targetImages = new CardLabel* [0];
+    this->selectedSpellTarget = -1;
     this->ui->targetGroupBox->setVisible(false);
 }
 void MainWindow::clearTabs()
 {
+    this->selectedHandCard = -1;
+    this->selectedSpellTarget = -1;
+    this->selectedSpecialDeckCard = -1;
     setHandImages();
     setSpecialDeckImages();
     setGraveyardImages();

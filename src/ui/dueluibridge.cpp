@@ -22,18 +22,36 @@ void DuelUiBridge::initiateDuel()
 }
 void DuelUiBridge::playFromHand(short id)
 {
-    if (duel->getTurnPlayer()==0)
+    if (this->duel->getTurnPlayer()==0)
     {
-        Player* player = duel->getPlayer(0);
+        Player* player = this->duel->getPlayer(0);
         if (id>=0 && id<player->getHandSize())
         {
-            duel->playFromHand(player->getHand()[id]);
+            this->duel->playFromHand(player->getHand()[id]);
             emit handCardPlayed(-1);
             this->updateBoard();
         }
 
     }
 }
+void DuelUiBridge::playSpecialMinion(short id)
+{
+    if (this->duel->getTurnPlayer()==0)
+    {
+        Player* player = this->duel->getPlayer(0);
+        if (id>=0 && id<player->getSpecialDeckSize())
+        {
+            //duel->playFromHand(player->getHand()[id]);
+            //emit handCardPlayed(-1);
+            qDebug()<<"xd";
+            this->duel->summonSpecialMinion(player->getSpecialDeck()[id]);
+            emit specialMinionPlayed(-1);
+            this->updateBoard();
+        }
+
+    }
+}
+
 void DuelUiBridge::updateBoard()
 {
     emit drawHand();
@@ -53,7 +71,6 @@ short DuelUiBridge::makeSpellChoice(Card* card)
 }
 void DuelUiBridge::passTurn()
 {
-    qDebug()<<"xDDD";
     Player* opponent = this->duel->getPlayer(!this->duel->getTurnPlayer());
     this->duel->passTurn();
 

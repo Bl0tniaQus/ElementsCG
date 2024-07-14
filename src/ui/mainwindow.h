@@ -32,6 +32,7 @@ private:
     CardLabel** targetImages;
     short selectedHandCard = -1;
     short selectedSpellTarget = -1;
+    short selectedSpecialDeckCard = -1;
     short handSize = 0;
     short specialDeckSize = 0;
     short graveyardSize = 0;
@@ -51,8 +52,10 @@ public slots:
     void setFieldImagesAndLabels();
     void setResources();
     void handTarget(short id);
+    void specialDeckTarget(short id);
     void targetingTarget(short id);
     void playFromHand();
+    void playSpecialMinion();
     void setTargetImages(Card* card);
     void spellConfirm();
     void spellCancel();
@@ -61,6 +64,7 @@ public slots:
 signals:
     void duelStartSignal();
     void handAction(short id);
+    void specialDeckAction(short id);
     void spellTarget(short id);
     void turnEndSignal();
 

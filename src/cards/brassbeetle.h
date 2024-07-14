@@ -15,7 +15,7 @@ public:
         "Brass Beetle", //name
         "brassbeetle"
 
-    ) {};
+    ) {this->setMaterialNumber(2);}
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

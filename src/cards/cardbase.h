@@ -12,6 +12,7 @@ private:
     short level;
     short attack;
     short defence;
+    short materials = 0;
     char* element;
     char* name;
     char* image;
@@ -27,6 +28,8 @@ public:
     short getCardType() {return this->cardType;}
     short getLevel() {return this->level;}
     short getAttack() {return this->attack;}
+    void setMaterialNumber(short n) {this->materials = n;}
+    short getMaterialNumber() {return this->materials;}
     short getDefence() {return this->defence;}
     char* getElement() {return this->element;}
     char* getName() {return this->name;}

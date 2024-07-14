@@ -25,6 +25,7 @@ void CardLabel::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {
     if (this->place==1) {emit handCardHighlight(this->id);}
     if (this->place==5) {emit targetCardHighlight(this->id);}
+    if (this->place==4) {emit specialDeckCardHighlight(this->id);}
 }
 CardLabel::~CardLabel()
 {

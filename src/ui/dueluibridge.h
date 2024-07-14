@@ -23,6 +23,7 @@ public:
 public slots:
     void initiateDuel();
     void playFromHand(short id);
+    void playSpecialMinion(short id);
     void passTurn();
 signals:
     void drawHand();
@@ -32,6 +33,7 @@ signals:
     void drawGraveyard();
     void drawOpponentGraveyard();
     void handCardPlayed(short id = -1);
+    void specialMinionPlayed(short id = -1);
     void drawSpellTargets(Card* card);
     void waitForSpellTarget();
 };
