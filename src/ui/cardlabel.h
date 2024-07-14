@@ -11,7 +11,7 @@ private:
     char* cardName;
     Ui::MainWindow* ui;
     short id;
-    short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - special deck
+    short place; //0 - deck, 1 - hand, 2 - field, 3 - GY, 4 - special deck, 5 - target
 public:
     ~CardLabel();
     CardLabel();
@@ -25,6 +25,7 @@ public:
     short getId() {return this->id;}
 signals:
     void handCardHighlight(short id);
+    void targetCardHighlight(short id);
 };
 
 #endif // CARDLABEL_H

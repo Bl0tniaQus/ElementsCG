@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QThread>
+#include <QMutex>
 #include "../engine/duel.h"
 #include "dueluibridge.h"
 QT_BEGIN_NAMESPACE
@@ -19,6 +20,7 @@ private:
     Duel* duel;
     DuelUiBridge* bridge;
     QThread duelThread;
+    QMutex mutex;
     CardLabel** handImages;
     CardLabel** graveyardImages;
     CardLabel** opponentGraveyardImages;
@@ -29,25 +31,31 @@ private:
     CardLabel** opponentFieldLabels;
     CardLabel** targetImages;
     short selectedHandCard = -1;
-    short selectedTargetCard = -1;
+    short selectedSpellTarget = -1;
     short handSize = 0;
     short specialDeckSize = 0;
     short n_targets = 0;
+    bool targeting = false;
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void startDuel();
+    void clearTargets();
 public slots:
     void setHandImages();
     void setSpecialDeckImages();
     void setFieldImagesAndLabels();
     void setResources();
     void handTarget(short id);
+    void targetingTarget(short id);
     void playFromHand();
     void setTargetImages(Card* card);
+    void spellConfirm();
+    void spellCancel();
 signals:
     void duelStartSignal();
     void handAction(short id);
+    void spellTarget(short id);
 
 };
 #endif // MAINWINDOW_H

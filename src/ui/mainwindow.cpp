@@ -10,20 +10,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->setupUi(this);
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
-
-
-
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
-
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -33,12 +20,13 @@ MainWindow::~MainWindow()
 }
 void MainWindow::startDuel()
 {
+    this->ui->targetGroupBox->setVisible(false);
     this->bridge = new DuelUiBridge;
     this->duel = new Duel;
     this->duel->getPlayer(1)->setBot(&bot);
     this->bridge->setDuel(duel);
     this->duel->setUiBridge(this->bridge);
-
+    this->bridge->setMutex(&mutex);
     connect(this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
     connect(this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
     connect(this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
@@ -161,6 +149,8 @@ void MainWindow::setSpecialDeckImages()
 }
 void MainWindow::handTarget(short id)
 {
+    if (!targeting)
+    {
     this->selectedHandCard = id;
     short handSize = this->duel->getPlayer(0)->getHandSize();
         for (int i=0;i<handSize;i++)
@@ -171,10 +161,26 @@ void MainWindow::handTarget(short id)
         {
             this->handImages[id]->setStyleSheet("border: 3px solid red;");
         }
+    }
+}
+void MainWindow::targetingTarget(short id)
+{
+    if (targeting)
+    {
+    this->selectedSpellTarget = id;
+        for (int i=0;i<this->n_targets;i++)
+        {
+            this->targetImages[i]->setStyleSheet("border:none;");
+        }
+        if (id!=-1)
+        {
+            this->targetImages[id]->setStyleSheet("border: 3px solid red;");
+        }
+    }
 }
 void MainWindow::playFromHand()
 {
-    if (this->selectedHandCard!=-1)
+    if (this->selectedHandCard!=-1&&!targeting)
     {
         emit handAction(this->selectedHandCard);
     }
@@ -313,13 +319,16 @@ void MainWindow::setResources()
 }
 void MainWindow::setTargetImages(Card* card)
 {
-
-
     Card** targets = card->getCardName()->getTargetList()->getTargetList();
     short nt = card->getCardName()->getTargetList()->getTargetsNumber();
     Card* c;
     int i;
-
+    if (nt>0) {
+        this->targeting = true;
+        this->ui->targetGroupBox->setVisible(true);
+        connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm);
+        connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel);
+    }
     for (i=0;i<this->n_targets;i++)
     {
         delete this->targetImages[i];
@@ -346,9 +355,42 @@ void MainWindow::setTargetImages(Card* card)
         this->targetImages[i]->setVisible(true);
         this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
         this->targetImages[i]->setContentsMargins(0,0,0,0);
+
+        connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::targetingTarget);
+
     }
-
-
+    this->n_targets = nt;
 }
+void MainWindow::spellConfirm()
+{
+    if (this->selectedSpellTarget!=-1)
+    {
+        this->bridge->setSpellTarget(this->selectedSpellTarget);
+        this->targeting = false;
+        this->selectedSpellTarget = -1;
+        clearTargets();
+        mutex.unlock();
+    }
+}
+void MainWindow::spellCancel()
+{
+    this->bridge->setSpellTarget(-1);
+    this->targeting = false;
+    this->selectedSpellTarget = -1;
+    clearTargets();
+    mutex.unlock();
+}
+void MainWindow::clearTargets()
+{
+    for (int i=0;i<this->n_targets;i++)
+    {
+        delete this->targetImages[i];
+    }
+    delete [] this->targetImages;
+    this->n_targets = 0;
+    this->targetImages = new CardLabel* [0];
+    this->ui->targetGroupBox->setVisible(false);
+}
+
 
 

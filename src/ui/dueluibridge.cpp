@@ -23,7 +23,6 @@ void DuelUiBridge::playFromHand(short id)
 {
     if (duel->getTurnPlayer()==0)
     {
-
         Player* player = duel->getPlayer(0);
         if (id>=0 && id<player->getHandSize())
         {
@@ -43,15 +42,12 @@ void DuelUiBridge::updateBoard()
 }
 short DuelUiBridge::makeSpellChoice(Card* card)
 {
-    qDebug()<<"xD";
     emit drawSpellTargets(card);
-    while (this->spellTarget==-2)
-    {
-
-    }
-    return -1;
+    mutex->lock(); mutex->lock(); mutex->unlock();
+    short id = this->spellTarget;
+    this->spellTarget = -2;
+    return id;
 }
-
 
 
 

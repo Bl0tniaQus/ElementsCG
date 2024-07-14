@@ -2,16 +2,19 @@
 #define DUELUIBRIDGE_H
 #include "cardlabel.h"
 #include "../engine/deck.h"
+#include <QMutex>
 class Duel;
 class DuelUiBridge : public QObject
 {
 private:
     Q_OBJECT
     Duel* duel;
+    QMutex* mutex;
     short spellTarget = -2;
 public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
+    void setMutex(QMutex* mtx) {this->mutex = mtx;}
     void setSpellTarget(short t) {this->spellTarget = t;}
     short getSpellTarget() {return this->spellTarget;}
     void duelControl(Deck* deck0, Deck* deck1);
@@ -27,6 +30,7 @@ signals:
     void drawResources();
     void handCardPlayed(short id = -1);
     void drawSpellTargets(Card* card);
+    void waitForSpellTarget();
 };
 
 #endif
