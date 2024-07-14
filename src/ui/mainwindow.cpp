@@ -28,14 +28,20 @@ void MainWindow::startDuel()
     this->duel->setUiBridge(this->bridge);
     this->bridge->setMutex(&mutex);
     connect(this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
+    connect(this->bridge,&DuelUiBridge::drawGraveyard, this, &MainWindow::setGraveyardImages);
+    connect(this->bridge,&DuelUiBridge::drawOpponentGraveyard, this, &MainWindow::setOpponentGraveyardImages);
     connect(this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
     connect(this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
     connect(this->bridge,&DuelUiBridge::drawResources, this, &MainWindow::setResources);
     connect(this->bridge,&DuelUiBridge::drawSpellTargets, this, &MainWindow::setTargetImages);
+    connect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
     connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
     connect(this, &MainWindow::handAction, this->bridge, &DuelUiBridge::playFromHand);
+    connect(this, &MainWindow::turnEndSignal, this->bridge, &DuelUiBridge::passTurn);
     connect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
+
+    connect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
 
     this->bridge->moveToThread(&duelThread);
     duelThread.start();
@@ -44,37 +50,24 @@ void MainWindow::startDuel()
     this->handImages = new CardLabel* [0];
     this->targetImages = new CardLabel* [0];
     this->specialDeckImages = new CardLabel* [0];
+    this->graveyardImages = new CardLabel* [0];
+    this->opponentGraveyardImages = new CardLabel* [0];
     this->playerFieldImages = new CardLabel* [5];
     this->playerFieldLabels = new CardLabel* [5];
     this->opponentFieldImages = new CardLabel* [5];
-    //this->opponentFieldLabels = new CardLabel* [5];
+    this->opponentFieldLabels = new CardLabel* [5];
 
     for (int i=0;i<5;i++)
     {
         this->playerFieldImages[i] = new CardLabel;
         this->playerFieldLabels[i] = new CardLabel;
         this->opponentFieldImages[i] = new CardLabel;
-        //this->opponentFieldLabels[i] = new CardLabel;
+        this->opponentFieldLabels[i] = new CardLabel;
     }
-
-
-    //ui->scrollAreaWidgetContents->setContentsMargins(20,20,20,20);
-    //label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-   // label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    //label->setParent(ui->scrollArea);
-    //this->ui->oppZ0Image->setPixmap(pm);
-   // label->setText("test");
-   // label->setVisible(true);
-   // label->setGeometry(QRect(10,10,30,80));
-
-   // this->ui->oppZ0Image->setPixmap(empty);
-    //this->ui->oppZ0Label->setText("L10 10/10 B1 A1 SI N");
-    //this->ui->oppZ0Image->setScaledContents(true);
     emit duelStartSignal();
 }
 void MainWindow::setHandImages()
 {
-
     Player* player = duel->getPlayer(0);
     short n_hand = player->getHandSize();
     int i;
@@ -90,11 +83,12 @@ void MainWindow::setHandImages()
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         handImages[i] = new CardLabel;
-        handImages[i]->setParent(this->ui->handCardsArea);
+        handImages[i]->setParent(this->ui->handCardsAreaContents);
         handImages[i]->setMainWindowUi(this->ui);
         handImages[i]->setCard(img);
         handImages[i]->setPlace(1);
         handImages[i]->setId(i);
+        handImages[i]->setHasImage(true);
         handImages[i]->setStyleSheet("border:none;");
         handImages[i]->setPixmap(pm);
         handImages[i]->setScaledContents(true);
@@ -106,7 +100,7 @@ void MainWindow::setHandImages()
 
         connect(handImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
     }
-    ui->handCardsAreaContents->setGeometry(40,40,i*80,200);
+    ui->handCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
     this->handSize = n_hand;
 }
 void MainWindow::setSpecialDeckImages()
@@ -128,11 +122,12 @@ void MainWindow::setSpecialDeckImages()
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         specialDeckImages[i] = new CardLabel;
-        specialDeckImages[i]->setParent(this->ui->specialDeckCardsArea);
+        specialDeckImages[i]->setParent(this->ui->specialDeckCardsAreaContents);
         specialDeckImages[i]->setMainWindowUi(this->ui);
         specialDeckImages[i]->setCard(img);
         specialDeckImages[i]->setPlace(4);
         specialDeckImages[i]->setId(i);
+        specialDeckImages[i]->setHasImage(i);
         specialDeckImages[i]->setStyleSheet("border:none;");
         specialDeckImages[i]->setPixmap(pm);
         specialDeckImages[i]->setScaledContents(true);
@@ -144,8 +139,80 @@ void MainWindow::setSpecialDeckImages()
 
         connect(handImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
     }
-    ui->specialDeckCardsAreaContents->setGeometry(40,40,i*80,200);
+    ui->specialDeckCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
     this->specialDeckSize = n_special;
+}
+void MainWindow::setGraveyardImages()
+{
+    Player* player = duel->getPlayer(0);
+    short n_graveyard = player->getGraveyardSize();
+    this->ui->graveyardCountLabel->setText(QString::number(n_graveyard));
+    int i;
+    for (i=0; i<this->graveyardSize;i++)
+    {
+        delete this->graveyardImages[i];
+    }
+    delete [] this->graveyardImages;
+    this->graveyardImages = new CardLabel* [n_graveyard];
+    for (i=0;i<n_graveyard;i++)
+    {
+        char* img = player->getGraveyard()[i]->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        graveyardImages[i] = new CardLabel;
+        graveyardImages[i]->setParent(this->ui->graveyardCardsAreaContents);
+        graveyardImages[i]->setMainWindowUi(this->ui);
+        graveyardImages[i]->setCard(img);
+        graveyardImages[i]->setPlace(3);
+        graveyardImages[i]->setId(i);
+        graveyardImages[i]->setHasImage(true);
+        graveyardImages[i]->setStyleSheet("border:none;");
+        graveyardImages[i]->setPixmap(pm);
+        graveyardImages[i]->setScaledContents(true);
+        graveyardImages[i]->setMouseTracking(true);
+        graveyardImages[i]->setFrameShape(QFrame::Box);
+        graveyardImages[i]->setVisible(true);
+        graveyardImages[i]->setGeometry((i*80)+15,15,80,80);
+        graveyardImages[i]->setContentsMargins(0,0,0,0);
+    }
+    ui->graveyardCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    this->graveyardSize = n_graveyard;
+}
+void MainWindow::setOpponentGraveyardImages()
+{
+    Player* opponent = duel->getPlayer(1);
+    short n_graveyard = opponent->getGraveyardSize();
+    this->ui->opponentGraveyardCountLabel->setText(QString::number(n_graveyard));
+    int i;
+    for (i=0; i<this->opponentGraveyardSize;i++)
+    {
+        delete this->opponentGraveyardImages[i];
+    }
+    delete [] this->opponentGraveyardImages;
+    this->opponentGraveyardImages = new CardLabel* [n_graveyard];
+    for (i=0;i<n_graveyard;i++)
+    {
+        char* img = opponent->getGraveyard()[i]->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        opponentGraveyardImages[i] = new CardLabel;
+        opponentGraveyardImages[i]->setParent(this->ui->opponentGraveyardCardsAreaContents);
+        opponentGraveyardImages[i]->setMainWindowUi(this->ui);
+        opponentGraveyardImages[i]->setCard(img);
+        opponentGraveyardImages[i]->setPlace(3);
+        opponentGraveyardImages[i]->setId(i);
+        opponentGraveyardImages[i]->setHasImage(true);
+        opponentGraveyardImages[i]->setStyleSheet("border:none;");
+        opponentGraveyardImages[i]->setPixmap(pm);
+        opponentGraveyardImages[i]->setScaledContents(true);
+        opponentGraveyardImages[i]->setMouseTracking(true);
+        opponentGraveyardImages[i]->setFrameShape(QFrame::Box);
+        opponentGraveyardImages[i]->setVisible(true);
+        opponentGraveyardImages[i]->setGeometry((i*80)+15,15,80,80);
+        opponentGraveyardImages[i]->setContentsMargins(0,0,0,0);
+    }
+    ui->opponentGraveyardCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    this->opponentGraveyardSize = n_graveyard;
 }
 void MainWindow::handTarget(short id)
 {
@@ -201,17 +268,17 @@ void MainWindow::setFieldImagesAndLabels()
        delete this->playerFieldImages[i];
        delete this->playerFieldLabels[i];
        delete this->opponentFieldImages[i];
-     //  delete this->opponentFieldLabels[i];
+       delete this->opponentFieldLabels[i];
 
     }
        delete[] this->playerFieldImages;
        delete[] this->playerFieldLabels;
        delete[] this->opponentFieldImages;
-      // delete[] this->opponentFieldLabels;
+       delete[] this->opponentFieldLabels;
     this->playerFieldImages = new CardLabel* [5];
     this->playerFieldLabels = new CardLabel* [5];
     this->opponentFieldImages = new CardLabel* [5];
-   // this->opponentFieldLabels = new CardLabel* [5];
+    this->opponentFieldLabels = new CardLabel* [5];
     for (i=0; i<5; i++)
     {
         cardPlayer = playerField[i].getCard();
@@ -254,6 +321,18 @@ void MainWindow::setFieldImagesAndLabels()
         opponentFieldImages[4-i]->setGeometry((i*120)+15,15,120,120);
         opponentFieldImages[4-i]->setContentsMargins(0,0,0,0);
 
+        opponentFieldLabels[4-i] = new CardLabel;
+        opponentFieldLabels[4-i]->setParent(this->ui->opponentFieldLabelsFrame);
+        opponentFieldLabels[4-i]->setMainWindowUi(this->ui);
+        opponentFieldLabels[4-i]->setStyleSheet("border:none;");
+        opponentFieldLabels[4-i]->setScaledContents(true);
+        opponentFieldLabels[4-i]->setPlace(2);
+        opponentFieldLabels[4-i]->setMouseTracking(true);
+        opponentFieldLabels[4-i]->setFrameShape(QFrame::Box);
+        opponentFieldLabels[4-i]->setVisible(true);
+        opponentFieldLabels[4-i]->setGeometry((i*120)+15,15,120,20);
+        opponentFieldLabels[4-i]->setContentsMargins(0,0,0,0);
+
         if (cardPlayer!=nullptr)
         {
             char* img = cardPlayer->getCardName()->getImage();
@@ -262,9 +341,8 @@ void MainWindow::setFieldImagesAndLabels()
             playerFieldImages[i]->setCard(img);
             playerFieldImages[i]->setId(i);
             playerFieldImages[i]->setPixmap(pm);
-
+            playerFieldImages[i]->setHasImage(true);
             playerFieldLabels[i]->setCard(img);
-            playerFieldLabels[i]->setId(i);
 
             short atk = cardPlayer->getAttack();
             short def = cardPlayer->getDefence();
@@ -280,22 +358,35 @@ void MainWindow::setFieldImagesAndLabels()
             if (br>0){str += " A"+std::to_string(br);}
             if (si>0){str += " SI";}
             if (negated>0){str += " N";}
-
             playerFieldLabels[i]->setText(QString::fromStdString(str));
-
-            //connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
         }
         if (cardOpp!=nullptr)
         {
             char* img = cardOpp->getCardName()->getImage();
             QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
             QPixmap pm(imgName);
-            opponentFieldImages[i]->setCard(img);
-            opponentFieldImages[i]->setId(i);
-            opponentFieldImages[i]->setPixmap(pm);
-            //connect(playerFieldImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
-        }
+            opponentFieldImages[4-i]->setCard(img);
+            opponentFieldImages[4-i]->setId(i);
+            opponentFieldImages[4-i]->setPixmap(pm);
+            opponentFieldImages[4-i]->setHasImage(true);
 
+            short atk = cardOpp->getAttack();
+            short def = cardOpp->getDefence();
+            short lvl = cardOpp->getLevel();
+            short br = cardOpp->getBarrier();
+            short negated = cardOpp->getIsNegated();
+            short attacks = cardOpp->getAttacks();
+            short si = cardOpp->getIsSpellImmune();
+            //L10 10/10 B1 A1 SI N
+            std::string str = "L"+std::to_string(lvl);
+            str += " "+std::to_string(atk)+"/"+std::to_string(def);
+            str += " A"+std::to_string(attacks);
+            if (br>0){str += " A"+std::to_string(br);}
+            if (si>0){str += " SI";}
+            if (negated>0){str += " N";}
+
+            opponentFieldLabels[4-i]->setText(QString::fromStdString(str));
+        }
     }
 }
 void MainWindow::setResources()
@@ -368,6 +459,8 @@ void MainWindow::spellConfirm()
         this->bridge->setSpellTarget(this->selectedSpellTarget);
         this->targeting = false;
         this->selectedSpellTarget = -1;
+        disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+        disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
         clearTargets();
         mutex.unlock();
     }
@@ -377,6 +470,8 @@ void MainWindow::spellCancel()
     this->bridge->setSpellTarget(-1);
     this->targeting = false;
     this->selectedSpellTarget = -1;
+    disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+    disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
     clearTargets();
     mutex.unlock();
 }
@@ -391,6 +486,19 @@ void MainWindow::clearTargets()
     this->targetImages = new CardLabel* [0];
     this->ui->targetGroupBox->setVisible(false);
 }
-
+void MainWindow::clearTabs()
+{
+    setHandImages();
+    setSpecialDeckImages();
+    setGraveyardImages();
+    setOpponentGraveyardImages();
+}
+void MainWindow::turnEnd()
+{
+        if (this->duel->getTurnPlayer()==0&&!targeting)
+        {
+            emit turnEndSignal();
+        }
+}
 
 

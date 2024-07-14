@@ -23,11 +23,14 @@ public:
 public slots:
     void initiateDuel();
     void playFromHand(short id);
+    void passTurn();
 signals:
     void drawHand();
     void drawSpecialDeck();
     void drawField();
     void drawResources();
+    void drawGraveyard();
+    void drawOpponentGraveyard();
     void handCardPlayed(short id = -1);
     void drawSpellTargets(Card* card);
     void waitForSpellTarget();

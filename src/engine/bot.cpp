@@ -61,7 +61,6 @@ void Bot::testCardFromHand(short c, Duel* duel)
                     this->generateTempGamestate(duel);
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     this->tempGamestate->playFromHand(player->getHand()[c]);
-                    std::cout<<"Whirlwind"<<std::endl;
                     value = this->tempGamestate->evaluate();
                     this->saveHandOption(c,i,value-bValue);
                 }
@@ -200,9 +199,7 @@ void Bot::endBattleTesting()
 }
 void Bot::testCardBattle(short c, Duel* duel)
 {
-    std::cout<<"BATTLE BASE"<<std::endl;
     float bv = this->baseGamestate->evaluate();
-    std::cout<<"BATTLE BASE END"<<std::endl;
     short n_defenders = this->baseGamestate->getDefendersList()->getTargetsNumber();
     for (int i=0;i<n_defenders;i++)
     {
@@ -211,9 +208,7 @@ void Bot::testCardBattle(short c, Duel* duel)
         Card* defender = this->tempGamestate->getDefendersList()->getTargetList()[i];
 
         this->tempGamestate->combat(attacker,defender);
-        std::cout<<"BATTLE TEMP"<<std::endl;
         float v = this->tempGamestate->evaluate();
-        std::cout<<"BATTLE TEMP END"<<std::endl;
         this->saveAttackOption(c,i,v-bv);
     }
     if (n_defenders == 0)
@@ -240,7 +235,6 @@ void Bot::conductBattlePhase(Duel* duel)
 {
     while(true)
     {
-        std::cout<<"BATTLE"<<std::endl;
         this->generateBaseGamestate(duel);
         this->testBattlePhase(duel);
         if (this->testedBattleOptions==0) {this->endBattleTesting(); break;}
@@ -266,9 +260,24 @@ void Bot::conductBattlePhase(Duel* duel)
         }
         this->endBattleTesting();
     }
-    std::cout<<"END_BATTLE"<<std::endl;
 }
+void Bot::playTurn(Duel* duel)
+{
+            this->generateBaseGamestate(duel);
+            Player* player = duel->getPlayer(duel->getTurnPlayer());
+            short n_hand = player->getHandSize();
+            for (int z = 0;z<n_hand;z++)
+            {
+                this->testCardFromHand(z, duel);
 
+            }
+            this->getBestOption();
+            short bc = this->getBestCard();
+            if (bc>=0&&bc<n_hand) {duel->playFromHand(player->getHand()[bc]);}
+            this->endHandTesting();
+            this->conductBattlePhase(duel);
+            duel->passTurn();
+}
 
 
 

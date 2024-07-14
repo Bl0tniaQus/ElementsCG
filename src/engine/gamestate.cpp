@@ -381,8 +381,6 @@ float Gamestate::fieldPresenceFactor()
 
 
     factor = f_pressenceLvl * f_pressenceCount * f_offense * f_defence;
-    std::cout<<"lvl "<<f_pressenceLvl<<" off "<<f_offense<<" def "<<f_defence<<" count "<<f_pressenceCount<<std::endl;
-    //std::cout<<sumLvl<<" "<<sumLvlOpp<<" "<<vulnerable_defenders<<std::endl;
     return factor;
 }
 

@@ -46,10 +46,8 @@ public:
     void turnStartEffects();
     void onDestroy(Card* card);
     void onCombat(Card* card);
-    void applyContinuous();
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
-    void DuelControlGui(Deck* deck0, Deck* deck1);
     void generateAttackersList();
     void generateDefendersList();
     void startDuel(Deck *deck0, Deck* deck1);

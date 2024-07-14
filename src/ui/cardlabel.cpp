@@ -12,10 +12,14 @@ void CardLabel::setCard(const char* c)
 }
 void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
 {
-    QString imgName = QString::fromStdString(std::string(":/")+std::string(this->cardName)+std::string("_card"));
-    QPixmap pm(imgName);
-    this->ui->cardHighlight->setPixmap(pm);
-    this->ui->cardHighlight->setScaledContents(true);
+    if (image)
+    {
+       QString imgName = QString::fromStdString(std::string(":/")+std::string(this->cardName)+std::string("_card"));
+        QPixmap pm(imgName);
+        this->ui->cardHighlight->setPixmap(pm);
+        this->ui->cardHighlight->setScaledContents(true);
+    }
+
 }
 void CardLabel::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {

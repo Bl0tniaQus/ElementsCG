@@ -61,5 +61,6 @@ public:
     void getBestAttackOption();
     void endHandTesting();
     void endBattleTesting();
+    void playTurn(Duel* duel);
 };
 #endif // BOT_H

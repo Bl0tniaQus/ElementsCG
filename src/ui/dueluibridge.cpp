@@ -1,6 +1,7 @@
 #include "dueluibridge.h"
 #include "../engine/duel.h"
 #include "../engine/card.h"
+#include "../engine/bot.h"
 #include <QDebug>
 DuelUiBridge::DuelUiBridge()
 {
@@ -38,6 +39,8 @@ void DuelUiBridge::updateBoard()
     emit drawHand();
     emit drawSpecialDeck();
     emit drawField();
+    emit drawGraveyard();
+    emit drawOpponentGraveyard();
     emit drawResources();
 }
 short DuelUiBridge::makeSpellChoice(Card* card)
@@ -48,6 +51,19 @@ short DuelUiBridge::makeSpellChoice(Card* card)
     this->spellTarget = -2;
     return id;
 }
+void DuelUiBridge::passTurn()
+{
+    qDebug()<<"xDDD";
+    Player* opponent = this->duel->getPlayer(!this->duel->getTurnPlayer());
+    this->duel->passTurn();
+
+    if (opponent->getBot()!=nullptr)
+    {
+        opponent->getBot()->playTurn(this->duel);
+    }
+    updateBoard();
+}
+
 
 
 

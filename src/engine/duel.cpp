@@ -487,10 +487,11 @@ void Duel::passTurn()
     Player* opponent = this->getPlayer(!this->getTurnPlayer());
     turnEndEffects();
     opponent->changeMana(2);
-    this->drawCard(opponent);
     this->turnCount++;
     turnPlayer->setSummonLimit(1);
     this->turnPlayer = !this->turnPlayer;
+    this->drawCard(opponent);
+    turnStartEffects();
 }
 void Duel::generateAttackersList()
 {
@@ -583,7 +584,7 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
     {
         Player* turnPlayer = this->getPlayer(this->turnPlayer);
 
-        turnStartEffects();
+
 
         if (turnPlayer->checkBot()) //AI
         {
@@ -719,14 +720,6 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
                 }
             }
         }
-    }
-}
-void Duel::DuelControlGui(Deck *deck0, Deck* deck1)
-{
-    startDuel(deck0,deck1);
-    while(true)
-    {
-
     }
 }
 short Duel::makeSpellChoice(Card* card)

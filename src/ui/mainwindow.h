@@ -34,6 +34,8 @@ private:
     short selectedSpellTarget = -1;
     short handSize = 0;
     short specialDeckSize = 0;
+    short graveyardSize = 0;
+    short opponentGraveyardSize = 0;
     short n_targets = 0;
     bool targeting = false;
 public:
@@ -44,6 +46,8 @@ public:
 public slots:
     void setHandImages();
     void setSpecialDeckImages();
+    void setGraveyardImages();
+    void setOpponentGraveyardImages();
     void setFieldImagesAndLabels();
     void setResources();
     void handTarget(short id);
@@ -52,10 +56,13 @@ public slots:
     void setTargetImages(Card* card);
     void spellConfirm();
     void spellCancel();
+    void clearTabs();
+    void turnEnd();
 signals:
     void duelStartSignal();
     void handAction(short id);
     void spellTarget(short id);
+    void turnEndSignal();
 
 };
 #endif // MAINWINDOW_H
