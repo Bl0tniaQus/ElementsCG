@@ -33,7 +33,10 @@ void MainWindow::startDuel()
     connect(this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
     connect(this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
     connect(this->bridge,&DuelUiBridge::drawResources, this, &MainWindow::setResources);
-    connect(this->bridge,&DuelUiBridge::drawSpellTargets, this, &MainWindow::setTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawSpellTargets, this, &MainWindow::setSpellTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawFirstMaterialTargets, this, &MainWindow::setFirstMaterialTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawSecondMaterialTargets, this, &MainWindow::setSecondMaterialTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawLastMaterialTargets, this, &MainWindow::setLastMaterialTargetImages);
     connect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
     connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
@@ -71,7 +74,7 @@ void MainWindow::startDuel()
 }
 void MainWindow::setHandImages()
 {
-    this->selectedHandCard = -1;
+    //this->selectedHandCard = -1;
     Player* player = duel->getPlayer(0);
     short n_hand = player->getHandSize();
     int i;
@@ -109,7 +112,7 @@ void MainWindow::setHandImages()
 }
 void MainWindow::setSpecialDeckImages()
 {
-    this->selectedSpecialDeckCard = -1;
+    //this->selectedSpecialDeckCard = -1;
     Player* player = duel->getPlayer(0);
     short n_special = player->getSpecialDeckSize();
     int i;
@@ -223,6 +226,7 @@ void MainWindow::handTarget(short id)
     if (!targeting)
     {
     this->selectedHandCard = id;
+
     short handSize = this->duel->getPlayer(0)->getHandSize();
         for (int i=0;i<handSize;i++)
         {
@@ -239,6 +243,7 @@ void MainWindow::specialDeckTarget(short id)
     if (!targeting)
     {
     this->selectedSpecialDeckCard = id;
+
     short sd_size = this->duel->getPlayer(0)->getSpecialDeckSize();
         for (int i=0;i<sd_size;i++)
         {
@@ -250,11 +255,40 @@ void MainWindow::specialDeckTarget(short id)
         }
     }
 }
-void MainWindow::targetingTarget(short id)
+void MainWindow::maintainHandTargetHighlight()
+{
+    if (this->selectedHandCard!=-1)
+    {
+    this->handImages[this->selectedHandCard]->setStyleSheet("border: 3px solid red;");
+    }
+}
+void MainWindow::maintainSpecialDeckTargetHighlight()
+{
+    if (this->selectedSpecialDeckCard!=-1)
+    {
+    this->specialDeckImages[this->selectedSpecialDeckCard]->setStyleSheet("border: 3px solid red;");
+    }
+}
+void MainWindow::spellTargetingTarget(short id)
 {
     if (targeting)
     {
     this->selectedSpellTarget = id;
+        for (int i=0;i<this->n_targets;i++)
+        {
+            this->targetImages[i]->setStyleSheet("border:none;");
+        }
+        if (id!=-1)
+        {
+            this->targetImages[id]->setStyleSheet("border: 3px solid red;");
+        }
+    }
+}
+void MainWindow::materialTargetingTarget(short id)
+{
+    if (targeting)
+    {
+    this->selectedMaterialTarget = id;
         for (int i=0;i<this->n_targets;i++)
         {
             this->targetImages[i]->setStyleSheet("border:none;");
@@ -435,18 +469,17 @@ void MainWindow::setResources()
     ui->opponentHandCount->setText(QString::number(opponent->getHandSize()));
     ui->opponentSummonLimitValue->setText(QString::number(opponent->getSummonLimit()));
 }
-void MainWindow::setTargetImages(Card* card)
+void MainWindow::setSpellTargetImages(Card* card)
 {
     Card** targets = card->getCardName()->getTargetList()->getTargetList();
     short nt = card->getCardName()->getTargetList()->getTargetsNumber();
     Card* c;
     int i;
-    if (nt>0) {
-        this->targeting = true;
-        this->ui->targetGroupBox->setVisible(true);
-        connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm);
-        connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel);
-    }
+    this->targeting = true;
+    this->ui->targetGroupBox->setVisible(true);
+    this->ui->targetGroupBox->setTitle("Select target");
+    connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm);
+    connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel);
     for (i=0;i<this->n_targets;i++)
     {
         delete this->targetImages[i];
@@ -460,7 +493,7 @@ void MainWindow::setTargetImages(Card* card)
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         this->targetImages[i] = new CardLabel;
-        this->targetImages[i]->setParent(this->ui->targetsArea);
+        this->targetImages[i]->setParent(this->ui->targetsAreaContents);
         this->targetImages[i]->setMainWindowUi(this->ui);
         this->targetImages[i]->setCard(img);
         this->targetImages[i]->setPlace(5);
@@ -474,10 +507,75 @@ void MainWindow::setTargetImages(Card* card)
         this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
         this->targetImages[i]->setContentsMargins(0,0,0,0);
 
-        connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::targetingTarget);
+        connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::spellTargetingTarget);
 
     }
     this->n_targets = nt;
+}
+void MainWindow::setMaterialTargetImages(Card* card)
+{
+    Card** targets = card->getCardName()->getTargetList()->getTargetList();
+    short nt = card->getCardName()->getTargetList()->getTargetsNumber();
+    Card* c;
+    int i;
+    for (i=0;i<this->n_targets;i++)
+    {
+        delete this->targetImages[i];
+    }
+    delete [] this->targetImages;
+    this->targetImages = new CardLabel* [nt];
+    for (i=0;i<nt;i++)
+    {
+        c = targets[i];
+        char* img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        this->targetImages[i] = new CardLabel;
+        this->targetImages[i]->setParent(this->ui->targetsAreaContents);
+        this->targetImages[i]->setMainWindowUi(this->ui);
+        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setPlace(5);
+        this->targetImages[i]->setId(i);
+        this->targetImages[i]->setStyleSheet("border:none;");
+        this->targetImages[i]->setPixmap(pm);
+        this->targetImages[i]->setScaledContents(true);
+        this->targetImages[i]->setMouseTracking(true);
+        this->targetImages[i]->setFrameShape(QFrame::Box);
+        this->targetImages[i]->setVisible(true);
+        this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
+        this->targetImages[i]->setContentsMargins(0,0,0,0);
+
+        connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::materialTargetingTarget);
+
+    }
+    this->n_targets = nt;
+}
+void MainWindow::setFirstMaterialTargetImages(Card* card)
+{
+    this->targeting = true;
+    this->ui->targetGroupBox->setVisible(true);
+    this->ui->targetGroupBox->setTitle("Select first material");
+    connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
+    connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
+    this->setMaterialTargetImages(card);
+}
+void MainWindow::setSecondMaterialTargetImages(Card* card)
+{
+    this->targeting = true;
+    this->ui->targetGroupBox->setVisible(true);
+    this->ui->targetGroupBox->setTitle("Select second material");
+    connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
+    connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
+    this->setMaterialTargetImages(card);
+}
+void MainWindow::setLastMaterialTargetImages(Card* card)
+{
+    this->targeting = true;
+    this->ui->targetGroupBox->setVisible(true);
+    this->ui->targetGroupBox->setTitle("Select last material");
+    connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
+    connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
+    this->setMaterialTargetImages(card);
 }
 void MainWindow::spellConfirm()
 {
@@ -502,6 +600,30 @@ void MainWindow::spellCancel()
     clearTargets();
     mutex.unlock();
 }
+void MainWindow::specialMinionConfirm()
+{
+    if (this->selectedMaterialTarget!=-1)
+    {
+        this->bridge->setMaterialTarget(this->selectedMaterialTarget);
+        if (this->bridge->getSelectedMaterials()==1) {this->targeting = false;}
+        this->selectedMaterialTarget = -1;
+        disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+        disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
+        clearTargets();
+        mutex.unlock();
+    }
+}
+void MainWindow::specialMinionCancel()
+{
+    this->bridge->setMaterialTarget(-1);
+    this->bridge->setSelectedMaterials(0);
+    this->targeting = false;
+    this->selectedMaterialTarget = -1;
+    disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+    disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
+    clearTargets();
+    mutex.unlock();
+}
 void MainWindow::clearTargets()
 {
     for (int i=0;i<this->n_targets;i++)
@@ -516,13 +638,20 @@ void MainWindow::clearTargets()
 }
 void MainWindow::clearTabs()
 {
-    this->selectedHandCard = -1;
-    this->selectedSpellTarget = -1;
-    this->selectedSpecialDeckCard = -1;
-    setHandImages();
-    setSpecialDeckImages();
-    setGraveyardImages();
-    setOpponentGraveyardImages();
+    this->setHandImages();
+    this->maintainHandTargetHighlight();
+    this->setSpecialDeckImages();
+    this->maintainSpecialDeckTargetHighlight();
+    this->setGraveyardImages();
+    this->setOpponentGraveyardImages();
+    if (!targeting)
+    {
+        this->selectedHandCard = -1;
+        this->selectedSpellTarget = -1;
+        this->selectedSpecialDeckCard = -1;
+        this->selectedMaterialTarget = -1;
+    }
+
 }
 void MainWindow::turnEnd()
 {

@@ -41,14 +41,10 @@ void DuelUiBridge::playSpecialMinion(short id)
         Player* player = this->duel->getPlayer(0);
         if (id>=0 && id<player->getSpecialDeckSize())
         {
-            //duel->playFromHand(player->getHand()[id]);
-            //emit handCardPlayed(-1);
-            qDebug()<<"xd";
             this->duel->summonSpecialMinion(player->getSpecialDeck()[id]);
             emit specialMinionPlayed(-1);
             this->updateBoard();
         }
-
     }
 }
 
@@ -69,6 +65,62 @@ short DuelUiBridge::makeSpellChoice(Card* card)
     this->spellTarget = -2;
     return id;
 }
+short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
+{
+
+    short id;
+    short n_materials = card->getCardName()->getMaterialNumber();
+    if (n_materials == 2 )
+    {
+        if (this->selectedMaterials==0)
+        {
+            emit drawFirstMaterialTargets(card);
+            mutex->lock(); mutex->lock(); mutex->unlock();
+            id = this->materialTarget;
+            this->materialTarget = -2;
+            this->selectedMaterials = 1;
+
+        }
+        else if (this->selectedMaterials==1)
+        {
+            emit drawLastMaterialTargets(card);
+            mutex->lock(); mutex->lock(); mutex->unlock();
+            id = this->materialTarget;
+            this->materialTarget = -2;
+            this->selectedMaterials = 0;
+        }
+    }
+    else if (n_materials == 3)
+    {
+        if (this->selectedMaterials==0)
+        {
+            emit drawFirstMaterialTargets(card);
+            mutex->lock(); mutex->lock(); mutex->unlock();
+            id = this->materialTarget;
+            this->materialTarget = -2;
+            this->selectedMaterials = 1;
+
+        }
+        else if (this->selectedMaterials==1)
+        {
+            emit drawSecondMaterialTargets(card);
+            mutex->lock(); mutex->lock(); mutex->unlock();
+            id = this->materialTarget;
+            this->materialTarget = -2;
+            this->selectedMaterials = 0;
+        }
+        else if (this->selectedMaterials==2)
+        {
+            emit drawLastMaterialTargets(card);
+            mutex->lock(); mutex->lock(); mutex->unlock();
+            id = this->materialTarget;
+            this->materialTarget = -2;
+            this->selectedMaterials = 0;
+        }
+    }
+    return id;
+}
+
 void DuelUiBridge::passTurn()
 {
     Player* opponent = this->duel->getPlayer(!this->duel->getTurnPlayer());

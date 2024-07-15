@@ -17,11 +17,7 @@ int main(int argc, char *argv[])
     //duel.DuelControl(&deck,&deck2);
     w.show();
     return a.exec();
-   //todo target confirm and cancel buttons
-    // block other inputs during targeting
-    // hide and show target area
-    // battle phase and sp minion target selection
-    // pass turn button
+    // battle phase gui
     // duel logs
     // bot special minion analysis and summons
     // victory check

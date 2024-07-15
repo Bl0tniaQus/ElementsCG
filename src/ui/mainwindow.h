@@ -32,6 +32,7 @@ private:
     CardLabel** targetImages;
     short selectedHandCard = -1;
     short selectedSpellTarget = -1;
+    short selectedMaterialTarget = -1;
     short selectedSpecialDeckCard = -1;
     short handSize = 0;
     short specialDeckSize = 0;
@@ -44,6 +45,9 @@ public:
     ~MainWindow();
     void startDuel();
     void clearTargets();
+    void setMaterialTargetImages(Card* card);
+    void maintainHandTargetHighlight();
+    void maintainSpecialDeckTargetHighlight();
 public slots:
     void setHandImages();
     void setSpecialDeckImages();
@@ -53,12 +57,18 @@ public slots:
     void setResources();
     void handTarget(short id);
     void specialDeckTarget(short id);
-    void targetingTarget(short id);
+    void spellTargetingTarget(short id);
+    void materialTargetingTarget(short id);
     void playFromHand();
     void playSpecialMinion();
-    void setTargetImages(Card* card);
+    void setSpellTargetImages(Card* card);
+    void setFirstMaterialTargetImages(Card* card);
+    void setSecondMaterialTargetImages(Card* card);
+    void setLastMaterialTargetImages(Card* card);
     void spellConfirm();
     void spellCancel();
+    void specialMinionConfirm();
+    void specialMinionCancel();
     void clearTabs();
     void turnEnd();
 signals:

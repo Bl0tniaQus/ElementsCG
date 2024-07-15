@@ -52,6 +52,7 @@ public:
     void generateDefendersList();
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
+    short makeSpecialMinionMaterialChoice(Card* card);
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}

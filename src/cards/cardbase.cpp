@@ -49,7 +49,6 @@ short CardBase::singleChoice(Duel* duel, Card* card)
         }
 
     }
-    short target;
     if (nt>0)
     {
         if (owner->getBot()==nullptr)
@@ -200,56 +199,35 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
     if (checkSummoningConditions2(duel,card))
     {
         this->getFirstMaterialList(duel, card);
-        short n_targets1 = this->getTargetList()->getTargetsNumber();
         Card** targets1 = this->getTargetList()->getTargetList();
         int target;
-        for (int i=0;i<n_targets1;i++)
-        {
-            std::cout<<i<<" - "<<targets1[i]->getName()<<std::endl;
-        }
-        std::cout<<"First minion: ";
-        std::cin>>target;
+        target = duel->makeSpecialMinionMaterialChoice(card);
+        if (target==-1) {return false;}
         Card* targetCard = targets1[target];
         Card* targetCard2;
         this->getSecondMaterialList(duel, card);
         short n_targets2 = this->getTargetList()->getTargetsNumber();
         Card** targets2 = this->getTargetList()->getTargetList();
         Card** new_targets2;
-        short duplicate=0;
+        short n_targets2New = n_targets2;
         for (int i=0;i<n_targets2;i++)
         {
             if (targets2[i]==targetCard)
             {
-                duplicate=1;
                 new_targets2 = new Card* [n_targets2-1];
                 short bias=0;
                 for (int j=0;j<n_targets2;j++)
                 {
-                   if (targets2[j]==targetCard) {bias=1; continue;}
+                   if (targets2[j]==targetCard) {bias=1; n_targets2New = n_targets2-1;}
                    new_targets2[j-bias]=targets2[j];
                 }
             }
         }
-        if (duplicate==1)
-        {
-            for (int i=0;i<n_targets2-1;i++)
-            {
-                std::cout<<i<<" - "<<new_targets2[i]->getName()<<std::endl;
-            }
-            std::cout<<"Second minion: ";
-            std::cin>>target;
-            targetCard2 = new_targets2[target];
-        }
-        else
-        {
-            for (int i=0;i<n_targets2;i++)
-            {
-                std::cout<<i<<" - "<<targets2[i]->getName()<<std::endl;
-            }
-            std::cout<<"Second minion: ";
-            std::cin>>target;
-            targetCard2 = targets2[target];
-        }
+
+        card->getCardName()->setTargetList(new_targets2,n_targets2New);
+        target = duel->makeSpecialMinionMaterialChoice(card);
+        if (target==-1) {return false;}
+        targetCard2 = new_targets2[target];
         duel->removeFromField(targetCard);
         duel->removeFromField(targetCard2);
         duel->toGraveyard(targetCard);

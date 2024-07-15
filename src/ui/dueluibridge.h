@@ -11,15 +11,22 @@ private:
     Duel* duel;
     QMutex* mutex;
     short spellTarget = -2;
+    short materialTarget = -2;
+    short selectedMaterials = 0;
 public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
     void setMutex(QMutex* mtx) {this->mutex = mtx;}
     void setSpellTarget(short t) {this->spellTarget = t;}
     short getSpellTarget() {return this->spellTarget;}
+    void setMaterialTarget(short t) {this->materialTarget = t;}
+    short getMaterialTarget() {return this->materialTarget;}
+    void setSelectedMaterials(short m) {this->selectedMaterials = m;}
+    short getSelectedMaterials() {return this->selectedMaterials;}
     void duelControl(Deck* deck0, Deck* deck1);
     void updateBoard();
     short makeSpellChoice(Card* card);
+    short makeSpecialMinionMaterialChoice(Card* card);
 public slots:
     void initiateDuel();
     void playFromHand(short id);
@@ -35,6 +42,9 @@ signals:
     void handCardPlayed(short id = -1);
     void specialMinionPlayed(short id = -1);
     void drawSpellTargets(Card* card);
+    void drawFirstMaterialTargets(Card* card);
+    void drawSecondMaterialTargets(Card* card);
+    void drawLastMaterialTargets(Card* card);
     void waitForSpellTarget();
 };
 
