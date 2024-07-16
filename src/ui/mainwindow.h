@@ -55,11 +55,13 @@ public slots:
     void setOpponentGraveyardImages();
     void setFieldImagesAndLabels();
     void setResources();
+    void setAttackerTargetImages();
     void handTarget(short id);
     void specialDeckTarget(short id);
     void spellTargetingTarget(short id);
     void materialTargetingTarget(short id);
     void playFromHand();
+    void startBattlePhase();
     void playSpecialMinion();
     void setSpellTargetImages(Card* card);
     void setFirstMaterialTargetImages(Card* card);
@@ -75,6 +77,7 @@ signals:
     void duelStartSignal();
     void handAction(short id);
     void specialDeckAction(short id);
+    void startBattlePhaseSignal();
     void spellTarget(short id);
     void turnEndSignal();
 

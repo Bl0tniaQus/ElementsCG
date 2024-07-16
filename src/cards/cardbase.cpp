@@ -218,7 +218,7 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
                 short bias=0;
                 for (int j=0;j<n_targets2;j++)
                 {
-                   if (targets2[j]==targetCard) {bias=1; n_targets2New = n_targets2-1;}
+                   if (targets2[j]==targetCard) {bias=1; n_targets2New = n_targets2-1; continue;}
                    new_targets2[j-bias]=targets2[j];
                 }
             }

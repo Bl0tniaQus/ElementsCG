@@ -37,13 +37,16 @@ void MainWindow::startDuel()
     connect(this->bridge,&DuelUiBridge::drawFirstMaterialTargets, this, &MainWindow::setFirstMaterialTargetImages);
     connect(this->bridge,&DuelUiBridge::drawSecondMaterialTargets, this, &MainWindow::setSecondMaterialTargetImages);
     connect(this->bridge,&DuelUiBridge::drawLastMaterialTargets, this, &MainWindow::setLastMaterialTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawAttackers, this, &MainWindow::setAttackerTargetImages);
     connect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
     connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
     connect(this->ui->playSpecialMinionButton, &QPushButton::released, this, &MainWindow::playSpecialMinion);
+    connect(this->ui->battlePhaseButton, &QPushButton::released, this, &MainWindow::startBattlePhase);
     connect(this, &MainWindow::handAction, this->bridge, &DuelUiBridge::playFromHand);
     connect(this, &MainWindow::specialDeckAction, this->bridge, &DuelUiBridge::playSpecialMinion);
     connect(this, &MainWindow::turnEndSignal, this->bridge, &DuelUiBridge::passTurn);
+    connect(this, &MainWindow::startBattlePhaseSignal, this->bridge, &DuelUiBridge::battlePhase);
     connect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
     connect(this->bridge,&DuelUiBridge::specialMinionPlayed,this, &MainWindow::specialDeckTarget);
 
@@ -512,6 +515,49 @@ void MainWindow::setSpellTargetImages(Card* card)
     }
     this->n_targets = nt;
 }
+void MainWindow::setAttackerTargetImages()
+{
+    Card** targets = this->duel->getAttackersList()->getTargetList();
+    short nt = this->duel->getAttackersList()->getTargetsNumber();
+    Card* c;
+    int i;
+    this->targeting = true;
+    this->ui->targetGroupBox->setVisible(true);
+    this->ui->targetGroupBox->setTitle("Select attacker");
+   // connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm); TODO
+    //connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel); TODO
+    for (i=0;i<this->n_targets;i++)
+    {
+        delete this->targetImages[i];
+    }
+    delete [] this->targetImages;
+    this->targetImages = new CardLabel* [nt];
+    for (i=0;i<nt;i++)
+    {
+        c = targets[i];
+        char* img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        this->targetImages[i] = new CardLabel;
+        this->targetImages[i]->setParent(this->ui->targetsAreaContents);
+        this->targetImages[i]->setMainWindowUi(this->ui);
+        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setPlace(5);
+        this->targetImages[i]->setId(i);
+        this->targetImages[i]->setStyleSheet("border:none;");
+        this->targetImages[i]->setPixmap(pm);
+        this->targetImages[i]->setScaledContents(true);
+        this->targetImages[i]->setMouseTracking(true);
+        this->targetImages[i]->setFrameShape(QFrame::Box);
+        this->targetImages[i]->setVisible(true);
+        this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
+        this->targetImages[i]->setContentsMargins(0,0,0,0);
+
+       // connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::spellTargetingTarget); TODO
+
+    }
+    this->n_targets = nt;
+}
 void MainWindow::setMaterialTargetImages(Card* card)
 {
     Card** targets = card->getCardName()->getTargetList()->getTargetList();
@@ -659,6 +705,13 @@ void MainWindow::turnEnd()
         {
             emit turnEndSignal();
         }
+}
+void MainWindow::startBattlePhase()
+{
+    if (!targeting&&duel->getTurnCount()>1)
+    {
+        emit startBattlePhaseSignal();
+    }
 }
 
 

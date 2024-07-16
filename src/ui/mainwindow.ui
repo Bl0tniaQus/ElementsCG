@@ -988,14 +988,27 @@
        <widget class="QPushButton" name="endTurnButton">
         <property name="geometry">
          <rect>
-          <x>980</x>
-          <y>750</y>
-          <width>88</width>
+          <x>1080</x>
+          <y>730</y>
+          <width>141</width>
           <height>34</height>
          </rect>
         </property>
         <property name="text">
          <string>End Turn</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="battlePhaseButton">
+        <property name="geometry">
+         <rect>
+          <x>940</x>
+          <y>730</y>
+          <width>141</width>
+          <height>34</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Battle Phase</string>
         </property>
        </widget>
       </widget>

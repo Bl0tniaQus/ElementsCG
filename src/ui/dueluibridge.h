@@ -12,6 +12,8 @@ private:
     QMutex* mutex;
     short spellTarget = -2;
     short materialTarget = -2;
+    short selectedAttacker = -2;
+    short selectedDefender = -2;
     short selectedMaterials = 0;
 public:
     DuelUiBridge();
@@ -31,6 +33,7 @@ public slots:
     void initiateDuel();
     void playFromHand(short id);
     void playSpecialMinion(short id);
+    void battlePhase();
     void passTurn();
 signals:
     void drawHand();
@@ -42,6 +45,8 @@ signals:
     void handCardPlayed(short id = -1);
     void specialMinionPlayed(short id = -1);
     void drawSpellTargets(Card* card);
+    void drawAttackers();
+    void drawDefenders();
     void drawFirstMaterialTargets(Card* card);
     void drawSecondMaterialTargets(Card* card);
     void drawLastMaterialTargets(Card* card);

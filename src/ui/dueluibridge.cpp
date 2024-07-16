@@ -132,6 +132,17 @@ void DuelUiBridge::passTurn()
     }
     updateBoard();
 }
+void DuelUiBridge::battlePhase()
+{
+    while (true)
+    {
+        this->duel->generateAttackersList();
+        this->duel->generateDefendersList();
+        emit drawAttackers();
+        mutex->lock(); mutex->lock(); mutex->unlock();
+    }
+}
+
 
 
 
