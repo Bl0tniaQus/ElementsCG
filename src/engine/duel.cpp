@@ -451,6 +451,8 @@ void Duel::playFromHand(Card* card)
             if (type==1) {
                 card->getOriginalOwner()->setSummonLimit(card->getOriginalOwner()->getSummonLimit()-1);
                 this->onSummon(card);
+
+
             }
             card->getOwner()->changeMana(-cost);
             delete[] newHand;

@@ -13,6 +13,10 @@ private:
     DuelUiBridge* uiBridge;
     short turnCount;
     unsigned char turnPlayer;
+
+    short* logSource;
+    int* logLength;
+    char** logs;
 public:
     Duel();
     virtual ~Duel();

@@ -34,12 +34,15 @@ private:
     short selectedSpellTarget = -1;
     short selectedMaterialTarget = -1;
     short selectedSpecialDeckCard = -1;
+    short selectedAttackerTarget = -1;
+    short selectedDefenderTarget = -1;
     short handSize = 0;
     short specialDeckSize = 0;
     short graveyardSize = 0;
     short opponentGraveyardSize = 0;
     short n_targets = 0;
     bool targeting = false;
+    bool battled = false;
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -56,10 +59,13 @@ public slots:
     void setFieldImagesAndLabels();
     void setResources();
     void setAttackerTargetImages();
+    void setDefenderTargetImages();
     void handTarget(short id);
     void specialDeckTarget(short id);
     void spellTargetingTarget(short id);
     void materialTargetingTarget(short id);
+    void attackerTargetingTarget(short id);
+    void defenderTargetingTarget(short id);
     void playFromHand();
     void startBattlePhase();
     void playSpecialMinion();
@@ -71,6 +77,10 @@ public slots:
     void spellCancel();
     void specialMinionConfirm();
     void specialMinionCancel();
+    void attackerConfirm();
+    void attackerCancel();
+    void defenderConfirm();
+    void defenderCancel();
     void clearTabs();
     void turnEnd();
 signals:

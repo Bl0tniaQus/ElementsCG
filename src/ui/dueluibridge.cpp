@@ -67,7 +67,6 @@ short DuelUiBridge::makeSpellChoice(Card* card)
 }
 short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
 {
-
     short id;
     short n_materials = card->getCardName()->getMaterialNumber();
     if (n_materials == 2 )
@@ -130,16 +129,36 @@ void DuelUiBridge::passTurn()
     {
         opponent->getBot()->playTurn(this->duel);
     }
-    updateBoard();
+    this->updateBoard();
 }
 void DuelUiBridge::battlePhase()
 {
+    short id_attacker, id_defender;
     while (true)
     {
         this->duel->generateAttackersList();
         this->duel->generateDefendersList();
         emit drawAttackers();
         mutex->lock(); mutex->lock(); mutex->unlock();
+        id_attacker = this->attackerTarget;
+        if (id_attacker==-1) {break;}
+        else if (id_attacker!=-1)
+        {
+            emit drawDefenders();
+            mutex->lock(); mutex->lock(); mutex->unlock();
+            id_defender = this->defenderTarget;
+            Card* attacker = this->duel->getAttackersList()->getTargetList()[id_attacker];
+            if (id_defender==10)
+            {
+                this->duel->directAttack(attacker);
+            }
+            else if (id_defender!=-1&&id_defender!=10)
+            {
+                Card* defender = this->duel->getDefendersList()->getTargetList()[id_defender];
+                this->duel->combat(attacker,defender);
+            }
+        }
+    this->updateBoard();
     }
 }
 

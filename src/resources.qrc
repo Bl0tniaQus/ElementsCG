@@ -7,5 +7,7 @@
     <file alias="whirlwind">resources/images/whirlwind.jpg</file>
     <file alias="whirlwind_card">resources/images/whirlwind_card.jpg</file>
     <file alias="brassbeetle">resources/images/brassbeetle.jpg</file>
+    <file alias="happycumulus">resources/images/happycumulus.jpg</file>
+    <file alias="sadnimbus">resources/images/sadnimbus.jpg</file>
 </qresource>
 </RCC>

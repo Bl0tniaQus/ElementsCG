@@ -38,6 +38,7 @@ void MainWindow::startDuel()
     connect(this->bridge,&DuelUiBridge::drawSecondMaterialTargets, this, &MainWindow::setSecondMaterialTargetImages);
     connect(this->bridge,&DuelUiBridge::drawLastMaterialTargets, this, &MainWindow::setLastMaterialTargetImages);
     connect(this->bridge,&DuelUiBridge::drawAttackers, this, &MainWindow::setAttackerTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawDefenders, this, &MainWindow::setDefenderTargetImages);
     connect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
     connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
@@ -287,6 +288,37 @@ void MainWindow::spellTargetingTarget(short id)
         }
     }
 }
+void MainWindow::attackerTargetingTarget(short id)
+{
+    if (targeting)
+    {
+    this->selectedAttackerTarget = id;
+        for (int i=0;i<this->n_targets;i++)
+        {
+            this->targetImages[i]->setStyleSheet("border:none;");
+        }
+        if (id!=-1)
+        {
+            this->targetImages[id]->setStyleSheet("border: 3px solid red;");
+        }
+    }
+}
+void MainWindow::defenderTargetingTarget(short id)
+{
+    if (targeting)
+    {
+    this->selectedDefenderTarget = id;
+        for (int i=0;i<this->n_targets;i++)
+        {
+            this->targetImages[i]->setStyleSheet("border:none;");
+        }
+        if (id!=-1)
+        {
+            if (id==10){this->targetImages[0]->setStyleSheet("border: 3px solid red;");}
+            else{this->targetImages[id]->setStyleSheet("border: 3px solid red;");}
+        }
+    }
+}
 void MainWindow::materialTargetingTarget(short id)
 {
     if (targeting)
@@ -483,6 +515,8 @@ void MainWindow::setSpellTargetImages(Card* card)
     this->ui->targetGroupBox->setTitle("Select target");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel);
+    this->ui->confirmTargetButton->setText("Confirm");
+    this->ui->cancelTargetButton->setText("Cancel");
     for (i=0;i<this->n_targets;i++)
     {
         delete this->targetImages[i];
@@ -524,8 +558,12 @@ void MainWindow::setAttackerTargetImages()
     this->targeting = true;
     this->ui->targetGroupBox->setVisible(true);
     this->ui->targetGroupBox->setTitle("Select attacker");
-   // connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm); TODO
-    //connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel); TODO
+    connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::attackerConfirm);
+    connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::attackerCancel);
+
+    if (!battled){this->ui->cancelTargetButton->setText("Cancel");}
+    else {this->ui->cancelTargetButton->setText("End turn");}
+
     for (i=0;i<this->n_targets;i++)
     {
         delete this->targetImages[i];
@@ -553,11 +591,79 @@ void MainWindow::setAttackerTargetImages()
         this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
         this->targetImages[i]->setContentsMargins(0,0,0,0);
 
-       // connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::spellTargetingTarget); TODO
+        connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::attackerTargetingTarget);
 
     }
     this->n_targets = nt;
 }
+void MainWindow::setDefenderTargetImages()
+{
+    Card** targets = this->duel->getDefendersList()->getTargetList();
+    short nt = this->duel->getDefendersList()->getTargetsNumber();
+    Card* c;
+    int i;
+    this->targeting = true;
+    this->ui->targetGroupBox->setVisible(true);
+    this->ui->targetGroupBox->setTitle("Select attack target");
+    connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::defenderConfirm);
+    connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::defenderCancel);
+
+    this->ui->cancelTargetButton->setText("Back");
+    this->ui->confirmTargetButton->setText("Attack");
+    for (i=0;i<this->n_targets;i++)
+    {
+        delete this->targetImages[i];
+    }
+    delete [] this->targetImages;
+    if (nt>0){this->targetImages = new CardLabel* [nt];}
+    else {this->targetImages = new CardLabel* [1];}
+
+    for (i=0;i<nt;i++)
+    {
+        c = targets[i];
+        char* img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        QPixmap pm(imgName);
+        this->targetImages[i] = new CardLabel;
+        this->targetImages[i]->setParent(this->ui->targetsAreaContents);
+        this->targetImages[i]->setMainWindowUi(this->ui);
+        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setPlace(5);
+        this->targetImages[i]->setId(i);
+        this->targetImages[i]->setStyleSheet("border:none;");
+        this->targetImages[i]->setPixmap(pm);
+        this->targetImages[i]->setScaledContents(true);
+        this->targetImages[i]->setMouseTracking(true);
+        this->targetImages[i]->setFrameShape(QFrame::Box);
+        this->targetImages[i]->setVisible(true);
+        this->targetImages[i]->setGeometry((i*80)+15,15,80,80);
+        this->targetImages[i]->setContentsMargins(0,0,0,0);
+
+        connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::defenderTargetingTarget);
+
+    }
+    if (nt==0)
+    {
+        this->targetImages[0] = new CardLabel;
+        this->targetImages[0]->setParent(this->ui->targetsAreaContents);
+        this->targetImages[0]->setMainWindowUi(this->ui);
+        this->targetImages[0]->setPlace(5);
+        this->targetImages[0]->setText("Direct Attack");
+        this->targetImages[0]->setId(10);
+        this->targetImages[0]->setStyleSheet("border:none;");
+        this->targetImages[0]->setScaledContents(true);
+        this->targetImages[0]->setMouseTracking(true);
+        this->targetImages[0]->setFrameShape(QFrame::Box);
+        this->targetImages[0]->setVisible(true);
+        this->targetImages[0]->setGeometry((i*80)+15,15,80,80);
+        this->targetImages[0]->setContentsMargins(0,0,0,0);
+
+        connect(targetImages[0],&CardLabel::targetCardHighlight, this, &MainWindow::defenderTargetingTarget);
+    }
+    this->n_targets = nt;
+    if (nt == 0){this->n_targets = 1;}
+}
+
 void MainWindow::setMaterialTargetImages(Card* card)
 {
     Card** targets = card->getCardName()->getTargetList()->getTargetList();
@@ -603,6 +709,8 @@ void MainWindow::setFirstMaterialTargetImages(Card* card)
     this->ui->targetGroupBox->setTitle("Select first material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
+    this->ui->confirmTargetButton->setText("Confirm");
+    this->ui->cancelTargetButton->setText("Cancel");
     this->setMaterialTargetImages(card);
 }
 void MainWindow::setSecondMaterialTargetImages(Card* card)
@@ -612,6 +720,8 @@ void MainWindow::setSecondMaterialTargetImages(Card* card)
     this->ui->targetGroupBox->setTitle("Select second material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
+    this->ui->confirmTargetButton->setText("Confirm");
+    this->ui->cancelTargetButton->setText("Cancel");
     this->setMaterialTargetImages(card);
 }
 void MainWindow::setLastMaterialTargetImages(Card* card)
@@ -621,6 +731,8 @@ void MainWindow::setLastMaterialTargetImages(Card* card)
     this->ui->targetGroupBox->setTitle("Select last material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
+    this->ui->confirmTargetButton->setText("Confirm");
+    this->ui->cancelTargetButton->setText("Cancel");
     this->setMaterialTargetImages(card);
 }
 void MainWindow::spellConfirm()
@@ -670,6 +782,56 @@ void MainWindow::specialMinionCancel()
     clearTargets();
     mutex.unlock();
 }
+void MainWindow::attackerConfirm()
+{
+    if (this->selectedAttackerTarget!=-1)
+    {
+        this->bridge->setAttackerTarget(this->selectedAttackerTarget);
+        this->selectedAttackerTarget = -1;
+        disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+        disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
+        clearTargets();
+        mutex.unlock();
+    }
+}
+void MainWindow::attackerCancel()
+{
+    this->bridge->setAttackerTarget(-1);
+    this->targeting = false;
+    this->selectedAttackerTarget = -1;
+    disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+    disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
+    clearTargets();
+    mutex.unlock();
+    if (battled)
+    {
+        this->turnEnd();
+    }
+}
+void MainWindow::defenderConfirm()
+{
+    if (this->selectedDefenderTarget!=-1)
+    {
+        this->bridge->setDefenderTarget(this->selectedDefenderTarget);
+        this->selectedDefenderTarget = -1;
+        disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+        disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
+        this->battled = true;
+        clearTargets();
+        mutex.unlock();
+    }
+}
+void MainWindow::defenderCancel()
+{
+    this->bridge->setMaterialTarget(-1);
+    this->bridge->setSelectedMaterials(0);
+    this->targeting = false;
+    this->selectedMaterialTarget = -1;
+    disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
+    disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
+    clearTargets();
+    mutex.unlock();
+}
 void MainWindow::clearTargets()
 {
     for (int i=0;i<this->n_targets;i++)
@@ -703,6 +865,7 @@ void MainWindow::turnEnd()
 {
         if (this->duel->getTurnPlayer()==0&&!targeting)
         {
+            this->battled = false;
             emit turnEndSignal();
         }
 }

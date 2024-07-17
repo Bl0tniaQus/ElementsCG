@@ -12,8 +12,8 @@ private:
     QMutex* mutex;
     short spellTarget = -2;
     short materialTarget = -2;
-    short selectedAttacker = -2;
-    short selectedDefender = -2;
+    short attackerTarget = -2;
+    short defenderTarget = -2;
     short selectedMaterials = 0;
 public:
     DuelUiBridge();
@@ -23,6 +23,10 @@ public:
     short getSpellTarget() {return this->spellTarget;}
     void setMaterialTarget(short t) {this->materialTarget = t;}
     short getMaterialTarget() {return this->materialTarget;}
+    void setAttackerTarget(short t) {this->attackerTarget = t;}
+    short getAttackerTarget() {return this->attackerTarget;}
+    void setDefenderTarget(short t) {this->defenderTarget = t;}
+    short getDefenderTarget() {return this->defenderTarget;}
     void setSelectedMaterials(short m) {this->selectedMaterials = m;}
     short getSelectedMaterials() {return this->selectedMaterials;}
     void duelControl(Deck* deck0, Deck* deck1);

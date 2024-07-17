@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     //duel.DuelControl(&deck,&deck2);
     w.show();
     return a.exec();
-    // battle phase gui
     // duel logs
     // bot special minion analysis and summons
     // victory check

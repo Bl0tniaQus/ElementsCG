@@ -37,6 +37,8 @@ set(PROJECT_SOURCES
         src/cards/dragonoidscout.cpp
         src/cards/brassbeetle.cpp
         src/cards/tempestwyvern.cpp
+        src/cards/happycumulus.cpp
+        src/cards/sadnimbus.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

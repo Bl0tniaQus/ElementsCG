@@ -9,6 +9,8 @@
 #include "tungstenfirefly.h" //6
 #include "dragonoidscout.h" //7
 #include "brassbeetle.h" //8
-#include "tempestwyvern.h" //8
+#include "tempestwyvern.h" //9
+#include "happycumulus.h" //10
+#include "sadnimbus.h" //11
 
 #endif // ALLCARDS_H

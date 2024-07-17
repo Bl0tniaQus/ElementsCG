@@ -70,6 +70,8 @@ CardBase* Card::getCardNameById(int id)
         case 7: cardbase = new DragonoidScout;break;
         case 8: cardbase = new BrassBeetle;break;
         case 9: cardbase = new TempestWyvern;break;
+        case 10: cardbase = new HappyCumulus;break;
+        case 11: cardbase = new SadNimbus;break;
     }
     return cardbase;
 }
