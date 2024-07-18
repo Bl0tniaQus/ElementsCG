@@ -38,12 +38,23 @@ public:
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
 
+    virtual void generateOnSummonLog(Duel* duel, Card* card) {};
+    virtual void generateOnSpellLog(Duel* duel, Card* card) {};
+    virtual void generateOnDestroyLog(Duel* duel, Card* card) {};
+    virtual void generateOnTurnEndLog(Duel* duel, Card* card) {};
+    virtual void generateOnTurnStartLog(Duel* duel, Card* card) {};
+    virtual void generateAfterAttackLog(Duel* duel, Card* card, Card* target, short damage) {};
+    virtual void generateOnAttackLog(Duel* duel, Card* card, Card* target) {};
+    virtual void generateOnDefenceLog(Duel* duel, Card* card, Card* attacker) {};
+    virtual void generateAfterDefenceLog(Duel* duel, Card* card, Card* attacker, short damage) {};
+
     virtual void onSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};
     virtual void onDestroy(Duel* duel, Card* card) {};
     virtual void onAttack(Duel* duel, Card* card, Card* target) {};
     virtual void afterAttack(Duel* duel, Card* card, Card* target, short damage) {};
     virtual void onDefence(Duel* duel, Card* card, Card* attacker) {};
+    virtual void afterDefence(Duel* duel, Card* card, Card* attacker, short damage) {};
     virtual void onTurnEnd(Duel* duel, Card* card) {};
     virtual void onTurnStart(Duel* duel, Card* card);
     virtual void getOnSummonTargetList(Duel* duel, Card* card) {};
