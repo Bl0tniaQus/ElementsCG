@@ -13,7 +13,8 @@ public:
         2, //defence
         "Earth", //element
         "Silver Wolf", //name
-        "silverwolf"
+        "silverwolf",
+        ""
     ) {};
 };
 

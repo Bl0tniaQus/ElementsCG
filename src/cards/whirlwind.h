@@ -13,7 +13,8 @@ public:
         -1, //defence
         "Air", //element
         "Whirlwind", //name
-        "whirlwind"
+        "whirlwind",
+        "Whirlwind EARTH Spell (5)\nTarget 1 minion on the field: return it to it's owner's hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void getOnSpellTargetList(Duel* duel, Card* card) override;

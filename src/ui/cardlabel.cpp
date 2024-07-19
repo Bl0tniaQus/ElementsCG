@@ -1,23 +1,19 @@
 #include "cardlabel.h"
 CardLabel::CardLabel()
 {
-    this->cardName = new char[0];
-}
-
-void CardLabel::setCard(const char* c)
-{
-    delete[] this->cardName;
-    this->cardName = new char[strlen(c)+1];
-    strcpy(this->cardName, c);
+    this->card = nullptr;
 }
 void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
 {
     if (image)
     {
-       QString imgName = QString::fromStdString(std::string(":/")+std::string(this->cardName)+std::string("_card"));
-        QPixmap pm(imgName);
-        this->ui->cardHighlight->setPixmap(pm);
-        this->ui->cardHighlight->setScaledContents(true);
+       QString imgName = QString::fromStdString(std::string(":/")+std::string(card->getCardName()->getImage()));
+       QPixmap pm(imgName);
+       QString text = QString(card->getCardText());
+       this->ui->cardHighlight->setPixmap(pm);
+       this->ui->cardHighlight->setScaledContents(true);
+       this->ui->cardText->setText(text);
+       this->ui->cardText->setScaledContents(true);
     }
 
 }
@@ -29,7 +25,7 @@ void CardLabel::mouseReleaseEvent(QMouseEvent* mouseEvent)
 }
 CardLabel::~CardLabel()
 {
-    delete[] this->cardName;
+
 }
 
 

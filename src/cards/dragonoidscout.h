@@ -13,7 +13,8 @@ public:
         1, //defence
         "Air", //element
         "Dragonoid Scout", //name
-        "dragonoidscout"
+        "dragonoidscout",
+        ""
     ) {};
     void onSummon(Duel* duel, Card* card) override;
 };

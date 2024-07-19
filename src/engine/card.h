@@ -45,6 +45,7 @@ public:
     char getPlace() {return this->place;}
     const char* getElement() {return this->cardName->getElement();}
     const char* getName() {return this->cardName->getName();}
+    const char* getCardText() {return this->cardName->getCardText();}
     short getAttack() {return this->attack;}
     void setAttack(short atk) {this->attack = atk;}
     short getDefence() {return this->defence;}

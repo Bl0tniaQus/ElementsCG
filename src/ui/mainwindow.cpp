@@ -78,7 +78,7 @@ void MainWindow::startDuel()
 }
 void MainWindow::setHandImages()
 {
-    //this->selectedHandCard = -1;
+    Card* c;
     Player* player = duel->getPlayer(0);
     short n_hand = player->getHandSize();
     int i;
@@ -90,13 +90,14 @@ void MainWindow::setHandImages()
     this->handImages = new CardLabel* [n_hand];
     for (i=0;i<n_hand;i++)
     {
-        char* img = player->getHand()[i]->getCardName()->getImage();
+        c = player->getHand()[i];
+        char* img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         handImages[i] = new CardLabel;
         handImages[i]->setParent(this->ui->handCardsAreaContents);
         handImages[i]->setMainWindowUi(this->ui);
-        handImages[i]->setCard(img);
+        handImages[i]->setCard(c);
         handImages[i]->setPlace(1);
         handImages[i]->setId(i);
         handImages[i]->setHasImage(true);
@@ -116,7 +117,7 @@ void MainWindow::setHandImages()
 }
 void MainWindow::setSpecialDeckImages()
 {
-    //this->selectedSpecialDeckCard = -1;
+    Card* c;
     Player* player = duel->getPlayer(0);
     short n_special = player->getSpecialDeckSize();
     int i;
@@ -129,16 +130,17 @@ void MainWindow::setSpecialDeckImages()
     this->specialDeckImages = new CardLabel* [n_special];
     for (i=0;i<n_special;i++)
     {
-        char* img = player->getSpecialDeck()[i]->getCardName()->getImage();
+        c = player->getSpecialDeck()[i];
+        char* img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         specialDeckImages[i] = new CardLabel;
         specialDeckImages[i]->setParent(this->ui->specialDeckCardsAreaContents);
         specialDeckImages[i]->setMainWindowUi(this->ui);
-        specialDeckImages[i]->setCard(img);
+        specialDeckImages[i]->setCard(c);
         specialDeckImages[i]->setPlace(4);
         specialDeckImages[i]->setId(i);
-        specialDeckImages[i]->setHasImage(i);
+        specialDeckImages[i]->setHasImage(true);
         specialDeckImages[i]->setStyleSheet("border:none;");
         specialDeckImages[i]->setPixmap(pm);
         specialDeckImages[i]->setScaledContents(true);
@@ -155,6 +157,7 @@ void MainWindow::setSpecialDeckImages()
 }
 void MainWindow::setGraveyardImages()
 {
+    Card* c;
     Player* player = duel->getPlayer(0);
     short n_graveyard = player->getGraveyardSize();
     this->ui->graveyardCountLabel->setText(QString::number(n_graveyard));
@@ -167,13 +170,14 @@ void MainWindow::setGraveyardImages()
     this->graveyardImages = new CardLabel* [n_graveyard];
     for (i=0;i<n_graveyard;i++)
     {
-        char* img = player->getGraveyard()[i]->getCardName()->getImage();
+        c = player->getGraveyard()[i];
+        char* img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         graveyardImages[i] = new CardLabel;
         graveyardImages[i]->setParent(this->ui->graveyardCardsAreaContents);
         graveyardImages[i]->setMainWindowUi(this->ui);
-        graveyardImages[i]->setCard(img);
+        graveyardImages[i]->setCard(c);
         graveyardImages[i]->setPlace(3);
         graveyardImages[i]->setId(i);
         graveyardImages[i]->setHasImage(true);
@@ -192,6 +196,7 @@ void MainWindow::setGraveyardImages()
 void MainWindow::setOpponentGraveyardImages()
 {
     Player* opponent = duel->getPlayer(1);
+    Card* c;
     short n_graveyard = opponent->getGraveyardSize();
     this->ui->opponentGraveyardCountLabel->setText(QString::number(n_graveyard));
     int i;
@@ -203,13 +208,14 @@ void MainWindow::setOpponentGraveyardImages()
     this->opponentGraveyardImages = new CardLabel* [n_graveyard];
     for (i=0;i<n_graveyard;i++)
     {
-        char* img = opponent->getGraveyard()[i]->getCardName()->getImage();
+        c = opponent->getGraveyard()[i];
+        char* img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
         QPixmap pm(imgName);
         opponentGraveyardImages[i] = new CardLabel;
         opponentGraveyardImages[i]->setParent(this->ui->opponentGraveyardCardsAreaContents);
         opponentGraveyardImages[i]->setMainWindowUi(this->ui);
-        opponentGraveyardImages[i]->setCard(img);
+        opponentGraveyardImages[i]->setCard(c);
         opponentGraveyardImages[i]->setPlace(3);
         opponentGraveyardImages[i]->setId(i);
         opponentGraveyardImages[i]->setHasImage(true);
@@ -434,11 +440,10 @@ void MainWindow::setFieldImagesAndLabels()
             char* img = cardPlayer->getCardName()->getImage();
             QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
             QPixmap pm(imgName);
-            playerFieldImages[i]->setCard(img);
+            playerFieldImages[i]->setCard(cardPlayer);
             playerFieldImages[i]->setId(i);
             playerFieldImages[i]->setPixmap(pm);
             playerFieldImages[i]->setHasImage(true);
-            playerFieldLabels[i]->setCard(img);
 
             short atk = cardPlayer->getAttack();
             short def = cardPlayer->getDefence();
@@ -461,7 +466,7 @@ void MainWindow::setFieldImagesAndLabels()
             char* img = cardOpp->getCardName()->getImage();
             QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
             QPixmap pm(imgName);
-            opponentFieldImages[4-i]->setCard(img);
+            opponentFieldImages[4-i]->setCard(cardOpp);
             opponentFieldImages[4-i]->setId(i);
             opponentFieldImages[4-i]->setPixmap(pm);
             opponentFieldImages[4-i]->setHasImage(true);
@@ -532,9 +537,10 @@ void MainWindow::setSpellTargetImages(Card* card)
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
         this->targetImages[i]->setMainWindowUi(this->ui);
-        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setCard(c);
         this->targetImages[i]->setPlace(5);
         this->targetImages[i]->setId(i);
+        this->targetImages[i]->setHasImage(true);
         this->targetImages[i]->setStyleSheet("border:none;");
         this->targetImages[i]->setPixmap(pm);
         this->targetImages[i]->setScaledContents(true);
@@ -579,9 +585,10 @@ void MainWindow::setAttackerTargetImages()
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
         this->targetImages[i]->setMainWindowUi(this->ui);
-        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setCard(c);
         this->targetImages[i]->setPlace(5);
         this->targetImages[i]->setId(i);
+        this->targetImages[i]->setHasImage(true);
         this->targetImages[i]->setStyleSheet("border:none;");
         this->targetImages[i]->setPixmap(pm);
         this->targetImages[i]->setScaledContents(true);
@@ -627,9 +634,10 @@ void MainWindow::setDefenderTargetImages()
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
         this->targetImages[i]->setMainWindowUi(this->ui);
-        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setCard(c);
         this->targetImages[i]->setPlace(5);
         this->targetImages[i]->setId(i);
+        this->targetImages[i]->setHasImage(true);
         this->targetImages[i]->setStyleSheet("border:none;");
         this->targetImages[i]->setPixmap(pm);
         this->targetImages[i]->setScaledContents(true);
@@ -685,9 +693,10 @@ void MainWindow::setMaterialTargetImages(Card* card)
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
         this->targetImages[i]->setMainWindowUi(this->ui);
-        this->targetImages[i]->setCard(img);
+        this->targetImages[i]->setCard(c);
         this->targetImages[i]->setPlace(5);
         this->targetImages[i]->setId(i);
+        this->targetImages[i]->setHasImage(true);
         this->targetImages[i]->setStyleSheet("border:none;");
         this->targetImages[i]->setPixmap(pm);
         this->targetImages[i]->setScaledContents(true);

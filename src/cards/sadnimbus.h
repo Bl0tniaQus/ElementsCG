@@ -13,7 +13,8 @@ public:
         1, //defence
         "Air", //element
         "Sad Nimbus", //name
-        "sadnimbus"
+        "sadnimbus",
+        ""
     ) {};
     void onSummon(Duel* duel, Card* card) override;
 };

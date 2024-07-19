@@ -39,7 +39,7 @@
        </widget>
       </widget>
       <widget class="QWidget" name="page_2">
-       <widget class="QFrame" name="frame">
+       <widget class="QFrame" name="leftPanel">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -60,11 +60,41 @@
            <x>10</x>
            <y>10</y>
            <width>361</width>
-           <height>501</height>
+           <height>361</height>
           </rect>
          </property>
          <property name="text">
           <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cardText">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>370</y>
+           <width>361</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
