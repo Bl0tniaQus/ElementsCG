@@ -18,7 +18,7 @@ void DuelUiBridge::initiateDuel()
 {
     Deck deck(1);
     Deck deck2(2);
-    duelControl(&deck,&deck2);
+    this->duelControl(&deck,&deck2);
 }
 void DuelUiBridge::playFromHand(short id)
 {
@@ -56,6 +56,7 @@ void DuelUiBridge::updateBoard()
     emit drawGraveyard();
     emit drawOpponentGraveyard();
     emit drawResources();
+    qDebug()<<QString::fromStdString(this->duel->getLogs()[this->duel->getLogsNumber()-1]);
 }
 short DuelUiBridge::makeSpellChoice(Card* card)
 {
@@ -124,7 +125,7 @@ void DuelUiBridge::passTurn()
 {
     Player* opponent = this->duel->getPlayer(!this->duel->getTurnPlayer());
     this->duel->passTurn();
-
+    this->duel->turnStartLog();
     if (opponent->getBot()!=nullptr)
     {
         opponent->getBot()->playTurn(this->duel);

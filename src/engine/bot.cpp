@@ -277,6 +277,7 @@ void Bot::playTurn(Duel* duel)
             this->endHandTesting();
             this->conductBattlePhase(duel);
             duel->passTurn();
+            duel->turnStartLog();
 }
 
 

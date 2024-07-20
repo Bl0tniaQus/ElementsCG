@@ -12,6 +12,9 @@ Duel::Duel()
     this->turnPlayer = 0;
     this->attackersTargetList = new TargetList;
     this->defendersTargetList = new TargetList;
+    this->logsSource = new short [0];
+    this->logs = new std::string [0];
+    this->n_logs = 0;
 }
 Duel::~Duel()
 {
@@ -564,6 +567,7 @@ void Duel::startDuel(Deck *deck0, Deck* deck1)
 {
     this->turnPlayer=0; //wylosuj kto 1
     this->turnCount=1;
+    this->turnStartLog();
     this->getPlayer(0)->setOriginalDeck(deck0->getDeck(),deck0->getDeckSize());
     this->getPlayer(0)->setOriginalSpecialDeck(deck0->getSpecialDeck(),deck0->getSpecialDeckSize());
     this->getPlayer(0)->setDeckOwnership();
@@ -767,4 +771,28 @@ short Duel::makeSpecialMinionMaterialChoice(Card* card)
         if (target>=0 && target<=nt) {return target-1;}
         else {return -1;}
     }
+}
+void Duel::turnStartLog()
+{
+    std::string str = "Turn "+std::to_string(this->turnCount);
+    this->appendLog(str, 2);
+
+}
+void Duel::appendLog(std::string log, short log_source)
+{
+    int n = this->n_logs + 1;
+    std::string* logsNew = new std::string[n];
+    short* sourcesNew = new short [n];
+    for (int i=0;i<this->n_logs;i++)
+    {
+        logsNew[i] = this->logs[i];
+        sourcesNew[i] = this->logsSource[i];
+    }
+    logsNew[this->n_logs] = log;
+    sourcesNew[this->n_logs] = log_source;
+    delete [] this->logs; delete [] this->logsSource;
+    this->logs = logsNew;
+    this->logsSource = sourcesNew;
+    this->n_logs = n;
+
 }
