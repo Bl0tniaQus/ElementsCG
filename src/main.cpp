@@ -6,7 +6,11 @@
 
 int main(int argc, char *argv[])
 {
+    #ifdef _WIN32
+    qputenv("QT_QPA_PLATFORM", "windows:darkmode=[1|2]");
+    #endif
     srand(time(NULL));
+
     QApplication a(argc, argv);
     MainWindow w;
    // Duel duel;
