@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
-
 }
 
 MainWindow::~MainWindow()
