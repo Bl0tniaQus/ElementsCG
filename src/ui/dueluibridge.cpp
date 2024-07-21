@@ -68,7 +68,7 @@ short DuelUiBridge::makeSpellChoice(Card* card)
 }
 short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
 {
-    short id;
+    short id = -1;
     short n_materials = card->getCardName()->getMaterialNumber();
     if (n_materials == 2 )
     {

@@ -1,11 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file alias="dragonoidwarrior">resources/images/dragonoidwarrior.jpg</file>
-    <file alias="dragonoidwarrior_card">resources/images/dragonoidwarrior_card.jpg</file>
     <file alias="copperworm">resources/images/copperworm.jpg</file>
-    <file alias="copperworm_card">resources/images/copperworm_card.jpg</file>
     <file alias="whirlwind">resources/images/whirlwind.jpg</file>
-    <file alias="whirlwind_card">resources/images/whirlwind_card.jpg</file>
     <file alias="brassbeetle">resources/images/brassbeetle.jpg</file>
     <file alias="happycumulus">resources/images/happycumulus.jpg</file>
     <file alias="sadnimbus">resources/images/sadnimbus.jpg</file>
