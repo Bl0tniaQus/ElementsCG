@@ -8,6 +8,8 @@
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
+    //Dark palette from
+    //https://gist.github.com/QuantumCD/6245215
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     QPalette darkPalette;
     darkPalette.setColor(QPalette::Window, QColor(53,53,53));
@@ -21,7 +23,6 @@ int main(int argc, char *argv[])
     darkPalette.setColor(QPalette::ButtonText, Qt::white);
     darkPalette.setColor(QPalette::BrightText, Qt::red);
     darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-
     darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
     QApplication a(argc, argv);
