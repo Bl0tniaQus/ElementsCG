@@ -7,14 +7,12 @@
 #include <QStyleFactory>
 int main(int argc, char *argv[])
 {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    qputenv("QT_QPA_PLATFORM", "windows:darkmode=[1|2]")
-#endif
     srand(time(NULL));
+    //QLibraryInfo();
     //Dark palette from
     //https://gist.github.com/QuantumCD/6245215
-    /*QApplication::setStyle(QStyleFactory::create("Fusion"));
-    QPalette darkPalette;
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
+    /*QPalette darkPalette;
     darkPalette.setColor(QPalette::Window, QColor(53,53,53));
     darkPalette.setColor(QPalette::WindowText, Qt::white);
     darkPalette.setColor(QPalette::Base, QColor(25,25,25));
