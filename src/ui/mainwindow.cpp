@@ -10,7 +10,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->setupUi(this);
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
-    delete this->ui->uselessTab;
+    delete this->ui->uselessTabTarget;
+    delete this->ui->playerNameUselessTab;
+    delete this->ui->opponentNameUselessTab;
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
 }
 
@@ -495,13 +497,13 @@ void MainWindow::setResources()
     Player* player = this->duel->getPlayer(0);
     Player* opponent = this->duel->getPlayer(1);
 
-    ui->playerName->setText(QString(player->getName()));
+    ui->playerResources->setTabText(0, QString(player->getName()));
     ui->playerLifeValue->setText(QString::number(player->getHp()));
     ui->playerManaValue->setText(QString::number(player->getMana()));
     ui->playerDeckCount->setText(QString::number(player->getDeckSize()));
     ui->playerSummonLimitValue->setText(QString::number(player->getSummonLimit()));
 
-    ui->opponentName->setText(QString(opponent->getName()));
+    ui->opponentResources->setTabText(0, QString(opponent->getName()));
     ui->opponentLifeValue->setText(QString::number(opponent->getHp()));
     ui->opponentManaValue->setText(QString::number(opponent->getMana()));
     ui->opponentDeckCount->setText(QString::number(opponent->getDeckSize()));
