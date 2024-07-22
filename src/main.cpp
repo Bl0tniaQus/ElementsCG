@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setPalette(darkPalette);
     MainWindow w;
-
    // Duel duel;
    // Deck deck(1);
    // Deck deck2(2);

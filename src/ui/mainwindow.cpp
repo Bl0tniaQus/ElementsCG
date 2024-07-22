@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->setupUi(this);
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
+    delete this->ui->uselessTab;
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
 }
 
@@ -19,7 +20,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::startDuel()
 {
-    this->ui->targetGroupBox->setVisible(false);
+    this->ui->targetBox->setVisible(false);
     this->bridge = new DuelUiBridge;
     this->duel = new Duel;
     this->duel->getPlayer(1)->setBot(&bot);
@@ -515,8 +516,8 @@ void MainWindow::setSpellTargetImages(Card* card)
     Card* c;
     int i;
     this->targeting = true;
-    this->ui->targetGroupBox->setVisible(true);
-    this->ui->targetGroupBox->setTitle("Select target");
+    this->ui->targetBox->setVisible(true);
+    this->ui->targetBox->setTabText(0, "Select target");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::spellCancel);
     this->ui->confirmTargetButton->setText("Confirm");
@@ -552,6 +553,7 @@ void MainWindow::setSpellTargetImages(Card* card)
         connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::spellTargetingTarget);
 
     }
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
     this->n_targets = nt;
 }
 void MainWindow::setAttackerTargetImages()
@@ -561,8 +563,8 @@ void MainWindow::setAttackerTargetImages()
     Card* c;
     int i;
     this->targeting = true;
-    this->ui->targetGroupBox->setVisible(true);
-    this->ui->targetGroupBox->setTitle("Select attacker");
+    this->ui->targetBox->setVisible(true);
+    this->ui->targetBox->setTabText(0, "Select attacker");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::attackerConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::attackerCancel);
 
@@ -600,6 +602,7 @@ void MainWindow::setAttackerTargetImages()
         connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::attackerTargetingTarget);
 
     }
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
     this->n_targets = nt;
 }
 void MainWindow::setDefenderTargetImages()
@@ -609,8 +612,8 @@ void MainWindow::setDefenderTargetImages()
     Card* c;
     int i;
     this->targeting = true;
-    this->ui->targetGroupBox->setVisible(true);
-    this->ui->targetGroupBox->setTitle("Select attack target");
+    this->ui->targetBox->setVisible(true);
+    this->ui->targetBox->setTabText(0, "Select attack target");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::defenderConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::defenderCancel);
 
@@ -655,8 +658,12 @@ void MainWindow::setDefenderTargetImages()
         this->targetImages[0]->setParent(this->ui->targetsAreaContents);
         this->targetImages[0]->setMainWindowUi(this->ui);
         this->targetImages[0]->setPlace(5);
-        this->targetImages[0]->setText("Direct Attack");
+        this->targetImages[0]->setText("Direct\nAttack");
+        this->targetImages[0]->setAlignment(Qt::AlignCenter);
         this->targetImages[0]->setId(10);
+        QFont f = this->targetImages[0]->font();
+        f.setPointSize(18);
+        this->targetImages[0]->setFont(f);
         this->targetImages[0]->setStyleSheet("border:none;");
         this->targetImages[0]->setScaledContents(true);
         this->targetImages[0]->setMouseTracking(true);
@@ -664,10 +671,11 @@ void MainWindow::setDefenderTargetImages()
         this->targetImages[0]->setVisible(true);
         this->targetImages[0]->setGeometry((i*80)+15,15,80,80);
         this->targetImages[0]->setContentsMargins(0,0,0,0);
-
+        i = 1;
         connect(targetImages[0],&CardLabel::targetCardHighlight, this, &MainWindow::defenderTargetingTarget);
     }
     this->n_targets = nt;
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
     if (nt == 0){this->n_targets = 1;}
 }
 
@@ -708,13 +716,14 @@ void MainWindow::setMaterialTargetImages(Card* card)
         connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::materialTargetingTarget);
 
     }
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
     this->n_targets = nt;
 }
 void MainWindow::setFirstMaterialTargetImages(Card* card)
 {
     this->targeting = true;
-    this->ui->targetGroupBox->setVisible(true);
-    this->ui->targetGroupBox->setTitle("Select first material");
+    this->ui->targetBox->setVisible(true);
+    this->ui->targetBox->setTabText(0, "Select first material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
     this->ui->confirmTargetButton->setText("Confirm");
@@ -724,8 +733,8 @@ void MainWindow::setFirstMaterialTargetImages(Card* card)
 void MainWindow::setSecondMaterialTargetImages(Card* card)
 {
     this->targeting = true;
-    this->ui->targetGroupBox->setVisible(true);
-    this->ui->targetGroupBox->setTitle("Select second material");
+    this->ui->targetBox->setVisible(true);
+    this->ui->targetBox->setTabText(0, "Select second material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
     this->ui->confirmTargetButton->setText("Confirm");
@@ -735,8 +744,8 @@ void MainWindow::setSecondMaterialTargetImages(Card* card)
 void MainWindow::setLastMaterialTargetImages(Card* card)
 {
     this->targeting = true;
-    this->ui->targetGroupBox->setVisible(true);
-    this->ui->targetGroupBox->setTitle("Select last material");
+    this->ui->targetBox->setVisible(true);
+    this->ui->targetBox->setTabText(0, "Select last material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::specialMinionCancel);
     this->ui->confirmTargetButton->setText("Confirm");
@@ -850,7 +859,7 @@ void MainWindow::clearTargets()
     this->n_targets = 0;
     this->targetImages = new CardLabel* [0];
     this->selectedSpellTarget = -1;
-    this->ui->targetGroupBox->setVisible(false);
+    this->ui->targetBox->setVisible(false);
 }
 void MainWindow::clearTabs()
 {
