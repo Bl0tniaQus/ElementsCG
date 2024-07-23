@@ -5,6 +5,7 @@
 #include "../engine/zone.h"
 #include <iostream>
 #include <QDebug>
+#include <QScrollBar>
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), duelThread(this)
 {
     this->ui->setupUi(this);
