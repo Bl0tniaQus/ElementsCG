@@ -178,14 +178,14 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
         {
             if (targets1[0]==targets2[0]) {result = false;}
         }
-        else if ((n_targets1==1)&&(n_targets2>1))
+        else if ((n_targets1==1)&&(n_targets2==1))
         {
             for (int i=0;i<n_targets2;i++)
             {
                 if (targets2[i]==targets1[0]) {result = false;}
             }
         }
-        else if ((n_targets2==1)&&(n_targets1>1))
+        else if ((n_targets2==1)&&(n_targets1==1))
         {
             for (int i=0;i<n_targets2;i++)
             {
