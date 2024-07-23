@@ -116,7 +116,7 @@ void MainWindow::setHandImages()
 
         connect(handImages[i],&CardLabel::handCardHighlight, this, &MainWindow::handTarget);
     }
-    ui->handCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    ui->handCardsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->handSize = n_hand;
 }
 void MainWindow::setSpecialDeckImages()
@@ -156,7 +156,7 @@ void MainWindow::setSpecialDeckImages()
 
         connect(specialDeckImages[i],&CardLabel::specialDeckCardHighlight, this, &MainWindow::specialDeckTarget);
     }
-    ui->specialDeckCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    ui->specialDeckCardsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->specialDeckSize = n_special;
 }
 void MainWindow::setGraveyardImages()
@@ -194,7 +194,7 @@ void MainWindow::setGraveyardImages()
         graveyardImages[i]->setGeometry((i*80)+15,15,80,80);
         graveyardImages[i]->setContentsMargins(0,0,0,0);
     }
-    ui->graveyardCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    ui->graveyardCardsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->graveyardSize = n_graveyard;
 }
 void MainWindow::setOpponentGraveyardImages()
@@ -232,7 +232,7 @@ void MainWindow::setOpponentGraveyardImages()
         opponentGraveyardImages[i]->setGeometry((i*80)+15,15,80,80);
         opponentGraveyardImages[i]->setContentsMargins(0,0,0,0);
     }
-    ui->opponentGraveyardCardsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    ui->opponentGraveyardCardsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->opponentGraveyardSize = n_graveyard;
 }
 void MainWindow::handTarget(short id)
@@ -559,7 +559,7 @@ void MainWindow::setSpellTargetImages(Card* card)
         connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::spellTargetingTarget);
 
     }
-    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->n_targets = nt;
 }
 void MainWindow::setAttackerTargetImages()
@@ -608,7 +608,7 @@ void MainWindow::setAttackerTargetImages()
         connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::attackerTargetingTarget);
 
     }
-    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->n_targets = nt;
 }
 void MainWindow::setDefenderTargetImages()
@@ -681,7 +681,7 @@ void MainWindow::setDefenderTargetImages()
         connect(targetImages[0],&CardLabel::targetCardHighlight, this, &MainWindow::defenderTargetingTarget);
     }
     this->n_targets = nt;
-    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,95);
     if (nt == 0){this->n_targets = 1;}
 }
 
@@ -722,7 +722,7 @@ void MainWindow::setMaterialTargetImages(Card* card)
         connect(targetImages[i],&CardLabel::targetCardHighlight, this, &MainWindow::materialTargetingTarget);
 
     }
-    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,200);
+    this->ui->targetsAreaContents->setGeometry(40,40,(i*80)+15,95);
     this->n_targets = nt;
 }
 void MainWindow::setFirstMaterialTargetImages(Card* card)

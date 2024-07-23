@@ -9,8 +9,8 @@ public:
         2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         3, //level
-        3, //attack
-        2, //defence
+        2, //attack
+        1, //defence
         "Earth", //element
         "Silver Wolf", //name
         "silverwolf",

@@ -77,6 +77,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
             emit drawFirstMaterialTargets(card);
             mutex->lock(); mutex->lock(); mutex->unlock();
             id = this->materialTarget;
+            if (id==-1) {return -1;}
             this->materialTarget = -2;
             this->selectedMaterials = 1;
 
@@ -86,6 +87,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
             emit drawLastMaterialTargets(card);
             mutex->lock(); mutex->lock(); mutex->unlock();
             id = this->materialTarget;
+            if (id==-1) {return -1;}
             this->materialTarget = -2;
             this->selectedMaterials = 0;
         }
@@ -97,6 +99,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
             emit drawFirstMaterialTargets(card);
             mutex->lock(); mutex->lock(); mutex->unlock();
             id = this->materialTarget;
+            if (id==-1) {return -1;}
             this->materialTarget = -2;
             this->selectedMaterials = 1;
 
@@ -106,6 +109,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
             emit drawSecondMaterialTargets(card);
             mutex->lock(); mutex->lock(); mutex->unlock();
             id = this->materialTarget;
+            if (id==-1) {return -1;}
             this->materialTarget = -2;
             this->selectedMaterials = 0;
         }
@@ -114,6 +118,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
             emit drawLastMaterialTargets(card);
             mutex->lock(); mutex->lock(); mutex->unlock();
             id = this->materialTarget;
+            if (id==-1) {return -1;}
             this->materialTarget = -2;
             this->selectedMaterials = 0;
         }

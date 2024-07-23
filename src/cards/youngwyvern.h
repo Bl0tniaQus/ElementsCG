@@ -9,7 +9,7 @@ public:
         5, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level
-        4, //attack
+        3, //attack
         2, //defence
         "Air", //element
         "Young Wyvern", //name
