@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Dragonoid Scout", //name
         "dragonoidscout",
-        ""
+        "When this card is summoned: draw 1 card."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
 };

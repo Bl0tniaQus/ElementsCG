@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Tungsten Firefly", //name
         "tungstenfirefly",
-        ""
+        "At the end of your turn: draw 1 card."
     ) {};
     void onTurnEnd(Duel* duel, Card* card) override;
 };

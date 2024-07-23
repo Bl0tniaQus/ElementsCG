@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Copper Worm", //name
         "copperworm",
-        "Copper Worm Lv1 EARTH (1)\n1/0\nIf this card is summoned: summon 1 \"Copper Worm\" from your hand."
+        "When this card is summoned: summon 1 \"Copper Worm\" from your hand."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
     void getOnSummonTargetList(Duel* duel, Card* card) override;

@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Whirlwind", //name
         "whirlwind",
-        "Whirlwind Air Spell (5)\nTarget 1 minion on the field: return it to it's owner's hand."
+        "Target 1 minion on the field: return it to it's owner's hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void getOnSpellTargetList(Duel* duel, Card* card) override;

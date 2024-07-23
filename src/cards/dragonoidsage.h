@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Dragonoid Sage", //name
         "dragonoidsage",
-        ""
+        "At the end of your turn: gain 2 mana."
     ) {};
     void onTurnEnd(Duel* duel, Card* card) override;
 };

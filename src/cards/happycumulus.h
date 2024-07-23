@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Happy Cumulus", //name
         "happycumulus",
-        ""
+        "When this card is summoned if you have at least 20 mana: increase your summon limit by 1."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
 };

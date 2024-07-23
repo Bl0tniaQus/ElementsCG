@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     delete this->ui->uselessTabTarget;
     delete this->ui->playerNameUselessTab;
     delete this->ui->opponentNameUselessTab;
+    delete this->ui->duelLogUselessTab;
     connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
 }
 
@@ -405,6 +406,7 @@ void MainWindow::setFieldImagesAndLabels()
         playerFieldLabels[i]->setStyleSheet("border:none;");
         playerFieldLabels[i]->setScaledContents(true);
         playerFieldLabels[i]->setPlace(2);
+        playerFieldLabels[i]->setAlignment(Qt::AlignCenter);
         playerFieldLabels[i]->setMouseTracking(true);
         playerFieldLabels[i]->setFrameShape(QFrame::Box);
         playerFieldLabels[i]->setVisible(true);
@@ -431,6 +433,7 @@ void MainWindow::setFieldImagesAndLabels()
         opponentFieldLabels[4-i]->setStyleSheet("border:none;");
         opponentFieldLabels[4-i]->setScaledContents(true);
         opponentFieldLabels[4-i]->setPlace(2);
+        opponentFieldLabels[4-i]->setAlignment(Qt::AlignCenter);
         opponentFieldLabels[4-i]->setMouseTracking(true);
         opponentFieldLabels[4-i]->setFrameShape(QFrame::Box);
         opponentFieldLabels[4-i]->setVisible(true);

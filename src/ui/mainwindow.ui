@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1552</width>
+    <width>1554</width>
     <height>900</height>
    </rect>
   </property>
@@ -66,23 +66,26 @@
         <widget class="QLabel" name="cardHighlight">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>361</width>
-           <height>361</height>
+           <x>20</x>
+           <y>70</y>
+           <width>341</width>
+           <height>341</height>
           </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
          </property>
          <property name="text">
           <string/>
          </property>
         </widget>
-        <widget class="QLabel" name="cardText">
+        <widget class="QLabel" name="cardName">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>370</y>
-           <width>361</width>
-           <height>281</height>
+           <x>20</x>
+           <y>20</y>
+           <width>341</width>
+           <height>41</height>
           </rect>
          </property>
          <property name="font">
@@ -93,6 +96,9 @@
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -100,11 +106,195 @@
           <bool>true</bool>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignCenter</set>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+        </widget>
+        <widget class="QFrame" name="cardTextFrame">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>430</y>
+           <width>341</width>
+           <height>281</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border:none;</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLabel" name="cardText">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>50</y>
+            <width>321</width>
+            <height>171</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:none;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignJustify|Qt::AlignTop</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="cardTextTL">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>156</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:none;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="cardTextTR">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>10</y>
+            <width>156</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:none;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="cardTextBL">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>220</y>
+            <width>156</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:none;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="cardTextBR">
+          <property name="geometry">
+           <rect>
+            <x>170</x>
+            <y>220</y>
+            <width>156</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border:none;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
         </widget>
        </widget>
        <widget class="QFrame" name="playerField">
@@ -112,7 +302,7 @@
          <rect>
           <x>400</x>
           <y>310</y>
-          <width>791</width>
+          <width>651</width>
           <height>211</height>
          </rect>
         </property>
@@ -127,12 +317,12 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>771</width>
-           <height>161</height>
+           <width>631</width>
+           <height>141</height>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
@@ -142,8 +332,8 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>751</width>
-            <height>141</height>
+            <width>611</width>
+            <height>121</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="playerFieldImages"/>
@@ -153,13 +343,13 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>170</y>
-           <width>771</width>
-           <height>31</height>
+           <y>150</y>
+           <width>631</width>
+           <height>51</height>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
@@ -168,9 +358,9 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>10</y>
-            <width>751</width>
-            <height>16</height>
+            <y>0</y>
+            <width>611</width>
+            <height>41</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="playerFieldLabels"/>
@@ -183,7 +373,7 @@
           <x>400</x>
           <y>520</y>
           <width>681</width>
-          <height>231</height>
+          <height>171</height>
          </rect>
         </property>
         <property name="tabPosition">
@@ -202,7 +392,7 @@
             <x>540</x>
             <y>10</y>
             <width>131</width>
-            <height>181</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="text">
@@ -215,7 +405,7 @@
             <x>10</x>
             <y>10</y>
             <width>531</width>
-            <height>171</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="verticalScrollBarPolicy">
@@ -257,7 +447,7 @@
             <x>10</x>
             <y>10</y>
             <width>531</width>
-            <height>171</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="verticalScrollBarPolicy">
@@ -294,7 +484,7 @@
             <x>540</x>
             <y>10</y>
             <width>131</width>
-            <height>181</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="text">
@@ -312,7 +502,7 @@
             <x>10</x>
             <y>10</y>
             <width>531</width>
-            <height>171</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="verticalScrollBarPolicy">
@@ -349,7 +539,7 @@
             <x>550</x>
             <y>10</y>
             <width>120</width>
-            <height>171</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="frameShape">
@@ -362,7 +552,7 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>30</y>
+             <y>10</y>
              <width>101</width>
              <height>51</height>
             </rect>
@@ -392,9 +582,9 @@
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>80</y>
+             <y>60</y>
              <width>101</width>
-             <height>51</height>
+             <height>41</height>
             </rect>
            </property>
            <property name="font">
@@ -424,89 +614,13 @@
          <attribute name="title">
           <string>Opponent's Graveyard</string>
          </attribute>
-         <widget class="QFrame" name="opponentGraveyardFrame">
-          <property name="geometry">
-           <rect>
-            <x>550</x>
-            <y>10</y>
-            <width>120</width>
-            <height>171</height>
-           </rect>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="opponentGraveyardLabel">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>30</y>
-             <width>101</width>
-             <height>51</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-             <weight>75</weight>
-             <italic>false</italic>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>number of cards</string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::AutoText</enum>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QLabel" name="opponentGraveyardCountLabel">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>80</y>
-             <width>101</width>
-             <height>51</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>28</pointsize>
-             <weight>75</weight>
-             <italic>false</italic>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>123</string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::AutoText</enum>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </widget>
          <widget class="QScrollArea" name="opponentGraveyardCardsArea">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>10</y>
             <width>531</width>
-            <height>171</height>
+            <height>111</height>
            </rect>
           </property>
           <property name="verticalScrollBarPolicy">
@@ -537,6 +651,82 @@
            </layout>
           </widget>
          </widget>
+         <widget class="QFrame" name="opponentGraveyardFrame">
+          <property name="geometry">
+           <rect>
+            <x>550</x>
+            <y>10</y>
+            <width>120</width>
+            <height>111</height>
+           </rect>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <widget class="QLabel" name="graveyardLabel_2">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>10</y>
+             <width>101</width>
+             <height>51</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <italic>false</italic>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>number of cards</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QLabel" name="opponentGraveyardCountLabel">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>60</y>
+             <width>101</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>28</pointsize>
+             <weight>75</weight>
+             <italic>false</italic>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>123</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </widget>
         </widget>
        </widget>
        <widget class="QFrame" name="opponentField">
@@ -544,7 +734,7 @@
          <rect>
           <x>400</x>
           <y>90</y>
-          <width>791</width>
+          <width>651</width>
           <height>211</height>
          </rect>
         </property>
@@ -559,12 +749,12 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>771</width>
-           <height>161</height>
+           <width>641</width>
+           <height>141</height>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
@@ -574,8 +764,8 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>751</width>
-            <height>141</height>
+            <width>611</width>
+            <height>121</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="opponentFieldImages"/>
@@ -585,13 +775,13 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>170</y>
+           <y>150</y>
            <width>771</width>
-           <height>31</height>
+           <height>51</height>
           </rect>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
@@ -600,9 +790,9 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>10</y>
-            <width>751</width>
-            <height>16</height>
+            <y>0</y>
+            <width>611</width>
+            <height>41</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="opponentFieldLabels"/>
@@ -612,10 +802,10 @@
        <widget class="QPushButton" name="endTurnButton">
         <property name="geometry">
          <rect>
-          <x>970</x>
-          <y>790</y>
+          <x>920</x>
+          <y>730</y>
           <width>141</width>
-          <height>34</height>
+          <height>51</height>
          </rect>
         </property>
         <property name="text">
@@ -625,10 +815,10 @@
        <widget class="QPushButton" name="battlePhaseButton">
         <property name="geometry">
          <rect>
-          <x>820</x>
-          <y>790</y>
+          <x>740</x>
+          <y>730</y>
           <width>141</width>
-          <height>34</height>
+          <height>51</height>
          </rect>
         </property>
         <property name="text">
@@ -725,13 +915,13 @@
         <property name="geometry">
          <rect>
           <x>400</x>
-          <y>760</y>
+          <y>700</y>
           <width>331</width>
           <height>101</height>
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="playerNameTab">
          <attribute name="title">
@@ -851,9 +1041,9 @@
        <widget class="QTabWidget" name="opponentResources">
         <property name="geometry">
          <rect>
-          <x>410</x>
+          <x>400</x>
           <y>0</y>
-          <width>781</width>
+          <width>651</width>
           <height>91</height>
          </rect>
         </property>
@@ -1022,6 +1212,53 @@
          </widget>
         </widget>
         <widget class="QWidget" name="opponentNameUselessTab">
+         <attribute name="title">
+          <string>Tab 2</string>
+         </attribute>
+        </widget>
+       </widget>
+       <widget class="QTabWidget" name="duelLog">
+        <property name="geometry">
+         <rect>
+          <x>1050</x>
+          <y>20</y>
+          <width>491</width>
+          <height>501</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="duelLogTab">
+         <attribute name="title">
+          <string>Duel Log</string>
+         </attribute>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>461</width>
+            <height>441</height>
+           </rect>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>457</width>
+             <height>437</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout"/>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="duelLogUselessTab">
          <attribute name="title">
           <string>Tab 2</string>
          </attribute>

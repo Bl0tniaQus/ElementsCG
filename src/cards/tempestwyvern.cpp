@@ -8,11 +8,11 @@ bool TempestWyvern::specialSummon(Duel* duel, Card* card)
 }
 void TempestWyvern::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElementAndMinimumLevel(duel,card,"Air",3);
+    this->getMinionsWithSameElementAndMinimumLevel(duel,card,"Air",5);
 }
 void TempestWyvern::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElementAndMinimumLevel(duel,card,"Air",3);
+    this->getMinionsWithSameElement(duel,card,"Air");
 }
 void TempestWyvern::onSummon(Duel* duel, Card* card)
 {
