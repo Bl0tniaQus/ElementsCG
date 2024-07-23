@@ -6,5 +6,7 @@
     <file alias="brassbeetle">resources/images/brassbeetle.jpg</file>
     <file alias="happycumulus">resources/images/happycumulus.jpg</file>
     <file alias="sadnimbus">resources/images/sadnimbus.jpg</file>
+    <file alias="tempestwyvern">resources/images/tempestwyvern.jpg</file>
+    <file alias="youngwyvern">resources/images/youngwyvern.jpg</file>
 </qresource>
 </RCC>

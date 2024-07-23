@@ -39,6 +39,7 @@ set(PROJECT_SOURCES
         src/cards/tempestwyvern.cpp
         src/cards/happycumulus.cpp
         src/cards/sadnimbus.cpp
+        src/cards/youngwyvern.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

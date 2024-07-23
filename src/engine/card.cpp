@@ -72,6 +72,7 @@ CardBase* Card::getCardNameById(int id)
         case 9: cardbase = new TempestWyvern;break;
         case 10: cardbase = new HappyCumulus;break;
         case 11: cardbase = new SadNimbus;break;
+        case 12: cardbase = new YoungWyvern;break;
     }
     return cardbase;
 }
