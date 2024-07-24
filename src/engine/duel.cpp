@@ -428,7 +428,10 @@ void Duel::playFromHand(Card* card)
 
            if (zoneid!=-1)
            {
-
+                std::string card_name = std::string(card->getName());
+                std::string playername = card->getOwner()->getName();
+                std::string str = playername + " played " + "\"" + card_name + "\"";
+                this->appendLog(str,2);
                this->summonMinion(card, zoneid);
                success=1;
            }
@@ -462,6 +465,7 @@ void Duel::playFromHand(Card* card)
             }
 
             delete[] newHand;
+
         }
 
     }
@@ -798,4 +802,9 @@ void Duel::appendLog(std::string log, short log_source)
     this->logsSource = sourcesNew;
     this->n_logs = n;
 
+}
+short Duel::getPlayerId(Player* player)
+{
+    if (&this->players[0] == player) {return 0;}
+    else return 1;
 }

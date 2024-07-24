@@ -27,6 +27,7 @@ public:
     void setTurnPlayer(char turnPlayer) {this->turnPlayer=turnPlayer;}
     Player* getPlayer(unsigned char p) {return &this->players[p];}
     void passTurn();
+    short getPlayerId(Player* player);
     void drawField(char p);
     void drawCard(Player* player);
     void combat(Card* attacker, Card* defender);

@@ -30,6 +30,8 @@ private:
     CardLabel** opponentFieldImages;
     CardLabel** opponentFieldLabels;
     CardLabel** targetImages;
+    QLabel** logLabels;
+    int drawnLogs = 0;
     short selectedHandCard = -1;
     short selectedSpellTarget = -1;
     short selectedMaterialTarget = -1;
@@ -60,6 +62,7 @@ public slots:
     void setResources();
     void setAttackerTargetImages();
     void setDefenderTargetImages();
+    void setLogLabels();
     void handTarget(short id);
     void specialDeckTarget(short id);
     void spellTargetingTarget(short id);

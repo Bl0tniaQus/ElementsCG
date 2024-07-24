@@ -43,6 +43,7 @@ void MainWindow::startDuel()
     connect(this->bridge,&DuelUiBridge::drawLastMaterialTargets, this, &MainWindow::setLastMaterialTargetImages);
     connect(this->bridge,&DuelUiBridge::drawAttackers, this, &MainWindow::setAttackerTargetImages);
     connect(this->bridge,&DuelUiBridge::drawDefenders, this, &MainWindow::setDefenderTargetImages);
+    connect(this->bridge,&DuelUiBridge::drawLogs, this, &MainWindow::setLogLabels);
     connect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
     connect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
     connect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
@@ -70,7 +71,7 @@ void MainWindow::startDuel()
     this->playerFieldLabels = new CardLabel* [5];
     this->opponentFieldImages = new CardLabel* [5];
     this->opponentFieldLabels = new CardLabel* [5];
-
+    this->logLabels = new QLabel* [0];
     for (int i=0;i<5;i++)
     {
         this->playerFieldImages[i] = new CardLabel;
@@ -897,5 +898,39 @@ void MainWindow::startBattlePhase()
         emit startBattlePhaseSignal();
     }
 }
+void MainWindow::setLogLabels()
+{
 
+    int n_logs = this->duel->getLogsNumber();
+
+    QLabel** logs_new = new QLabel* [n_logs];
+    int i;
+    for (i = 0;i<this->drawnLogs;i++)
+    {
+        logs_new[i] = this->logLabels[i];
+    }
+    for (i = this->drawnLogs;i<n_logs;i++)
+    {
+        logs_new[i] = new QLabel;
+        std::string str = this->duel->getLogs()[i];
+        logs_new[i]->setText(QString::fromStdString(str));
+        logs_new[i]->setParent(this->ui->duelLogsAreaContents);
+        logs_new[i]->setScaledContents(true);
+        logs_new[i]->setFrameShape(QFrame::Box);
+        QString color;
+        short source = this->duel->getLogSources()[i];
+        if (source==0) {color = "blue";}
+        else if (source==1) {color = "red";}
+        else if (source==2) {color = "white";}
+        logs_new[i]->setStyleSheet("border:none; border-left:4px solid "+ color + ";");
+        logs_new[i]->setVisible(true);
+        logs_new[i]->setGeometry(0,i*28,430,20);
+    }
+    this->ui->duelLogsAreaContents->setGeometry(0,0,461, n_logs * 28);
+    this->ui->duelLogsArea->verticalScrollBar()->setValue(n_logs * 28);
+    delete [] this->logLabels;
+    this->logLabels = logs_new;
+    this->drawnLogs = n_logs;
+
+}
 

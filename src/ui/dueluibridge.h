@@ -46,6 +46,7 @@ signals:
     void drawResources();
     void drawGraveyard();
     void drawOpponentGraveyard();
+    void drawLogs();
     void handCardPlayed(short id = -1);
     void specialMinionPlayed(short id = -1);
     void drawSpellTargets(Card* card);

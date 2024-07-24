@@ -18,6 +18,7 @@ public:
     ) {};
     void onSummon(Duel* duel, Card* card) override;
     void getOnSummonTargetList(Duel* duel, Card* card) override;
+    void generateOnSummonLog(Duel* duel, Card* card) override;
 };
 
 #endif

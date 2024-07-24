@@ -373,7 +373,7 @@
           <x>400</x>
           <y>520</y>
           <width>681</width>
-          <height>171</height>
+          <height>181</height>
          </rect>
         </property>
         <property name="tabPosition">
@@ -392,7 +392,7 @@
             <x>540</x>
             <y>10</y>
             <width>131</width>
-            <height>111</height>
+            <height>121</height>
            </rect>
           </property>
           <property name="text">
@@ -405,7 +405,7 @@
             <x>10</x>
             <y>10</y>
             <width>531</width>
-            <height>111</height>
+            <height>121</height>
            </rect>
           </property>
           <property name="verticalScrollBarPolicy">
@@ -831,7 +831,7 @@
           <x>1080</x>
           <y>520</y>
           <width>461</width>
-          <height>231</height>
+          <height>221</height>
          </rect>
         </property>
         <property name="currentIndex">
@@ -847,7 +847,7 @@
             <x>10</x>
             <y>10</y>
             <width>431</width>
-            <height>111</height>
+            <height>121</height>
            </rect>
           </property>
           <property name="verticalScrollBarPolicy">
@@ -915,13 +915,13 @@
         <property name="geometry">
          <rect>
           <x>400</x>
-          <y>700</y>
+          <y>720</y>
           <width>331</width>
           <height>101</height>
          </rect>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="playerNameTab">
          <attribute name="title">
@@ -1221,9 +1221,9 @@
         <property name="geometry">
          <rect>
           <x>1050</x>
-          <y>20</y>
+          <y>0</y>
           <width>491</width>
-          <height>501</height>
+          <height>521</height>
          </rect>
         </property>
         <property name="currentIndex">
@@ -1233,25 +1233,31 @@
          <attribute name="title">
           <string>Duel Log</string>
          </attribute>
-         <widget class="QScrollArea" name="scrollArea">
+         <widget class="QScrollArea" name="duelLogsArea">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>10</y>
             <width>461</width>
-            <height>441</height>
+            <height>461</height>
            </rect>
           </property>
-          <property name="widgetResizable">
-           <bool>true</bool>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
           </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>false</bool>
+          </property>
+          <widget class="QWidget" name="duelLogsAreaContents">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
              <width>457</width>
-             <height>437</height>
+             <height>457</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout"/>

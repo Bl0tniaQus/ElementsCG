@@ -56,7 +56,7 @@ void DuelUiBridge::updateBoard()
     emit drawGraveyard();
     emit drawOpponentGraveyard();
     emit drawResources();
-    qDebug()<<QString::fromStdString(this->duel->getLogs()[this->duel->getLogsNumber()-1]);
+    emit drawLogs();
 }
 short DuelUiBridge::makeSpellChoice(Card* card)
 {
