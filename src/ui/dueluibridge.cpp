@@ -163,6 +163,8 @@ void DuelUiBridge::battlePhase()
                 Card* defender = this->duel->getDefendersList()->getTargetList()[id_defender];
                 this->duel->combat(attacker,defender);
             }
+            this->attackerTarget = -2;
+            this->defenderTarget = -2;
         }
     this->updateBoard();
     }

@@ -2,6 +2,7 @@
 <qresource>
     <file alias="dragonoidwarrior">resources/images/dragonoidwarrior.jpg</file>
     <file alias="copperworm">resources/images/copperworm.jpg</file>
+    <file alias="tungstenfirefly">resources/images/tungstenfirefly.jpg</file>
     <file alias="whirlwind">resources/images/whirlwind.jpg</file>
     <file alias="brassbeetle">resources/images/brassbeetle.jpg</file>
     <file alias="happycumulus">resources/images/happycumulus.jpg</file>

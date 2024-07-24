@@ -846,10 +846,8 @@ void MainWindow::defenderConfirm()
 }
 void MainWindow::defenderCancel()
 {
-    this->bridge->setMaterialTarget(-1);
-    this->bridge->setSelectedMaterials(0);
-    this->targeting = false;
-    this->selectedMaterialTarget = -1;
+    this->bridge->setDefenderTarget(-1);
+    this->selectedDefenderTarget = -1;
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
     clearTargets();
