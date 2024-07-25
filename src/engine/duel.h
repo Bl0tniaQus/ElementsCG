@@ -57,17 +57,21 @@ public:
     void DuelControl(Deck *deck0, Deck* deck1);
     void generateAttackersList();
     void generateDefendersList();
-    void turnStartLog();
+
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
 
     virtual void appendLog(std::string log, short log_source);
+    void turnStartLog();
     std::string* getLogs() {return this->logs;}
     short* getLogSources() {return this->logsSource;}
     int getLogsNumber() {return this->n_logs;}
     std::string minionFromHandLog(Card* card);
     std::string manaChangeLog(Player* player, short value);
+    std::string drawCardLog(Player* player, short n);
+    std::string summonLog(Card* card);
+    void turnEndLog();
     unsigned char getLastSource() {return this->lastSource;}
     void setLastSource(unsigned char s) {this->lastSource = s;}
 

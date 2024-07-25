@@ -130,7 +130,6 @@ void DuelUiBridge::passTurn()
 {
     Player* opponent = this->duel->getPlayer(!this->duel->getTurnPlayer());
     this->duel->passTurn();
-    this->duel->turnStartLog();
     if (opponent->getBot()!=nullptr)
     {
         opponent->getBot()->playTurn(this->duel);

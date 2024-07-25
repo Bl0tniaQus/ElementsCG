@@ -40,15 +40,10 @@ public:
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
 
-    virtual void generateOnSummonLog(Duel* duel, Card* card) {};
-    virtual void generateOnSpellLog(Duel* duel, Card* card) {};
-    virtual void generateOnDestroyLog(Duel* duel, Card* card) {};
-    virtual void generateOnTurnEndLog(Duel* duel, Card* card) {};
-    virtual void generateOnTurnStartLog(Duel* duel, Card* card) {};
-    virtual void generateAfterAttackLog(Duel* duel, Card* card, Card* target, short damage) {};
-    virtual void generateOnAttackLog(Duel* duel, Card* card, Card* target) {};
-    virtual void generateOnDefenceLog(Duel* duel, Card* card, Card* attacker) {};
-    virtual void generateAfterDefenceLog(Duel* duel, Card* card, Card* attacker, short damage) {};
+    void effectLog(Duel* duel, Card* card);
+    void firstEffectLog(Duel* duel, Card* card);
+    void secondEffectLog(Duel* duel, Card* card);
+    void thirdEffectLog(Duel* duel, Card* card);
 
     virtual void onSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};

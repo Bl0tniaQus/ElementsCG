@@ -38,10 +38,12 @@ void Player::setName(const char* name)
 void Player::changeHp(short val)
 {
     this->hp = this->hp + val;
+    if (this->hp < 0) {this->hp = 0;}
 }
 void Player::changeMana(short val)
 {
     this->mana = this->mana + val;
+    if (this->mana < 0) {this->mana = 0;}
 }
 void Player::setHand(Card** hand, short size)
 {

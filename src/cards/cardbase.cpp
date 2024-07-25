@@ -310,3 +310,31 @@ void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, 
     this->setTargetList(targets,n_targets);
 }
 }
+void CardBase::effectLog(Duel* duel, Card* card)
+{
+    duel->setLastSource(duel->getPlayerId(card->getOwner()));
+    std::string cardName = this->getName();
+    std::string str = "\""+cardName+"\""+" effect";
+    duel->appendLog(str,duel->getLastSource());
+}
+void CardBase::firstEffectLog(Duel* duel, Card* card)
+{
+    duel->setLastSource(duel->getPlayerId(card->getOwner()));
+    std::string cardName = this->getName();
+    std::string str = "\""+cardName+"\""+" first effect";
+    duel->appendLog(str,duel->getLastSource());
+}
+void CardBase::secondEffectLog(Duel* duel, Card* card)
+{
+    duel->setLastSource(duel->getPlayerId(card->getOwner()));
+    std::string cardName = this->getName();
+    std::string str = "\""+cardName+"\""+" second effect";
+    duel->appendLog(str,duel->getLastSource());
+}
+void CardBase::thirdEffectLog(Duel* duel, Card* card)
+{
+    duel->setLastSource(duel->getPlayerId(card->getOwner()));
+    std::string cardName = this->getName();
+    std::string str = "\""+cardName+"\""+" third effect";
+    duel->appendLog(str,duel->getLastSource());
+}

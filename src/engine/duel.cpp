@@ -292,6 +292,7 @@ void Duel::onSummon(Card* card)
 {
     if (card->getCardType()!=0)
     {
+        this->appendLog(this->summonLog(card),this->lastSource);
         card->getCardName()->onSummon(this, card);
     }
 }
@@ -498,13 +499,20 @@ void Duel::passTurn()
 {
     Player* turnPlayer = this->getPlayer(this->getTurnPlayer());
     Player* opponent = this->getPlayer(!this->getTurnPlayer());
-    turnEndEffects();
-    opponent->changeMana(2);
+    this->turnEndLog();
+    this->turnEndEffects();
     this->turnCount++;
     turnPlayer->setSummonLimit(1);
     this->turnPlayer = !this->turnPlayer;
+    this->turnStartLog();
+    if (opponent->getDeckSize()>0)
+    {
+        this->appendLog(this->drawCardLog(opponent,1),2);
+    }
     this->drawCard(opponent);
-    turnStartEffects();
+    this->appendLog(this->manaChangeLog(opponent, 2),this->lastSource);
+    opponent->changeMana(2);
+    this->turnStartEffects();
 }
 void Duel::generateAttackersList()
 {
@@ -785,7 +793,12 @@ void Duel::turnStartLog()
     this->lastSource = 2;
     std::string str = "Turn "+std::to_string(this->turnCount);
     this->appendLog(str, this->lastSource);
-
+}
+void Duel::turnEndLog()
+{
+    this->lastSource = 2;
+    std::string str = "End of turn";
+    this->appendLog(str, this->lastSource);
 }
 void Duel::appendLog(std::string log, short log_source)
 {
@@ -826,4 +839,24 @@ std::string Duel::manaChangeLog(Player* player, short value)
     std::string str = "["+ playername + "] mana:  " + std::to_string(manaBefore) + " -> " + std::to_string(manaAfter);
     return str;
 }
-
+std::string Duel::drawCardLog(Player* player, short n)
+{
+    std::string playername = std::string(player->getName());
+    std::string str;
+    if (n == 1)
+    {
+        str = "["+ playername + "] draws a card";
+    }
+    else
+    {
+        str = "["+ playername + "] draws " + std::to_string(n) + " cards";
+    }
+    return str;
+}
+std::string Duel::summonLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string playername = card->getOwner()->getName();
+    std::string str = "\"" + card_name +"\""+" was summoned";
+    return str;
+}

@@ -10,8 +10,8 @@ void CopperWorm::onSummon(Duel* duel, Card* card)
             Card* targetCard = targets[0];
             short zoneid = duel->getEmptyMinionZone(card->getOwner());
             if (zoneid!=-1) {
+                this->effectLog(duel, card);
                 duel->summonFromHand(targetCard, zoneid);
-                this->generateOnSummonLog(duel, card);
             }
         }
 }
@@ -19,9 +19,4 @@ void CopperWorm::getOnSummonTargetList(Duel* duel, Card* card)
 {
     this->cardsInHandWithTheSameName(duel, card);
 }
-void CopperWorm::generateOnSummonLog(Duel* duel, Card* card)
-{
-    std::string str = "[Copper Worm] \"Copper Worm\" summoned";
-    short playerId = duel->getPlayerId(card->getOwner());
-    duel->appendLog(str,playerId);
-}
+
