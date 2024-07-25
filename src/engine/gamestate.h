@@ -12,6 +12,7 @@ public:
     float resourceFactor();
     float cardAdvantageFactor();
     float fieldPresenceFactor();
+    void appendLog(std::string log, short log_source) override {};
 };
 
 #endif // GAMESTATE_H

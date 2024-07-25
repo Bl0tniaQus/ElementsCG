@@ -16,11 +16,16 @@ void TempestWyvern::getSecondMaterialList(Duel* duel, Card* card)
 }
 void TempestWyvern::onSummon(Duel* duel, Card* card)
 {
+    duel->appendLog(duel->manaChangeLog(card->getOwner(), 4), duel->getLastSource());
     card->getOwner()->changeMana(4);
 }
 void TempestWyvern::afterAttack(Duel* duel, Card* card, Card* target, short damage)
 {
-    if (damage>0) {card->getOwner()->changeMana(damage);}
+    if (damage>0) {
+         duel->appendLog(duel->manaChangeLog(card->getOwner(), damage), duel->getLastSource());
+        card->getOwner()->changeMana(damage);
+
+    }
 }
 
 

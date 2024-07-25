@@ -15,6 +15,7 @@ Duel::Duel()
     this->logsSource = new short [0];
     this->logs = new std::string [0];
     this->n_logs = 0;
+    this->lastSource = 2;
 }
 Duel::~Duel()
 {
@@ -418,9 +419,11 @@ void Duel::playFromHand(Card* card)
     short cost = card->getCost();
     short zoneid;
     short success =0;
+    this->lastSource = this->turnPlayer;
 
     if ((cost<=card->getOwner()->getMana())&&(card->getPlace()==1))
     {
+
         card->getOwner()->changeMana(-cost);
         if ((type==1)&&(card->getOwner()->getSummonLimit()>0))
         {
@@ -428,10 +431,8 @@ void Duel::playFromHand(Card* card)
 
            if (zoneid!=-1)
            {
-                std::string card_name = std::string(card->getName());
-                std::string playername = card->getOwner()->getName();
-                std::string str = playername + " played " + "\"" + card_name + "\"";
-                this->appendLog(str,2);
+               this->appendLog(this->minionFromHandLog(card),this->lastSource);
+               this->appendLog(this->manaChangeLog(card->getOwner(),-cost),this->lastSource);
                this->summonMinion(card, zoneid);
                success=1;
            }
@@ -469,7 +470,7 @@ void Duel::playFromHand(Card* card)
         }
 
     }
-
+    this->lastSource = 2;
 }
 void Duel::summonFromHand(Card* minion, short zoneid)
 {
@@ -781,8 +782,9 @@ short Duel::makeSpecialMinionMaterialChoice(Card* card)
 }
 void Duel::turnStartLog()
 {
+    this->lastSource = 2;
     std::string str = "Turn "+std::to_string(this->turnCount);
-    this->appendLog(str, 2);
+    this->appendLog(str, this->lastSource);
 
 }
 void Duel::appendLog(std::string log, short log_source)
@@ -808,3 +810,20 @@ short Duel::getPlayerId(Player* player)
     if (&this->players[0] == player) {return 0;}
     else return 1;
 }
+std::string Duel::minionFromHandLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string playername = card->getOwner()->getName();
+    std::string str = "["+playername + "] played " + "\"" + card_name + "\"";
+    return str;
+}
+std::string Duel::manaChangeLog(Player* player, short value)
+{
+    short manaBefore = player->getMana();
+    short manaAfter = player->getMana() + value;
+    std::string playername = std::string(player->getName());
+    if (manaAfter<0) {manaAfter = 0;}
+    std::string str = "["+ playername + "] mana:  " + std::to_string(manaBefore) + " -> " + std::to_string(manaAfter);
+    return str;
+}
+

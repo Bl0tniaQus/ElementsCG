@@ -18,6 +18,7 @@ private:
     short* logsSource;
     std::string* logs;
     int n_logs;
+    unsigned char lastSource;
 public:
     Duel();
     virtual ~Duel();
@@ -52,7 +53,6 @@ public:
     void turnStartEffects();
     void onDestroy(Card* card);
     void onCombat(Card* card);
-    void appendLog(std::string log, short log_source);
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
     void generateAttackersList();
@@ -61,9 +61,17 @@ public:
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
+
+    virtual void appendLog(std::string log, short log_source);
     std::string* getLogs() {return this->logs;}
     short* getLogSources() {return this->logsSource;}
     int getLogsNumber() {return this->n_logs;}
+    std::string minionFromHandLog(Card* card);
+    std::string manaChangeLog(Player* player, short value);
+    unsigned char getLastSource() {return this->lastSource;}
+    void setLastSource(unsigned char s) {this->lastSource = s;}
+
+
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}

@@ -924,9 +924,9 @@ void MainWindow::setLogLabels()
         else if (source==2) {color = "white";}
         logs_new[i]->setStyleSheet("border:none; border-left:4px solid "+ color + ";");
         logs_new[i]->setVisible(true);
-        logs_new[i]->setGeometry(0,i*28,430,20);
+        logs_new[i]->setGeometry(5,5+(i*28),425,20);
     }
-    this->ui->duelLogsAreaContents->setGeometry(0,0,461, n_logs * 28);
+    this->ui->duelLogsAreaContents->setGeometry(0,0,461, 5+ (n_logs * 28));
     this->ui->duelLogsArea->verticalScrollBar()->setValue(n_logs * 28);
     delete [] this->logLabels;
     this->logLabels = logs_new;
