@@ -230,6 +230,7 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
         targetCard2 = new_targets2[target];
+        this->release2Log(targetCard,targetCard2, duel);
         duel->removeFromField(targetCard);
         duel->removeFromField(targetCard2);
         duel->toGraveyard(targetCard);
@@ -310,31 +311,55 @@ void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, 
     this->setTargetList(targets,n_targets);
 }
 }
+void CardBase::spellCost(Card* card)
+{
+    card->getOwner()->changeMana(-card->getCost());
+}
 void CardBase::effectLog(Duel* duel, Card* card)
 {
     duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
-    std::string str = "\""+cardName+"\""+" effect";
+    std::string str = "["+cardName+"]"+"'s effect activates";
     duel->appendLog(str,duel->getLastSource());
 }
 void CardBase::firstEffectLog(Duel* duel, Card* card)
 {
     duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
-    std::string str = "\""+cardName+"\""+" first effect";
+    std::string str = "["+cardName+"]"+"'s first effect activates";
     duel->appendLog(str,duel->getLastSource());
 }
 void CardBase::secondEffectLog(Duel* duel, Card* card)
 {
     duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
-    std::string str = "\""+cardName+"\""+" second effect";
+    std::string str = "["+cardName+"]"+"'s second effect activates";
     duel->appendLog(str,duel->getLastSource());
 }
 void CardBase::thirdEffectLog(Duel* duel, Card* card)
 {
     duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
-    std::string str = "\""+cardName+"\""+" third effect";
+    std::string str = "["+cardName+"]"+"'s third effect activates";
     duel->appendLog(str,duel->getLastSource());
 }
+void CardBase::release2Log(Card* c1, Card* c2, Duel* duel)
+{
+    std::string playerName = std::string(c1->getOwner()->getName());
+    std::string n1 = std::string(c1->getName());
+    std::string n2 = std::string(c2->getName());
+    std::string str = "[" + playerName + "] releases [" + n1 + "] and [" + n2 + "]";
+    duel->appendLog(str,duel->getLastSource());
+}
+void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
+{
+
+}
+void CardBase::spellCostLog(Duel* duel, Card* card)
+{
+    duel->setLastSource(duel->getPlayerId(card->getOwner()));
+    duel->appendLog(duel->cardFromHandLog(card),duel->getLastSource());
+    duel->appendLog(duel->manaChangeLog(card->getOwner(), -card->getCost()),duel->getLastSource());
+}
+
+

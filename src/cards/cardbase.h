@@ -8,7 +8,7 @@ class CardBase
 private:
     short cardId;
     short cost;
-    short cardType;
+    short cardType; //(0 - spell, 1 - minion, 2 - spminion)
     short level;
     short attack;
     short defence;
@@ -39,11 +39,15 @@ public:
     Card* getCardEntity() {return this->cardEntity;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
-
+    void spellCost(Card* card);
     void effectLog(Duel* duel, Card* card);
     void firstEffectLog(Duel* duel, Card* card);
     void secondEffectLog(Duel* duel, Card* card);
     void thirdEffectLog(Duel* duel, Card* card);
+    void spellCostLog(Duel* duel, Card* card);
+
+    void release2Log(Card* c1, Card* c2, Duel* duel);
+    void release3Log(Card* c1, Card* c2, Card* c3, Duel* duel);
 
     virtual void onSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};

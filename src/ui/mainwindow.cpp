@@ -902,7 +902,7 @@ void MainWindow::setLogLabels()
 {
 
     int n_logs = this->duel->getLogsNumber();
-
+    if (n_logs == this->drawnLogs) {return;}
     QLabel** logs_new = new QLabel* [n_logs];
     int i;
     for (i = 0;i<this->drawnLogs;i++)
@@ -926,7 +926,8 @@ void MainWindow::setLogLabels()
         logs_new[i]->setVisible(true);
         logs_new[i]->setGeometry(5,5+(i*28),425,20);
     }
-    this->ui->duelLogsAreaContents->setGeometry(0,0,461, 5+ (n_logs * 28));
+
+    this->ui->duelLogsAreaContents->setGeometry(0,0,461, 5 + (n_logs * 28));
     this->ui->duelLogsArea->verticalScrollBar()->setValue(n_logs * 28);
     delete [] this->logLabels;
     this->logLabels = logs_new;

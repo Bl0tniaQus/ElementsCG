@@ -67,10 +67,14 @@ public:
     std::string* getLogs() {return this->logs;}
     short* getLogSources() {return this->logsSource;}
     int getLogsNumber() {return this->n_logs;}
-    std::string minionFromHandLog(Card* card);
+    std::string cardFromHandLog(Card* card);
     std::string manaChangeLog(Player* player, short value);
+    std::string lifeChangeLog(Player* player, short value);
     std::string drawCardLog(Player* player, short n);
     std::string summonLog(Card* card);
+    std::string returnToHandLog(Card* card);
+    std::string attackLog(Card* attacker, Card* defender);
+    std::string directAttackLog(Card* attacker);
     void turnEndLog();
     unsigned char getLastSource() {return this->lastSource;}
     void setLastSource(unsigned char s) {this->lastSource = s;}

@@ -77,6 +77,8 @@ void Duel::drawField(char p)
 }
 void Duel::combat(Card* attacker, Card* defender)
 {
+    this->lastSource = this->turnPlayer;
+    this->appendLog(this->attackLog(attacker,defender),this->lastSource);
     defender->getCardName()->onDefence(this,defender,attacker);
     attacker->getCardName()->onAttack(this,attacker,defender);
     short atk = attacker->getAttack();
@@ -93,17 +95,32 @@ void Duel::combat(Card* attacker, Card* defender)
         damage = def-atk;
     }
 
-    if (atk>def){this->players[this->turnPlayer].getOpponent()->changeHp(-damage);}
-    if (def>atk){this->players[this->turnPlayer].changeHp(-damage);}
+    if (atk>def){
+        this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),this->lastSource);
+        this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
+    }
+    if (def>atk){
+        this->appendLog(this->lifeChangeLog(&this->players[this->turnPlayer],-damage),this->lastSource);
+        this->players[this->turnPlayer].changeHp(-damage);
+
+    }
     attacker->setAttacks(attacker->getAttacks()-1);
     checkWinner();
     attacker->getCardName()->afterAttack(this,attacker,defender,damage);
+    this->lastSource = 2;
 }
 void Duel::directAttack(Card* attacker)
 {
+    this->lastSource = this->turnPlayer;
+    this->appendLog(this->directAttackLog(attacker),this->lastSource);
+    attacker->getCardName()->onAttack(this,attacker,nullptr);
     short damage = attacker->getAttack();
-    this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
+    if (damage>0)
+    {this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),this->lastSource);
+    this->players[this->turnPlayer].getOpponent()->changeHp(-damage);}
     attacker->setAttacks(attacker->getAttacks()-1);
+    attacker->getCardName()->afterAttack(this,attacker,nullptr,damage);
+    this->lastSource = 2;
     checkWinner();
 }
 void Duel::checkWinner()
@@ -195,6 +212,7 @@ void Duel::summonMinion(Card *minion, short zoneid)
 }
 void Duel::summonSpecialMinion(Card *minion)
 {
+        this->lastSource = this->turnPlayer;
         if (minion->getCardName()->specialSummon(this,minion))
         {
             this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
@@ -211,7 +229,7 @@ void Duel::summonSpecialMinion(Card *minion)
             delete[] newSpecial;
             this->onSummon(minion);
             }
-
+            this->lastSource = 2;
 
 }
 bool Duel::activateSpell(Card *spell)
@@ -424,16 +442,15 @@ void Duel::playFromHand(Card* card)
 
     if ((cost<=card->getOwner()->getMana())&&(card->getPlace()==1))
     {
-
-        card->getOwner()->changeMana(-cost);
         if ((type==1)&&(card->getOwner()->getSummonLimit()>0))
         {
             zoneid = this->getEmptyMinionZone(card->getOwner());
 
            if (zoneid!=-1)
            {
-               this->appendLog(this->minionFromHandLog(card),this->lastSource);
+               this->appendLog(this->cardFromHandLog(card),this->lastSource);
                this->appendLog(this->manaChangeLog(card->getOwner(),-cost),this->lastSource);
+               card->getOwner()->changeMana(-cost);
                this->summonMinion(card, zoneid);
                success=1;
            }
@@ -441,14 +458,12 @@ void Duel::playFromHand(Card* card)
         else if (type==0)
         {
             if (this->activateSpell(card))
-            {this->toGraveyard(card);
-            success=1;}
+            {
+                this->toGraveyard(card);
+                success=1;
+            }
         }
-        if (success==0)
-        {
-            card->getOwner()->changeMana(+cost);
-        }
-        else if (success==1)
+        if (success==1)
         {
             short n_hand = card->getOriginalOwner()->getHandSize();
             Card** oldHand = card->getOriginalOwner()->getHand();
@@ -823,7 +838,7 @@ short Duel::getPlayerId(Player* player)
     if (&this->players[0] == player) {return 0;}
     else return 1;
 }
-std::string Duel::minionFromHandLog(Card* card)
+std::string Duel::cardFromHandLog(Card* card)
 {
     std::string card_name = std::string(card->getName());
     std::string playername = card->getOwner()->getName();
@@ -837,6 +852,15 @@ std::string Duel::manaChangeLog(Player* player, short value)
     std::string playername = std::string(player->getName());
     if (manaAfter<0) {manaAfter = 0;}
     std::string str = "["+ playername + "] mana:  " + std::to_string(manaBefore) + " -> " + std::to_string(manaAfter);
+    return str;
+}
+std::string Duel::lifeChangeLog(Player* player, short value)
+{
+    short lifeBefore = player->getHp();
+    short lifeAfter = player->getHp() + value;
+    std::string playername = std::string(player->getName());
+    if (lifeAfter<0) {lifeAfter = 0;}
+    std::string str = "["+ playername + "] life:  " + std::to_string(lifeBefore) + " -> " + std::to_string(lifeAfter);
     return str;
 }
 std::string Duel::drawCardLog(Player* player, short n)
@@ -856,7 +880,39 @@ std::string Duel::drawCardLog(Player* player, short n)
 std::string Duel::summonLog(Card* card)
 {
     std::string card_name = std::string(card->getName());
-    std::string playername = card->getOwner()->getName();
-    std::string str = "\"" + card_name +"\""+" was summoned";
+    std::string str = "[" + card_name +"]"+" was summoned";
     return str;
 }
+std::string Duel::returnToHandLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string playername = card->getOriginalOwner()->getName();
+    short type = card->getCardType();
+    std::string str;
+    if (type==2)
+    {
+        str = "[" + card_name +"]"+" was returned to ["+ playername +"]'s special deck";
+    }
+    else
+    {
+        str = "[" + card_name +"]"+" was returned to ["+ playername +"]'s hand";
+    }
+    return str;
+}
+std::string Duel::attackLog(Card* attacker, Card* defender)
+{
+    std::string attacker_name = std::string(attacker->getName());
+    std::string defender_name = std::string(defender->getName());
+    std::string atkStats = "("+std::to_string(attacker->getAttack()) + "/" + std::to_string(attacker->getDefence())+")";
+    std::string defStats = "("+std::to_string(defender->getAttack()) + "/" + std::to_string(defender->getDefence())+")";
+    std::string str = "[" + attacker_name +" "+atkStats+"] attacks " + "[" + defender_name +" "+defStats+"]";
+    return str;
+}
+std::string Duel::directAttackLog(Card* attacker)
+{
+    std::string attacker_name = std::string(attacker->getName());
+    std::string atkStats = "("+std::to_string(attacker->getAttack()) + "/" + std::to_string(attacker->getDefence())+")";
+    std::string str = "[" + attacker_name +" "+atkStats+"] attacks directly";
+    return str;
+}
+
