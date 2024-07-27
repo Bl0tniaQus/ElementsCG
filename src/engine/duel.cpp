@@ -137,6 +137,7 @@ void Duel::destruction(Card* card)
     if (barrier>0) {card->setBarrier(barrier-1);}
     else
     {
+        this->appendLog(this->destructionLog(card),this->lastSource);
         this->removeFromField(card);
         this->toGraveyard(card);
         this->onDestroy(card);
@@ -915,4 +916,12 @@ std::string Duel::directAttackLog(Card* attacker)
     std::string str = "[" + attacker_name +" "+atkStats+"] attacks directly";
     return str;
 }
+std::string Duel::destructionLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string playername = card->getOwner()->getName();
+    std::string str = "["+ card_name +"]" +" was destroyed";
+    return str;
+}
+
 

@@ -71,6 +71,8 @@ public:
     std::string manaChangeLog(Player* player, short value);
     std::string lifeChangeLog(Player* player, short value);
     std::string drawCardLog(Player* player, short n);
+    std::string barrierBreakLog(Card* card, short b);
+    std::string destructionLog(Card* card);
     std::string summonLog(Card* card);
     std::string returnToHandLog(Card* card);
     std::string attackLog(Card* attacker, Card* defender);
