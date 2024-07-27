@@ -71,6 +71,7 @@ void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
        this->ui->cardTextFrame->setStyleSheet("border: 5px dashed "+color+";");
        this->ui->cardTextTL->setText(TL);
        this->ui->cardTextBL->setText(BL);
+       this->ui->cardTextT->setText(QString::fromStdString(attribute));
        this->ui->cardTextTR->setText(TR);
        this->ui->cardTextBR->setText(BR);
     }
