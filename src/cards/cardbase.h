@@ -70,6 +70,7 @@ public:
     //common effect targets
     void minionsOnField(Duel* duel, Card* card);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);
+    void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
 
     bool checkSummoningConditions2(Duel* duel, Card* card);
     bool checkSummoningConditions3(Duel* duel, Card* card);

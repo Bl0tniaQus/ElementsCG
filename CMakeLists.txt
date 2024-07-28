@@ -40,6 +40,8 @@ set(PROJECT_SOURCES
         src/cards/happycumulus.cpp
         src/cards/sadnimbus.cpp
         src/cards/youngwyvern.cpp
+        src/cards/lightning.cpp
+        src/cards/dragonoidcall.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

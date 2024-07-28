@@ -45,6 +45,8 @@ public:
     bool activateSpell(Card* spell);
     void playFromHand(Card* card);
     void summonFromHand(Card* minion, short zoneid);
+    void summonFromGraveyard(Card* minion, short zoneid);
+    void removeFromGraveyard(Card* card);
     bool onSpell(Card* card);
     void onSummon(Card* card);
     void onTurnEnd(Card* card);
@@ -71,7 +73,7 @@ public:
     std::string manaChangeLog(Player* player, short value);
     std::string lifeChangeLog(Player* player, short value);
     std::string drawCardLog(Player* player, short n);
-    std::string barrierBreakLog(Card* card, short b);
+    std::string barrierChangeLog(Card* card, short b);
     std::string destructionLog(Card* card);
     std::string summonLog(Card* card);
     std::string returnToHandLog(Card* card);

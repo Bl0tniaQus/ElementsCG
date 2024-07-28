@@ -73,6 +73,8 @@ CardBase* Card::getCardNameById(int id)
         case 10: cardbase = new HappyCumulus;break;
         case 11: cardbase = new SadNimbus;break;
         case 12: cardbase = new YoungWyvern;break;
+        case 13: cardbase = new Lightning;break;
+        case 14: cardbase = new DragonoidCall;break;
     }
     return cardbase;
 }
@@ -82,4 +84,15 @@ Card::~Card()
     this->originalOwner = nullptr;
     this->zone = nullptr;
     delete this->cardName;
+}
+void Card::returnToOriginal()
+{
+this->attack = this->cardName->getAttack();
+this->defence = this->cardName->getAttack();
+this->level = this->cardName->getAttack();
+this->owner = this->originalOwner;
+this->barrier = 0;
+this->isNegated = false;
+this->isSpellImmune - false;
+this->cost = this->cardName->getCost();
 }

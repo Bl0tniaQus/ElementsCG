@@ -134,10 +134,13 @@ void Duel::checkWinner()
 void Duel::destruction(Card* card)
 {
     short barrier = card->getBarrier();
-    if (barrier>0) {card->setBarrier(barrier-1);}
+    if (barrier>0) {
+        this->appendLog(this->barrierChangeLog(card,-1),this->lastSource);
+        card->setBarrier(barrier-1);
+    }
     else
     {
-        this->appendLog(this->destructionLog(card),this->lastSource);
+        this->appendLog(this->destructionLog(card),this->getPlayerId(card->getOwner()));
         this->removeFromField(card);
         this->toGraveyard(card);
         this->onDestroy(card);
@@ -148,12 +151,10 @@ void Duel::toGraveyard(Card* card)
 {
     card->setPlace(3);
     Player* owner = card->getOriginalOwner();
-    card->setOwner(owner);
+    card->returnToOriginal();
     short n_graveyard = owner->getGraveyardSize();
     Card** oldGraveyard = owner->getGraveyard();
     Card** newGraveyard = new Card*[n_graveyard+1];
-
-
     if (n_graveyard==0) {newGraveyard[0] = card;}
     else{
     for (int i=0;i<n_graveyard;i++)
@@ -170,7 +171,7 @@ void Duel::toSpecialDeck(Card* card)
     card->setPlace(4);
     if (card->getZone()!=nullptr) {this->removeFromField(card);}
     Player* owner = card->getOriginalOwner();
-    card->setOwner(owner);
+    card->returnToOriginal();
     short n_special = owner->getSpecialDeckSize();
     Card** oldSpecial = owner->getSpecialDeck();
     Card** newSpecial = new Card*[n_special+1];
@@ -246,6 +247,7 @@ void Duel::toHand(Card* card)
     if (card->getCardType()==2) {this->toSpecialDeck(card);}
     else{
         card->setPlace(1);
+        card->returnToOriginal();
         if (card->getZone()!=nullptr) {this->removeFromField(card);}
         short n_hand = card->getOriginalOwner()->getHandSize();
         Card** oldHand = card->getOriginalOwner()->getHand();
@@ -259,7 +261,6 @@ void Duel::toHand(Card* card)
         newHand[n_hand] = card;
         }
         Player* owner = card->getOriginalOwner();
-        card->setOwner(owner);
         owner->setHand(newHand, n_hand+1);
         delete[] newHand;
     }
@@ -509,6 +510,31 @@ void Duel::summonFromHand(Card* minion, short zoneid)
         minion->getOriginalOwner()->setHand(newHand, n_hand-1);
         this->onSummon(minion);
         delete[] newHand;
+    }
+}
+void Duel::removeFromGraveyard(Card* card)
+{
+    short n_graveyard = card->getOriginalOwner()->getGraveyardSize();
+    Card** oldGraveyard = card->getOriginalOwner()->getGraveyard();
+    Card** newGraveyard = new Card*[n_graveyard-1];
+        short bias = 0;
+        for (int i=0;i<n_graveyard;i++)
+        {
+            if (oldGraveyard[i]==card) {bias = 1; continue;}
+            newGraveyard[i-bias] = oldGraveyard[i];
+        }
+        card->getOriginalOwner()->setHand(newGraveyard, n_graveyard-1);
+        delete[] newGraveyard;
+}
+void Duel::summonFromGraveyard(Card* minion, short zoneid)
+{
+    if ((minion->getCardType()>0)&&(minion->getPlace()==3))
+    {
+        minion->setPlace(2);
+        minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
+        minion->getOwner()->getMinionField()[zoneid].setUsed(true);
+        this->removeFromGraveyard(minion);
+        this->onSummon(minion);
     }
 }
 void Duel::passTurn()
@@ -852,7 +878,7 @@ std::string Duel::manaChangeLog(Player* player, short value)
     short manaAfter = player->getMana() + value;
     std::string playername = std::string(player->getName());
     if (manaAfter<0) {manaAfter = 0;}
-    std::string str = "["+ playername + "] mana:  " + std::to_string(manaBefore) + " -> " + std::to_string(manaAfter);
+    std::string str = "["+ playername + "]'s mana:  " + std::to_string(manaBefore) + " -> " + std::to_string(manaAfter);
     return str;
 }
 std::string Duel::lifeChangeLog(Player* player, short value)
@@ -861,7 +887,7 @@ std::string Duel::lifeChangeLog(Player* player, short value)
     short lifeAfter = player->getHp() + value;
     std::string playername = std::string(player->getName());
     if (lifeAfter<0) {lifeAfter = 0;}
-    std::string str = "["+ playername + "] life:  " + std::to_string(lifeBefore) + " -> " + std::to_string(lifeAfter);
+    std::string str = "["+ playername + "]'s life:  " + std::to_string(lifeBefore) + " -> " + std::to_string(lifeAfter);
     return str;
 }
 std::string Duel::drawCardLog(Player* player, short n)
@@ -923,5 +949,16 @@ std::string Duel::destructionLog(Card* card)
     std::string str = "["+ card_name +"]" +" was destroyed";
     return str;
 }
+std::string Duel::barrierChangeLog(Card* card, short b)
+{
+    std::string card_name = std::string(card->getName());
+    short barrier_before = card->getBarrier();
+    short barrier_new = barrier_before + b;
+    if (barrier_new<0) {barrier_new = 0;}
+    std::string str = "["+ card_name + "]'s barrier:  " + std::to_string(barrier_before) + " -> " + std::to_string(barrier_new);
+    return str;
+
+}
+
 
 

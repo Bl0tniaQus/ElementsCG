@@ -66,6 +66,7 @@ public:
     int getCopyId() {return this->copyId;}
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);
+    void returnToOriginal();
     CardBase* getCardName() {return this->cardName;}
     CardBase* getCardNameById(int id);
 };

@@ -244,7 +244,7 @@ void Bot::conductBattlePhase(Duel* duel)
             short atk = this->getBestAttacker();
             short target = this->getBestAttackTarget();
             float val = this->getBestAttackValue();
-            if (val<0) {break;}
+            if (val<=0) {break;}
             duel->generateAttackersList();
             duel->generateDefendersList();
             Card* attacker = duel->getAttackersList()->getTargetList()[atk];

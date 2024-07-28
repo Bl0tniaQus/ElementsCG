@@ -16,12 +16,19 @@ void BrassBeetle::getSecondMaterialList(Duel* duel, Card* card)
 }
 void BrassBeetle::onSummon(Duel* duel, Card* card)
 {
+    this->firstEffectLog(duel, card);
+    duel->appendLog(duel->barrierChangeLog(card, 1), duel->getLastSource());
     card->setBarrier(1);
 }
 void BrassBeetle::onTurnStart(Duel * duel, Card * card)
 {
     card->setAttacks(1);
-    if (card->getBarrier()==0) {card->setBarrier(1);}
+    if (card->getBarrier()==0) {
+        this->secondEffectLog(duel, card);
+        duel->appendLog(duel->barrierChangeLog(card, 1), duel->getLastSource());
+        card->setBarrier(1);
+
+    }
 }
 
 

@@ -13,5 +13,7 @@
 #include "happycumulus.h" //10
 #include "sadnimbus.h" //11
 #include "youngwyvern.h" //12
+#include "lightning.h" //13
+#include "dragonoidcall.h" //14
 
 #endif // ALLCARDS_H

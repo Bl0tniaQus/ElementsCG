@@ -153,6 +153,34 @@ void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
     }
     this->setTargetList(targets,n_targets);
 }
+void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
+{
+    short handSize = card->getOwner()->getHandSize();
+    short n_targets = 0;
+    Card** targets = new Card* [n_targets];
+    for (int i=0;i<handSize;i++)
+        {
+            Card *target = card->getOwner()->getHand()[i];
+            if ((target!=nullptr)&&(strstr(target->getName(),namePart)!=nullptr)&&(card!=target))
+            {
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = target;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=target; targets = newtargets;}
+            }
+
+    }
+    this->setTargetList(targets,n_targets);
+}
+
 bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 {
         bool result = true;
