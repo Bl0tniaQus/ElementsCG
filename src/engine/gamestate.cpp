@@ -23,6 +23,7 @@ Gamestate::Gamestate(Duel* duel):Duel()
         player_new->setHp(player->getHp());
         player_new->setMana(player->getMana());
         player_new->setName(player->getName());
+        player_new->setSummonLimit(player->getSummonLimit());
         if (player->getBot()!=nullptr) {player_new->setBot(player->getBot());}
         //player_new->setOpponent(this->getPlayer(!i));
 

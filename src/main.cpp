@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
     //duel.DuelControl(&deck,&deck2);
     w.show();
     return a.exec();
-    // duel logs (barrier, destruction)
-    // bot special minion analysis and summons
+    // bot special minion analysis and summons + other tweaks
     // victory check
+    // new cards
 
 }

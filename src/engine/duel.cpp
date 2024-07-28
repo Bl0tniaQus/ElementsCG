@@ -203,6 +203,10 @@ short Duel::getEmptyMinionZone(Player* player)
     }
     return -1;
 }
+bool Duel::canSummon(Player* player)
+{
+    return (this->getEmptyMinionZone(player)!=-1 && player->getSummonLimit()>0);
+}
 void Duel::summonMinion(Card *minion, short zoneid)
 {
     if ((minion->getCardType()>0)&&(minion->getPlace()!=2)&&zoneid!=-1)

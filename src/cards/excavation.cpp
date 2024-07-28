@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool Excavation::onSpell(Duel* duel, Card* card)
 {
-
+    return false;
 }
 void Excavation::getOnSpellTargetList(Duel* duel, Card* card)
 {

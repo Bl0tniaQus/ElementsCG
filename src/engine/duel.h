@@ -59,6 +59,7 @@ public:
     void DuelControl(Deck *deck0, Deck* deck1);
     void generateAttackersList();
     void generateDefendersList();
+    bool canSummon(Player* player);
 
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
