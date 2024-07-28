@@ -15,5 +15,10 @@
 #include "youngwyvern.h" //12
 #include "lightning.h" //13
 #include "dragonoidcall.h" //14
+#include "extraction.h" //15
+#include "excavation.h" //16
+#include "aluminiumserpent.h" //17
+#include "lithiumlizard.h" //18
+
 
 #endif // ALLCARDS_H

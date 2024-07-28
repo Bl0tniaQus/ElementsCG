@@ -42,6 +42,10 @@ set(PROJECT_SOURCES
         src/cards/youngwyvern.cpp
         src/cards/lightning.cpp
         src/cards/dragonoidcall.cpp
+        src/cards/extraction.cpp
+        src/cards/excavation.cpp
+        src/cards/aluminiumerpent.cpp
+        src/cards/lithiumlizard.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
