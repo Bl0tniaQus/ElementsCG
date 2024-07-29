@@ -46,6 +46,13 @@ set(PROJECT_SOURCES
         src/cards/excavation.cpp
         src/cards/aluminiumerpent.cpp
         src/cards/lithiumlizard.cpp
+        src/cards/dragonoidstormchaser.cpp
+        src/cards/steelcentipede.cpp
+        src/cards/ambertreant.cpp
+        src/cards/topazmantis.cpp
+        src/cards/angrycumulonimbus.cpp
+        src/cards/breeze.cpp
+        src/cards/wyvernhatchling.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

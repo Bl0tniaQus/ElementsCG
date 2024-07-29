@@ -19,6 +19,12 @@
 #include "excavation.h" //16
 #include "aluminiumserpent.h" //17
 #include "lithiumlizard.h" //18
-
+#include "dragonoidstormchaser.h" //19
+#include "ambertreant.h" //20
+#include "steelcentipede.h" //21
+#include "topazmantis.h" //22
+#include "angrycumulonimbus.h" //23
+#include "breeze.h" //24
+#include "wyvernhatchling.h" //25
 
 #endif // ALLCARDS_H

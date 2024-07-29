@@ -79,6 +79,13 @@ CardBase* Card::getCardNameById(int id)
         case 16: cardbase = new Excavation; break;
         case 17: cardbase = new AluminiumSerpent; break;
         case 18: cardbase = new LithiumLizard; break;
+        case 19: cardbase = new DragonoidStormChaser; break;
+        case 20: cardbase = new AmberTreant; break;
+        case 21: cardbase = new SteelCentipede; break;
+        case 22: cardbase = new TopazMantis; break;
+        case 23: cardbase = new AngryCumulonimbus; break;
+        case 24: cardbase = new Breeze; break;
+        case 25: cardbase = new WyvernHatchling; break;
     }
     return cardbase;
 }
