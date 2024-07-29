@@ -8,7 +8,7 @@ bool TopazMantis::specialSummon(Duel* duel, Card* card)
 }
 void TopazMantis::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    this->getMinionsWithExactName(duel,card,"Topaz Amber Fossil");
 }
 void TopazMantis::getSecondMaterialList(Duel* duel, Card* card)
 {
@@ -16,19 +16,33 @@ void TopazMantis::getSecondMaterialList(Duel* duel, Card* card)
 }
 void TopazMantis::onSummon(Duel* duel, Card* card)
 {
-    this->firstEffectLog(duel, card);
-    duel->appendLog(duel->barrierChangeLog(card, 1), duel->getLastSource());
-    card->setBarrier(1);
+    card->setAttacks(2);
 }
 void TopazMantis::onTurnStart(Duel * duel, Card * card)
 {
-    card->setAttacks(1);
-    if (card->getBarrier()==0) {
-        this->secondEffectLog(duel, card);
-        duel->appendLog(duel->barrierChangeLog(card, 1), duel->getLastSource());
-        card->setBarrier(1);
-
-    }
+    card->setAttacks(2);
 }
+void TopazMantis::onDestroy(Duel* duel, Card* card)
+{
+        this->secondEffectLog(duel, card);
+        Zone* field = card->getOwner()->getMinionField();
+        for (short i = 0;i < 5;i++)
+        {
+            Card* c = field[i].getCard();
+            if (c!=nullptr)
+            {
+                if ((c!=card)&&(strcmp("Earth", c->getElement())==0))
+                {
+                    duel->changeStats(c,1,1);
+                }
+            }
+        }
+        if (card->getOwner()->getDeckSize()>0)
+        {
+            duel->appendLog(duel->drawCardLog(card->getOwner(),1),duel->getLastSource());
+            duel->drawCard(card->getOwner());
+        }
+}
+
 
 

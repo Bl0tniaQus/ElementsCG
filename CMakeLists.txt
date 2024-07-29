@@ -53,6 +53,9 @@ set(PROJECT_SOURCES
         src/cards/angrycumulonimbus.cpp
         src/cards/breeze.cpp
         src/cards/wyvernhatchling.cpp
+        src/cards/shieldbash.cpp
+        src/cards/magnetize.cpp
+        src/cards/topazamberfossil.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

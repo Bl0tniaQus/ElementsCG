@@ -60,6 +60,7 @@ public:
     void generateAttackersList();
     void generateDefendersList();
     bool canSummon(Player* player);
+    void changeStats(Card* card, short a, short d);
 
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
@@ -80,6 +81,7 @@ public:
     std::string returnToHandLog(Card* card);
     std::string attackLog(Card* attacker, Card* defender);
     std::string directAttackLog(Card* attacker);
+    std::string statChangeLog(Card* card, short a_new, short d_new);
     void turnEndLog();
     unsigned char getLastSource() {return this->lastSource;}
     void setLastSource(unsigned char s) {this->lastSource = s;}

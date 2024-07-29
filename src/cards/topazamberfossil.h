@@ -1,20 +1,20 @@
-#ifndef COPPERWORM_H
-#define COPPERWORM_H
+#ifndef TOPAZAMBERFOSSIL_H
+#define TOPAZAMBERFOSSIL_H
 #include "cardbase.h"
-class CopperWorm : public CardBase
+class TopazAmberFossil : public CardBase
 {
 public:
-    CopperWorm():CardBase(
-        1, //card id
-        1, //cost
+    TopazAmberFossil():CardBase(
+        28, //card id
+        2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         1, //level
         0, //attack
-        8, //defence
+        1, //defence
         "Earth", //element
-        "Copper Worm", //name
-        "copperworm",
-        "When this card is summoned: summon 1 \"Copper Worm\" from your hand."
+        "Topaz Amber Fossil", //name
+        "topazamberfossil",
+        ""
     ) {};
     void onSummon(Duel* duel, Card* card) override;
     void getOnSummonTargetList(Duel* duel, Card* card) override;

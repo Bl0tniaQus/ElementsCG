@@ -82,6 +82,7 @@ public:
     virtual void getThirdMaterialList(Duel* duel, Card* card) {};
     void getMinionsWithSameElement(Duel* duel, Card* card, const char* element);
     void getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
+    void getMinionsWithExactName(Duel* duel, Card* card, const char* name);
 
 
 };

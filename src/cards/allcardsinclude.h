@@ -26,5 +26,8 @@
 #include "angrycumulonimbus.h" //23
 #include "breeze.h" //24
 #include "wyvernhatchling.h" //25
+#include "shieldbash.h" //26
+#include "magnetize.h" //27
+#include "topazamberfossil.h" //28
 
 #endif // ALLCARDS_H

@@ -320,7 +320,13 @@ void Duel::onSummon(Card* card)
         card->getCardName()->onSummon(this, card);
     }
 }
-void Duel::onDestroy(Card* card){}
+void Duel::onDestroy(Card* card)
+{
+    if (card->getCardType()!=0)
+    {
+        card->getCardName()->onDestroy(this, card);
+    }
+}
 void Duel::onTurnEnd(Card* card)
 {
     card->getCardName()->onTurnEnd(this, card);
@@ -540,6 +546,18 @@ void Duel::summonFromGraveyard(Card* minion, short zoneid)
         this->removeFromGraveyard(minion);
         this->onSummon(minion);
     }
+}
+void Duel::changeStats(Card* card, short a, short d)
+{
+    short atk = card->getAttack();
+    short def = card->getDefence();
+    short atk_new = atk + a;
+    short def_new = def + d;
+    if (atk_new<0) {atk_new = 0;}
+    if (def_new<0) {def_new = 0;}
+    this->appendLog(this->statChangeLog(card,atk_new,def_new), this->getPlayerId(card->getOwner()));
+    card->setAttack(atk_new);
+    card->setDefence(def_new);
 }
 void Duel::passTurn()
 {
@@ -961,8 +979,18 @@ std::string Duel::barrierChangeLog(Card* card, short b)
     if (barrier_new<0) {barrier_new = 0;}
     std::string str = "["+ card_name + "]'s barrier:  " + std::to_string(barrier_before) + " -> " + std::to_string(barrier_new);
     return str;
-
 }
+std::string Duel::statChangeLog(Card* card, short a_new, short d_new)
+{
+    short a = card->getAttack();
+    short d = card->getDefence();
+    std::string card_name = std::string(card->getName());
+    std::string stats = "("+std::to_string(a)+"/"+std::to_string(a)+")";
+    std::string stats_new = "("+std::to_string(a_new)+"/"+std::to_string(a_new)+")";
+    std::string str ="["+ card_name + "]'s stats:  " + stats + " -> " + stats_new;
+    return str;
+}
+
 
 
 

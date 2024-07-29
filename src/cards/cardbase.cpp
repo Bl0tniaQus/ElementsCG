@@ -339,6 +339,41 @@ void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, 
     this->setTargetList(targets,n_targets);
 }
 }
+void CardBase::getMinionsWithExactName(Duel* duel, Card* card, const char* name)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Player* owner = card->getOriginalOwner();
+    Zone* zone;
+    Card* cardd;
+        for (int i=0;i<5;i++)
+        {
+            zone = &owner->getMinionField()[i];
+            cardd = zone->getCard();
+
+            if (cardd!=nullptr)
+            {
+                if (strcmp(name, cardd->getName())==0)
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
+                }
+            }
+        }
+
+    this->setTargetList(targets,n_targets);
+}
 void CardBase::spellCost(Card* card)
 {
     card->getOwner()->changeMana(-card->getCost());
