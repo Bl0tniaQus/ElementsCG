@@ -10,7 +10,7 @@ public:
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         1, //level
         0, //attack
-        8, //defence
+        0, //defence
         "Earth", //element
         "Copper Worm", //name
         "copperworm",

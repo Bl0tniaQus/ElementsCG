@@ -277,17 +277,20 @@ void Bot::testHand(Duel* duel)
 void Bot::playTurn(Duel* duel)
 {
             int option;
+            short n_hand;
             while (true)
             {
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
-                short n_hand = player->getHandSize();
                 this->testHand(duel);
                 this->getBestOption();
+                n_hand = player->getHandSize();
                 option = this->getBestCard();
-                if (this->getOptionsNumber()==0) {break;}
+                if (this->getOptionsNumber()==0) { this->endHandTesting(); break;}
                 float val = this->getBestHandValue();
-                if (val<=0) {break;}
+                if (val<=0) {this->endHandTesting(); break;}
                 if (option>=0&&option<n_hand) {
+                    this->testing = false;
+                    this->testingTargets = false;
                     duel->playFromHand(player->getHand()[option]);
                 }
 
