@@ -5,10 +5,27 @@
 #include "../engine/bot.h"
 bool ShieldBash::onSpell(Duel* duel, Card* card)
 {
-    return false;
+    this->getOnSpellTargetList(duel, card);
+    Card** targets = this->getTargetList()->getTargetList();
+    short target = singleChoice(duel,card);
+    if (target==-1) {return false;}
+    else
+    {
+        this->spellCostLog(duel, card);
+        this->spellCost(card);
+        Card* targetCard = targets[target];
+        if (!targetCard->getIsSpellImmune())
+        {
+        short dmg = targetCard->getDefence();
+        duel->appendLog(duel->lifeChangeLog(targetCard->getOwner(),-dmg),duel->getLastSource());
+        card->getOwner()->getOpponent()->changeHp(-dmg);
+        this->setTargetList(nullptr,0);
+        }
+        return true;
+    }
 }
 void ShieldBash::getOnSpellTargetList(Duel* duel, Card* card)
 {
-
+    this->minionsOnYourFieldWithAttribute(duel, card,"Earth");
 }
 

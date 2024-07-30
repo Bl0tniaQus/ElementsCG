@@ -69,6 +69,7 @@ public:
     short singleChoice(Duel* duel, Card* card);
     //common effect targets
     void minionsOnField(Duel* duel, Card* card);
+    void minionsOnYourFieldWithAttribute(Duel* duel, Card* card, const char* element);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);
     void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
 

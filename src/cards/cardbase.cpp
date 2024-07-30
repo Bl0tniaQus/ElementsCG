@@ -125,6 +125,36 @@ void CardBase::minionsOnField(Duel* duel, Card* card)
         }
         this->setTargetList(targets,n_targets);
 }
+void CardBase::minionsOnYourFieldWithAttribute(Duel* duel, Card* card, const char* element)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Zone* zone;
+    Player* player;
+        player = duel->getPlayer(duel->getTurnPlayer());
+        for (int i=0;i<5;i++)
+        {
+            zone = &player->getMinionField()[i];
+            Card *cardd = zone->getCard();
+            if ((cardd!=nullptr)&&(strcmp(element, cardd->getElement())))
+            {
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
+
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = cardd;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=cardd; targets = newtargets;}
+            }
+        }
+        this->setTargetList(targets,n_targets);
+}
 
 void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
 {
