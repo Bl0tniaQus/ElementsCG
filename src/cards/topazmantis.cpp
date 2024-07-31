@@ -25,17 +25,11 @@ void TopazMantis::onTurnStart(Duel * duel, Card * card)
 void TopazMantis::onDestroy(Duel* duel, Card* card)
 {
         this->secondEffectLog(duel, card);
-        Zone* field = card->getOwner()->getMinionField();
-        for (short i = 0;i < 5;i++)
+        short nt = this->getTargetList()->getTargetsNumber();
+        Card** cards = this->getTargetList()->getTargetList();
+        for (short i=0;i<nt;i++)
         {
-            Card* c = field[i].getCard();
-            if (c!=nullptr)
-            {
-                if ((c!=card)&&(strcmp("Earth", c->getElement())==0))
-                {
-                    duel->changeStats(c,1,1);
-                }
-            }
+            duel->changeStats(cards[i],2,2);
         }
         if (card->getOwner()->getDeckSize()>0)
         {
@@ -43,6 +37,11 @@ void TopazMantis::onDestroy(Duel* duel, Card* card)
             duel->drawCard(card->getOwner());
         }
 }
+void TopazMantis::getOnDestroyTargetList(Duel* duel, Card* card)
+{
+    this->minionsOnYourFieldWithAttribute(duel,card,"Earth");
+}
+
 
 
 

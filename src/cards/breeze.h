@@ -14,9 +14,10 @@ public:
         "Air", //element
         "Breeze", //name
         "breeze",
-        ""
+        "Your air minions gain +1/+1. Gain 1 mana for every air minion you control."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
+    void getOnSpellTargetList(Duel * duel, Card * card) override;
 
 };
 
