@@ -72,5 +72,6 @@ public:
     void endHandTesting();
     void endBattleTesting();
     void playTurn(Duel* duel);
+    //entity ids instead of array indices, test two card combos instead of single cards, do nothing if second card failed to find it's target
 };
 #endif // BOT_H
