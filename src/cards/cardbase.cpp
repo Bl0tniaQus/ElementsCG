@@ -71,7 +71,7 @@ short CardBase::singleChoice(Duel* duel, Card* card)
     }
     return -1;
 }
-void CardBase::minionsOnField(Duel* duel, Card* card)
+void CardBase::allMinionsOnField(Duel* duel, Card* card)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
@@ -125,32 +125,35 @@ void CardBase::minionsOnField(Duel* duel, Card* card)
         }
         this->setTargetList(targets,n_targets);
 }
-void CardBase::minionsOnYourFieldWithAttribute(Duel* duel, Card* card, const char* element)
+void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Zone* zone;
     Player* player;
-        player = duel->getPlayer(duel->getTurnPlayer());
+        player = card->getOwner();
         for (int i=0;i<5;i++)
         {
             zone = &player->getMinionField()[i];
             Card *cardd = zone->getCard();
-            if ((cardd!=nullptr)&&(strcmp(element, cardd->getElement())))
+            if (cardd!=nullptr)
             {
-            n_targets++;
-            Card **newtargets = new Card* [n_targets];
-            if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
+                if (strcmp(element, cardd->getElement())==0)
                 {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets;j++)
+                        {
 
-                    newtargets[j] = targets[j];
+                            newtargets[j] = targets[j];
 
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
                 }
-                newtargets[n_targets-1] = cardd;
-                delete [] targets;
-                targets = newtargets;
-            } else {newtargets[0]=cardd; targets = newtargets;}
             }
         }
         this->setTargetList(targets,n_targets);
@@ -210,7 +213,38 @@ void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char*
     }
     this->setTargetList(targets,n_targets);
 }
+void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
+{
+    short n_targets = 0;
+    Card** targets = new Card* [n_targets];
+    Player* player = card->getOwner();
+    Zone* zone;
+    for (int i=0;i<5;i++)
+        {
+            zone = &player->getMinionField()[i];
+            Card *cardd = zone->getCard();
+            if (cardd!=nullptr)
+            {
+                if (strstr(cardd->getName(),namePart)!=nullptr)
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets;j++)
+                        {
 
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
+                }
+            }
+        }
+    this->setTargetList(targets,n_targets);
+}
 bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 {
         bool result = true;
@@ -301,42 +335,8 @@ bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
 {
     return true;
 }
-void CardBase::getMinionsWithSameElement(Duel* duel, Card* card, const char* element)
-{
-    short n_targets=0;
-    Card** targets = new Card* [n_targets];
-    Player* owner = card->getOriginalOwner();
-    Zone* zone;
-    Card* cardd;
-        for (int i=0;i<5;i++)
-        {
-            zone = &owner->getMinionField()[i];
-            cardd = zone->getCard();
 
-            if (cardd!=nullptr)
-            {
-                if (strcmp(element, cardd->getElement())==0)
-                {
-                    n_targets++;
-                    Card **newtargets = new Card* [n_targets];
-                    if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
-                        {
-
-                            newtargets[j] = targets[j];
-
-                        }
-                        newtargets[n_targets-1] = cardd;
-                        delete [] targets;
-                        targets = newtargets;
-                    } else {newtargets[0]=cardd; targets = newtargets;}
-                }
-            }
-        }
-
-    this->setTargetList(targets,n_targets);
-}
-void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
+void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
     {
     short n_targets=0;
@@ -369,7 +369,7 @@ void CardBase::getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, 
     this->setTargetList(targets,n_targets);
 }
 }
-void CardBase::getMinionsWithExactName(Duel* duel, Card* card, const char* name)
+void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name)
 {
     short n_targets=0;
     Card** targets = new Card* [n_targets];

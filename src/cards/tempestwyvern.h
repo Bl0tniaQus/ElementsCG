@@ -6,10 +6,10 @@ class TempestWyvern : public CardBase
 public:
     TempestWyvern():CardBase(
         9, //card id
-        7, //cost
+        8, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
-        7, //level
-        6, //attack
+        8, //level
+        8, //attack
         4, //defence
         "Air", //element
         "Tempest Wyvern", //name

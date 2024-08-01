@@ -8,11 +8,11 @@ bool SteelCentipede::specialSummon(Duel* duel, Card* card)
 }
 void SteelCentipede::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    //this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 void SteelCentipede::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    //this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 void SteelCentipede::onSummon(Duel* duel, Card* card)
 {

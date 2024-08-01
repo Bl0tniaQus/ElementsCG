@@ -8,11 +8,11 @@ bool AmberTreant::specialSummon(Duel* duel, Card* card)
 }
 void AmberTreant::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    //this->getMinionsWithSameElement(duel,card,"Earth");
 }
 void AmberTreant::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+   // this->getMinionsWithSameElement(duel,card,"Earth");
 }
 void AmberTreant::onSummon(Duel* duel, Card* card)
 {

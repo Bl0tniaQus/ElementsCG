@@ -8,11 +8,11 @@ bool TopazMantis::specialSummon(Duel* duel, Card* card)
 }
 void TopazMantis::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithExactName(duel,card,"Topaz Amber Fossil");
+    this->minionsOnYourFieldWithExactName(duel,card,"Topaz Amber Fossil");
 }
 void TopazMantis::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 void TopazMantis::onSummon(Duel* duel, Card* card)
 {
@@ -39,7 +39,7 @@ void TopazMantis::onDestroy(Duel* duel, Card* card)
 }
 void TopazMantis::getOnDestroyTargetList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithAttribute(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 
 

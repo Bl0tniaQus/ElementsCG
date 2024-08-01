@@ -26,6 +26,6 @@ bool ShieldBash::onSpell(Duel* duel, Card* card)
 }
 void ShieldBash::getOnSpellTargetList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithAttribute(duel, card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel, card,"Earth");
 }
 

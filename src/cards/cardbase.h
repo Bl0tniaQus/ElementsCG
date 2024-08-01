@@ -68,10 +68,14 @@ public:
 
     short singleChoice(Duel* duel, Card* card);
     //common effect targets
-    void minionsOnField(Duel* duel, Card* card);
-    void minionsOnYourFieldWithAttribute(Duel* duel, Card* card, const char* element);
+    void allMinionsOnField(Duel* duel, Card* card);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);
     void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
+    void minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
+    void minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element);
+    void minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
+    void minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name);
+
 
     bool checkSummoningConditions2(Duel* duel, Card* card);
     bool checkSummoningConditions3(Duel* duel, Card* card);
@@ -81,9 +85,7 @@ public:
     virtual void getFirstMaterialList(Duel* duel, Card* card) {};
     virtual void getSecondMaterialList(Duel* duel, Card* card) {};
     virtual void getThirdMaterialList(Duel* duel, Card* card) {};
-    void getMinionsWithSameElement(Duel* duel, Card* card, const char* element);
-    void getMinionsWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
-    void getMinionsWithExactName(Duel* duel, Card* card, const char* name);
+
 
 
 };

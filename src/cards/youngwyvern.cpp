@@ -8,11 +8,11 @@ bool YoungWyvern::specialSummon(Duel* duel, Card* card)
 }
 void YoungWyvern::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Air");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Air");
 }
 void YoungWyvern::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Air");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Air");
 }
 
 

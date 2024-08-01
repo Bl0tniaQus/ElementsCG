@@ -25,6 +25,6 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
 }
 void Whirlwind::getOnSpellTargetList(Duel* duel, Card* card)
 {
-    this->minionsOnField(duel, card);
+    this->allMinionsOnField(duel, card);
 }
 

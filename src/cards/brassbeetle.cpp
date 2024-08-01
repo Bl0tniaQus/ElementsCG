@@ -8,11 +8,11 @@ bool BrassBeetle::specialSummon(Duel* duel, Card* card)
 }
 void BrassBeetle::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 void BrassBeetle::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->getMinionsWithSameElement(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 void BrassBeetle::onSummon(Duel* duel, Card* card)
 {
