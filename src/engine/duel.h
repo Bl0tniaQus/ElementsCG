@@ -61,7 +61,7 @@ public:
     void generateDefendersList();
     bool canSummon(Player* player);
     void changeStats(Card* card, short a, short d);
-
+    void changeLevel(Card* card, short l);
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
@@ -82,6 +82,7 @@ public:
     std::string attackLog(Card* attacker, Card* defender);
     std::string directAttackLog(Card* attacker);
     std::string statChangeLog(Card* card, short a_new, short d_new);
+    std::string levelChangeLog(Card* card, short l);
     void turnEndLog();
     unsigned char getLastSource() {return this->lastSource;}
     void setLastSource(unsigned char s) {this->lastSource = s;}

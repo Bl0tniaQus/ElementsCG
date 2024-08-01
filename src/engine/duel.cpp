@@ -559,6 +559,12 @@ void Duel::changeStats(Card* card, short a, short d)
     card->setAttack(atk_new);
     card->setDefence(def_new);
 }
+void Duel::changeLevel(Card* card, short l)
+{
+    this->appendLog(this->levelChangeLog(card,l), this->getPlayerId(card->getOwner()));
+    card->setLevel(l);
+}
+
 void Duel::passTurn()
 {
     Player* turnPlayer = this->getPlayer(this->getTurnPlayer());
@@ -990,6 +996,16 @@ std::string Duel::statChangeLog(Card* card, short a_new, short d_new)
     std::string str ="["+ card_name + "]'s stats:  " + stats + " -> " + stats_new;
     return str;
 }
+std::string Duel::levelChangeLog(Card* card, short l)
+{
+    std::string card_name = std::string(card->getName());
+    short level_before = card->getLevel();
+    short level_new = l;
+    if (level_new<0) {level_new = 1;}
+    std::string str = "["+ card_name + "]'s level:  " + std::to_string(level_before) + " -> " + std::to_string(level_new);
+    return str;
+}
+
 
 
 

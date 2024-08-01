@@ -4,7 +4,7 @@
 void HappyCumulus::onSummon(Duel* duel, Card* card)
 {
     short mana = card->getOwner()->getMana();
-    if (mana>=15)
+    if (mana>=12)
     {
         this->effectLog(duel, card);
         card->getOwner()->setSummonLimit(card->getOwner()->getSummonLimit()+1);
