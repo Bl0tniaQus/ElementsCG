@@ -8,27 +8,39 @@ bool AmberTreant::specialSummon(Duel* duel, Card* card)
 }
 void AmberTreant::getFirstMaterialList(Duel* duel, Card* card)
 {
-    //this->getMinionsWithSameElement(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card,"Earth",3);
 }
 void AmberTreant::getSecondMaterialList(Duel* duel, Card* card)
 {
-   // this->getMinionsWithSameElement(duel,card,"Earth");
+   this->minionsOnYourFieldWithSameElementAndMaximumLevel(duel,card,"Earth",3);
 }
 void AmberTreant::onSummon(Duel* duel, Card* card)
 {
-    this->firstEffectLog(duel, card);
-    duel->appendLog(duel->barrierChangeLog(card, 1), duel->getLastSource());
-    card->setBarrier(1);
-}
-void AmberTreant::onTurnStart(Duel * duel, Card * card)
-{
-    card->setAttacks(1);
-    if (card->getBarrier()==0) {
-        this->secondEffectLog(duel, card);
-        duel->appendLog(duel->barrierChangeLog(card, 1), duel->getLastSource());
-        card->setBarrier(1);
+    this->getOnSummonTargetList(duel, card);
+    Card** targets = this->getTargetList()->getTargetList();
+    short nt = this->getTargetList()->getTargetsNumber();
+    if (nt>0)
+    {
+        Card* t = targets[nt-1];
+        this->firstEffectLog(duel, card);
+        duel->appendLog(duel->addToHandLog(card), duel->getPlayerId(card->getOwner()));
+        duel->searchCard(t);
+    }
 
+}
+void AmberTreant::onTurnEnd(Duel* duel, Card* card)
+{
+    if (duel->getPlayer(duel->getTurnPlayer())==card->getOwner())
+    {
+        this->secondEffectLog(duel, card);
+        duel->changeStats(card,1,1);
     }
 }
+void AmberTreant::getOnSummonTargetList(Duel* duel, Card* card)
+{
+    this->cardsInDeckWithCommonNamePart(duel,card,"Amber Fossil");
+}
+
+
 
 

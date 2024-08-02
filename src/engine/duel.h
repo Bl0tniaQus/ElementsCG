@@ -18,7 +18,6 @@ private:
     short* logsSource;
     std::string* logs;
     int n_logs;
-    unsigned char lastSource;
 public:
     Duel();
     virtual ~Duel();
@@ -35,6 +34,7 @@ public:
     void directAttack(Card* attacker);
     void destruction(Card* card);
     void toHand(Card* card);
+    void searchCard(Card* card);
     void toSpecialDeck(Card* card);
     void toGraveyard(Card* card);
     void removeFromField(Card* card);
@@ -47,6 +47,7 @@ public:
     void summonFromHand(Card* minion, short zoneid);
     void summonFromGraveyard(Card* minion, short zoneid);
     void removeFromGraveyard(Card* card);
+    void removeFromDeck(Card* card);
     bool onSpell(Card* card);
     void onSummon(Card* card);
     void onTurnEnd(Card* card);
@@ -79,14 +80,12 @@ public:
     std::string destructionLog(Card* card);
     std::string summonLog(Card* card);
     std::string returnToHandLog(Card* card);
+    std::string addToHandLog(Card* card);
     std::string attackLog(Card* attacker, Card* defender);
     std::string directAttackLog(Card* attacker);
     std::string statChangeLog(Card* card, short a_new, short d_new);
     std::string levelChangeLog(Card* card, short l);
     void turnEndLog();
-    unsigned char getLastSource() {return this->lastSource;}
-    void setLastSource(unsigned char s) {this->lastSource = s;}
-
 
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}

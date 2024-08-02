@@ -15,7 +15,6 @@ Duel::Duel()
     this->logsSource = new short [0];
     this->logs = new std::string [0];
     this->n_logs = 0;
-    this->lastSource = 2;
 }
 Duel::~Duel()
 {
@@ -77,8 +76,7 @@ void Duel::drawField(char p)
 }
 void Duel::combat(Card* attacker, Card* defender)
 {
-    this->lastSource = this->turnPlayer;
-    this->appendLog(this->attackLog(attacker,defender),this->lastSource);
+    this->appendLog(this->attackLog(attacker,defender),this->turnPlayer);
     defender->getCardName()->onDefence(this,defender,attacker);
     attacker->getCardName()->onAttack(this,attacker,defender);
     short atk = attacker->getAttack();
@@ -96,31 +94,28 @@ void Duel::combat(Card* attacker, Card* defender)
     }
 
     if (atk>def){
-        this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),this->lastSource);
+        this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),!this->turnPlayer);
         this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
     }
     if (def>atk){
-        this->appendLog(this->lifeChangeLog(&this->players[this->turnPlayer],-damage),this->lastSource);
+        this->appendLog(this->lifeChangeLog(&this->players[this->turnPlayer],-damage),this->turnPlayer);
         this->players[this->turnPlayer].changeHp(-damage);
 
     }
     attacker->setAttacks(attacker->getAttacks()-1);
     checkWinner();
     attacker->getCardName()->afterAttack(this,attacker,defender,damage);
-    this->lastSource = 2;
 }
 void Duel::directAttack(Card* attacker)
 {
-    this->lastSource = this->turnPlayer;
-    this->appendLog(this->directAttackLog(attacker),this->lastSource);
+    this->appendLog(this->directAttackLog(attacker),this->turnPlayer);
     attacker->getCardName()->onAttack(this,attacker,nullptr);
     short damage = attacker->getAttack();
     if (damage>0)
-    {this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),this->lastSource);
+    {this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),!this->turnPlayer);
     this->players[this->turnPlayer].getOpponent()->changeHp(-damage);}
     attacker->setAttacks(attacker->getAttacks()-1);
     attacker->getCardName()->afterAttack(this,attacker,nullptr,damage);
-    this->lastSource = 2;
     checkWinner();
 }
 void Duel::checkWinner()
@@ -135,7 +130,7 @@ void Duel::destruction(Card* card)
 {
     short barrier = card->getBarrier();
     if (barrier>0) {
-        this->appendLog(this->barrierChangeLog(card,-1),this->lastSource);
+        this->appendLog(this->barrierChangeLog(card,-1),this->getPlayerId(card->getOwner()));
         card->setBarrier(barrier-1);
     }
     else
@@ -218,7 +213,6 @@ void Duel::summonMinion(Card *minion, short zoneid)
 }
 void Duel::summonSpecialMinion(Card *minion)
 {
-        this->lastSource = this->turnPlayer;
         if (minion->getCardName()->specialSummon(this,minion))
         {
             this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
@@ -234,8 +228,7 @@ void Duel::summonSpecialMinion(Card *minion)
             minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
             delete[] newSpecial;
             this->onSummon(minion);
-            }
-            this->lastSource = 2;
+        }
 
 }
 bool Duel::activateSpell(Card *spell)
@@ -269,6 +262,12 @@ void Duel::toHand(Card* card)
         delete[] newHand;
     }
 
+}
+void Duel::searchCard(Card* card)
+{
+    this->toHand(card);
+    this->removeFromDeck(card);
+    this->appendLog(addToHandLog(card), this->getPlayerId(card->getOriginalOwner()));
 }
 void Duel::drawCard(Player* player)
 {
@@ -316,7 +315,7 @@ void Duel::onSummon(Card* card)
 {
     if (card->getCardType()!=0)
     {
-        this->appendLog(this->summonLog(card),this->lastSource);
+        this->appendLog(this->summonLog(card),this->getPlayerId(card->getOwner()));
         card->getCardName()->onSummon(this, card);
     }
 }
@@ -450,8 +449,6 @@ void Duel::playFromHand(Card* card)
     short cost = card->getCost();
     short zoneid;
     short success =0;
-    this->lastSource = this->turnPlayer;
-
     if ((cost<=card->getOwner()->getMana())&&(card->getPlace()==1))
     {
         if ((type==1)&&(card->getOwner()->getSummonLimit()>0))
@@ -460,8 +457,8 @@ void Duel::playFromHand(Card* card)
 
            if (zoneid!=-1)
            {
-               this->appendLog(this->cardFromHandLog(card),this->lastSource);
-               this->appendLog(this->manaChangeLog(card->getOwner(),-cost),this->lastSource);
+               this->appendLog(this->cardFromHandLog(card),this->turnPlayer);
+               this->appendLog(this->manaChangeLog(card->getOwner(),-cost),this->turnPlayer);
                card->getOwner()->changeMana(-cost);
                this->summonMinion(card, zoneid);
                success=1;
@@ -498,7 +495,6 @@ void Duel::playFromHand(Card* card)
         }
 
     }
-    this->lastSource = 2;
 }
 void Duel::summonFromHand(Card* minion, short zoneid)
 {
@@ -533,9 +529,24 @@ void Duel::removeFromGraveyard(Card* card)
             if (oldGraveyard[i]==card) {bias = 1; continue;}
             newGraveyard[i-bias] = oldGraveyard[i];
         }
-        card->getOriginalOwner()->setHand(newGraveyard, n_graveyard-1);
+        card->getOriginalOwner()->setGraveyard(newGraveyard, n_graveyard-1);
         delete[] newGraveyard;
 }
+void Duel::removeFromDeck(Card* card)
+{
+            short n_deck = card->getOriginalOwner()->getDeckSize();
+            Card** oldDeck = card->getOriginalOwner()->getDeck();
+            Card** newDeck = new Card*[n_deck-1];
+            short bias = 0;
+            for (int i=0;i<n_deck;i++)
+            {
+                if (oldDeck[i]==card) {bias = 1; continue;}
+                newDeck[i-bias] = oldDeck[i];
+            }
+            card->getOriginalOwner()->setDeck(newDeck, n_deck-1);
+            delete[] newDeck;
+}
+
 void Duel::summonFromGraveyard(Card* minion, short zoneid)
 {
     if ((minion->getCardType()>0)&&(minion->getPlace()==3))
@@ -580,7 +591,7 @@ void Duel::passTurn()
         this->appendLog(this->drawCardLog(opponent,1),2);
     }
     this->drawCard(opponent);
-    this->appendLog(this->manaChangeLog(opponent, 2),this->lastSource);
+    this->appendLog(this->manaChangeLog(opponent, 2),2);
     opponent->changeMana(2);
     this->turnStartEffects();
 }
@@ -860,15 +871,13 @@ short Duel::makeSpecialMinionMaterialChoice(Card* card)
 }
 void Duel::turnStartLog()
 {
-    this->lastSource = 2;
     std::string str = "Turn "+std::to_string(this->turnCount);
-    this->appendLog(str, this->lastSource);
+    this->appendLog(str, 2);
 }
 void Duel::turnEndLog()
 {
-    this->lastSource = 2;
     std::string str = "End of turn";
-    this->appendLog(str, this->lastSource);
+    this->appendLog(str, 2);
 }
 void Duel::appendLog(std::string log, short log_source)
 {
@@ -991,8 +1000,8 @@ std::string Duel::statChangeLog(Card* card, short a_new, short d_new)
     short a = card->getAttack();
     short d = card->getDefence();
     std::string card_name = std::string(card->getName());
-    std::string stats = "("+std::to_string(a)+"/"+std::to_string(a)+")";
-    std::string stats_new = "("+std::to_string(a_new)+"/"+std::to_string(a_new)+")";
+    std::string stats = "("+std::to_string(a)+"/"+std::to_string(d)+")";
+    std::string stats_new = "("+std::to_string(a_new)+"/"+std::to_string(d_new)+")";
     std::string str ="["+ card_name + "]'s stats:  " + stats + " -> " + stats_new;
     return str;
 }
@@ -1003,6 +1012,14 @@ std::string Duel::levelChangeLog(Card* card, short l)
     short level_new = l;
     if (level_new<0) {level_new = 1;}
     std::string str = "["+ card_name + "]'s level:  " + std::to_string(level_before) + " -> " + std::to_string(level_new);
+    return str;
+}
+std::string Duel::addToHandLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string playername = card->getOriginalOwner()->getName();
+    std::string str;
+    str = "[" + playername +"]"+" has added ["+ card_name +"] to their hand";
     return str;
 }
 

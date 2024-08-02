@@ -13,7 +13,7 @@ bool Breeze::onSpell(Duel* duel, Card* card)
         {
             duel->changeStats(cards[i],1,0);
         }
-        duel->appendLog(duel->manaChangeLog(card->getOwner(),nt),duel->getLastSource());
+        duel->appendLog(duel->manaChangeLog(card->getOwner(),nt),duel->getPlayerId(card->getOwner()));
         card->getOwner()->changeMana(nt);
         return true;
 }

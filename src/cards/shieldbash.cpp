@@ -17,7 +17,7 @@ bool ShieldBash::onSpell(Duel* duel, Card* card)
         if (!targetCard->getIsSpellImmune())
         {
         short dmg = targetCard->getDefence();
-        duel->appendLog(duel->lifeChangeLog(targetCard->getOwner(),-dmg),duel->getLastSource());
+        duel->appendLog(duel->lifeChangeLog(targetCard->getOwner()->getOpponent(),-dmg),duel->getPlayerId(targetCard->getOwner()->getOpponent()));
         card->getOwner()->getOpponent()->changeHp(-dmg);
         this->setTargetList(nullptr,0);
         }

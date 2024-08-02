@@ -213,6 +213,33 @@ void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char*
     }
     this->setTargetList(targets,n_targets);
 }
+void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
+{
+    short deckSize = card->getOwner()->getDeckSize();
+    short n_targets = 0;
+    Card** targets = new Card* [n_targets];
+    for (int i=0;i<deckSize;i++)
+        {
+            Card *target = card->getOwner()->getDeck()[i];
+            if ((target!=nullptr)&&(strstr(target->getName(),namePart)!=nullptr)&&(card!=target))
+            {
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets;j++)
+                {
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = target;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=target; targets = newtargets;}
+            }
+
+    }
+    this->setTargetList(targets,n_targets);
+}
 void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
 {
     short n_targets = 0;
@@ -338,7 +365,6 @@ bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
 
 void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
-    {
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
@@ -368,6 +394,95 @@ void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card
 
     this->setTargetList(targets,n_targets);
 }
+void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Player* owner = card->getOriginalOwner();
+        for (int i=0;i<5;i++)
+        {
+            Card* cardd = owner->getMinionField()[i].getCard();
+            if (cardd!=nullptr)
+            {
+                if (strcmp(element, cardd->getElement())==0&&cardd->getLevel()<=lvl)
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
+                }
+            }
+        }
+
+    this->setTargetList(targets,n_targets);
+}
+
+void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Card** graveyard = card->getOwner()->getGraveyard();
+    short n_graveyard = card->getOwner()->getGraveyardSize();
+        for (int i=0;i<n_graveyard;i++)
+        {
+            Card* cardd = graveyard[i];
+            if (strcmp(element, cardd->getElement())==0&&cardd->getLevel()<=lvl&&cardd->getCardType()==1)
+            {
+                n_targets++;
+                Card **newtargets = new Card* [n_targets];
+                if (n_targets>1) {
+                    for (int j=0;j<n_targets;j++)
+                    {
+
+                        newtargets[j] = targets[j];
+
+                    }
+                    newtargets[n_targets-1] = cardd;
+                    delete [] targets;
+                    targets = newtargets;
+                } else {newtargets[0]=cardd; targets = newtargets;}
+            }
+
+        }
+    this->setTargetList(targets,n_targets);
+}
+void CardBase::specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Card** graveyard = card->getOwner()->getGraveyard();
+    short n_graveyard = card->getOwner()->getGraveyardSize();
+        for (int i=0;i<n_graveyard;i++)
+        {
+            Card* cardd = graveyard[i];
+            if (strcmp(element, cardd->getElement())==0&&cardd->getCardType()==2)
+            {
+                n_targets++;
+                Card **newtargets = new Card* [n_targets];
+                if (n_targets>1) {
+                    for (int j=0;j<n_targets;j++)
+                    {
+
+                        newtargets[j] = targets[j];
+
+                    }
+                    newtargets[n_targets-1] = cardd;
+                    delete [] targets;
+                    targets = newtargets;
+                } else {newtargets[0]=cardd; targets = newtargets;}
+            }
+
+        }
+    this->setTargetList(targets,n_targets);
 }
 void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name)
 {
@@ -410,31 +525,27 @@ void CardBase::spellCost(Card* card)
 }
 void CardBase::effectLog(Duel* duel, Card* card)
 {
-    duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
     std::string str = "["+cardName+"]"+"'s effect activates";
-    duel->appendLog(str,duel->getLastSource());
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
 }
 void CardBase::firstEffectLog(Duel* duel, Card* card)
 {
-    duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
     std::string str = "["+cardName+"]"+"'s first effect activates";
-    duel->appendLog(str,duel->getLastSource());
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
 }
 void CardBase::secondEffectLog(Duel* duel, Card* card)
 {
-    duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
     std::string str = "["+cardName+"]"+"'s second effect activates";
-    duel->appendLog(str,duel->getLastSource());
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
 }
 void CardBase::thirdEffectLog(Duel* duel, Card* card)
 {
-    duel->setLastSource(duel->getPlayerId(card->getOwner()));
     std::string cardName = this->getName();
     std::string str = "["+cardName+"]"+"'s third effect activates";
-    duel->appendLog(str,duel->getLastSource());
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
 }
 void CardBase::release2Log(Card* c1, Card* c2, Duel* duel)
 {
@@ -442,7 +553,7 @@ void CardBase::release2Log(Card* c1, Card* c2, Duel* duel)
     std::string n1 = std::string(c1->getName());
     std::string n2 = std::string(c2->getName());
     std::string str = "[" + playerName + "] releases [" + n1 + "] and [" + n2 + "]";
-    duel->appendLog(str,duel->getLastSource());
+    duel->appendLog(str,duel->getPlayerId(c1->getOwner()));
 }
 void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
 {
@@ -450,9 +561,8 @@ void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
 }
 void CardBase::spellCostLog(Duel* duel, Card* card)
 {
-    duel->setLastSource(duel->getPlayerId(card->getOwner()));
-    duel->appendLog(duel->cardFromHandLog(card),duel->getLastSource());
-    duel->appendLog(duel->manaChangeLog(card->getOwner(), -card->getCost()),duel->getLastSource());
+    duel->appendLog(duel->cardFromHandLog(card),duel->getPlayerId(card->getOwner()));
+    duel->appendLog(duel->manaChangeLog(card->getOwner(), -card->getCost()),duel->getPlayerId(card->getOwner()));
 }
 
 

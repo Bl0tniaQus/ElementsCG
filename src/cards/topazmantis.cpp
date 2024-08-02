@@ -33,7 +33,7 @@ void TopazMantis::onDestroy(Duel* duel, Card* card)
         }
         if (card->getOwner()->getDeckSize()>0)
         {
-            duel->appendLog(duel->drawCardLog(card->getOwner(),1),duel->getLastSource());
+            duel->appendLog(duel->drawCardLog(card->getOwner(),1),duel->getPlayerId(card->getOwner()));
             duel->drawCard(card->getOwner());
         }
 }

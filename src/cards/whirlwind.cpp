@@ -16,7 +16,7 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
         Card* targetCard = targets[target];
         if (!targetCard->getIsSpellImmune())
         {
-        duel->appendLog(duel->returnToHandLog(targetCard),duel->getLastSource());
+        duel->appendLog(duel->returnToHandLog(targetCard),duel->getPlayerId(targetCard->getOwner()));
         duel->toHand(targetCard);
         this->setTargetList(nullptr,0);
         }

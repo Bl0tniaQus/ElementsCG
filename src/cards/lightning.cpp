@@ -11,7 +11,7 @@ bool Lightning::onSpell(Duel* duel, Card* card)
         short damage = mana-15;
         if (damage<0) {damage = 0;}
         this->effectLog(duel, card);
-        duel->appendLog(duel->lifeChangeLog(card->getOwner()->getOpponent(),-damage),duel->getLastSource());
+        duel->appendLog(duel->lifeChangeLog(card->getOwner()->getOpponent(),-damage),duel->getPlayerId(card->getOwner()->getOpponent()));
         card->getOwner()->getOpponent()->changeHp(-damage);
 
         return true;
