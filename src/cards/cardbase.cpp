@@ -6,6 +6,7 @@
 #include "../engine/card.h"
 #include "../engine/bot.h"
 #include <iostream>
+#include <QDebug>
 CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char * i, const char* ctx)
 {
     this->cardId = cid;
@@ -331,9 +332,12 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
         Card** targets2 = this->getTargetList()->getTargetList();
         Card** new_targets2;
         short n_targets2New = n_targets2;
+        bool duplicate = 0;
         for (int i=0;i<n_targets2;i++)
         {
-            if (targets2[i]==targetCard)
+            if (targets2[i]==targetCard) {duplicate = true;}
+        }
+        if (duplicate)
             {
                 new_targets2 = new Card* [n_targets2-1];
                 short bias=0;
@@ -343,8 +347,14 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
                    new_targets2[j-bias]=targets2[j];
                 }
             }
-        }
-
+            else
+            {
+                new_targets2 = new Card* [n_targets2];
+                for (int j=0;j<n_targets2;j++)
+                {
+                   new_targets2[j]=targets2[j];
+                }
+            }
         card->getCardName()->setTargetList(new_targets2,n_targets2New);
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
