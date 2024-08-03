@@ -13,7 +13,7 @@ public:
         -1, //defence
         "Air", //element
         "Dragonoid Call", //name
-        "dragonoid",
+        "dragonoidcall",
         "Summon 1 \"Dragonoid\" minion from your hand"
     ) {};
     bool onSpell(Duel* duel, Card* card) override;

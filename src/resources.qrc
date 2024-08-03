@@ -9,5 +9,8 @@
     <file alias="sadnimbus">resources/images/sadnimbus.jpg</file>
     <file alias="tempestwyvern">resources/images/tempestwyvern.jpg</file>
     <file alias="youngwyvern">resources/images/youngwyvern.jpg</file>
+    <file alias="ambertreant">resources/images/ambertreant.jpg</file>
+    <file alias="topazamberfossil">resources/images/topazamberfossil.jpg</file>
+    <file alias="dragonoidcall">resources/images/dragonoidcall.jpg</file>
 </qresource>
 </RCC>
