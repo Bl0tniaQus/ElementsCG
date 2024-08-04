@@ -5,11 +5,11 @@
 Bot::Bot()
 {
     this->testedOptions = 0;
-    this->handOptions = new short [0];
-    this->targetsForOptions = new short [0];
+    this->handOptions = new int [0];
+    this->targetsForOptions = new int [0];
     this->handValues = new float [0];
-    this->battleOptions = new short [0];
-    this->targetsForBattleOptions = new short [0];
+    this->battleOptions = new int [0];
+    this->targetsForBattleOptions = new int [0];
     this->battleValues = new float [0];
     this->baseGamestate = new Gamestate;
     this->tempGamestate = new Gamestate;
@@ -82,8 +82,8 @@ void Bot::saveHandOption(short card, short target, float val)
 {
 
     this->testedOptions++;
-    short *newHandOptions = new short[this->testedOptions];
-    short *newTargets = new short[this->testedOptions];
+    int *newHandOptions = new int[this->testedOptions];
+    int *newTargets = new int[this->testedOptions];
     float *newValues = new float[this->testedOptions];
     if (this->testedOptions>1)
     {
@@ -114,8 +114,8 @@ void Bot::saveAttackOption(short card, short target, float val)
 {
 
     this->testedBattleOptions++;
-    short *newBattleOptions = new short[this->testedBattleOptions];
-    short *newBattleTargets = new short[this->testedBattleOptions];
+    int *newBattleOptions = new int[this->testedBattleOptions];
+    int *newBattleTargets = new int[this->testedBattleOptions];
     float *newBattleValues = new float[this->testedBattleOptions];
     if (this->testedBattleOptions>1)
     {
@@ -181,8 +181,8 @@ void Bot::endHandTesting()
     delete [] this->handValues;
     delete [] this->handOptions;
     delete [] this->targetsForOptions;
-    this->handOptions = new short [0];
-    this->targetsForOptions = new short [0];
+    this->handOptions = new int [0];
+    this->targetsForOptions = new int [0];
     this->handValues = new float [0];
     this->n_choices = 0;
     this->testing = false;
@@ -195,8 +195,8 @@ void Bot::endBattleTesting()
     delete [] this->battleValues;
     delete [] this->battleOptions;
     delete [] this->targetsForBattleOptions;
-    this->battleOptions = new short [0];
-    this->targetsForBattleOptions = new short [0];
+    this->battleOptions = new int [0];
+    this->targetsForBattleOptions = new int [0];
     this->battleValues = new float [0];
     this->testedBattleOptions = 0;
 }

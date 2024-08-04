@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="baseSize">
     <size>
@@ -30,9 +33,9 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="page">
+      <widget class="QWidget" name="stackedWidgetPage1" native="true">
        <widget class="QPushButton" name="testButton">
         <property name="geometry">
          <rect>
@@ -47,7 +50,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_2">
+      <widget class="QWidget" name="stackedWidgetPage2" native="true">
        <widget class="QFrame" name="leftPanel">
         <property name="geometry">
          <rect>

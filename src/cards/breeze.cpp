@@ -5,7 +5,8 @@
 #include "../engine/bot.h"
 bool Breeze::onSpell(Duel* duel, Card* card)
 {
-        this->effectLog(duel, card);
+        this->spellCostLog(duel, card);
+        this->spellCost(card);
         this->getOnSpellTargetList(duel, card);
         short nt = this->getTargetList()->getTargetsNumber();
         Card** cards = this->getTargetList()->getTargetList();

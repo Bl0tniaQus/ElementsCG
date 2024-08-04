@@ -23,7 +23,6 @@ void AmberTreant::onSummon(Duel* duel, Card* card)
     {
         Card* t = targets[nt-1];
         this->firstEffectLog(duel, card);
-        duel->appendLog(duel->addToHandLog(card), duel->getPlayerId(card->getOwner()));
         duel->searchCard(t);
     }
 

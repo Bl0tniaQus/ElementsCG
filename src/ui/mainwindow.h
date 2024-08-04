@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QThread>
 #include <QMutex>
+#include <QMouseEvent>
 #include "../engine/duel.h"
 #include "dueluibridge.h"
 QT_BEGIN_NAMESPACE
@@ -48,6 +49,11 @@ private:
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void mouseMoveEvent(QMouseEvent* mouseEvent) override {mouseEvent->ignore();};
+    void mouseReleaseEvent(QMouseEvent* mouseEvent) override {mouseEvent->ignore();};
+    void mousePressEvent(QMouseEvent* mouseEvent) override {mouseEvent->ignore();};
+    void moveEvent (QMoveEvent* mouseEvent) override {mouseEvent->ignore();};
+
     void startDuel();
     void clearTargets();
     void setMaterialTargetImages(Card* card);

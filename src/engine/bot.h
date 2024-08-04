@@ -13,11 +13,11 @@ private:
     bool testing;
     float baseGameStatevalue;
     bool testingTargets;
-    short* handOptions;
-    short* targetsForOptions;
+    int* handOptions;
+    int* targetsForOptions;
     float* handValues;
-    short* battleOptions;
-    short* targetsForBattleOptions;
+    int* battleOptions;
+    int* targetsForBattleOptions;
     float* battleValues;
 
     short* specialMinionOptions;
@@ -37,9 +37,9 @@ public:
     void generateTempGamestate(Duel* duel);
     Gamestate* getBaseGamestate() {return this->baseGamestate;}
     Gamestate* getTempGamestate() {return this->tempGamestate;}
-    short* getHandOptions() {return this->handOptions;}
+    int* getHandOptions() {return this->handOptions;}
     float* getHandValues() {return this->handValues;}
-    short* getTargetsForOptions() {return this->targetsForOptions;}
+    int* getTargetsForOptions() {return this->targetsForOptions;}
     void setChosenSingleTarget(short x) {this->chosenSingleTarget = x;}
     short getChosenSingleTarget() {return this->chosenSingleTarget;}
     void setChoicesNumber(short n) {this->n_choices = n;}
