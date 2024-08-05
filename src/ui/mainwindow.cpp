@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     this->ui->setupUi(this);
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
+    this->ui->stackedWidget->setMouseTracking(false);
+    this->setMouseTracking(false);
     delete this->ui->uselessTabTarget;
     delete this->ui->playerNameUselessTab;
     delete this->ui->opponentNameUselessTab;

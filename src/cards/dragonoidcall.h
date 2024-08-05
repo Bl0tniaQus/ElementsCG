@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Dragonoid Call", //name
         "dragonoidcall",
-        "Summon 1 \"Dragonoid\" minion from your hand"
+        "Summon 1 \"Dragonoid\" minion from your hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void getOnSpellTargetList(Duel* duel, Card* card) override;

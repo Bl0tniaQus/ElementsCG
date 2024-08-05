@@ -12,5 +12,6 @@
     <file alias="ambertreant">resources/images/ambertreant.jpg</file>
     <file alias="topazamberfossil">resources/images/topazamberfossil.jpg</file>
     <file alias="dragonoidcall">resources/images/dragonoidcall.jpg</file>
+    <file alias="aluminiumserpent">resources/images/aluminiumserpent.jpg</file>
 </qresource>
 </RCC>

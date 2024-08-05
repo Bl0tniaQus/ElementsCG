@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
 
     //duel.getPlayer(1)->setBot(&bot);
     //duel.DuelControl(&deck,&deck2);
-    w.setWindowState(Qt::WindowMaximized);
     w.show();
     return a.exec();
     // bot special minion analysis and summons + other tweaks
