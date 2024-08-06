@@ -13,5 +13,6 @@
     <file alias="topazamberfossil">resources/images/topazamberfossil.jpg</file>
     <file alias="dragonoidcall">resources/images/dragonoidcall.jpg</file>
     <file alias="aluminiumserpent">resources/images/aluminiumserpent.jpg</file>
+    <file alias="steelcentipede">resources/images/steelcentipede.jpg</file>
 </qresource>
 </RCC>
