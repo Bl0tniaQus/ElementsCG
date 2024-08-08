@@ -11,6 +11,7 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
     if (target==-1) {return false;}
     else
     {
+        this->spellFromHandLog(duel,card);
         this->spellCost(card);
         Card* targetCard = targets[target];
         if (!targetCard->getIsSpellImmune())

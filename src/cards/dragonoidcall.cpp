@@ -15,6 +15,7 @@ bool DragonoidCall::onSpell(Duel* duel, Card* card)
         if (zoneid==-1) {return false;}
         else
         {
+                this->spellFromHandLog(duel,card);
                 this->spellCost(card);
                 Card* targetCard = targets[target];
                 duel->summonFromHand(targetCard, zoneid);

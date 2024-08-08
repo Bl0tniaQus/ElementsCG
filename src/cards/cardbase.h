@@ -44,7 +44,7 @@ public:
     void firstEffectLog(Duel* duel, Card* card);
     void secondEffectLog(Duel* duel, Card* card);
     void thirdEffectLog(Duel* duel, Card* card);
-    void spellCostLog(Duel* duel, Card* card);
+    void spellFromHandLog(Duel* duel, Card* card);
 
     void release2Log(Card* c1, Card* c2, Duel* duel);
     void release3Log(Card* c1, Card* c2, Card* c3, Duel* duel);

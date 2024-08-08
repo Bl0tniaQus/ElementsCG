@@ -5,9 +5,9 @@
 #include "../engine/bot.h"
 bool Lightning::onSpell(Duel* duel, Card* card)
 {
-        this->spellCostLog(duel, card);
-        short mana = card->getOwner()->getMana();
+        this->spellFromHandLog(duel,card);
         this->spellCost(card);
+        short mana = card->getOwner()->getMana();
         short damage = mana-15;
         if (damage<0) {damage = 0;}
         this->effectLog(duel, card);

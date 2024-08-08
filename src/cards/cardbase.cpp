@@ -569,7 +569,7 @@ void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
 {
 
 }
-void CardBase::spellCostLog(Duel* duel, Card* card)
+void CardBase::spellFromHandLog(Duel* duel, Card* card)
 {
     duel->appendLog(duel->cardFromHandLog(card),duel->getPlayerId(card->getOwner()));
 }
