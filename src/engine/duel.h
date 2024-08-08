@@ -30,6 +30,7 @@ public:
     short getPlayerId(Player* player);
     void drawField(char p);
     void drawCard(Player* player);
+    void drawCardNoLog(Player* player);
     void combat(Card* attacker, Card* defender);
     void directAttack(Card* attacker);
     void destruction(Card* card);
@@ -63,6 +64,7 @@ public:
     bool canSummon(Player* player);
     void changeStats(Card* card, short a, short d);
     void changeLevel(Card* card, short l);
+    void changeBarrier(Card* card, short b);
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);

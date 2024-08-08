@@ -2,6 +2,7 @@
 #include "card.h"
 #include "bot.h"
 #include "zone.h"
+#include "duel.h"
 #include <iostream>
 Player::Player()
 {
@@ -37,11 +38,13 @@ void Player::setName(const char* name)
 
 void Player::changeHp(short val)
 {
+    this->duel->appendLog(this->duel->lifeChangeLog(this,val),duel->getPlayerId(this));
     this->hp = this->hp + val;
     if (this->hp < 0) {this->hp = 0;}
 }
 void Player::changeMana(short val)
 {
+    this->duel->appendLog(this->duel->manaChangeLog(this,val),duel->getPlayerId(this));
     this->mana = this->mana + val;
     if (this->mana < 0) {this->mana = 0;}
 }

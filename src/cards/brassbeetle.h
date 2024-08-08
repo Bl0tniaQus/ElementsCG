@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Brass Beetle", //name
         "brassbeetle",
-        "[Any 2 earth minions]\n1) If this card is summoned: gain 1 barrier;\n2) At the start of each turn if this card has no barrier: gain 1 barrier."
+        "[Any 2 earth minions]\n1)\n2)"
     ) {this->setMaterialNumber(2);}
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;

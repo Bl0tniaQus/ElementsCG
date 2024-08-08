@@ -4,6 +4,7 @@
 class Zone;
 class Card;
 class Bot;
+class Duel;
 class Player
 {
 private:
@@ -12,6 +13,7 @@ private:
     char* name;
     Player *opponent;
     Zone* minionField;
+    Duel* duel;
     short n_hand;
     short n_deck;
     short n_originalDeck;
@@ -37,6 +39,7 @@ public:
     int getHp() {return this->hp;}
     void setHp(short hp) {this->hp = hp;}
     void setName(const char* name);
+    void setDuel(Duel* duel) {this->duel = duel;}
     char* getName() {return this->name;}
     Zone* getMinionField() {return minionField;}
     Player* getOpponent() {return opponent;}

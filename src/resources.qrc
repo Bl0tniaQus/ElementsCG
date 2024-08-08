@@ -14,5 +14,6 @@
     <file alias="dragonoidcall">resources/images/dragonoidcall.jpg</file>
     <file alias="aluminiumserpent">resources/images/aluminiumserpent.jpg</file>
     <file alias="steelcentipede">resources/images/steelcentipede.jpg</file>
+    <file alias="wyvernhatchling">resources/images/wyvernhatchling.jpg</file>
 </qresource>
 </RCC>

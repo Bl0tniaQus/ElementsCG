@@ -9,6 +9,8 @@ Duel::Duel()
     players[1].setOpponent(&players[0]);
     players[0].setName("Player 1");
     players[1].setName("Player 2");
+    players[0].setDuel(this);
+    players[1].setDuel(this);
     this->turnPlayer = 0;
     this->attackersTargetList = new TargetList;
     this->defendersTargetList = new TargetList;
@@ -243,6 +245,8 @@ void Duel::toHand(Card* card)
 {
     if (card->getCardType()==2) {this->toSpecialDeck(card);}
     else{
+        short originalPlace = card->getPlace();
+        if (originalPlace == 1 || originalPlace==4) {return;}
         card->setPlace(1);
         card->returnToOriginal();
         if (card->getZone()!=nullptr) {this->removeFromField(card);}
@@ -258,6 +262,14 @@ void Duel::toHand(Card* card)
         newHand[n_hand] = card;
         }
         Player* owner = card->getOriginalOwner();
+        if (originalPlace == 2 || originalPlace == 3)
+        {
+            this->appendLog(this->returnToHandLog(card),this->getPlayerId(card->getOwner()));
+        }
+        if (originalPlace == 0)
+        {
+            this->appendLog(this->addToHandLog(card),this->getPlayerId(card->getOwner()));
+        }
         owner->setHand(newHand, n_hand+1);
         delete[] newHand;
     }
@@ -267,12 +279,42 @@ void Duel::searchCard(Card* card)
 {
     this->toHand(card);
     this->removeFromDeck(card);
-    this->appendLog(addToHandLog(card), this->getPlayerId(card->getOriginalOwner()));
 }
 void Duel::drawCard(Player* player)
 {
     short n_deck = player->getDeckSize();
+    if (n_deck>0)
+    {
+        short n_hand = player->getHandSize();
+        Card** oldHand = player->getHand();
+        Card** newHand = new Card*[n_hand+1];
+        Card** newDeck = new Card*[n_deck-1];
+        Card** oldDeck = player->getDeck();
+        oldDeck[n_deck-1]->setPlace(1);
+        if (n_hand==0) {newHand[0] = oldDeck[n_deck-1];}
+        else{
+        for (int i=0;i<n_hand;i++)
+        {
+            newHand[i] = oldHand[i];
+        }
+        newHand[n_hand] = oldDeck[n_deck-1];
+        }
 
+
+        player->setHand(newHand, n_hand+1);
+        for (int i=0;i<n_deck-1;i++)
+        {
+            newDeck[i] = oldDeck[i];
+        }
+        player->setDeck(newDeck,n_deck-1);
+        this->appendLog(this->drawCardLog(player, 1), this->getPlayerId(player));
+        delete[] newHand;
+        delete[] newDeck;
+    }
+}
+void Duel::drawCardNoLog(Player* player)
+{
+    short n_deck = player->getDeckSize();
     if (n_deck>0)
     {
         short n_hand = player->getHandSize();
@@ -300,8 +342,6 @@ void Duel::drawCard(Player* player)
         delete[] newHand;
         delete[] newDeck;
     }
-
-
 }
 bool Duel::onSpell(Card* card)
 {
@@ -458,7 +498,6 @@ void Duel::playFromHand(Card* card)
            if (zoneid!=-1)
            {
                this->appendLog(this->cardFromHandLog(card),this->turnPlayer);
-               this->appendLog(this->manaChangeLog(card->getOwner(),-cost),this->turnPlayer);
                card->getOwner()->changeMana(-cost);
                this->summonMinion(card, zoneid);
                success=1;
@@ -575,7 +614,11 @@ void Duel::changeLevel(Card* card, short l)
     this->appendLog(this->levelChangeLog(card,l), this->getPlayerId(card->getOwner()));
     card->setLevel(l);
 }
-
+void Duel::changeBarrier(Card* card, short b)
+{
+    this->appendLog(this->barrierChangeLog(card,b), this->getPlayerId(card->getOwner()));
+    card->setBarrier(b);
+}
 void Duel::passTurn()
 {
     Player* turnPlayer = this->getPlayer(this->getTurnPlayer());
@@ -591,7 +634,6 @@ void Duel::passTurn()
         this->appendLog(this->drawCardLog(opponent,1),2);
     }
     this->drawCard(opponent);
-    this->appendLog(this->manaChangeLog(opponent, 2),2);
     opponent->changeMana(2);
     this->turnStartEffects();
 }
@@ -675,8 +717,8 @@ void Duel::startDuel(Deck *deck0, Deck* deck1)
     this->getPlayer(1)->shuffleDeck();
     for (int i=0;i<5;i++)
     {
-        this->drawCard(&this->players[0]);
-        this->drawCard(&this->players[1]);
+        this->drawCardNoLog(&this->players[0]);
+        this->drawCardNoLog(&this->players[1]);
     }
 }
 void Duel::DuelControl(Deck *deck0, Deck* deck1)
