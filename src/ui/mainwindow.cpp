@@ -787,7 +787,7 @@ void MainWindow::specialMinionConfirm()
     if (this->selectedMaterialTarget!=-1)
     {
         this->bridge->setMaterialTarget(this->selectedMaterialTarget);
-        if (this->bridge->getSelectedMaterials()==1) {this->targeting = false;}
+        this->targeting = false;
         this->selectedMaterialTarget = -1;
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
@@ -913,9 +913,11 @@ void MainWindow::setLogLabels()
     {
         logs_new[i] = new QLabel;
         std::string str = this->duel->getLogs()[i];
+
         logs_new[i]->setText(QString::fromStdString(str));
         logs_new[i]->setParent(this->ui->duelLogsAreaContents);
         logs_new[i]->setScaledContents(true);
+        logs_new[i]->setWordWrap(true);
         logs_new[i]->setFrameShape(QFrame::Box);
         QString color;
         short source = this->duel->getLogSources()[i];
@@ -924,11 +926,18 @@ void MainWindow::setLogLabels()
         else if (source==2) {color = "white";}
         logs_new[i]->setStyleSheet("border:none; border-left:4px solid "+ color + ";");
         logs_new[i]->setVisible(true);
-        logs_new[i]->setGeometry(5,5+(i*28),425,20);
+        if (str.length()>66) {
+            logs_new[i]->setGeometry(5,5+(i*28)+20*(this->longerLogs),425,40);
+            this->longerLogs++;
+        }
+        else{
+            logs_new[i]->setGeometry(5,5+(i*28)+20*(this->longerLogs),425,20);
+        }
+
     }
 
-    this->ui->duelLogsAreaContents->setGeometry(0,0,461, 5 + (n_logs * 28));
-    this->ui->duelLogsArea->verticalScrollBar()->setValue(n_logs * 28);
+    this->ui->duelLogsAreaContents->setGeometry(0,0,461, 5 + (n_logs * 28)+28*(this->longerLogs));
+    this->ui->duelLogsArea->verticalScrollBar()->setValue(n_logs * 28 +20*(this->longerLogs));
     delete [] this->logLabels;
     this->logLabels = logs_new;
     this->drawnLogs = n_logs;

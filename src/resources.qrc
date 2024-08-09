@@ -15,5 +15,7 @@
     <file alias="aluminiumserpent">resources/images/aluminiumserpent.jpg</file>
     <file alias="steelcentipede">resources/images/steelcentipede.jpg</file>
     <file alias="wyvernhatchling">resources/images/wyvernhatchling.jpg</file>
+    <file alias="lightning">resources/images/lightning.jpg</file>
+    <file alias="angrycumulonimbus">resources/images/angrycumulonimbus.jpg</file>
 </qresource>
 </RCC>

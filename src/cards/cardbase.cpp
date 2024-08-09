@@ -316,6 +316,63 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
     delete[] targets2;
     return result;
 }
+bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
+{
+        bool result = false;
+        this->getFirstMaterialList(duel, card);
+        short n_targets1 = this->getTargetList()->getTargetsNumber();
+        Card** temp_targets = this->getTargetList()->getTargetList();
+        Card** targets1 = new Card* [n_targets1];
+        for (int i=0;i<n_targets1;i++)
+        {
+            targets1[i] = temp_targets[i];
+        }
+        this->getSecondMaterialList(duel, card);
+        short n_targets2 = this->getTargetList()->getTargetsNumber();
+        temp_targets = this->getTargetList()->getTargetList();
+        Card** targets2 = new Card* [n_targets2];
+        for (int i=0;i<n_targets2;i++)
+        {
+            targets2[i] = temp_targets[i];
+        }
+        this->getThirdMaterialList(duel, card);
+        short n_targets3 = this->getTargetList()->getTargetsNumber();
+        temp_targets = this->getTargetList()->getTargetList();
+        Card** targets3 = new Card* [n_targets2];
+        for (int i=0;i<n_targets3;i++)
+        {
+            targets3[i] = temp_targets[i];
+        }
+        if ((n_targets1==0)||(n_targets2==0)||n_targets3==0) {result = false;}
+        else if ((n_targets1==3)&&(n_targets2==3)&&n_targets3==3) {result = true;}
+        else
+        {
+            Card* card1;
+            Card* card2;
+            Card* card3;
+            for (short i1=0;i1<n_targets1;i1++)
+            {
+                card1 = targets1[i1];
+                if (result) break;
+                for (short i2=0;i2<n_targets2;i2++)
+                {
+                    card2 = targets2[i2];
+                    if (result) break;
+                    for (short i3=0;i3<n_targets3;i3++)
+                    {
+                        card3 = targets3[i3];
+                        if (card1 == card2 || card1 == card3 || card2 == card3) {result = false;}
+                        else if (card1 != card2 && card1 != card3 && card2 != card3) {result = true;}
+                        if (result) break;
+                    }
+                }
+            }
+        }
+    delete[] targets1;
+    delete[] targets2;
+    delete[] targets3;
+    return result;
+}
 bool CardBase::specialSummon2(Duel* duel, Card* card)
 {
     if (checkSummoningConditions2(duel,card))
@@ -368,11 +425,96 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
     }
     return false;
 }
-bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
+bool CardBase::specialSummon3(Duel* duel, Card* card)
 {
-    return true;
-}
+    if (checkSummoningConditions3(duel,card))
+    {
+        this->getFirstMaterialList(duel, card);
+        Card** targets1 = this->getTargetList()->getTargetList();
+        int target;
+        target = duel->makeSpecialMinionMaterialChoice(card);
+        if (target==-1) {return false;}
+        Card* targetCard = targets1[target];
+        Card* targetCard2;
+        this->getSecondMaterialList(duel, card);
+        short n_targets2 = this->getTargetList()->getTargetsNumber();
+        Card** targets2 = this->getTargetList()->getTargetList();
+        Card** new_targets2;
+        short n_targets2New = n_targets2;
+        bool duplicate = 0;
+        for (int i=0;i<n_targets2;i++)
+        {
+            if (targets2[i]==targetCard) {duplicate = true;}
+        }
+        if (duplicate)
+            {
+                new_targets2 = new Card* [n_targets2-1];
+                short bias=0;
+                for (int j=0;j<n_targets2;j++)
+                {
+                   if (targets2[j]==targetCard) {bias=1; n_targets2New = n_targets2-1; continue;}
+                   new_targets2[j-bias]=targets2[j];
+                }
+            }
+            else
+            {
+                new_targets2 = new Card* [n_targets2];
+                for (int j=0;j<n_targets2;j++)
+                {
+                   new_targets2[j]=targets2[j];
+                }
+            }
+        card->getCardName()->setTargetList(new_targets2,n_targets2New);
+        target = duel->makeSpecialMinionMaterialChoice(card);
+        if (target==-1) {return false;}
+        targetCard2 = new_targets2[target];
 
+        short duplicates = 0;
+        Card* targetCard3;
+        this->getThirdMaterialList(duel, card);
+        short n_targets3 = this->getTargetList()->getTargetsNumber();
+        Card** targets3 = this->getTargetList()->getTargetList();
+        Card** new_targets3;
+        short n_targets3New = n_targets3;
+
+        for (int i=0;i<n_targets3;i++)
+        {
+            if (targets3[i]==targetCard) {duplicates++;}
+            if (targets3[i]==targetCard2) {duplicates++;}
+        }
+        if (duplicates)
+            {
+                new_targets3 = new Card* [n_targets3-duplicates];
+                short bias=0;
+                for (int j=0;j<n_targets3;j++)
+                {
+                   if (targets3[j]==targetCard || targets3[j]==targetCard2) {bias++; n_targets3New--; continue;}
+                   new_targets3[j-bias]=targets3[j];
+                }
+            }
+            else
+            {
+                new_targets3 = new Card* [n_targets3];
+                for (int j=0;j<n_targets3;j++)
+                {
+                   new_targets3[j]=targets3[j];
+                }
+            }
+        card->getCardName()->setTargetList(new_targets3,n_targets3New);
+        target = duel->makeSpecialMinionMaterialChoice(card);
+        if (target==-1) {return false;}
+        targetCard3 = new_targets3[target];
+        this->release3Log(targetCard,targetCard2,targetCard3, duel);
+        duel->removeFromField(targetCard);
+        duel->removeFromField(targetCard2);
+        duel->removeFromField(targetCard3);
+        duel->toGraveyard(targetCard);
+        duel->toGraveyard(targetCard2);
+        duel->toGraveyard(targetCard3);
+        return true;
+    }
+    return false;
+}
 void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
     short n_targets=0;
@@ -567,7 +709,12 @@ void CardBase::release2Log(Card* c1, Card* c2, Duel* duel)
 }
 void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
 {
-
+    std::string playerName = std::string(c1->getOwner()->getName());
+    std::string n1 = std::string(c1->getName());
+    std::string n2 = std::string(c2->getName());
+    std::string n3 = std::string(c3->getName());
+    std::string str = "[" + playerName + "] releases [" + n1 + "], [" + n2 + "] and [" + n3 + "]";
+    duel->appendLog(str,duel->getPlayerId(c1->getOwner()));
 }
 void CardBase::spellFromHandLog(Duel* duel, Card* card)
 {

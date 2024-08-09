@@ -111,7 +111,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
             id = this->materialTarget;
             if (id==-1) {return -1;}
             this->materialTarget = -2;
-            this->selectedMaterials = 0;
+            this->selectedMaterials = 2;
         }
         else if (this->selectedMaterials==2)
         {

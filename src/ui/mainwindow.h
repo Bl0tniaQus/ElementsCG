@@ -33,6 +33,7 @@ private:
     CardLabel** targetImages;
     QLabel** logLabels;
     int drawnLogs = 0;
+    int longerLogs = 0;
     short selectedHandCard = -1;
     short selectedSpellTarget = -1;
     short selectedMaterialTarget = -1;

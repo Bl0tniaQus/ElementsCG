@@ -85,7 +85,7 @@ public:
     bool checkSummoningConditions3(Duel* duel, Card* card);
     virtual bool specialSummon(Duel* duel, Card* card) {return false;};
     bool specialSummon2(Duel* duel, Card* card);
-    bool specialSummon3(Duel* duel, Card* card) {return false;};
+    bool specialSummon3(Duel* duel, Card* card);
     virtual void getFirstMaterialList(Duel* duel, Card* card) {};
     virtual void getSecondMaterialList(Duel* duel, Card* card) {};
     virtual void getThirdMaterialList(Duel* duel, Card* card) {};
