@@ -4,7 +4,7 @@
 #include "../engine/zone.h"
 bool YoungWyvern::specialSummon(Duel* duel, Card* card)
 {
-    return this->specialSummon3(duel, card);
+    return this->specialSummon2(duel, card);
 }
 void YoungWyvern::getFirstMaterialList(Duel* duel, Card* card)
 {

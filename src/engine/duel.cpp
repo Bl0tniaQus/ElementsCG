@@ -631,9 +631,9 @@ void Duel::passTurn()
     this->turnStartLog();
     if (opponent->getDeckSize()>0)
     {
-        this->appendLog(this->drawCardLog(opponent,1),2);
+        this->drawCard(opponent);
     }
-    this->drawCard(opponent);
+
     opponent->changeMana(2);
     this->turnStartEffects();
 }
@@ -948,7 +948,7 @@ std::string Duel::cardFromHandLog(Card* card)
 {
     std::string card_name = std::string(card->getName());
     std::string playername = card->getOwner()->getName();
-    std::string str = "["+playername + "] played " + "\"" + card_name + "\"";
+    std::string str = "["+playername + "] played " + "[" + card_name + "]";
     return str;
 }
 std::string Duel::manaChangeLog(Player* player, short value)
