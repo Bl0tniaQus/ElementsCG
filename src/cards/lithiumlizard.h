@@ -6,18 +6,17 @@ class LithiumLizard : public CardBase
 public:
     LithiumLizard():CardBase(
         18, //card id
-        1, //cost
+        3, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
-        1, //level
-        0, //attack
-        0, //defence
+        3, //level
+        2, //attack
+        2, //defence
         "Earth", //element
         "Lithium Lizard", //name
         "lithiumlizard",
-        ""
+        "When this card is released as a material to summon a special minion: gain mana equal to that special minion's level."
     ) {};
-    void onSummon(Duel* duel, Card* card) override;
-    void getOnSummonTargetList(Duel* duel, Card* card) override;
+    void onSpecialSummonRelease(Duel * duel, Card * card, Card * sp_minion) override;
 };
 
 #endif

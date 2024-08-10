@@ -96,11 +96,9 @@ void Duel::combat(Card* attacker, Card* defender)
     }
 
     if (atk>def){
-        this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),!this->turnPlayer);
         this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
     }
     if (def>atk){
-        this->appendLog(this->lifeChangeLog(&this->players[this->turnPlayer],-damage),this->turnPlayer);
         this->players[this->turnPlayer].changeHp(-damage);
 
     }
@@ -114,8 +112,9 @@ void Duel::directAttack(Card* attacker)
     attacker->getCardName()->onAttack(this,attacker,nullptr);
     short damage = attacker->getAttack();
     if (damage>0)
-    {this->appendLog(this->lifeChangeLog(this->players[this->turnPlayer].getOpponent(),-damage),!this->turnPlayer);
-    this->players[this->turnPlayer].getOpponent()->changeHp(-damage);}
+    {
+    this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
+    }
     attacker->setAttacks(attacker->getAttacks()-1);
     attacker->getCardName()->afterAttack(this,attacker,nullptr,damage);
     checkWinner();
@@ -144,6 +143,13 @@ void Duel::destruction(Card* card)
     }
 
 }
+void Duel::releaseForSpecialSummon(Card* card, Card* sp_minion)
+{
+    this->removeFromField(card);
+    this->toGraveyard(card);
+    card->getCardName()->onSpecialSummonRelease(this,card,sp_minion);
+}
+
 void Duel::toGraveyard(Card* card)
 {
     card->setPlace(3);
@@ -701,6 +707,36 @@ void Duel::generateDefendersList()
         }
     }
     this->getDefendersList()->setTargetList(defenders,n);
+}
+Card* Duel::getCardFromCopyId(int id)
+{
+    short n_deck,n_special;
+    Card* deck;
+    n_deck = players[0].getOriginalDeckSize();
+    deck = players[0].getOriginalDeck();
+    for (int i=0;i<n_deck;i++)
+    {
+        if (deck[i].getCopyId()==id) return &deck[i];
+    }
+    n_special = players[0].getOriginalSpecialDeckSize();
+    deck = players[0].getOriginalSpecialDeck();
+    for (int i=0;i<n_special;i++)
+    {
+        if (deck[i].getCopyId()==id) return &deck[i];
+    }
+    n_deck = players[1].getOriginalDeckSize();
+    deck = players[1].getOriginalDeck();
+    for (int i=0;i<n_deck;i++)
+    {
+        if (deck[i].getCopyId()==id) return &deck[i];
+    }
+    n_special = players[1].getOriginalSpecialDeckSize();
+    deck = players[1].getOriginalSpecialDeck();
+    for (int i=0;i<n_special;i++)
+    {
+        if (deck[i].getCopyId()==id) return &deck[i];
+    }
+    return nullptr;
 }
 void Duel::startDuel(Deck *deck0, Deck* deck1)
 {

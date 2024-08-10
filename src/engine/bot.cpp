@@ -37,7 +37,7 @@ void Bot::generateTempGamestate(Duel* duel)
     this->tempGamestate->generateAttackersList();
     this->tempGamestate->generateDefendersList();
 }
-void Bot::testCardFromHand(short c, Duel* duel)
+void Bot::testCardFromHand(int c, Duel* duel)
 {
     Player* player;
     Card* card;
@@ -49,7 +49,7 @@ void Bot::testCardFromHand(short c, Duel* duel)
     float value;
     float bValue = this->baseGamestate->evaluate();
     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
-    card = player->getHand()[c];
+    card = this->tempGamestate->getCardFromCopyId(c);
     if (card->getCost()<=player->getMana())
     {
         if (card->getCardType()==1 && !this->tempGamestate->canSummon(player)) {return;}
@@ -63,7 +63,7 @@ void Bot::testCardFromHand(short c, Duel* duel)
                     this->tested = i;
                     this->generateTempGamestate(duel);
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
-                    this->tempGamestate->playFromHand(player->getHand()[c]);
+                    this->tempGamestate->playFromHand(card);
                     value = this->tempGamestate->evaluate();
                     this->saveHandOption(c,i,value-bValue);
                 }
@@ -271,7 +271,7 @@ void Bot::testHand(Duel* duel)
     short n_hand = player->getHandSize();
     for (int z = 0;z<n_hand;z++)
     {
-        this->testCardFromHand(z, duel);
+        this->testCardFromHand(player->getHand()[z]->getCopyId(), duel);
     }
 }
 void Bot::playTurn(Duel* duel)
@@ -288,10 +288,11 @@ void Bot::playTurn(Duel* duel)
                 if (this->getOptionsNumber()==0) { this->endHandTesting(); break;}
                 float val = this->getBestHandValue();
                 if (val<=0) {this->endHandTesting(); break;}
-                if (option>=0&&option<n_hand) {
+                Card* card = duel->getCardFromCopyId(option);
+                if (card->getPlace()==1) {
                     this->testing = false;
                     this->testingTargets = false;
-                    duel->playFromHand(player->getHand()[option]);
+                    duel->playFromHand(duel->getCardFromCopyId(option));
                 }
 
                 this->endHandTesting();

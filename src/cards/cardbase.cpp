@@ -417,10 +417,8 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
         if (target==-1) {return false;}
         targetCard2 = new_targets2[target];
         this->release2Log(targetCard,targetCard2, duel);
-        duel->removeFromField(targetCard);
-        duel->removeFromField(targetCard2);
-        duel->toGraveyard(targetCard);
-        duel->toGraveyard(targetCard2);
+        duel->releaseForSpecialSummon(targetCard, card);
+        duel->releaseForSpecialSummon(targetCard2, card);
         return true;
     }
     return false;

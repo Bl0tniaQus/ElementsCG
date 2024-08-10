@@ -53,7 +53,7 @@ public:
     void setTargetTesting(bool tt) {this->testingTargets = tt;}
     bool isTestingTargets() {return this->testingTargets;}
     short getOptionsNumber() {return this->testedOptions;}
-    void testCardFromHand(short c, Duel* duel);
+    void testCardFromHand(int c, Duel* duel);
     void testCardBattle(short c, Duel* duel);
     void testHand(Duel* duel);
     void testSpecialMinions();

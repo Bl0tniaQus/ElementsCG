@@ -65,6 +65,7 @@ public:
     virtual void getOnDefenceTargetList(Duel* duel, Card* card) {};
     virtual void getOnDestroyTargetList(Duel* duel, Card* card) {};
     virtual void getOnTurnEndTargetList(Duel* duel, Card* card) {};
+    virtual void onSpecialSummonRelease(Duel* duel, Card* card, Card* sp_minion) {};
 
     short singleChoice(Duel* duel, Card* card);
     //common effect targets

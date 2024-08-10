@@ -9,7 +9,7 @@ public:
         6, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         6, //level
-        3, //attack
+        4, //attack
         3, //defence
         "Air", //element
         "Dragonoid Storm Chaser", //name

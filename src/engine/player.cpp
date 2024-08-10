@@ -175,6 +175,7 @@ short Player::getMinionCount()
     }
     return count;
 }
+
 Player::~Player()
 {
     opponent = nullptr;

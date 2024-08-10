@@ -68,6 +68,7 @@ public:
     Card** getSpecialDeck() {return this->specialDeck;}
     short getSpecialDeckSize() {return this->n_special;}
     void setSpecialDeckSize(short n) {this->n_special=n;}
+
     void setDeckOwnership();
     void shuffleDeck();
     short getMinionCount();

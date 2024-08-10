@@ -34,12 +34,14 @@ public:
     void combat(Card* attacker, Card* defender);
     void directAttack(Card* attacker);
     void destruction(Card* card);
+    void releaseForSpecialSummon(Card* card, Card* sp_minion);
     void toHand(Card* card);
     void searchCard(Card* card);
     void toSpecialDeck(Card* card);
     void toGraveyard(Card* card);
     void removeFromField(Card* card);
     void checkWinner();
+    Card* getCardFromCopyId(int id);
     void setUiBridge(DuelUiBridge* bridge) {this->uiBridge = bridge;}
     short getEmptyMinionZone(Player* player);
     void summonMinion(Card *minion, short zoneid);
