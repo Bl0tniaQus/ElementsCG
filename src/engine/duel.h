@@ -43,6 +43,7 @@ public:
     void checkWinner();
     Card* getCardFromCopyId(int id);
     void setUiBridge(DuelUiBridge* bridge) {this->uiBridge = bridge;}
+    DuelUiBridge* getUiBridge() {return this->uiBridge;}
     short getEmptyMinionZone(Player* player);
     void summonMinion(Card *minion, short zoneid);
     bool activateSpell(Card* spell);

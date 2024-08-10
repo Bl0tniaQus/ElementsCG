@@ -63,6 +63,7 @@ void Bot::testCardFromHand(int c, Duel* duel)
                     this->tested = i;
                     this->generateTempGamestate(duel);
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+                    card = this->tempGamestate->getCardFromCopyId(c);
                     this->tempGamestate->playFromHand(card);
                     value = this->tempGamestate->evaluate();
                     this->saveHandOption(c,i,value-bValue);

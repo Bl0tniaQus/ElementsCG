@@ -10,7 +10,6 @@ Gamestate::Gamestate(Duel* duel):Duel()
 {
     this->setTurnCount(duel->getTurnCount());
     this->setTurnPlayer(duel->getTurnPlayer());
-
     short** usedZonesArr = new short*[2];
     short* cardsOnFieldArr = new short[2];
     int** fieldCardsArr = new int*[2];
