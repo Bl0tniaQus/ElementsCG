@@ -17,5 +17,6 @@
     <file alias="wyvernhatchling">resources/images/wyvernhatchling.jpg</file>
     <file alias="lightning">resources/images/lightning.jpg</file>
     <file alias="angrycumulonimbus">resources/images/angrycumulonimbus.jpg</file>
+    <file alias="dragonoidstormchaser">resources/images/dragonoidstormchaser.jpg</file>
 </qresource>
 </RCC>
