@@ -174,7 +174,7 @@ void Bot::saveHandOption(int card, short target, float val)
     float *newValues = new float[this->testedOptions];
     if (this->testedOptions>1)
     {
-        for (int i=0;i<this->testedOptions;i++)
+        for (int i=0;i<this->testedOptions-1;i++)
         {
             newHandOptions[i] = this->handOptions[i];
             newTargets[i] = this->targetsForOptions[i];
@@ -213,8 +213,8 @@ void Bot::saveSpecialMinionOption(int card, int material1, int material2, int ma
         {
             newSpecialMinionOptions[i] = this->specialMinionOptions[i];
             newMaterialNumbers[i] = this->materialNumbers[i];
-            newMaterials[i] = new int[newMaterialNumbers[i]];
-            for (int j=0;j<newMaterialNumbers[i];j++)
+            newMaterials[i] = new int[3];
+            for (int j=0;j<3;j++)
             {
                 newMaterials[i][j] = this->specialMinionMaterials[i][j];
             }
@@ -222,20 +222,20 @@ void Bot::saveSpecialMinionOption(int card, int material1, int material2, int ma
         }
             newSpecialMinionOptions[this->testedSpecialMinionOptions-1] = card;
             newMaterialNumbers[this->testedSpecialMinionOptions-1] = n_materials;
-            newMaterials[this->testedSpecialMinionOptions-1] = new int[n_materials];
+            newMaterials[this->testedSpecialMinionOptions-1] = new int[3];
             newMaterials[testedSpecialMinionOptions-1][0] = material1;
             newMaterials[testedSpecialMinionOptions-1][1] = material2;
-            if (n_materials==3){ newMaterials[testedSpecialMinionOptions-1][2] = material3;}
+            newMaterials[testedSpecialMinionOptions-1][2] = material3;
             newSpecialMinionValues[this->testedSpecialMinionOptions-1] = val;
     }
     else
     {
             newSpecialMinionOptions[0] = card;
             newMaterialNumbers[0] = n_materials;
-            newMaterials[0] = new int[n_materials];
+            newMaterials[0] = new int[3];
             newMaterials[0][0] = material1;
             newMaterials[0][1] = material2;
-            if (n_materials==3){ newMaterials[0][2] = material3;}
+            newMaterials[0][2] = material3;
             newSpecialMinionValues[0] = val;
     }
     delete[] this->specialMinionOptions;
@@ -261,7 +261,7 @@ void Bot::saveAttackOption(short card, short target, float val)
     float *newBattleValues = new float[this->testedBattleOptions];
     if (this->testedBattleOptions>1)
     {
-        for (int i=0;i<this->testedBattleOptions;i++)
+        for (int i=0;i<this->testedBattleOptions-1;i++)
         {
             newBattleOptions[i] = this->battleOptions[i];
             newBattleTargets[i] = this->targetsForBattleOptions[i];
@@ -311,7 +311,7 @@ void Bot::getBestSpecialMinionOption()
         {
             if (this->specialMinionValues[i]>bestValue)
             {
-                bestValue = this->handValues[i];
+                bestValue = this->specialMinionValues[i];
                 bestOption = i;
             }
         }

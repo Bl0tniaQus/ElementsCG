@@ -22,6 +22,8 @@ Duel::~Duel()
 {
     delete this->attackersTargetList;
     delete this->defendersTargetList;
+    delete [] logs;
+    delete [] logsSource;
 }
 void Duel::drawField(char p)
 {
@@ -171,8 +173,9 @@ void Duel::toGraveyard(Card* card)
 }
 void Duel::toSpecialDeck(Card* card)
 {
+
+    if (card->getZone()!=nullptr&&card->getPlace()==2) {this->removeFromField(card);}
     card->setPlace(4);
-    if (card->getZone()!=nullptr) {this->removeFromField(card);}
     Player* owner = card->getOriginalOwner();
     card->returnToOriginal();
     short n_special = owner->getSpecialDeckSize();
@@ -189,6 +192,7 @@ void Duel::toSpecialDeck(Card* card)
     newSpecial[n_special] = card;
     }
     owner->setSpecialDeck(newSpecial, n_special+1);
+    this->appendLog(this->returnToHandLog(card),this->getPlayerId(card->getOwner()));
     delete[] newSpecial;
 }
 void Duel::removeFromField(Card* card)
@@ -254,7 +258,7 @@ void Duel::toHand(Card* card)
         if (originalPlace == 1 || originalPlace==4) {return;}
         card->setPlace(1);
         card->returnToOriginal();
-        if (card->getZone()!=nullptr) {this->removeFromField(card);}
+        if (card->getZone()!=nullptr&&card->getPlace()==2) {this->removeFromField(card);}
         short n_hand = card->getOriginalOwner()->getHandSize();
         Card** oldHand = card->getOriginalOwner()->getHand();
         Card** newHand = new Card*[n_hand+1];
@@ -393,7 +397,7 @@ void Duel::turnEndEffects()
             n_effects++;
             neweffects = new Card* [n_effects];
             if (n_effects>1) {
-                for (int j=0;j<n_effects;j++)
+                for (int j=0;j<n_effects-1;j++)
                 {
 
                     neweffects[j] = effects[j];
@@ -414,7 +418,7 @@ void Duel::turnEndEffects()
             n_effects++;
             neweffects = new Card* [n_effects];
             if (n_effects>1) {
-                for (int j=0;j<n_effects;j++)
+                for (int j=0;j<n_effects-1;j++)
                 {
 
                     neweffects[j] = effects[j];
@@ -448,7 +452,7 @@ void Duel::turnStartEffects()
             n_effects++;
             neweffects = new Card* [n_effects];
             if (n_effects>1) {
-                for (int j=0;j<n_effects;j++)
+                for (int j=0;j<n_effects-1;j++)
                 {
 
                     neweffects[j] = effects[j];
@@ -469,7 +473,7 @@ void Duel::turnStartEffects()
             n_effects++;
             Card **neweffects = new Card* [n_effects];
             if (n_effects>1) {
-                for (int j=0;j<n_effects;j++)
+                for (int j=0;j<n_effects-1;j++)
                 {
 
                     neweffects[j] = effects[j];
@@ -659,7 +663,7 @@ void Duel::generateAttackersList()
                 Card** newAttackers = new Card* [n];
                 if (n>1)
                 {
-                    for (int j=0;j<n;j++)
+                    for (int j=0;j<n-1;j++)
                     {
                         newAttackers[j] = attackers[j];
                     }
@@ -691,7 +695,7 @@ void Duel::generateDefendersList()
                 Card** newDefenders = new Card* [n];
                 if (n>1)
                 {
-                    for (int j=0;j<n;j++)
+                    for (int j=0;j<n-1;j++)
                     {
                         newDefenders[j] = defenders[j];
                     }
@@ -1099,7 +1103,6 @@ std::string Duel::addToHandLog(Card* card)
     str = "[" + playername +"]"+" has added ["+ card_name +"] to their hand";
     return str;
 }
-
 
 
 

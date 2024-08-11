@@ -21,7 +21,7 @@ private:
     TargetList* targetList;
 public:
     CardBase() {};
-    virtual ~CardBase() {}
+    virtual ~CardBase();
     CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char* i, const char* ctx);
     void bindCard(Card* card) {this->cardEntity = card;}
     short getCardId() {return this->cardId;}
@@ -39,6 +39,7 @@ public:
     Card* getCardEntity() {return this->cardEntity;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
+    void clearTargetList();
     void spellCost(Card* card);
     void effectLog(Duel* duel, Card* card);
     void firstEffectLog(Duel* duel, Card* card);
@@ -87,9 +88,9 @@ public:
     virtual bool specialSummon(Duel* duel, Card* card) {return false;};
     bool specialSummon2(Duel* duel, Card* card);
     bool specialSummon3(Duel* duel, Card* card);
-    virtual void getFirstMaterialList(Duel* duel, Card* card) {this->setTargetList(nullptr,0);};
-    virtual void getSecondMaterialList(Duel* duel, Card* card) {this->setTargetList(nullptr,0);};
-    virtual void getThirdMaterialList(Duel* duel, Card* card) {this->setTargetList(nullptr,0);};
+    virtual void getFirstMaterialList(Duel* duel, Card* card) {};
+    virtual void getSecondMaterialList(Duel* duel, Card* card) {};
+    virtual void getThirdMaterialList(Duel* duel, Card* card) {};
 
 
 

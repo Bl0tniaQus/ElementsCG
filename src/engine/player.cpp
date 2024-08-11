@@ -182,6 +182,7 @@ Player::~Player()
     delete [] minionField;
     delete [] hand;
     delete [] deck;
+    delete [] name;
     delete [] specialDeck;
     delete [] graveyard;
     delete [] originalDeck;

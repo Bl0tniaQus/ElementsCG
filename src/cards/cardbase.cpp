@@ -25,6 +25,14 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, cons
     this->cardText = new char[strlen(ctx)+1];
     strcpy(this->cardText,ctx);
 }
+CardBase::~CardBase()
+{
+    delete[] this->name;
+    delete[] this->element;
+    delete[] this->image;
+    delete[] this->cardText;
+    delete this->targetList;
+}
 void CardBase::setTargetList(Card** tl, short n)
 {
     this->targetList->setTargetList(tl, n);
@@ -112,7 +120,7 @@ void CardBase::allMinionsOnField(Duel* duel, Card* card)
             n_targets++;
             Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
+                for (int j=0;j<n_targets-1;j++)
                 {
 
                     newtargets[j] = targets[j];
@@ -144,7 +152,7 @@ void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const c
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
                     if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
+                        for (int j=0;j<n_targets-1;j++)
                         {
 
                             newtargets[j] = targets[j];
@@ -173,7 +181,7 @@ void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
             n_targets++;
             Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
+                for (int j=0;j<n_targets-1;j++)
                 {
                     newtargets[j] = targets[j];
 
@@ -200,7 +208,7 @@ void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char*
             n_targets++;
             Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
+                for (int j=0;j<n_targets-1;j++)
                 {
                     newtargets[j] = targets[j];
 
@@ -227,7 +235,7 @@ void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char*
             n_targets++;
             Card **newtargets = new Card* [n_targets];
             if (n_targets>1) {
-                for (int j=0;j<n_targets;j++)
+                for (int j=0;j<n_targets-1;j++)
                 {
                     newtargets[j] = targets[j];
 
@@ -258,7 +266,7 @@ void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, cons
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
                     if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
+                        for (int j=0;j<n_targets-1;j++)
                         {
 
                             newtargets[j] = targets[j];
@@ -546,7 +554,7 @@ void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
                     if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
+                        for (int j=0;j<n_targets-1;j++)
                         {
 
                             newtargets[j] = targets[j];
@@ -577,7 +585,7 @@ void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
                     if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
+                        for (int j=0;j<n_targets-1;j++)
                         {
 
                             newtargets[j] = targets[j];
@@ -608,7 +616,7 @@ void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, 
                 n_targets++;
                 Card **newtargets = new Card* [n_targets];
                 if (n_targets>1) {
-                    for (int j=0;j<n_targets;j++)
+                    for (int j=0;j<n_targets-1;j++)
                     {
 
                         newtargets[j] = targets[j];

@@ -46,7 +46,7 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 int *new_fieldCards = new int[cardsOnField];
                 if (cardsOnField>1)
                 {
-                    for (int k=0;k<cardsOnField;k++)
+                    for (int k=0;k<cardsOnField-1;k++)
                     {
                         new_usedZones[k] = usedZones[k];
                         new_fieldCards[k] = fieldCards[k];
