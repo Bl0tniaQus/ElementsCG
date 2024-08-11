@@ -19,10 +19,13 @@ private:
     int* battleOptions;
     int* targetsForBattleOptions;
     float* battleValues;
-
-    short* specialMinionOptions;
-    short** specialMinionMaterials;
-
+    float* specialMinionValues;
+    int* specialMinionOptions;
+    int** specialMinionMaterials;
+    short* materialNumbers;
+    Card* material1;
+    Card* material2;
+    Card* material3;
 
     int testedOptions;
     int testedBattleOptions;
@@ -53,25 +56,37 @@ public:
     void setTargetTesting(bool tt) {this->testingTargets = tt;}
     bool isTestingTargets() {return this->testingTargets;}
     short getOptionsNumber() {return this->testedOptions;}
+    short getSpecialMinionOptionsNumber() {return this->testedSpecialMinionOptions;}
     void testCardFromHand(int c, Duel* duel);
     void testCardBattle(short c, Duel* duel);
     void testHand(Duel* duel);
-    void testSpecialMinions();
+    void testSpecialMinions(Duel* duel);
+    void testSpecialMinion(int c, Duel* duel);
     void testBattlePhase(Duel* duel);
     void conductBattlePhase(Duel* duel);
-    void saveHandOption(short card, short target, float val);
+    void saveHandOption(int card, short target, float val);
+    void saveSpecialMinionOption(int card, int material1, int material2, int material3, float val);
     void saveAttackOption(short card, short target, float val);
     short getBestTarget() {return this->targetsForOptions[this->bestOption];}
     short getBestCard() {return this->handOptions[this->bestOption];}
+    short getBestSpecialMinion() {return this->specialMinionOptions[this->bestSpecialMinionOption];}
     float getBestHandValue() {return this->handValues[this->bestOption];}
     short getBestAttacker() {return this->battleOptions[this->bestAttackOption];};
     short getBestAttackTarget() {return this->targetsForBattleOptions[this->bestAttackOption];};
     float getBestAttackValue() {return this->battleValues[this->bestAttackOption];}
     void getBestOption();
+    void getBestSpecialMinionOption();
+    int* getBestMaterials();
+    short getBestMaterialsNumber() {return this->materialNumbers[this->bestSpecialMinionOption];}
+    float getBestSpecialMinionValue() {return this->specialMinionValues[this->bestSpecialMinionOption];}
     void getBestAttackOption();
     void endHandTesting();
+    void endSpecialMinionTesting();
     void endBattleTesting();
     void playTurn(Duel* duel);
+    Card* getFirstMaterial() {return this->material1;}
+    Card* getSecondMaterial() {return this->material2;}
+    Card* getThirdMaterial() {return this->material3;}
     //entity ids instead of array indices, test two card combos instead of single cards, do nothing if second card failed to find it's target
 };
 #endif // BOT_H

@@ -275,6 +275,7 @@ void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, cons
 }
 bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 {
+        if (card->getCardName()->getMaterialNumber()!=2) {return false;}
         bool result = true;
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
@@ -318,6 +319,7 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 }
 bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
 {
+        if (card->getCardName()->getMaterialNumber()!=3) {return false;}
         bool result = false;
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
@@ -377,13 +379,16 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
 {
     if (checkSummoningConditions2(duel,card))
     {
+        Card* targetCard;
+        Card* targetCard2;
+        if (card->getOwner()->getBot()==nullptr)
+        {
         this->getFirstMaterialList(duel, card);
         Card** targets1 = this->getTargetList()->getTargetList();
         int target;
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
-        Card* targetCard = targets1[target];
-        Card* targetCard2;
+        targetCard = targets1[target];
         this->getSecondMaterialList(duel, card);
         short n_targets2 = this->getTargetList()->getTargetsNumber();
         Card** targets2 = this->getTargetList()->getTargetList();
@@ -416,6 +421,12 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
         targetCard2 = new_targets2[target];
+        }
+        else
+        {
+            targetCard = card->getOwner()->getBot()->getFirstMaterial();
+            targetCard2 = card->getOwner()->getBot()->getSecondMaterial();
+        }
         this->release2Log(targetCard,targetCard2, duel);
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
@@ -427,13 +438,17 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
 {
     if (checkSummoningConditions3(duel,card))
     {
+        Card* targetCard;
+        Card* targetCard2;
+        Card* targetCard3;
+        if (card->getOwner()->getBot()==nullptr)
+        {
         this->getFirstMaterialList(duel, card);
         Card** targets1 = this->getTargetList()->getTargetList();
         int target;
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
-        Card* targetCard = targets1[target];
-        Card* targetCard2;
+        targetCard = targets1[target];
         this->getSecondMaterialList(duel, card);
         short n_targets2 = this->getTargetList()->getTargetsNumber();
         Card** targets2 = this->getTargetList()->getTargetList();
@@ -468,7 +483,6 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
         targetCard2 = new_targets2[target];
 
         short duplicates = 0;
-        Card* targetCard3;
         this->getThirdMaterialList(duel, card);
         short n_targets3 = this->getTargetList()->getTargetsNumber();
         Card** targets3 = this->getTargetList()->getTargetList();
@@ -502,13 +516,17 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
         targetCard3 = new_targets3[target];
+        }
+        else
+        {
+            targetCard = card->getOwner()->getBot()->getFirstMaterial();
+            targetCard2 = card->getOwner()->getBot()->getSecondMaterial();
+            targetCard3 = card->getOwner()->getBot()->getThirdMaterial();
+        }
         this->release3Log(targetCard,targetCard2,targetCard3, duel);
-        duel->removeFromField(targetCard);
-        duel->removeFromField(targetCard2);
-        duel->removeFromField(targetCard3);
-        duel->toGraveyard(targetCard);
-        duel->toGraveyard(targetCard2);
-        duel->toGraveyard(targetCard3);
+        duel->releaseForSpecialSummon(targetCard, card);
+        duel->releaseForSpecialSummon(targetCard2, card);
+        duel->releaseForSpecialSummon(targetCard3, card);
         return true;
     }
     return false;

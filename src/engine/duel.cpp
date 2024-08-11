@@ -237,7 +237,6 @@ void Duel::summonSpecialMinion(Card *minion)
             delete[] newSpecial;
             this->onSummon(minion);
         }
-
 }
 bool Duel::activateSpell(Card *spell)
 {
