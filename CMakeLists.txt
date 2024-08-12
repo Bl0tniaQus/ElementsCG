@@ -56,6 +56,8 @@ set(PROJECT_SOURCES
         src/cards/shieldbash.cpp
         src/cards/magnetize.cpp
         src/cards/topazamberfossil.cpp
+        src/cards/earthquake.cpp
+        src/cards/recycle.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -19,5 +19,7 @@
     <file alias="angrycumulonimbus">resources/images/angrycumulonimbus.jpg</file>
     <file alias="dragonoidstormchaser">resources/images/dragonoidstormchaser.jpg</file>
     <file alias="dragonoidscout">resources/images/dragonoidscout.jpg</file>
+    <file alias="recycle">resources/images/recycle.jpg</file>
+    <file alias="earthquake">resources/images/earthquake.jpg</file>
 </qresource>
 </RCC>

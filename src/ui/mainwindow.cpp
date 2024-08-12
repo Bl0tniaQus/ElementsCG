@@ -242,8 +242,8 @@ void MainWindow::handTarget(short id)
     {
     this->selectedHandCard = id;
 
-    short handSize = this->duel->getPlayer(0)->getHandSize();
-        for (int i=0;i<handSize;i++)
+    //short handSize = this->duel->getPlayer(0)->getHandSize();
+        for (int i=0;i<this->handSize;i++)
         {
             this->handImages[i]->setStyleSheet("border:none;");
         }

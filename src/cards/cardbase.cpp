@@ -82,6 +82,7 @@ short CardBase::singleChoice(Duel* duel, Card* card)
 }
 void CardBase::allMinionsOnField(Duel* duel, Card* card)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Zone* zone;
@@ -136,6 +137,7 @@ void CardBase::allMinionsOnField(Duel* duel, Card* card)
 }
 void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Zone* zone;
@@ -170,6 +172,7 @@ void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const c
 
 void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
 {
+    this->setTargetList(nullptr,0);
     short handSize = card->getOwner()->getHandSize();
     short n_targets = 0;
     Card** targets = new Card* [n_targets];
@@ -197,6 +200,7 @@ void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
 }
 void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
 {
+    this->setTargetList(nullptr,0);
     short handSize = card->getOwner()->getHandSize();
     short n_targets = 0;
     Card** targets = new Card* [n_targets];
@@ -224,6 +228,7 @@ void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char*
 }
 void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
 {
+    this->setTargetList(nullptr,0);
     short deckSize = card->getOwner()->getDeckSize();
     short n_targets = 0;
     Card** targets = new Card* [n_targets];
@@ -251,6 +256,7 @@ void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char*
 }
 void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
 {
+    this->setTargetList(nullptr,0);
     short n_targets = 0;
     Card** targets = new Card* [n_targets];
     Player* player = card->getOwner();
@@ -541,6 +547,7 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
 }
 void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
@@ -572,6 +579,7 @@ void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card
 }
 void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
@@ -604,6 +612,7 @@ void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card
 
 void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Card** graveyard = card->getOwner()->getGraveyard();
@@ -631,8 +640,70 @@ void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, 
         }
     this->setTargetList(targets,n_targets);
 }
+void CardBase::cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element)
+{
+    this->setTargetList(nullptr,0);
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Card** graveyard = card->getOwner()->getGraveyard();
+    short n_graveyard = card->getOwner()->getGraveyardSize();
+        for (int i=0;i<n_graveyard;i++)
+        {
+            Card* cardd = graveyard[i];
+            if (strcmp(element, cardd->getElement())==0)
+            {
+                n_targets++;
+                Card **newtargets = new Card* [n_targets];
+                if (n_targets>1) {
+                    for (int j=0;j<n_targets-1;j++)
+                    {
+
+                        newtargets[j] = targets[j];
+
+                    }
+                    newtargets[n_targets-1] = cardd;
+                    delete [] targets;
+                    targets = newtargets;
+                } else {newtargets[0]=cardd; targets = newtargets;}
+            }
+
+        }
+    this->setTargetList(targets,n_targets);
+}
+void CardBase::cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const char* name)
+{
+    this->setTargetList(nullptr,0);
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Card** graveyard = card->getOwner()->getGraveyard();
+    short n_graveyard = card->getOwner()->getGraveyardSize();
+        for (int i=0;i<n_graveyard;i++)
+        {
+            Card* cardd = graveyard[i];
+            if (strcmp(name, cardd->getName())==0)
+            {
+                n_targets++;
+                Card **newtargets = new Card* [n_targets];
+                if (n_targets>1) {
+                    for (int j=0;j<n_targets-1;j++)
+                    {
+
+                        newtargets[j] = targets[j];
+
+                    }
+                    newtargets[n_targets-1] = cardd;
+                    delete [] targets;
+                    targets = newtargets;
+                } else {newtargets[0]=cardd; targets = newtargets;}
+            }
+
+        }
+    this->setTargetList(targets,n_targets);
+}
+
 void CardBase::specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Card** graveyard = card->getOwner()->getGraveyard();
@@ -645,7 +716,7 @@ void CardBase::specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* ca
                 n_targets++;
                 Card **newtargets = new Card* [n_targets];
                 if (n_targets>1) {
-                    for (int j=0;j<n_targets;j++)
+                    for (int j=0;j<n_targets-1;j++)
                     {
 
                         newtargets[j] = targets[j];
@@ -662,6 +733,7 @@ void CardBase::specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* ca
 }
 void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name)
 {
+    this->setTargetList(nullptr,0);
     short n_targets=0;
     Card** targets = new Card* [n_targets];
     Player* owner = card->getOriginalOwner();
@@ -679,7 +751,7 @@ void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Card* card, const cha
                     n_targets++;
                     Card **newtargets = new Card* [n_targets];
                     if (n_targets>1) {
-                        for (int j=0;j<n_targets;j++)
+                        for (int j=0;j<n_targets-1;j++)
                         {
 
                             newtargets[j] = targets[j];

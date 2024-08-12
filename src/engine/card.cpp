@@ -89,6 +89,8 @@ CardBase* Card::getCardNameById(int id)
         case 26: cardbase = new ShieldBash; break;
         case 27: cardbase = new Magnetize; break;
         case 28: cardbase = new TopazAmberFossil; break;
+        case 29: cardbase = new Earthquake; break;
+        case 30: cardbase = new Recycle; break;
     }
     return cardbase;
 }

@@ -29,5 +29,7 @@
 #include "shieldbash.h" //26
 #include "magnetize.h" //27
 #include "topazamberfossil.h" //28
+#include "earthquake.h" //29
+#include "recycle.h" //30
 
 #endif // ALLCARDS_H

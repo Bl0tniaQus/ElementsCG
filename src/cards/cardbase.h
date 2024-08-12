@@ -75,6 +75,8 @@ public:
     void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
     void cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
     void minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl);
+    void cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element);
+    void cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const char* name);
     void specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element);
     void minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
     void minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element);
