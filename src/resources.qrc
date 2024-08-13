@@ -21,5 +21,7 @@
     <file alias="dragonoidscout">resources/images/dragonoidscout.jpg</file>
     <file alias="recycle">resources/images/recycle.jpg</file>
     <file alias="earthquake">resources/images/earthquake.jpg</file>
+    <file alias="lithiumlizard">resources/images/lithiumlizard.jpg</file>
+    <file alias="magnetize">resources/images/magnetize.jpg</file>
 </qresource>
 </RCC>
