@@ -258,7 +258,7 @@ void Duel::toHand(Card* card)
         if (originalPlace == 1 || originalPlace==4) {return;}
         card->setPlace(1);
         card->returnToOriginal();
-        if (card->getZone()!=nullptr&&card->getPlace()==2) {this->removeFromField(card);}
+        if (card->getZone()!=nullptr&&originalPlace==2) {this->removeFromField(card);}
         short n_hand = card->getOriginalOwner()->getHandSize();
         Card** oldHand = card->getOriginalOwner()->getHand();
         Card** newHand = new Card*[n_hand+1];

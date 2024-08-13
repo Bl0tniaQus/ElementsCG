@@ -104,11 +104,11 @@ Card::~Card()
 void Card::returnToOriginal()
 {
 this->attack = this->cardName->getAttack();
-this->defence = this->cardName->getAttack();
+this->defence = this->cardName->getDefence();
 this->level = this->cardName->getAttack();
 this->owner = this->originalOwner;
 this->barrier = 0;
 this->isNegated = false;
-this->isSpellImmune - false;
+this->isSpellImmune = false;
 this->cost = this->cardName->getCost();
 }

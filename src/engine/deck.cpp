@@ -69,7 +69,7 @@ Deck::Deck(short deckid)
     {
         this->n_cards = 30;
         this->n_special = 6;
-        short cards[] = {1,2,6,15,16,17,18,26,27,28};
+        short cards[] = {1,2,6,29,16,17,18,30,27,28};
         short copies[] = {3,3,3,3,3,3,3,3,3,3};
         short n_uq = 10;
         short sp_cards[] {8,21,20,22};

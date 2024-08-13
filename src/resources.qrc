@@ -23,5 +23,8 @@
     <file alias="earthquake">resources/images/earthquake.jpg</file>
     <file alias="lithiumlizard">resources/images/lithiumlizard.jpg</file>
     <file alias="magnetize">resources/images/magnetize.jpg</file>
+    <file alias="silverwolf">resources/images/silverwolf.jpg</file>
+    <file alias="topazmantis">resources/images/topazmantis.jpg</file>
+    <file alias="dragonoidsage">resources/images/dragonoidsage.jpg</file>
 </qresource>
 </RCC>
