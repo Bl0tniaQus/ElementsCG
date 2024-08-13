@@ -14,6 +14,8 @@ Duel::Duel()
     this->turnPlayer = 0;
     this->attackersTargetList = new TargetList;
     this->defendersTargetList = new TargetList;
+    this->turnEndLingeringEffects = new Card* [0];
+    this->n_lingering = 0;
     this->logsSource = new short [0];
     this->logs = new std::string [0];
     this->n_logs = 0;
@@ -22,8 +24,9 @@ Duel::~Duel()
 {
     delete this->attackersTargetList;
     delete this->defendersTargetList;
-    delete [] logs;
-    delete [] logsSource;
+    delete [] this->turnEndLingeringEffects;
+    delete [] this->logs;
+    delete [] this->logsSource;
 }
 void Duel::drawField(char p)
 {
@@ -435,7 +438,11 @@ void Duel::turnEndEffects()
     {
         this->onTurnEnd(effects[i]);
     }
-
+    for (int i=0;i<this->n_lingering;i++)
+    {
+        this->onTurnEnd(this->turnEndLingeringEffects[i]);
+    }
+    this->clearTurnEndLingeringEffects();
     delete [] effects;
 }
 void Duel::turnStartEffects()
@@ -950,6 +957,28 @@ short Duel::makeSpecialMinionMaterialChoice(Card* card)
         else {return -1;}
     }
 }
+void Duel::addTurnEndLingeringEffect(Card* card)
+{
+    this->n_lingering++;
+    Card** newLingering = new Card* [this->n_lingering];
+    if (this->n_lingering==1) {newLingering[0] = card;}
+    else{
+        for (int i=0; i<n_lingering-1;i++)
+        {
+            newLingering[i] = this->turnEndLingeringEffects[i];
+        }
+        newLingering[n_lingering-1] = card;
+    }
+    delete[] this->turnEndLingeringEffects;
+    this->turnEndLingeringEffects = newLingering;
+}
+void Duel::clearTurnEndLingeringEffects()
+{
+    delete [] this->turnEndLingeringEffects;
+    this->n_lingering = 0;
+    this->turnEndLingeringEffects = new Card* [0];
+}
+
 void Duel::turnStartLog()
 {
     std::string str = "Turn "+std::to_string(this->turnCount);

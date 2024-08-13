@@ -6,7 +6,7 @@ class Magnetize : public CardBase
 public:
     Magnetize():CardBase(
         27, //card id
-        5, //cost
+        4, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level
         -1, //attack
@@ -14,10 +14,14 @@ public:
         "Earth", //element
         "Magnetize", //name
         "magnetize",
-        ""
+        "Target 1 earth minion you control: it gains attack equal to combined attack of all other earth minions you control until the end of the turn, also your other earth minions can't attack this turn."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
+    void onTurnEnd(Duel * duel, Card * card) override;
     void getOnSpellTargetList(Duel* duel, Card* card) override;
+private:
+    Card* target;
+    short atkChange;
 
 };
 

@@ -105,7 +105,7 @@ void Card::returnToOriginal()
 {
 this->attack = this->cardName->getAttack();
 this->defence = this->cardName->getDefence();
-this->level = this->cardName->getAttack();
+this->level = this->cardName->getLevel();
 this->owner = this->originalOwner;
 this->barrier = 0;
 this->isNegated = false;

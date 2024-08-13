@@ -14,10 +14,12 @@ private:
     DuelUiBridge* uiBridge;
     short turnCount;
     unsigned char turnPlayer;
-
     short* logsSource;
     std::string* logs;
     int n_logs;
+
+    Card** turnEndLingeringEffects;
+    short n_lingering;
 public:
     Duel();
     virtual ~Duel();
@@ -71,7 +73,8 @@ public:
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
-
+    void addTurnEndLingeringEffect(Card* card);
+    void clearTurnEndLingeringEffects();
     virtual void appendLog(std::string log, short log_source);
     void turnStartLog();
     std::string* getLogs() {return this->logs;}

@@ -9,8 +9,8 @@ public:
         3, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         3, //level
-        1, //attack
-        1, //defence
+        0, //attack
+        2, //defence
         "Earth", //element
         "Tungsten Firefly", //name
         "tungstenfirefly",
