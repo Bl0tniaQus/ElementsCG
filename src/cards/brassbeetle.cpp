@@ -20,7 +20,7 @@ void BrassBeetle::onSummon(Duel* duel, Card* card)
 }
 void BrassBeetle::onTurnStart(Duel * duel, Card * card)
 {
-
+    card->setAttacks(1);
 }
 
 

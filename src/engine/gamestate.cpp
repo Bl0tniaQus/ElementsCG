@@ -150,6 +150,15 @@ Gamestate::Gamestate(Duel* duel):Duel()
                     break;
                 }
             }
+            for (int k=0;k<originalSpecialDeckSize;k++)
+            {
+                int originalId = originalSpecialDeckCopy[k].getCopyId();
+                if (id==originalId)
+                {
+                    graveyardCopy[j] = &originalSpecialDeckCopy[k];
+                    break;
+                }
+            }
         }
 
         player_new->setHand(handCopy,handSize);
