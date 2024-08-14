@@ -6,7 +6,7 @@ class Excavation : public CardBase
 public:
     Excavation():CardBase(
         16, //card id
-        5, //cost
+        3, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level
         -1, //attack
@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Excavation", //name
         "excavation",
-        ""
+        "Reveal 3 top cards from your deck, then you can target one earth card among them and add it to your hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void getOnSpellTargetList(Duel* duel, Card* card) override;

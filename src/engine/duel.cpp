@@ -291,6 +291,7 @@ void Duel::searchCard(Card* card)
 {
     this->toHand(card);
     this->removeFromDeck(card);
+    card->getOriginalOwner()->shuffleDeck();
 }
 void Duel::drawCard(Player* player)
 {
@@ -635,6 +636,11 @@ void Duel::changeBarrier(Card* card, short b)
     this->appendLog(this->barrierChangeLog(card,b), this->getPlayerId(card->getOwner()));
     card->setBarrier(b);
 }
+void Duel::excavateCard(Card* card)
+{
+    this->appendLog(this->excavateCardLog(card), this->getPlayerId(card->getOriginalOwner()));
+}
+
 void Duel::passTurn()
 {
     Player* turnPlayer = this->getPlayer(this->getTurnPlayer());
@@ -1130,6 +1136,13 @@ std::string Duel::addToHandLog(Card* card)
     std::string playername = card->getOriginalOwner()->getName();
     std::string str;
     str = "[" + playername +"]"+" has added ["+ card_name +"] to their hand";
+    return str;
+}
+std::string Duel::excavateCardLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string playername = card->getOwner()->getName();
+    std::string str = "["+ playername +"]" +" reveals [" + card_name + "]";
     return str;
 }
 

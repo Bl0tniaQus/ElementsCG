@@ -72,6 +72,8 @@ public:
     //common effect targets
     void allMinionsOnField(Duel* duel, Card* card);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);
+    void nTopCardsFromDeck(Duel* duel, Card* card, short n);
+    void cardsWithSameElementInTargetList(const char* element);
     void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
     void cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
     void minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl);

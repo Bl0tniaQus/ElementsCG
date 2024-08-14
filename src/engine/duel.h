@@ -70,6 +70,7 @@ public:
     void changeStats(Card* card, short a, short d);
     void changeLevel(Card* card, short l);
     void changeBarrier(Card* card, short b);
+    void excavateCard(Card* card);
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
@@ -93,6 +94,7 @@ public:
     std::string directAttackLog(Card* attacker);
     std::string statChangeLog(Card* card, short a_new, short d_new);
     std::string levelChangeLog(Card* card, short l);
+    std::string excavateCardLog(Card* card);
     void turnEndLog();
 
     TargetList* getAttackersList() {return this->attackersTargetList;}

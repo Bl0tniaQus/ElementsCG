@@ -169,6 +169,34 @@ void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const c
         }
         this->setTargetList(targets,n_targets);
 }
+void CardBase::cardsWithSameElementInTargetList(const char* element)
+{
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Card** targetList = this->getTargetList()->getTargetList();
+    short n = this->getTargetList()->getTargetsNumber();
+    for (int i=0; i<n;i++)
+    {
+        Card* cardd = targetList[i];
+        if (strcmp(element, cardd->getElement())==0)
+        {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets-1;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
+                }
+    }
+    this->setTargetList(targets,n_targets);
+}
 
 void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
 {
@@ -254,6 +282,33 @@ void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char*
     }
     this->setTargetList(targets,n_targets);
 }
+void CardBase::nTopCardsFromDeck(Duel* duel, Card* card, short n)
+{
+    this->setTargetList(nullptr,0);
+    short deckSize = card->getOwner()->getDeckSize();
+    short n_targets = 0;
+    if (deckSize<n) {return;}
+    Card** targets = new Card* [n_targets];
+    for (int i=0;i<n;i++)
+        {
+            Card *target = card->getOwner()->getDeck()[deckSize-(i+1)];
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets-1;j++)
+                {
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = target;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=target; targets = newtargets;}
+
+    }
+    this->setTargetList(targets,n_targets);
+}
+
 void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart)
 {
     this->setTargetList(nullptr,0);
