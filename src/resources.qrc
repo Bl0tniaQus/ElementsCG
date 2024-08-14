@@ -26,5 +26,6 @@
     <file alias="silverwolf">resources/images/silverwolf.jpg</file>
     <file alias="topazmantis">resources/images/topazmantis.jpg</file>
     <file alias="dragonoidsage">resources/images/dragonoidsage.jpg</file>
+    <file alias="excavation">resources/images/excavation.jpg</file>
 </qresource>
 </RCC>

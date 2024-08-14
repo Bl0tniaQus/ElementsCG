@@ -6,7 +6,8 @@
 bool Excavation::onSpell(Duel* duel, Card* card)
 {
     if (card->getOwner()->getDeckSize()<3) {return false;}
-
+    this->spellFromHandLog(duel,card);
+    this->spellCost(card);
     this->getOnSpellTargetList(duel, card);
     short n_revealed = this->getTargetList()->getTargetsNumber();
     Card** revealed = this->getTargetList()->getTargetList();
