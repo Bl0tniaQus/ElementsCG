@@ -16,7 +16,7 @@ void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
 }
 void DuelUiBridge::initiateDuel()
 {
-    Deck deck(2);
+    Deck deck(1);
     Deck deck2(2);
     this->duelControl(&deck,&deck2);
 }
@@ -141,6 +141,12 @@ void DuelUiBridge::battlePhase()
     short id_attacker, id_defender;
     while (true)
     {
+        if (this->duel->getDuelEnded())
+        {
+            this->attackerTarget = -2;
+            this->defenderTarget = -2;
+            break;
+        }
         this->duel->generateAttackersList();
         this->duel->generateDefendersList();
         emit drawAttackers();
@@ -166,6 +172,14 @@ void DuelUiBridge::battlePhase()
             this->defenderTarget = -2;
         }
     this->updateBoard();
+    }
+}
+void DuelUiBridge::endDuel(short result)
+{
+    if (result!=-1)
+    {
+        this->updateBoard();
+        emit duelEndSignal(result);
     }
 }
 

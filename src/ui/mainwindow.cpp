@@ -25,6 +25,8 @@ MainWindow::~MainWindow()
 void MainWindow::startDuel()
 {
     this->ui->targetBox->setVisible(false);
+    this->ui->endDuelButton->setVisible(false);
+    this->ui->endDuelButton->setDisabled(true);
     this->bridge = new DuelUiBridge;
     this->duel = new Duel;
     this->duel->getPlayer(1)->setBot(&bot);
@@ -55,8 +57,9 @@ void MainWindow::startDuel()
     connect(this, &MainWindow::startBattlePhaseSignal, this->bridge, &DuelUiBridge::battlePhase);
     connect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
     connect(this->bridge,&DuelUiBridge::specialMinionPlayed,this, &MainWindow::specialDeckTarget);
-
+    connect(this->bridge,&DuelUiBridge::duelEndSignal, this, &MainWindow::endDuel);
     connect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
+    connect(this->ui->endDuelButton, &QPushButton::released, this, &MainWindow::clearDuel);
 
     this->bridge->moveToThread(&duelThread);
     duelThread.start();
@@ -238,7 +241,7 @@ void MainWindow::setOpponentGraveyardImages()
 }
 void MainWindow::handTarget(short id)
 {
-    if (!targeting)
+    if (!this->buttonBlock)
     {
     this->selectedHandCard = id;
 
@@ -255,7 +258,7 @@ void MainWindow::handTarget(short id)
 }
 void MainWindow::specialDeckTarget(short id)
 {
-    if (!targeting)
+    if (!this->buttonBlock)
     {
     this->selectedSpecialDeckCard = id;
 
@@ -286,7 +289,7 @@ void MainWindow::maintainSpecialDeckTargetHighlight()
 }
 void MainWindow::spellTargetingTarget(short id)
 {
-    if (targeting)
+    if (this->buttonBlock)
     {
     this->selectedSpellTarget = id;
         for (int i=0;i<this->n_targets;i++)
@@ -301,7 +304,7 @@ void MainWindow::spellTargetingTarget(short id)
 }
 void MainWindow::attackerTargetingTarget(short id)
 {
-    if (targeting)
+    if (this->buttonBlock)
     {
     this->selectedAttackerTarget = id;
         for (int i=0;i<this->n_targets;i++)
@@ -316,7 +319,7 @@ void MainWindow::attackerTargetingTarget(short id)
 }
 void MainWindow::defenderTargetingTarget(short id)
 {
-    if (targeting)
+    if (this->buttonBlock)
     {
     this->selectedDefenderTarget = id;
         for (int i=0;i<this->n_targets;i++)
@@ -332,7 +335,7 @@ void MainWindow::defenderTargetingTarget(short id)
 }
 void MainWindow::materialTargetingTarget(short id)
 {
-    if (targeting)
+    if (this->buttonBlock)
     {
     this->selectedMaterialTarget = id;
         for (int i=0;i<this->n_targets;i++)
@@ -347,14 +350,14 @@ void MainWindow::materialTargetingTarget(short id)
 }
 void MainWindow::playFromHand()
 {
-    if (this->selectedHandCard!=-1&&!targeting)
+    if (this->selectedHandCard!=-1&&!this->buttonBlock)
     {
         emit handAction(this->selectedHandCard);
     }
 }
 void MainWindow::playSpecialMinion()
 {
-    if (this->selectedSpecialDeckCard!=-1&&!targeting)
+    if (this->selectedSpecialDeckCard!=-1&&!this->buttonBlock)
     {
         emit specialDeckAction(this->selectedSpecialDeckCard);
     }
@@ -522,7 +525,7 @@ void MainWindow::setSpellTargetImages(Card* card)
     short nt = card->getCardName()->getTargetList()->getTargetsNumber();
     Card* c;
     int i;
-    this->targeting = true;
+    this->buttonBlock = true;
     this->ui->targetBox->setVisible(true);
     this->ui->targetBox->setTabText(0, "Select target");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::spellConfirm);
@@ -569,7 +572,7 @@ void MainWindow::setAttackerTargetImages()
     short nt = this->duel->getAttackersList()->getTargetsNumber();
     Card* c;
     int i;
-    this->targeting = true;
+    this->buttonBlock = true;
     this->ui->targetBox->setVisible(true);
     this->ui->targetBox->setTabText(0, "Select attacker");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::attackerConfirm);
@@ -618,7 +621,7 @@ void MainWindow::setDefenderTargetImages()
     short nt = this->duel->getDefendersList()->getTargetsNumber();
     Card* c;
     int i;
-    this->targeting = true;
+    this->buttonBlock = true;
     this->ui->targetBox->setVisible(true);
     this->ui->targetBox->setTabText(0, "Select attack target");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::defenderConfirm);
@@ -728,7 +731,7 @@ void MainWindow::setMaterialTargetImages(Card* card)
 }
 void MainWindow::setFirstMaterialTargetImages(Card* card)
 {
-    this->targeting = true;
+    this->buttonBlock = true;
     this->ui->targetBox->setVisible(true);
     this->ui->targetBox->setTabText(0, "Select first material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
@@ -739,7 +742,7 @@ void MainWindow::setFirstMaterialTargetImages(Card* card)
 }
 void MainWindow::setSecondMaterialTargetImages(Card* card)
 {
-    this->targeting = true;
+    this->buttonBlock = true;
     this->ui->targetBox->setVisible(true);
     this->ui->targetBox->setTabText(0, "Select second material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
@@ -750,7 +753,7 @@ void MainWindow::setSecondMaterialTargetImages(Card* card)
 }
 void MainWindow::setLastMaterialTargetImages(Card* card)
 {
-    this->targeting = true;
+    this->buttonBlock = true;
     this->ui->targetBox->setVisible(true);
     this->ui->targetBox->setTabText(0, "Select last material");
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::specialMinionConfirm);
@@ -764,22 +767,22 @@ void MainWindow::spellConfirm()
     if (this->selectedSpellTarget!=-1)
     {
         this->bridge->setSpellTarget(this->selectedSpellTarget);
-        this->targeting = false;
+        this->buttonBlock = false;
         this->selectedSpellTarget = -1;
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
-        clearTargets();
+        this->clearTargets();
         mutex.unlock();
     }
 }
 void MainWindow::spellCancel()
 {
     this->bridge->setSpellTarget(-1);
-    this->targeting = false;
+    this->buttonBlock = false;
     this->selectedSpellTarget = -1;
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
-    clearTargets();
+    this->clearTargets();
     mutex.unlock();
 }
 void MainWindow::specialMinionConfirm()
@@ -787,11 +790,11 @@ void MainWindow::specialMinionConfirm()
     if (this->selectedMaterialTarget!=-1)
     {
         this->bridge->setMaterialTarget(this->selectedMaterialTarget);
-        this->targeting = false;
+        this->buttonBlock = false;
         this->selectedMaterialTarget = -1;
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
-        clearTargets();
+        this->clearTargets();
         mutex.unlock();
     }
 }
@@ -799,11 +802,11 @@ void MainWindow::specialMinionCancel()
 {
     this->bridge->setMaterialTarget(-1);
     this->bridge->setSelectedMaterials(0);
-    this->targeting = false;
+    this->buttonBlock = false;
     this->selectedMaterialTarget = -1;
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
-    clearTargets();
+    this->clearTargets();
     mutex.unlock();
 }
 void MainWindow::attackerConfirm()
@@ -814,20 +817,20 @@ void MainWindow::attackerConfirm()
         this->selectedAttackerTarget = -1;
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
-        clearTargets();
+        this->clearTargets();
         mutex.unlock();
     }
 }
 void MainWindow::attackerCancel()
 {
     this->bridge->setAttackerTarget(-1);
-    this->targeting = false;
+    this->buttonBlock = false;
     this->selectedAttackerTarget = -1;
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
-    clearTargets();
+    this->clearTargets();
     mutex.unlock();
-    if (battled)
+    if (this->battled&&!this->duelEnd)
     {
         this->turnEnd();
     }
@@ -841,7 +844,7 @@ void MainWindow::defenderConfirm()
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
         this->battled = true;
-        clearTargets();
+        this->clearTargets();
         mutex.unlock();
     }
 }
@@ -874,7 +877,7 @@ void MainWindow::clearTabs()
     this->maintainSpecialDeckTargetHighlight();
     this->setGraveyardImages();
     this->setOpponentGraveyardImages();
-    if (!targeting)
+    if (!this->buttonBlock)
     {
         this->selectedHandCard = -1;
         this->selectedSpellTarget = -1;
@@ -885,7 +888,7 @@ void MainWindow::clearTabs()
 }
 void MainWindow::turnEnd()
 {
-        if (this->duel->getTurnPlayer()==0&&!targeting)
+        if (this->duel->getTurnPlayer()==0&&!this->buttonBlock)
         {
             this->battled = false;
             emit turnEndSignal();
@@ -893,7 +896,7 @@ void MainWindow::turnEnd()
 }
 void MainWindow::startBattlePhase()
 {
-    if (!targeting&&duel->getTurnCount()>1)
+    if (!this->buttonBlock&&duel->getTurnCount()>1)
     {
         emit startBattlePhaseSignal();
     }
@@ -941,6 +944,108 @@ void MainWindow::setLogLabels()
     delete [] this->logLabels;
     this->logLabels = logs_new;
     this->drawnLogs = n_logs;
-
 }
+void MainWindow::endDuel(short result)
+{
+    if (result!=-1)
+    {
+        this->duelEnd = true;
+        this->attackerCancel();
+        this->defenderCancel();
+        this->specialMinionCancel();
+        this->spellCancel();
+        this->buttonBlock = true;
+        this->ui->endDuelButton->setVisible(true);
+        this->ui->endDuelButton->setDisabled(false);
+    }
+}
+void MainWindow::clearDuel()
+{
+    for (int i=0;i<this->handSize;i++)
+    {
+        delete this->handImages[i];
+    }
+    delete [] this->handImages;
+    for (int i=0;i<this->graveyardSize;i++)
+    {
+        delete this->graveyardImages[i];
+    }
+    delete [] this->graveyardImages;
+    for (int i=0;i<this->opponentGraveyardSize;i++)
+    {
+        delete this->opponentGraveyardImages[i];
+    }
+    delete [] this->opponentGraveyardImages;
+    for (int i=0;i<this->specialDeckSize;i++)
+    {
+        delete this->specialDeckImages[i];
+    }
+    delete [] this->specialDeckImages;
+    for (int i=0;i<5;i++)
+    {
+        delete this->playerFieldImages[i];
+        delete this->playerFieldLabels[i];
+        delete this->opponentFieldImages[i];
+        delete this->opponentFieldLabels[i];
+    }
+    delete [] this->playerFieldImages;
+    delete [] this->playerFieldLabels;
+    delete [] this->opponentFieldImages;
+    delete [] this->opponentFieldLabels;
+    for (int i=0;i<this->drawnLogs;i++)
+    {
+        delete this->logLabels[i];
+    }
+    delete [] logLabels;
+    this->drawnLogs = 0;
+    this->longerLogs = 0;
+    this->selectedHandCard = -1;
+    this->selectedSpellTarget = -1;
+    this->selectedMaterialTarget = -1;
+    this->selectedSpecialDeckCard = -1;
+    this->selectedAttackerTarget = -1;
+    this->selectedDefenderTarget = -1;
+    this-> handSize = 0;
+    this-> specialDeckSize = 0;
+    this->graveyardSize = 0;
+    this->opponentGraveyardSize = 0;
+    this->n_targets = 0;
+    this->buttonBlock = false;
+    this->battled = false;
+    this->duelEnd = false;
+
+    disconnect(this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
+    disconnect(this->bridge,&DuelUiBridge::drawGraveyard, this, &MainWindow::setGraveyardImages);
+    disconnect(this->bridge,&DuelUiBridge::drawOpponentGraveyard, this, &MainWindow::setOpponentGraveyardImages);
+    disconnect(this->bridge,&DuelUiBridge::drawSpecialDeck, this, &MainWindow::setSpecialDeckImages);
+    disconnect(this->bridge,&DuelUiBridge::drawField, this, &MainWindow::setFieldImagesAndLabels);
+    disconnect(this->bridge,&DuelUiBridge::drawResources, this, &MainWindow::setResources);
+    disconnect(this->bridge,&DuelUiBridge::drawSpellTargets, this, &MainWindow::setSpellTargetImages);
+    disconnect(this->bridge,&DuelUiBridge::drawFirstMaterialTargets, this, &MainWindow::setFirstMaterialTargetImages);
+    disconnect(this->bridge,&DuelUiBridge::drawSecondMaterialTargets, this, &MainWindow::setSecondMaterialTargetImages);
+    disconnect(this->bridge,&DuelUiBridge::drawLastMaterialTargets, this, &MainWindow::setLastMaterialTargetImages);
+    disconnect(this->bridge,&DuelUiBridge::drawAttackers, this, &MainWindow::setAttackerTargetImages);
+    disconnect(this->bridge,&DuelUiBridge::drawDefenders, this, &MainWindow::setDefenderTargetImages);
+    disconnect(this->bridge,&DuelUiBridge::drawLogs, this, &MainWindow::setLogLabels);
+    disconnect(this->ui->cardTabs, &QTabWidget::currentChanged, this, &MainWindow::clearTabs);
+    disconnect(this, &MainWindow::duelStartSignal, this->bridge, &DuelUiBridge::initiateDuel);
+    disconnect(this->ui->playFromHandButton, &QPushButton::released, this, &MainWindow::playFromHand);
+    disconnect(this->ui->playSpecialMinionButton, &QPushButton::released, this, &MainWindow::playSpecialMinion);
+    disconnect(this->ui->battlePhaseButton, &QPushButton::released, this, &MainWindow::startBattlePhase);
+    disconnect(this, &MainWindow::handAction, this->bridge, &DuelUiBridge::playFromHand);
+    disconnect(this, &MainWindow::specialDeckAction, this->bridge, &DuelUiBridge::playSpecialMinion);
+    disconnect(this, &MainWindow::turnEndSignal, this->bridge, &DuelUiBridge::passTurn);
+    disconnect(this, &MainWindow::startBattlePhaseSignal, this->bridge, &DuelUiBridge::battlePhase);
+    disconnect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
+    disconnect(this->bridge,&DuelUiBridge::specialMinionPlayed,this, &MainWindow::specialDeckTarget);
+    disconnect(this->bridge,&DuelUiBridge::duelEndSignal, this, &MainWindow::endDuel);
+    disconnect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
+    disconnect(this->ui->endDuelButton, &QPushButton::released, this, &MainWindow::clearDuel);
+
+    this->duelThread.exit();
+    delete this->duel;
+    delete this->bridge;
+    this->ui->stackedWidget->setCurrentIndex(0);
+}
+
 

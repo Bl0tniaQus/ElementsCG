@@ -45,8 +45,9 @@ private:
     short graveyardSize = 0;
     short opponentGraveyardSize = 0;
     short n_targets = 0;
-    bool targeting = false;
+    bool buttonBlock = false;
     bool battled = false;
+    bool duelEnd = false;
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -54,12 +55,12 @@ public:
     void mouseReleaseEvent(QMouseEvent* mouseEvent) override {mouseEvent->ignore();};
     void mousePressEvent(QMouseEvent* mouseEvent) override {mouseEvent->ignore();};
     void moveEvent (QMoveEvent* mouseEvent) override {mouseEvent->ignore();};
-
     void startDuel();
     void clearTargets();
     void setMaterialTargetImages(Card* card);
     void maintainHandTargetHighlight();
     void maintainSpecialDeckTargetHighlight();
+    void clearDuel();
 public slots:
     void setHandImages();
     void setSpecialDeckImages();
@@ -93,6 +94,7 @@ public slots:
     void defenderCancel();
     void clearTabs();
     void turnEnd();
+    void endDuel(short result);
 signals:
     void duelStartSignal();
     void handAction(short id);

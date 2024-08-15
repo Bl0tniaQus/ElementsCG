@@ -17,7 +17,7 @@ private:
     short* logsSource;
     std::string* logs;
     int n_logs;
-
+    bool duelEnded = false;
     Card** turnEndLingeringEffects;
     short n_lingering;
 public:
@@ -43,6 +43,7 @@ public:
     void toGraveyard(Card* card);
     void removeFromField(Card* card);
     void checkWinner();
+    bool getDuelEnded() {return this->duelEnded;}
     Card* getCardFromCopyId(int id);
     void setUiBridge(DuelUiBridge* bridge) {this->uiBridge = bridge;}
     DuelUiBridge* getUiBridge() {return this->uiBridge;}
@@ -62,6 +63,7 @@ public:
     void turnStartEffects();
     void onDestroy(Card* card);
     void onCombat(Card* card);
+    void updateBoard();
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
     void generateAttackersList();
@@ -95,8 +97,8 @@ public:
     std::string statChangeLog(Card* card, short a_new, short d_new);
     std::string levelChangeLog(Card* card, short l);
     std::string excavateCardLog(Card* card);
+    std::string duelResultLog(short res);
     void turnEndLog();
-
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}

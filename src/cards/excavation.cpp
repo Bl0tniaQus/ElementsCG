@@ -15,6 +15,7 @@ bool Excavation::onSpell(Duel* duel, Card* card)
     {
         duel->excavateCard(revealed[i]);
     }
+    duel->updateBoard();
     this->cardsWithSameElementInTargetList("Earth");
     short n = this->getTargetList()->getTargetsNumber();
     Card** targets = this->getTargetList()->getTargetList();

@@ -99,17 +99,21 @@ void Duel::combat(Card* attacker, Card* defender)
         destruction(attacker);
         damage = def-atk;
     }
-
+    short hp;
     if (atk>def){
+        hp = this->players[this->turnPlayer].getOpponent()->getHp();
+        if (damage>hp) {damage = hp;}
         this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
     }
     if (def>atk){
+        hp = this->players[this->turnPlayer].getHp();
+        if (damage>hp) {damage = hp;}
         this->players[this->turnPlayer].changeHp(-damage);
 
     }
     attacker->setAttacks(attacker->getAttacks()-1);
-    checkWinner();
     attacker->getCardName()->afterAttack(this,attacker,defender,damage);
+    this->checkWinner();
 }
 void Duel::directAttack(Card* attacker)
 {
@@ -118,18 +122,28 @@ void Duel::directAttack(Card* attacker)
     short damage = attacker->getAttack();
     if (damage>0)
     {
+    short hp;
+    hp = this->players[this->turnPlayer].getOpponent()->getHp();
+    if (damage>hp) {damage = hp;}
     this->players[this->turnPlayer].getOpponent()->changeHp(-damage);
     }
     attacker->setAttacks(attacker->getAttacks()-1);
     attacker->getCardName()->afterAttack(this,attacker,nullptr,damage);
-    checkWinner();
+    this->checkWinner();
 }
 void Duel::checkWinner()
 {
     short hp1 = players[0].getHp(); short hp2 = players[1].getHp();
-    if ((hp1<=0)&&(hp2<=0)) {std::cout<<"X";}
-    else if ((hp1<=0)&&(hp2>0)) {std::cout<<"2";}
-    else if ((hp2<=0)&&(hp1>0)) {std::cout<<"1";}
+    short result = -1;
+    if ((hp1<=0)&&(hp2<=0)) {result = 2;}
+    else if ((hp1<=0)&&(hp2>0)) {result = 1;}
+    else if ((hp2<=0)&&(hp1>0)) {result = 0;}
+    if (result!=-1&&this->uiBridge!=nullptr)
+    {
+        this->duelEnded = true;
+        this->appendLog(this->duelResultLog(result),2);
+        this->uiBridge->endDuel(result);
+    }
 
 }
 void Duel::destruction(Card* card)
@@ -243,6 +257,7 @@ void Duel::summonSpecialMinion(Card *minion)
             minion->getOriginalOwner()->setSpecialDeck(newSpecial, n_special-1);
             delete[] newSpecial;
             this->onSummon(minion);
+            this->checkWinner();
         }
 }
 bool Duel::activateSpell(Card *spell)
@@ -551,6 +566,7 @@ void Duel::playFromHand(Card* card)
         }
 
     }
+    this->checkWinner();
 }
 void Duel::summonFromHand(Card* minion, short zoneid)
 {
@@ -984,6 +1000,13 @@ void Duel::clearTurnEndLingeringEffects()
     this->n_lingering = 0;
     this->turnEndLingeringEffects = new Card* [0];
 }
+void Duel::updateBoard()
+{
+    if (this->uiBridge!=nullptr)
+    {
+        this->uiBridge->updateBoard();
+    }
+}
 
 void Duel::turnStartLog()
 {
@@ -1145,6 +1168,21 @@ std::string Duel::excavateCardLog(Card* card)
     std::string str = "["+ playername +"]" +" reveals [" + card_name + "]";
     return str;
 }
+std::string Duel::duelResultLog(short res)
+{
+    std::string str;
+    if (res==0 || res==1)
+    {
+        std::string playername = std::string(this->players[res].getName());
+        str = "["+ playername +"] has won the duel!";
+    }
+    else if (res==2)
+    {
+        str = "Duel had ended with a draw.";
+    }
+    return str;
+}
+
 
 
 

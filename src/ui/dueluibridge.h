@@ -31,6 +31,7 @@ public:
     short getSelectedMaterials() {return this->selectedMaterials;}
     void duelControl(Deck* deck0, Deck* deck1);
     void updateBoard();
+    void endDuel(short result);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
 public slots:
@@ -56,6 +57,7 @@ signals:
     void drawSecondMaterialTargets(Card* card);
     void drawLastMaterialTargets(Card* card);
     void waitForSpellTarget();
+    void duelEndSignal(short result);
 };
 
 #endif

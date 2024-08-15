@@ -864,7 +864,7 @@
        <widget class="QTabWidget" name="targetBox">
         <property name="geometry">
          <rect>
-          <x>1080</x>
+          <x>1070</x>
           <y>520</y>
           <width>461</width>
           <height>221</height>
@@ -1305,6 +1305,19 @@
           <string>Tab 2</string>
          </attribute>
         </widget>
+       </widget>
+       <widget class="QPushButton" name="endDuelButton">
+        <property name="geometry">
+         <rect>
+          <x>1170</x>
+          <y>550</y>
+          <width>288</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>End Duel</string>
+        </property>
        </widget>
       </widget>
      </widget>

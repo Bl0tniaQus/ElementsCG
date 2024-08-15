@@ -417,7 +417,7 @@ void Bot::conductBattlePhase(Duel* duel)
     {
         this->generateBaseGamestate(duel);
         this->testBattlePhase(duel);
-        if (this->testedBattleOptions==0) {this->endBattleTesting(); break;}
+        if (this->testedBattleOptions==0) { this->endBattleTesting(); break;}
         else
         {
             this->getBestAttackOption();
@@ -439,6 +439,7 @@ void Bot::conductBattlePhase(Duel* duel)
             }
         }
         this->endBattleTesting();
+        if (duel->getDuelEnded()) {return;}
     }
 }
 void Bot::testHand(Duel* duel)
@@ -474,7 +475,6 @@ void Bot::playTurn(Duel* duel)
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
                 this->testHand(duel);
                 this->testSpecialMinions(duel);
-
                 this->getBestOption();
                 this->getBestSpecialMinionOption();
                 n_hand = player->getHandSize();
@@ -521,9 +521,14 @@ void Bot::playTurn(Duel* duel)
                 }
                 this->endHandTesting();
                 this->endSpecialMinionTesting();
+                if (duel->getDuelEnded())
+                {
+                    return;
+                }
             }
             this->conductBattlePhase(duel);
-            duel->passTurn();
+            if (!duel->getDuelEnded()){duel->passTurn();}
+
 }
 
 
