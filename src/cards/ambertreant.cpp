@@ -32,7 +32,7 @@ void AmberTreant::onTurnEnd(Duel* duel, Card* card)
     if (duel->getPlayer(duel->getTurnPlayer())==card->getOwner())
     {
         this->secondEffectLog(duel, card);
-        duel->changeStats(card,1,1);
+        duel->changeStats(card,0,1);
     }
 }
 void AmberTreant::getOnSummonTargetList(Duel* duel, Card* card)

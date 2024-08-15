@@ -14,9 +14,11 @@ public:
         "Air", //element
         "Sad Nimbus", //name
         "sadnimbus",
-        ""
+        "When this card is summoned if you have at least 12 mana: summon 1 left-most \"Sad Nimbus\" from your graveyard."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
+    void getOnSummonTargetList(Duel * duel, Card * card) override;
+
 };
 
 #endif

@@ -3,5 +3,25 @@
 #include "../engine/card.h"
 void SadNimbus::onSummon(Duel* duel, Card* card)
 {
-    //TODO
+    short mana = card->getOwner()->getMana();
+    if (mana>=12)
+    {
+        this->getOnSummonTargetList(duel,card);
+        short n = this->getTargetList()->getTargetsNumber();
+        if (n==0) {return;}
+        else
+        {
+            short zoneid = duel->getEmptyMinionZone(card->getOwner());
+            Card* targetCard = this->getTargetList()->getTargetList()[0];
+            if (zoneid!=-1) {
+                this->effectLog(duel, card);
+                duel->summonFromGraveyard(targetCard, zoneid);
+            }
+        }
+    }
 }
+void SadNimbus::getOnSummonTargetList(Duel* duel, Card* card)
+{
+    this->cardsInYourGraveyardWithExactName(duel,card,"Sad Nimbus");
+}
+

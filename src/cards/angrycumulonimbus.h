@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Angry Cumulonimbus", //name
         "angrycumulonimbus",
-        "[]\n1);\n2)."
+        "[\"Happy Cumulus\" + \"Sad Nimbus\"]\n1);\n2)."
     ) {this->setMaterialNumber(2);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;

@@ -27,5 +27,6 @@
     <file alias="topazmantis">resources/images/topazmantis.jpg</file>
     <file alias="dragonoidsage">resources/images/dragonoidsage.jpg</file>
     <file alias="excavation">resources/images/excavation.jpg</file>
+    <file alias="breeze">resources/images/breeze.jpg</file>
 </qresource>
 </RCC>

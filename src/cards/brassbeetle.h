@@ -14,13 +14,12 @@ public:
         "Earth", //element
         "Brass Beetle", //name
         "brassbeetle",
-        "[Any 2 earth minions]\n1)\n2)"
+        "[Any 2 earth minions]\nAfter this card has attacked: gain 1 attack."
     ) {this->setMaterialNumber(2);}
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;
-    void onSummon(Duel* duel, Card* card) override;
-    void onTurnStart(Duel * duel, Card * card) override;
+    void afterAttack(Duel* duel, Card* card, Card* target, short damage) override;
 };
 
 #endif

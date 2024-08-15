@@ -14,13 +14,11 @@ void BrassBeetle::getSecondMaterialList(Duel* duel, Card* card)
 {
     this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
-void BrassBeetle::onSummon(Duel* duel, Card* card)
+void BrassBeetle::afterAttack(Duel* duel, Card* card, Card* target, short damage)
 {
+    this->effectLog(duel, card);
+    duel->changeStats(card, 1,0);
+}
 
-}
-void BrassBeetle::onTurnStart(Duel * duel, Card * card)
-{
-    card->setAttacks(1);
-}
 
 

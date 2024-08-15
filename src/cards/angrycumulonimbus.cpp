@@ -8,11 +8,11 @@ bool AngryCumulonimbus::specialSummon(Duel* duel, Card* card)
 }
 void AngryCumulonimbus::getFirstMaterialList(Duel* duel, Card* card)
 {
-   // this->getMinionsWithSameElementAndMinimumLevel(duel,card,"Air",5);
+    this->minionsOnYourFieldWithExactName(duel,card,"Happy Cumulus");
 }
 void AngryCumulonimbus::getSecondMaterialList(Duel* duel, Card* card)
 {
-   // this->getMinionsWithSameElement(duel,card,"Air");
+    this->minionsOnYourFieldWithExactName(duel,card,"Sad Nimbus");
 }
 void AngryCumulonimbus::onSummon(Duel* duel, Card* card)
 {
