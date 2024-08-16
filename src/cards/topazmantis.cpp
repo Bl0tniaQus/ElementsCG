@@ -25,6 +25,7 @@ void TopazMantis::onTurnStart(Duel * duel, Card * card)
 void TopazMantis::onDestroy(Duel* duel, Card* card)
 {
         this->secondEffectLog(duel, card);
+        this->getOnDestroyTargetList(duel,card);
         short nt = this->getTargetList()->getTargetsNumber();
         Card** cards = this->getTargetList()->getTargetList();
         for (short i=0;i<nt;i++)
