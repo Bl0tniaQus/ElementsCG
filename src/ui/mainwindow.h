@@ -21,7 +21,7 @@ private:
     Duel* duel;
     DuelUiBridge* bridge;
     QThread duelThread;
-    QMutex mutex;
+    QMutex* mutex;
     CardLabel** handImages;
     CardLabel** graveyardImages;
     CardLabel** opponentGraveyardImages;
