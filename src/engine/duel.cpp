@@ -773,7 +773,7 @@ Card* Duel::getCardFromCopyId(int id)
 }
 void Duel::startDuel(Deck *deck0, Deck* deck1)
 {
-    int j = rand() % 1;
+    int j = rand() % 2;
     this->turnPlayer=j;
     this->turnCount=1;
     this->turnStartLog();

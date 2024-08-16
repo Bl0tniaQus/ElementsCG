@@ -12,6 +12,8 @@ DuelUiBridge::DuelUiBridge()
 void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
 {
     this->duel->startDuel(deck0,deck1);
+    if (this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()!=nullptr)
+    {this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()->playTurn(this->duel);}
     this->updateBoard();
 }
 void DuelUiBridge::initiateDuel()
@@ -61,7 +63,7 @@ void DuelUiBridge::updateBoard()
 short DuelUiBridge::makeSpellChoice(Card* card)
 {
     emit drawSpellTargets(card);
-    mutex->lock(); mutex->lock(); mutex->unlock();
+    mutex->acquire(); mutex->acquire(); mutex->release();
     short id = this->spellTarget;
     this->spellTarget = -2;
     return id;
@@ -75,7 +77,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
         if (this->selectedMaterials==0)
         {
             emit drawFirstMaterialTargets(card);
-            mutex->lock(); mutex->lock(); mutex->unlock();
+            mutex->acquire(); mutex->acquire(); mutex->release();
             id = this->materialTarget;
             if (id==-1) {return -1;}
             this->materialTarget = -2;
@@ -85,7 +87,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
         else if (this->selectedMaterials==1)
         {
             emit drawLastMaterialTargets(card);
-            mutex->lock(); mutex->lock(); mutex->unlock();
+            mutex->acquire(); mutex->acquire(); mutex->release();
             id = this->materialTarget;
             if (id==-1) {return -1;}
             this->materialTarget = -2;
@@ -97,7 +99,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
         if (this->selectedMaterials==0)
         {
             emit drawFirstMaterialTargets(card);
-            mutex->lock(); mutex->lock(); mutex->unlock();
+            mutex->acquire(); mutex->acquire(); mutex->release();
             id = this->materialTarget;
             if (id==-1) {return -1;}
             this->materialTarget = -2;
@@ -107,7 +109,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
         else if (this->selectedMaterials==1)
         {
             emit drawSecondMaterialTargets(card);
-            mutex->lock(); mutex->lock(); mutex->unlock();
+            mutex->acquire(); mutex->acquire(); mutex->release();
             id = this->materialTarget;
             if (id==-1) {return -1;}
             this->materialTarget = -2;
@@ -116,7 +118,7 @@ short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
         else if (this->selectedMaterials==2)
         {
             emit drawLastMaterialTargets(card);
-            mutex->lock(); mutex->lock(); mutex->unlock();
+            mutex->acquire(); mutex->acquire(); mutex->release();
             id = this->materialTarget;
             if (id==-1) {return -1;}
             this->materialTarget = -2;
@@ -150,13 +152,13 @@ void DuelUiBridge::battlePhase()
         this->duel->generateAttackersList();
         this->duel->generateDefendersList();
         emit drawAttackers();
-        mutex->lock(); mutex->lock(); mutex->unlock();
+        mutex->acquire(); mutex->acquire(); mutex->release();
         id_attacker = this->attackerTarget;
         if (id_attacker==-1) {break;}
         else if (id_attacker!=-1)
         {
             emit drawDefenders();
-            mutex->lock(); mutex->lock(); mutex->unlock();
+            mutex->acquire(); mutex->acquire(); mutex->release();
             id_defender = this->defenderTarget;
             Card* attacker = this->duel->getAttackersList()->getTargetList()[id_attacker];
             if (id_defender==10)

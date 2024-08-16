@@ -2,14 +2,14 @@
 #define DUELUIBRIDGE_H
 #include "cardlabel.h"
 #include "../engine/deck.h"
-#include <QMutex>
+#include <QSemaphore>
 class Duel;
 class DuelUiBridge : public QObject
 {
 private:
     Q_OBJECT
     Duel* duel;
-    QMutex* mutex;
+    QSemaphore* mutex;
     short spellTarget = -2;
     short materialTarget = -2;
     short attackerTarget = -2;
@@ -20,7 +20,7 @@ private:
 public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
-    void setMutex(QMutex* mtx) {this->mutex = mtx;}
+    void setMutex(QSemaphore* mtx) {this->mutex = mtx;}
     void setSpellTarget(short t) {this->spellTarget = t;}
     short getSpellTarget() {return this->spellTarget;}
     void setMaterialTarget(short t) {this->materialTarget = t;}

@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QThread>
-#include <QMutex>
+#include <QSemaphore>
 #include <QMouseEvent>
 #include "../engine/duel.h"
 #include "dueluibridge.h"
@@ -21,7 +21,7 @@ private:
     Duel* duel;
     DuelUiBridge* bridge;
     QThread duelThread;
-    QMutex* mutex;
+    QSemaphore* mutex;
     CardLabel** handImages;
     CardLabel** graveyardImages;
     CardLabel** opponentGraveyardImages;

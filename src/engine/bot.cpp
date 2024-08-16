@@ -526,7 +526,7 @@ void Bot::playTurn(Duel* duel)
                     return;
                 }
             }
-            this->conductBattlePhase(duel);
+            if (duel->getTurnCount()>1){this->conductBattlePhase(duel);}
             if (!duel->getDuelEnded()){duel->passTurn();}
 
 }

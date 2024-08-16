@@ -36,8 +36,7 @@ void MainWindow::startDuel()
     this->duel->getPlayer(1)->setBot(&bot);
     this->bridge->setDuel(duel);
     this->duel->setUiBridge(this->bridge);
-    this->mutex = new QMutex;
-    this->locker = new QMutexLocker(mutex);
+    this->mutex = new QSemaphore(1);
     this->bridge->setMutex(this->mutex);
     connect(this->bridge,&DuelUiBridge::drawHand, this, &MainWindow::setHandImages);
     connect(this->bridge,&DuelUiBridge::drawGraveyard, this, &MainWindow::setGraveyardImages);
@@ -779,7 +778,7 @@ void MainWindow::spellConfirm()
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
         this->clearTargets();
-        if (mutex!=nullptr) {mutex->unlock();}
+        if (this->mutex->available()==0) {mutex->release();}
     }
 }
 void MainWindow::spellCancel()
@@ -790,7 +789,7 @@ void MainWindow::spellCancel()
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
     this->clearTargets();
-    if (mutex!=nullptr) {mutex->unlock();}
+    if (this->mutex->available()==0) {mutex->release();}
 }
 void MainWindow::specialMinionConfirm()
 {
@@ -802,7 +801,7 @@ void MainWindow::specialMinionConfirm()
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
         this->clearTargets();
-        if (mutex!=nullptr) {mutex->unlock();}
+        if (this->mutex->available()==0) {mutex->release();}
     }
 }
 void MainWindow::specialMinionCancel()
@@ -814,7 +813,7 @@ void MainWindow::specialMinionCancel()
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
     this->clearTargets();
-    if (mutex!=nullptr) {mutex->unlock();}
+    if (this->mutex->available()==0) {mutex->release();}
 }
 void MainWindow::attackerConfirm()
 {
@@ -825,7 +824,7 @@ void MainWindow::attackerConfirm()
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
         this->clearTargets();
-        if (mutex!=nullptr) {mutex->unlock();}
+        if (this->mutex->available()==0) {mutex->release();}
     }
 }
 void MainWindow::attackerCancel()
@@ -836,7 +835,7 @@ void MainWindow::attackerCancel()
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
     this->clearTargets();
-    if (mutex!=nullptr) {mutex->unlock();}
+    if (this->mutex->available()==0) {mutex->release();}
     if (this->battled&&!this->duelEnd)
     {
         this->turnEnd();
@@ -852,7 +851,7 @@ void MainWindow::defenderConfirm()
         disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
         this->battled = true;
         this->clearTargets();
-        if (mutex!=nullptr) {mutex->unlock();}
+        if (this->mutex->available()==0) {mutex->release();}
     }
 }
 void MainWindow::defenderCancel()
@@ -862,7 +861,7 @@ void MainWindow::defenderCancel()
     disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);
     disconnect(this->ui->confirmTargetButton, nullptr, nullptr, nullptr);
     clearTargets();
-    if (mutex!=nullptr) {mutex->unlock();}
+    if (this->mutex->available()==0) {mutex->release();}
 }
 void MainWindow::clearTargets()
 {
