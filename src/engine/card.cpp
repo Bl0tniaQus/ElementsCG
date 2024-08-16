@@ -52,9 +52,8 @@ void Card::copyProperties(Card* card)
     this->cardName = card->getCardNameById(card->getCardId());
     this->cardName->bindCard(this);
     this->barrier = card->getBarrier();
-    //this->owner = card->getOwner();
-    //this->originalOwner = card->getOriginalOwner();
-    //this->zone = card->getZone();
+    this->isNegated = card->getIsNegated();
+    this->isSpellImmune = card->getIsSpellImmune();
 }
 CardBase* Card::getCardNameById(int id)
 {

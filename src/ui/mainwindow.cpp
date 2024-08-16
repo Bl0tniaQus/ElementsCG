@@ -9,13 +9,14 @@
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), duelThread(this)
 {
     this->ui->setupUi(this);
+    this->loadDecks();
     this->setFixedSize(1600,900);
     this->ui->stackedWidget->setCurrentIndex(0);
     delete this->ui->uselessTabTarget;
     delete this->ui->playerNameUselessTab;
     delete this->ui->opponentNameUselessTab;
     delete this->ui->duelLogUselessTab;
-    connect(this->ui->testButton, &QPushButton::released, this, &MainWindow::startDuel);
+    connect(this->ui->startDuelButton, &QPushButton::released, this, &MainWindow::startDuel);
 }
 
 MainWindow::~MainWindow()
@@ -24,11 +25,14 @@ MainWindow::~MainWindow()
 }
 void MainWindow::startDuel()
 {
+    int playerDeck = this->ui->playerDeckSelectTraining->currentIndex()+1;
+    int opponentDeck = this->ui->opponentDeckSelectTraining->currentIndex()+1;
     this->ui->targetBox->setVisible(false);
     this->ui->endDuelButton->setVisible(false);
     this->ui->endDuelButton->setDisabled(true);
     this->bridge = new DuelUiBridge;
     this->duel = new Duel;
+    this->bridge->setDecks(playerDeck,opponentDeck);
     this->duel->getPlayer(1)->setBot(&bot);
     this->bridge->setDuel(duel);
     this->duel->setUiBridge(this->bridge);
@@ -488,6 +492,7 @@ void MainWindow::setFieldImagesAndLabels()
             short negated = cardOpp->getIsNegated();
             short attacks = cardOpp->getAttacks();
             short si = cardOpp->getIsSpellImmune();
+            //qDebug()<<negated;
             //L10 10/10 B1 A1 SI N
             std::string str = "L"+std::to_string(lvl);
             str += " "+std::to_string(atk)+"/"+std::to_string(def);
@@ -1047,5 +1052,18 @@ void MainWindow::clearDuel()
     delete this->bridge;
     this->ui->stackedWidget->setCurrentIndex(0);
 }
+void MainWindow::loadDecks()
+{
+    this->ui->playerDeckSelectTraining->setInsertPolicy(QComboBox::InsertAtBottom);
+    this->ui->opponentDeckSelectTraining->setInsertPolicy(QComboBox::InsertAtBottom);
+
+    this->ui->playerDeckSelectTraining->addItem("Starter Deck: Earth");
+    this->ui->playerDeckSelectTraining->addItem("Starter Deck: Air");
+
+    this->ui->opponentDeckSelectTraining->addItem("Starter Deck: Earth");
+    this->ui->opponentDeckSelectTraining->addItem("Starter Deck: Air");
+
+}
+
 
 

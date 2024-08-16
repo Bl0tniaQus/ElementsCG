@@ -61,6 +61,7 @@ public:
     void maintainHandTargetHighlight();
     void maintainSpecialDeckTargetHighlight();
     void clearDuel();
+    void loadDecks();
 public slots:
     void setHandImages();
     void setSpecialDeckImages();

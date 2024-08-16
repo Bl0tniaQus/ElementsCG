@@ -15,6 +15,7 @@ Duel::Duel()
     this->attackersTargetList = new TargetList;
     this->defendersTargetList = new TargetList;
     this->turnEndLingeringEffects = new Card* [0];
+    this->uiBridge = nullptr;
     this->n_lingering = 0;
     this->logsSource = new short [0];
     this->logs = new std::string [0];
@@ -772,7 +773,8 @@ Card* Duel::getCardFromCopyId(int id)
 }
 void Duel::startDuel(Deck *deck0, Deck* deck1)
 {
-    this->turnPlayer=0; //wylosuj kto 1
+    int j = rand() % 1;
+    this->turnPlayer=j;
     this->turnCount=1;
     this->turnStartLog();
     this->getPlayer(0)->setOriginalDeck(deck0->getDeck(),deck0->getDeckSize());

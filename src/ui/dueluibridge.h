@@ -15,6 +15,8 @@ private:
     short attackerTarget = -2;
     short defenderTarget = -2;
     short selectedMaterials = 0;
+    int playerDeck = 0;
+    int opponentDeck = 0;
 public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
@@ -34,6 +36,7 @@ public:
     void endDuel(short result);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
+    void setDecks(int a, int b) {this->playerDeck = a; this->opponentDeck = b;}
 public slots:
     void initiateDuel();
     void playFromHand(short id);

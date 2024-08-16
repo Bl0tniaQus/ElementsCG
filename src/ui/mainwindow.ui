@@ -33,20 +33,72 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="stackedWidgetPage1">
-       <widget class="QPushButton" name="testButton">
+       <widget class="QPushButton" name="startDuelButton">
         <property name="geometry">
          <rect>
-          <x>670</x>
-          <y>280</y>
-          <width>88</width>
-          <height>34</height>
+          <x>470</x>
+          <y>270</y>
+          <width>171</width>
+          <height>111</height>
          </rect>
         </property>
         <property name="text">
-         <string>PushButton</string>
+         <string>START</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="playerDeckSelectTraining">
+        <property name="geometry">
+         <rect>
+          <x>660</x>
+          <y>270</y>
+          <width>171</width>
+          <height>41</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="opponentDeckSelectTraining">
+        <property name="geometry">
+         <rect>
+          <x>660</x>
+          <y>340</y>
+          <width>171</width>
+          <height>41</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="playerDeckTrainingLabel">
+        <property name="geometry">
+         <rect>
+          <x>660</x>
+          <y>240</y>
+          <width>171</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Your deck</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="opponentDeckTrainingLabel">
+        <property name="geometry">
+         <rect>
+          <x>660</x>
+          <y>320</y>
+          <width>171</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Opponent's deck</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>
