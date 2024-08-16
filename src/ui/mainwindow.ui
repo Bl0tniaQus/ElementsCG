@@ -33,7 +33,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="stackedWidgetPage1">
        <widget class="QPushButton" name="startDuelButton">
@@ -916,7 +916,7 @@
        <widget class="QTabWidget" name="targetBox">
         <property name="geometry">
          <rect>
-          <x>1070</x>
+          <x>1080</x>
           <y>520</y>
           <width>461</width>
           <height>221</height>

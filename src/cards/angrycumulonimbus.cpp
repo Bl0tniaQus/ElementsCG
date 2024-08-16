@@ -16,7 +16,10 @@ void AngryCumulonimbus::getSecondMaterialList(Duel* duel, Card* card)
 }
 void AngryCumulonimbus::onSummon(Duel* duel, Card* card)
 {
-
+    short mana = card->getOwner()->getMana();
+    short atk = mana / 4;
+    this->effectLog(duel, card);
+    duel->changeStats(card,atk,0);
 }
 
 

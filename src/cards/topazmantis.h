@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Topaz Mantis", //name
         "topazmantis",
-        "[\"Topaz Amber Fossil\" + Any earth minion]\n1)This card can attack twice;\n2)When this card is destroyed: All of your earth minions gain +2/+2 and also you draw 1 card."
+        "[\"Topaz Amber Fossil\" + Any earth minion]\n1) This card can attack twice;\n2) When this card is destroyed: All of your earth minions gain +2/+2 and also you draw 1 card."
     ) {this->setMaterialNumber(2);}
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;

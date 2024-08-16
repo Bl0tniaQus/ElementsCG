@@ -27,7 +27,7 @@ void DragonoidStormChaser::onSummon(Duel* duel, Card* card)
 void DragonoidStormChaser::afterAttack(Duel* duel, Card* card, Card* attacker, short damage)
 {
         this->secondEffectLog(duel, card);
-        card->getOwner()->changeMana(1);
+        card->getOwner()->changeMana(2);
 }
 void DragonoidStormChaser::afterDefence(Duel* duel, Card* card, Card* attacker, short damage)
 {

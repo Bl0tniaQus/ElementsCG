@@ -14,6 +14,15 @@ void YoungWyvern::getSecondMaterialList(Duel* duel, Card* card)
 {
     this->minionsOnYourFieldWithSameElement(duel,card,"Air");
 }
+void YoungWyvern::afterAttack(Duel* duel, Card* card, Card* target, short damage)
+{
+    if (target!=nullptr&&target->getPlace()==3)
+    {
+        this->effectLog(duel, card);
+        card->getOwner()->changeMana(1);
+    }
+}
+
 
 
 

@@ -6,15 +6,15 @@ class AngryCumulonimbus : public CardBase
 public:
     AngryCumulonimbus():CardBase(
         23, //card id
-        7, //cost
+        5, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
-        7, //level
-        6, //attack
-        4, //defence
+        5, //level
+        1, //attack
+        3, //defence
         "Air", //element
         "Angry Cumulonimbus", //name
         "angrycumulonimbus",
-        "[\"Happy Cumulus\" + \"Sad Nimbus\"]\n1);\n2)."
+        "[\"Happy Cumulus\" + \"Sad Nimbus\"]\nWhen this card is summoned: gain 1 attack for every 4 mana points you have."
     ) {this->setMaterialNumber(2);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
