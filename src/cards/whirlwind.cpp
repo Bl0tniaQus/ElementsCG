@@ -19,6 +19,7 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
         duel->toHand(targetCard);
         this->setTargetList(nullptr,0);
         }
+        else duel->appendSILog(card,targetCard);
         return true;
     }
 }

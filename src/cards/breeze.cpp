@@ -12,7 +12,9 @@ bool Breeze::onSpell(Duel* duel, Card* card)
         Card** cards = this->getTargetList()->getTargetList();
         for (short i=0;i<nt;i++)
         {
+            if (!cards[i]->getIsSpellImmune())
             duel->changeStats(cards[i],1,0);
+            else duel->appendSILog(card,cards[i]);
         }
         card->getOwner()->changeMana(nt);
         return true;

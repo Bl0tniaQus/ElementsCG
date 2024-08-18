@@ -6,7 +6,7 @@ class SupplyDrop : public CardBase
 public:
     SupplyDrop():CardBase(
         31, //card id
-        4, //cost
+        3, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level
         -1, //attack

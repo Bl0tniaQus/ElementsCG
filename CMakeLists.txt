@@ -59,6 +59,8 @@ set(PROJECT_SOURCES
         src/cards/earthquake.cpp
         src/cards/recycle.cpp
         src/cards/supplydrop.cpp
+        src/cards/paperairplane.cpp
+        src/cards/barrelroll.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

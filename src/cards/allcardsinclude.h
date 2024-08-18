@@ -32,5 +32,7 @@
 #include "earthquake.h" //29
 #include "recycle.h" //30
 #include "supplydrop.h" //31
+#include "paperairplane.h" //32
+#include "barrelroll.h" //33
 
 #endif // ALLCARDS_H

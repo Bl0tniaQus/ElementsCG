@@ -23,31 +23,19 @@ Deck::Deck(short deckid)
 {
     if (deckid==0)
     {
-        this->n_cards = 23;
+        this->n_cards = 11;
         this->mainDeck = new Card[n_cards];
-        this->mainDeck[0].getValuesFromId(1);
-        this->mainDeck[1].getValuesFromId(1);
-        this->mainDeck[2].getValuesFromId(14);
-        this->mainDeck[3].getValuesFromId(3);
-        this->mainDeck[4].getValuesFromId(3);
-        this->mainDeck[5].getValuesFromId(3);
-        this->mainDeck[6].getValuesFromId(26);
-        this->mainDeck[7].getValuesFromId(24);
-        this->mainDeck[8].getValuesFromId(10);
-        this->mainDeck[9].getValuesFromId(1);
-        this->mainDeck[10].getValuesFromId(1);
-        this->mainDeck[11].getValuesFromId(4);
-        this->mainDeck[12].getValuesFromId(4);
-        this->mainDeck[13].getValuesFromId(4);
-        this->mainDeck[14].getValuesFromId(13);
-        this->mainDeck[15].getValuesFromId(11);
-        this->mainDeck[16].getValuesFromId(28);
-        this->mainDeck[17].getValuesFromId(25);
-        this->mainDeck[18].getValuesFromId(17);
-        this->mainDeck[19].getValuesFromId(18);
-        this->mainDeck[20].getValuesFromId(29);
-        this->mainDeck[21].getValuesFromId(30);
-        this->mainDeck[22].getValuesFromId(31);
+        this->mainDeck[0].getValuesFromId(3);
+        this->mainDeck[1].getValuesFromId(3);
+        this->mainDeck[2].getValuesFromId(3);
+        this->mainDeck[3].getValuesFromId(18);
+        this->mainDeck[4].getValuesFromId(18);
+        this->mainDeck[5].getValuesFromId(4);
+        this->mainDeck[6].getValuesFromId(32);
+        this->mainDeck[7].getValuesFromId(31);
+        this->mainDeck[8].getValuesFromId(33);
+        this->mainDeck[9].getValuesFromId(4);
+        this->mainDeck[10].getValuesFromId(32);
         for (int i=0;i<this->n_cards;i++)
         {
             this->mainDeck[i].setPlace(0);

@@ -14,6 +14,7 @@ bool Earthquake::onSpell(Duel* duel, Card* card)
     {
         if (!cards[i]->getIsSpellImmune())
         duel->changeStats(cards[i],0,-cards[i]->getDefence());
+        else duel->appendSILog(card,cards[i]);
     }
         return true;
 }

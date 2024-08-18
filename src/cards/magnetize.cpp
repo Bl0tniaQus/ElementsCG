@@ -34,6 +34,7 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
             duel->changeStats(targetCard,atk,0);
             duel->addTurnEndLingeringEffect(card);
         }
+        else duel->appendSILog(card,targetCard);
         return true;
     }
 }

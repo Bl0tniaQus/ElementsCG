@@ -15,8 +15,10 @@ Duel::Duel()
     this->attackersTargetList = new TargetList;
     this->defendersTargetList = new TargetList;
     this->turnEndLingeringEffects = new Card* [0];
+    this->turnStartLingeringEffects = new Card* [0];
     this->uiBridge = nullptr;
-    this->n_lingering = 0;
+    this->n_lingering_end = 0;
+    this->n_lingering_start = 0;
     this->logsSource = new short [0];
     this->logs = new std::string [0];
     this->n_logs = 0;
@@ -26,6 +28,7 @@ Duel::~Duel()
     delete this->attackersTargetList;
     delete this->defendersTargetList;
     delete [] this->turnEndLingeringEffects;
+    delete [] this->turnStartLingeringEffects;
     delete [] this->logs;
     delete [] this->logsSource;
 }
@@ -455,7 +458,7 @@ void Duel::turnEndEffects()
     {
         this->onTurnEnd(effects[i]);
     }
-    for (int i=0;i<this->n_lingering;i++)
+    for (int i=0;i<this->n_lingering_end;i++)
     {
         this->onTurnEnd(this->turnEndLingeringEffects[i]);
     }
@@ -514,6 +517,11 @@ void Duel::turnStartEffects()
     {
         this->onTurnStart(effects[i]);
     }
+    for (int i=0;i<this->n_lingering_start;i++)
+    {
+        this->onTurnStart(this->turnStartLingeringEffects[i]);
+    }
+    this->clearTurnStartLingeringEffects();
     delete [] effects;
 }
 void Duel::playFromHand(Card* card)
@@ -653,6 +661,19 @@ void Duel::changeBarrier(Card* card, short b)
     this->appendLog(this->barrierChangeLog(card,b), this->getPlayerId(card->getOwner()));
     card->setBarrier(b);
 }
+void Duel::changeSpellImmunity(Card* card, bool si)
+{
+    if (card->getIsSpellImmune()&&si==false)
+    {
+        this->appendLog(this->spellImmunityChangeLog(card,si),this->getPlayerId(card->getOwner()));
+    }
+    else if (si==true)
+    {
+        this->appendLog(this->spellImmunityChangeLog(card,si),this->getPlayerId(card->getOwner()));
+    }
+    card->setIsSpellImmune(si);
+}
+
 void Duel::excavateCard(Card* card)
 {
     this->appendLog(this->excavateCardLog(card), this->getPlayerId(card->getOriginalOwner()));
@@ -983,15 +1004,15 @@ short Duel::makeSpecialMinionMaterialChoice(Card* card)
 }
 void Duel::addTurnEndLingeringEffect(Card* card)
 {
-    this->n_lingering++;
-    Card** newLingering = new Card* [this->n_lingering];
-    if (this->n_lingering==1) {newLingering[0] = card;}
+    this->n_lingering_end++;
+    Card** newLingering = new Card* [this->n_lingering_end];
+    if (this->n_lingering_end==1) {newLingering[0] = card;}
     else{
-        for (int i=0; i<n_lingering-1;i++)
+        for (int i=0; i<n_lingering_end-1;i++)
         {
             newLingering[i] = this->turnEndLingeringEffects[i];
         }
-        newLingering[n_lingering-1] = card;
+        newLingering[n_lingering_end-1] = card;
     }
     delete[] this->turnEndLingeringEffects;
     this->turnEndLingeringEffects = newLingering;
@@ -999,9 +1020,31 @@ void Duel::addTurnEndLingeringEffect(Card* card)
 void Duel::clearTurnEndLingeringEffects()
 {
     delete [] this->turnEndLingeringEffects;
-    this->n_lingering = 0;
+    this->n_lingering_end = 0;
     this->turnEndLingeringEffects = new Card* [0];
 }
+void Duel::addTurnStartLingeringEffect(Card* card)
+{
+    this->n_lingering_start++;
+    Card** newLingering = new Card* [this->n_lingering_start];
+    if (this->n_lingering_start==1) {newLingering[0] = card;}
+    else{
+        for (int i=0; i<n_lingering_start-1;i++)
+        {
+            newLingering[i] = this->turnStartLingeringEffects[i];
+        }
+        newLingering[n_lingering_start-1] = card;
+    }
+    delete[] this->turnStartLingeringEffects;
+    this->turnStartLingeringEffects = newLingering;
+}
+void Duel::clearTurnStartLingeringEffects()
+{
+    delete [] this->turnStartLingeringEffects;
+    this->n_lingering_start = 0;
+    this->turnStartLingeringEffects = new Card* [0];
+}
+
 void Duel::updateBoard()
 {
     if (this->uiBridge!=nullptr)
@@ -1169,6 +1212,31 @@ std::string Duel::excavateCardLog(Card* card)
     std::string playername = card->getOwner()->getName();
     std::string str = "["+ playername +"]" +" reveals [" + card_name + "]";
     return str;
+}
+std::string Duel::spellImmunityChangeLog(Card* card, bool change)
+{
+    std::string card_name = std::string(card->getName());
+    std::string str;
+    if (change)
+    {
+        str = "["+ card_name +"]" +" is now immune to spells";
+    }
+    else if (!change)
+    {
+        str = "["+ card_name +"]" +" is now vulnerable to spells";
+    }
+    return str;
+}
+std::string Duel::spellImmunityMessageLog(Card* effect, Card* minion)
+{
+    std::string effect_name = std::string(effect->getName());
+    std::string minion_name = std::string(minion->getName());
+    std::string str = "["+ minion_name +"]" +" is unaffected by [" + effect_name + "]";
+    return str;
+}
+void Duel::appendSILog(Card* effect, Card* minion)
+{
+    this->appendLog(this->spellImmunityMessageLog(effect,minion),this->getPlayerId(minion->getOwner()));
 }
 std::string Duel::duelResultLog(short res)
 {

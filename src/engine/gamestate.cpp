@@ -243,6 +243,21 @@ Gamestate::Gamestate(Duel* duel):Duel()
         }
 
     }
+    short n_lingering_end = duel->getTurnEndLingeringEffectsNumber();
+    short n_lingering_start = duel->getTurnStartLingeringEffectsNumber();
+    Card** turnEndLingering = duel->getTurnEndLingeringEffects();
+    Card** turnStartLingering = duel->getTurnStartLingeringEffects();
+    Card* c;
+    for (short i=0;i<n_lingering_end;i++)
+    {
+        c = this->getCardFromCopyId(turnEndLingering[i]->getCopyId());
+        this->addTurnEndLingeringEffect(c);
+    }
+    for (short i=0;i<n_lingering_start;i++)
+    {
+        c = this->getCardFromCopyId(turnStartLingering[i]->getCopyId());
+        this->addTurnStartLingeringEffect(c);
+    }
 }
 float Gamestate::resourceFactor()
 {

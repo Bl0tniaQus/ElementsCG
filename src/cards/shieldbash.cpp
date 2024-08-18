@@ -20,6 +20,7 @@ bool ShieldBash::onSpell(Duel* duel, Card* card)
         card->getOwner()->getOpponent()->changeHp(-dmg);
         this->setTargetList(nullptr,0);
         }
+        else duel->appendSILog(card,targetCard);
         return true;
     }
 }

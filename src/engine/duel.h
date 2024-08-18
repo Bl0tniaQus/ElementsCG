@@ -19,7 +19,9 @@ private:
     int n_logs;
     bool duelEnded = false;
     Card** turnEndLingeringEffects;
-    short n_lingering;
+    short n_lingering_end;
+    Card** turnStartLingeringEffects;
+    short n_lingering_start;
 public:
     Duel();
     virtual ~Duel();
@@ -72,12 +74,15 @@ public:
     void changeStats(Card* card, short a, short d);
     void changeLevel(Card* card, short l);
     void changeBarrier(Card* card, short b);
+    void changeSpellImmunity(Card* card, bool si);
     void excavateCard(Card* card);
     void startDuel(Deck *deck0, Deck* deck1);
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
     void addTurnEndLingeringEffect(Card* card);
     void clearTurnEndLingeringEffects();
+    void addTurnStartLingeringEffect(Card* card);
+    void clearTurnStartLingeringEffects();
     virtual void appendLog(std::string log, short log_source);
     void turnStartLog();
     std::string* getLogs() {return this->logs;}
@@ -97,11 +102,18 @@ public:
     std::string statChangeLog(Card* card, short a_new, short d_new);
     std::string levelChangeLog(Card* card, short l);
     std::string excavateCardLog(Card* card);
+    std::string spellImmunityChangeLog(Card* card, bool change);
+    std::string spellImmunityMessageLog(Card* effect, Card* minion);
     std::string duelResultLog(short res);
+    void appendSILog(Card* effect, Card* minion);
     void turnEndLog();
     TargetList* getAttackersList() {return this->attackersTargetList;}
     TargetList* getDefendersList() {return this->defendersTargetList;}
     virtual bool isCopy() {return false;}
+    short getTurnStartLingeringEffectsNumber() {return this->n_lingering_start;}
+    short getTurnEndLingeringEffectsNumber() {return this->n_lingering_end;}
+    Card** getTurnEndLingeringEffects() {return this->turnEndLingeringEffects;}
+    Card** getTurnStartLingeringEffects() {return this->turnStartLingeringEffects;}
 };
 
 #endif // DUEL_H
