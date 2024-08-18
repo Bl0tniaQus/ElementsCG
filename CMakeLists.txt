@@ -58,6 +58,7 @@ set(PROJECT_SOURCES
         src/cards/topazamberfossil.cpp
         src/cards/earthquake.cpp
         src/cards/recycle.cpp
+        src/cards/supplydrop.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -17,7 +17,6 @@ public:
         "Target one earth minion your control: deal damage to your opponent equal to it's defence."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
-    void getOnSpellTargetList(Duel* duel, Card* card) override;
 
 };
 

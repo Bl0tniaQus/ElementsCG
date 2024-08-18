@@ -22,7 +22,6 @@ public:
     void onSummon(Duel* duel, Card* card) override;
     void onTurnStart(Duel * duel, Card * card) override;
     void onDestroy(Duel* duel, Card* card) override;
-    void getOnDestroyTargetList(Duel* duel, Card* card) override;
 };
 
 #endif

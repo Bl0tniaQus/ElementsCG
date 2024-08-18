@@ -822,6 +822,82 @@ void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Card* card, const cha
 
     this->setTargetList(targets,n_targets);
 }
+void CardBase::specialMinionsOnYourFieldWithSameAttribute(Duel* duel, Card* card, const char* element)
+{
+    this->setTargetList(nullptr,0);
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Zone* zone;
+    Player* player;
+        player = card->getOwner();
+        for (int i=0;i<5;i++)
+        {
+            zone = &player->getMinionField()[i];
+            Card *cardd = zone->getCard();
+            if (cardd!=nullptr)
+            {
+                if (cardd->getCardType()==2&&strcmp(element, cardd->getElement())==0)
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets-1;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
+                }
+            }
+        }
+        this->setTargetList(targets,n_targets);
+}
+void CardBase::minionsInHandWithMaximumLevel(Duel* duel, Card* card, short level)
+{
+    this->setTargetList(nullptr,0);
+    short handSize = card->getOwner()->getHandSize();
+    short n_targets = 0;
+    Card** targets = new Card* [n_targets];
+    for (int i=0;i<handSize;i++)
+        {
+            Card *target = card->getOwner()->getHand()[i];
+            if (target!=nullptr&&target->getLevel()<=level&&target->getCardType()==1)
+            {
+            n_targets++;
+            Card **newtargets = new Card* [n_targets];
+            if (n_targets>1) {
+                for (int j=0;j<n_targets-1;j++)
+                {
+                    newtargets[j] = targets[j];
+
+                }
+                newtargets[n_targets-1] = target;
+                delete [] targets;
+                targets = newtargets;
+            } else {newtargets[0]=target; targets = newtargets;}
+            }
+
+    }
+    this->setTargetList(targets,n_targets);
+}
+short CardBase::highestLevelInTargetList()
+{
+    short lvl = -1;
+    short nt = this->getTargetList()->getTargetsNumber();
+    Card** targets = this->getTargetList()->getTargetList();
+
+    for (short i = 0; i<nt; i++)
+    {
+        short card_lvl = targets[i]->getLevel();
+        if (card_lvl>lvl) {lvl = card_lvl;}
+    }
+    return lvl;
+}
+
 void CardBase::spellCost(Card* card)
 {
     card->getOwner()->changeMana(-card->getCost());

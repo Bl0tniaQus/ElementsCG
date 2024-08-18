@@ -17,7 +17,6 @@ public:
         "Reveal 3 top cards from your deck, then you can target one earth card among them and add it to your hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
-    void getOnSpellTargetList(Duel* duel, Card* card) override;
 
 };
 

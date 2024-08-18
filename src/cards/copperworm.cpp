@@ -3,7 +3,7 @@
 #include "../engine/card.h"
 void CopperWorm::onSummon(Duel* duel, Card* card)
 {
-        this->getOnSummonTargetList(duel, card);
+        this->cardsInHandWithTheSameName(duel, card);
         if (this->getTargetList()->getTargetsNumber()>0)
         {
             Card** targets = this->getTargetList()->getTargetList();
@@ -14,9 +14,5 @@ void CopperWorm::onSummon(Duel* duel, Card* card)
                 duel->summonFromHand(targetCard, zoneid);
             }
         }
-}
-void CopperWorm::getOnSummonTargetList(Duel* duel, Card* card)
-{
-    this->cardsInHandWithTheSameName(duel, card);
 }
 

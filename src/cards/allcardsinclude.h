@@ -31,5 +31,6 @@
 #include "topazamberfossil.h" //28
 #include "earthquake.h" //29
 #include "recycle.h" //30
+#include "supplydrop.h" //31
 
 #endif // ALLCARDS_H

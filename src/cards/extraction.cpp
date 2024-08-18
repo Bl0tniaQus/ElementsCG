@@ -7,8 +7,4 @@ bool Extraction::onSpell(Duel* duel, Card* card)
 {
         return true;
 }
-void Extraction::getOnSpellTargetList(Duel* duel, Card* card)
-{
-
-}
 

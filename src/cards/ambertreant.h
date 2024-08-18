@@ -21,7 +21,6 @@ public:
     void getSecondMaterialList(Duel* duel, Card* card) override;
     void onSummon(Duel* duel, Card* card) override;
     void onTurnEnd(Duel * duel, Card * card) override;
-    void getOnSummonTargetList(Duel * duel, Card * card) override;
 };
 
 #endif

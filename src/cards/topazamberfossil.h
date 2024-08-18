@@ -17,7 +17,6 @@ public:
         "When this card is summoned: return left-most earth special minion in your graveyard to your special deck."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
-    void getOnSummonTargetList(Duel* duel, Card* card) override;
 };
 
 #endif

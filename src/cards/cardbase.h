@@ -59,13 +59,6 @@ public:
     virtual void afterDefence(Duel* duel, Card* card, Card* attacker, short damage) {};
     virtual void onTurnEnd(Duel* duel, Card* card) {};
     virtual void onTurnStart(Duel* duel, Card* card);
-    virtual void getOnSummonTargetList(Duel* duel, Card* card) {};
-    virtual void getOnSpellTargetList(Duel* duel, Card* card) {};
-    virtual void getOnAttackTargetList(Duel* duel, Card* card) {};
-    virtual void getAfterAttackTargetList(Duel* duel, Card* card) {};
-    virtual void getOnDefenceTargetList(Duel* duel, Card* card) {};
-    virtual void getOnDestroyTargetList(Duel* duel, Card* card) {};
-    virtual void getOnTurnEndTargetList(Duel* duel, Card* card) {};
     virtual void onSpecialSummonRelease(Duel* duel, Card* card, Card* sp_minion) {};
 
     short singleChoice(Duel* duel, Card* card);
@@ -80,12 +73,15 @@ public:
     void cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element);
     void cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const char* name);
     void specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element);
+    void specialMinionsOnYourFieldWithSameAttribute(Duel* duel, Card* card, const char* element);
+    void minionsInHandWithMaximumLevel(Duel* duel, Card* card, short level);
     void minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
     void minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element);
     void minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
     void minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl);
     void minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name);
 
+    short highestLevelInTargetList();
 
     bool checkSummoningConditions2(Duel* duel, Card* card);
     bool checkSummoningConditions3(Duel* duel, Card* card);

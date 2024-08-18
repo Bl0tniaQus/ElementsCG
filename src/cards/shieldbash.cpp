@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool ShieldBash::onSpell(Duel* duel, Card* card)
 {
-    this->getOnSpellTargetList(duel, card);
+    this->minionsOnYourFieldWithSameElement(duel, card,"Earth");
     Card** targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
@@ -22,9 +22,5 @@ bool ShieldBash::onSpell(Duel* duel, Card* card)
         }
         return true;
     }
-}
-void ShieldBash::getOnSpellTargetList(Duel* duel, Card* card)
-{
-    this->minionsOnYourFieldWithSameElement(duel, card,"Earth");
 }
 

@@ -6,7 +6,7 @@ void SadNimbus::onSummon(Duel* duel, Card* card)
     short mana = card->getOwner()->getMana();
     if (mana>=12)
     {
-        this->getOnSummonTargetList(duel,card);
+        this->cardsInYourGraveyardWithExactName(duel,card,"Sad Nimbus");
         short n = this->getTargetList()->getTargetsNumber();
         if (n==0) {return;}
         else
@@ -19,9 +19,5 @@ void SadNimbus::onSummon(Duel* duel, Card* card)
             }
         }
     }
-}
-void SadNimbus::getOnSummonTargetList(Duel* duel, Card* card)
-{
-    this->cardsInYourGraveyardWithExactName(duel,card,"Sad Nimbus");
 }
 

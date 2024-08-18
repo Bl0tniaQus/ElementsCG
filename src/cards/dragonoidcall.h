@@ -17,7 +17,6 @@ public:
         "Summon 1 \"Dragonoid\" minion from your hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
-    void getOnSpellTargetList(Duel* duel, Card* card) override;
 
 };
 

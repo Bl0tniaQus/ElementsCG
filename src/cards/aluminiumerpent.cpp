@@ -3,7 +3,7 @@
 #include "../engine/card.h"
 void AluminiumSerpent::onSummon(Duel* duel, Card* card)
 {
-    this->getOnSummonTargetList(duel, card);
+    this->minionsInYourGraveyardWithSameElementAndMaximumLevel(duel,card,"Earth",2);
     short n = this->getTargetList()->getTargetsNumber();
     Card** tl = this->getTargetList()->getTargetList();
     if (n>0)
@@ -13,9 +13,5 @@ void AluminiumSerpent::onSummon(Duel* duel, Card* card)
     duel->toHand(target);
     duel->removeFromGraveyard(target);
     }
-}
-void AluminiumSerpent::getOnSummonTargetList(Duel* duel, Card* card)
-{
-    this->minionsInYourGraveyardWithSameElementAndMaximumLevel(duel,card,"Earth",2);
 }
 

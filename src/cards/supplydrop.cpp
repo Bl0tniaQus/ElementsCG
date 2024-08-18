@@ -1,11 +1,17 @@
-#include "dragonoidcall.h"
+#include "supplydrop.h"
 #include "../engine/duel.h"
 #include "../engine/card.h"
 #include "../engine/zone.h"
 #include "../engine/bot.h"
-bool DragonoidCall::onSpell(Duel* duel, Card* card)
+bool SupplyDrop::onSpell(Duel* duel, Card* card)
 {
-    this->cardsInHandWithCommonNamePart(duel, card,"Dragonoid");
+    this->minionsOnYourFieldWithSameElement(duel,card,"Air");
+    short n = this->getTargetList()->getTargetsNumber();
+    if (n<1) {return false;}
+    short lv = this->highestLevelInTargetList();
+    this->minionsInHandWithMaximumLevel(duel,card,lv-1);
+    short nt = this->getTargetList()->getTargetsNumber();
+    if (nt<1) {return false;}
     Card** targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}

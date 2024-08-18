@@ -17,7 +17,6 @@ public:
         "Target 1 earth card in your graveyard: return all cards with the same name from your graveyard to your hand."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
-    void getOnSpellTargetList(Duel* duel, Card* card) override;
 
 };
 

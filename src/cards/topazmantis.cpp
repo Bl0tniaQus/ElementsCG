@@ -24,10 +24,12 @@ void TopazMantis::onTurnStart(Duel * duel, Card * card)
 }
 void TopazMantis::onDestroy(Duel* duel, Card* card)
 {
-        this->secondEffectLog(duel, card);
-        this->getOnDestroyTargetList(duel,card);
+
+        this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
         short nt = this->getTargetList()->getTargetsNumber();
         Card** cards = this->getTargetList()->getTargetList();
+        short deckSize = card->getOwner()->getDeckSize();
+        if (deckSize>0 || nt>0) {this->secondEffectLog(duel, card);}
         for (short i=0;i<nt;i++)
         {
             duel->changeStats(cards[i],2,2);
@@ -36,10 +38,6 @@ void TopazMantis::onDestroy(Duel* duel, Card* card)
         {
             duel->drawCard(card->getOwner());
         }
-}
-void TopazMantis::getOnDestroyTargetList(Duel* duel, Card* card)
-{
-    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 
 

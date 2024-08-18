@@ -16,7 +16,7 @@ void AmberTreant::getSecondMaterialList(Duel* duel, Card* card)
 }
 void AmberTreant::onSummon(Duel* duel, Card* card)
 {
-    this->getOnSummonTargetList(duel, card);
+    this->cardsInDeckWithCommonNamePart(duel,card,"Amber Fossil");
     Card** targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt>0)
@@ -34,10 +34,6 @@ void AmberTreant::onTurnEnd(Duel* duel, Card* card)
         this->secondEffectLog(duel, card);
         duel->changeStats(card,0,1);
     }
-}
-void AmberTreant::getOnSummonTargetList(Duel* duel, Card* card)
-{
-    this->cardsInDeckWithCommonNamePart(duel,card,"Amber Fossil");
 }
 
 

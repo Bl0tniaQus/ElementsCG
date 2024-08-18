@@ -7,7 +7,7 @@ bool Earthquake::onSpell(Duel* duel, Card* card)
 {
     this->spellFromHandLog(duel,card);
     this->spellCost(card);
-    this->getOnSpellTargetList(duel, card);
+    this->allMinionsOnField(duel, card);
     short nt = this->getTargetList()->getTargetsNumber();
     Card** cards = this->getTargetList()->getTargetList();
     for (short i=0;i<nt;i++)
@@ -16,9 +16,5 @@ bool Earthquake::onSpell(Duel* duel, Card* card)
         duel->changeStats(cards[i],0,-cards[i]->getDefence());
     }
         return true;
-}
-void Earthquake::getOnSpellTargetList(Duel* duel, Card* card)
-{
-    this->allMinionsOnField(duel, card);
 }
 

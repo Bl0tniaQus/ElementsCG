@@ -23,7 +23,7 @@ Deck::Deck(short deckid)
 {
     if (deckid==0)
     {
-        this->n_cards = 22;
+        this->n_cards = 23;
         this->mainDeck = new Card[n_cards];
         this->mainDeck[0].getValuesFromId(1);
         this->mainDeck[1].getValuesFromId(1);
@@ -47,6 +47,7 @@ Deck::Deck(short deckid)
         this->mainDeck[19].getValuesFromId(18);
         this->mainDeck[20].getValuesFromId(29);
         this->mainDeck[21].getValuesFromId(30);
+        this->mainDeck[22].getValuesFromId(31);
         for (int i=0;i<this->n_cards;i++)
         {
             this->mainDeck[i].setPlace(0);

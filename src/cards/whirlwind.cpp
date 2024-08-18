@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool Whirlwind::onSpell(Duel* duel, Card* card)
 {
-    this->getOnSpellTargetList(duel, card);
+    this->allMinionsOnField(duel, card);
     Card** targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
@@ -21,9 +21,5 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
         }
         return true;
     }
-}
-void Whirlwind::getOnSpellTargetList(Duel* duel, Card* card)
-{
-    this->allMinionsOnField(duel, card);
 }
 

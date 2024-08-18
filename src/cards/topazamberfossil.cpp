@@ -3,7 +3,7 @@
 #include "../engine/card.h"
 void TopazAmberFossil::onSummon(Duel* duel, Card* card)
 {
-    this->getOnSummonTargetList(duel, card);
+    this->specialMinionsInYourGraveyardWithSameElement(duel,card,"Earth");
     short n = this->getTargetList()->getTargetsNumber();
     Card** tl = this->getTargetList()->getTargetList();
     if (n>0)
@@ -14,8 +14,5 @@ void TopazAmberFossil::onSummon(Duel* duel, Card* card)
     duel->removeFromGraveyard(target);
     }
 }
-void TopazAmberFossil::getOnSummonTargetList(Duel* duel, Card* card)
-{
-    this->specialMinionsInYourGraveyardWithSameElement(duel,card,"Earth");
-}
+
 

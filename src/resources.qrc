@@ -28,5 +28,6 @@
     <file alias="dragonoidsage">resources/images/dragonoidsage.jpg</file>
     <file alias="excavation">resources/images/excavation.jpg</file>
     <file alias="breeze">resources/images/breeze.jpg</file>
+    <file alias="supplydrop">resources/images/supplydrop.jpg</file>
 </qresource>
 </RCC>

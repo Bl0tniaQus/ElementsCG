@@ -7,7 +7,7 @@ bool Breeze::onSpell(Duel* duel, Card* card)
 {
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        this->getOnSpellTargetList(duel, card);
+        this->minionsOnYourFieldWithSameElement(duel,card,"Air");
         short nt = this->getTargetList()->getTargetsNumber();
         Card** cards = this->getTargetList()->getTargetList();
         for (short i=0;i<nt;i++)
@@ -16,10 +16,6 @@ bool Breeze::onSpell(Duel* duel, Card* card)
         }
         card->getOwner()->changeMana(nt);
         return true;
-}
-void Breeze::getOnSpellTargetList(Duel* duel, Card* card)
-{
-        this->minionsOnYourFieldWithSameElement(duel,card,"Air");
 }
 
 

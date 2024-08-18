@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool Recycle::onSpell(Duel* duel, Card* card)
 {
-    this->getOnSpellTargetList(duel, card);
+    this->cardsInYourGraveyardWithSameElement(duel,card,"Earth");
     Card** targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
@@ -25,8 +25,5 @@ bool Recycle::onSpell(Duel* duel, Card* card)
         return true;
     }
 }
-void Recycle::getOnSpellTargetList(Duel* duel, Card* card)
-{
-    this->cardsInYourGraveyardWithSameElement(duel,card,"Earth");
-}
+
 

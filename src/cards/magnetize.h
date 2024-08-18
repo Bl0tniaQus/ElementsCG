@@ -18,7 +18,6 @@ public:
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void onTurnEnd(Duel * duel, Card * card) override;
-    void getOnSpellTargetList(Duel* duel, Card* card) override;
 private:
     Card* target;
     short atkChange;

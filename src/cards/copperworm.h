@@ -17,7 +17,6 @@ public:
         "When this card is summoned: summon 1 \"Copper Worm\" from your hand."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
-    void getOnSummonTargetList(Duel* duel, Card* card) override;
 };
 
 #endif

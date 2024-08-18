@@ -17,7 +17,6 @@ public:
         "Add a left-most level 2 or lower non-special earth minion from your graveyard to your hand."
     ) {};
     void onSummon(Duel* duel, Card* card) override;
-    void getOnSummonTargetList(Duel* duel, Card* card) override;
 };
 
 #endif

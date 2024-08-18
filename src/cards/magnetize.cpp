@@ -6,7 +6,7 @@
 bool Magnetize::onSpell(Duel* duel, Card* card)
 {
 
-    this->getOnSpellTargetList(duel, card);
+    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
     Card** targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<2) {return false;}
@@ -36,10 +36,6 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
         }
         return true;
     }
-}
-void Magnetize::getOnSpellTargetList(Duel* duel, Card* card)
-{
-    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
 }
 void Magnetize::onTurnEnd(Duel* duel, Card* card)
 {

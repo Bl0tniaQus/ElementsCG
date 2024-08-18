@@ -17,7 +17,6 @@ public:
         ""
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
-    void getOnSpellTargetList(Duel* duel, Card* card) override;
 
 };
 

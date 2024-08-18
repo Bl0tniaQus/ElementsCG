@@ -18,7 +18,7 @@ void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
 }
 void DuelUiBridge::initiateDuel()
 {
-    Deck deck(this->playerDeck);
+    Deck deck(0);
     Deck deck2(this->opponentDeck);
     this->duelControl(&deck,&deck2);
 }
