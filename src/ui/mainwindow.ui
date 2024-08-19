@@ -197,9 +197,9 @@
           <property name="font">
            <font>
             <pointsize>12</pointsize>
-            <weight>75</weight>
+            <weight>50</weight>
             <italic>false</italic>
-            <bold>true</bold>
+            <bold>false</bold>
            </font>
           </property>
           <property name="styleSheet">
@@ -229,7 +229,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
+            <pointsize>13</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -262,7 +262,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
+            <pointsize>13</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -295,7 +295,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
+            <pointsize>13</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -328,7 +328,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
+            <pointsize>13</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -361,7 +361,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>14</pointsize>
+            <pointsize>13</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -464,11 +464,18 @@
           <height>181</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="tabPosition">
          <enum>QTabWidget::North</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="handTab">
          <attribute name="title">
@@ -482,6 +489,13 @@
             <width>131</width>
             <height>121</height>
            </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
           </property>
           <property name="text">
            <string>Play from Hand</string>
@@ -574,6 +588,13 @@
             <width>131</width>
             <height>121</height>
            </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
           </property>
           <property name="text">
            <string>Play Sp. Minion </string>
@@ -896,6 +917,13 @@
           <height>51</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>End Turn</string>
         </property>
@@ -909,6 +937,13 @@
           <height>51</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Battle Phase</string>
         </property>
@@ -921,6 +956,13 @@
           <width>461</width>
           <height>221</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
         <property name="currentIndex">
          <number>0</number>
@@ -1007,6 +1049,13 @@
           <width>331</width>
           <height>101</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
         <property name="currentIndex">
          <number>0</number>
@@ -1135,6 +1184,14 @@
           <height>91</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
@@ -1249,9 +1306,9 @@
          <widget class="QLabel" name="opponentSummonLimitValue">
           <property name="geometry">
            <rect>
-            <x>450</x>
+            <x>490</x>
             <y>10</y>
-            <width>31</width>
+            <width>41</width>
             <height>31</height>
            </rect>
           </property>
@@ -1288,9 +1345,9 @@
          <widget class="QLabel" name="opponentSummonLimitLabel">
           <property name="geometry">
            <rect>
-            <x>360</x>
+            <x>380</x>
             <y>10</y>
-            <width>91</width>
+            <width>111</width>
             <height>31</height>
            </rect>
           </property>
@@ -1310,9 +1367,16 @@
          <rect>
           <x>1050</x>
           <y>0</y>
-          <width>491</width>
+          <width>526</width>
           <height>521</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
         <property name="currentIndex">
          <number>0</number>
@@ -1326,7 +1390,7 @@
            <rect>
             <x>10</x>
             <y>10</y>
-            <width>461</width>
+            <width>496</width>
             <height>461</height>
            </rect>
           </property>
@@ -1367,8 +1431,31 @@
           <height>91</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>End Duel</string>
+        </property>
+       </widget>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="geometry">
+         <rect>
+          <x>1090</x>
+          <y>760</y>
+          <width>118</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QProgressBar::chunk {background-color: red; width: 20px; }</string>
+        </property>
+        <property name="value">
+         <number>100</number>
         </property>
        </widget>
       </widget>

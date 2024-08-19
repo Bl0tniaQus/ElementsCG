@@ -10,6 +10,8 @@ int main(int argc, char *argv[])
     srand(time(NULL));
 
     QApplication a(argc, argv);
+    //shoutout to QuantumCD for theme
+    //https://gist.github.com/QuantumCD/6245215
     a.setStyle(QStyleFactory::create("Fusion"));
     QPalette darkPalette;
     darkPalette.setColor(QPalette::Window, QColor(53,53,53));

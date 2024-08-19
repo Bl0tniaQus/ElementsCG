@@ -12,7 +12,7 @@ public:
         3, //attack
         2, //defence
         "Air", //element
-        "Dragonoid Warrior", //name
+        "Dragonoid WarriorDragonoid WarriorDragonoid WarriorDragonoid WarriorDragonoid WarriorDragonoid Warrior", //name
         "dragonoidwarrior",
         ""
     ) {};
