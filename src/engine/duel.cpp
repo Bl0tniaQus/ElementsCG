@@ -458,11 +458,18 @@ void Duel::turnEndEffects()
     {
         this->onTurnEnd(effects[i]);
     }
+    Card** effectsTE = new Card* [this->n_lingering_end];
+    short n = this->n_lingering_end;
     for (int i=0;i<this->n_lingering_end;i++)
     {
-        this->onTurnEnd(this->turnEndLingeringEffects[i]);
+        effectsTE[i] = this->turnEndLingeringEffects[i];
     }
     this->clearTurnEndLingeringEffects();
+    for (int i=0;i<n;i++)
+    {
+        this->onTurnStart(effectsTE[i]);
+    }
+    delete [] effectsTE;
     delete [] effects;
 }
 void Duel::turnStartEffects()
@@ -517,11 +524,18 @@ void Duel::turnStartEffects()
     {
         this->onTurnStart(effects[i]);
     }
+    Card** effectsTS = new Card* [this->n_lingering_start];
+    short n = this->n_lingering_start;
     for (int i=0;i<this->n_lingering_start;i++)
     {
-        this->onTurnStart(this->turnStartLingeringEffects[i]);
+        effectsTS[i] = this->turnStartLingeringEffects[i];
     }
     this->clearTurnStartLingeringEffects();
+    for (int i=0;i<n;i++)
+    {
+        this->onTurnStart(effectsTS[i]);
+    }
+    delete [] effectsTS;
     delete [] effects;
 }
 void Duel::playFromHand(Card* card)

@@ -29,5 +29,6 @@
     <file alias="excavation">resources/images/excavation.jpg</file>
     <file alias="breeze">resources/images/breeze.jpg</file>
     <file alias="supplydrop">resources/images/supplydrop.jpg</file>
+    <file alias="drilldragon">resources/images/drilldragon.jpg</file>
 </qresource>
 </RCC>

@@ -21,7 +21,7 @@ bool BarrelRoll::onSpell(Duel* duel, Card* card)
         {
             duel->changeSpellImmunity(targetCard,true);
             this->target = targetCard;
-            duel->addTurnStartLingeringEffect(targetCard);
+            duel->addTurnStartLingeringEffect(card);
             this->playerId = duel->getTurnPlayer();
 
         }
@@ -33,9 +33,9 @@ void BarrelRoll::onTurnStart(Duel* duel, Card* card)
 {
     if (this->target->getPlace()==2&&duel->getTurnPlayer()!=this->playerId)
     {
-        duel->addTurnStartLingeringEffect(this->target);
+        duel->addTurnStartLingeringEffect(card);
     }
-    if (this->target->getPlace()==2&&this->target->getIsSpellImmune())
+    else if (this->target->getPlace()==2&&this->target->getIsSpellImmune())
     {
         duel->changeSpellImmunity(this->target, false);
     }

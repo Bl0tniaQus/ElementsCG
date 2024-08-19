@@ -93,6 +93,7 @@ CardBase* Card::getCardNameById(int id)
         case 31: cardbase = new SupplyDrop; break;
         case 32: cardbase = new PaperAirplane; break;
         case 33: cardbase = new BarrelRoll; break;
+        case 34: cardbase = new DrillDragon; break;
     }
     return cardbase;
 }

@@ -884,6 +884,41 @@ void CardBase::minionsInHandWithMaximumLevel(Duel* duel, Card* card, short level
     }
     this->setTargetList(targets,n_targets);
 }
+void CardBase::minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Card* card, const char* element1, const char* element2, short lvl)
+{
+    this->setTargetList(nullptr,0);
+    short n_targets=0;
+    Card** targets = new Card* [n_targets];
+    Zone* zone;
+    Player* player;
+        player = card->getOwner();
+        for (int i=0;i<5;i++)
+        {
+            zone = &player->getMinionField()[i];
+            Card *cardd = zone->getCard();
+            if (cardd!=nullptr)
+            {
+                if ((strcmp(element1, cardd->getElement())==0||strcmp(element2, cardd->getElement())==0)&&cardd->getLevel()>=lvl)
+                {
+                    n_targets++;
+                    Card **newtargets = new Card* [n_targets];
+                    if (n_targets>1) {
+                        for (int j=0;j<n_targets-1;j++)
+                        {
+
+                            newtargets[j] = targets[j];
+
+                        }
+                        newtargets[n_targets-1] = cardd;
+                        delete [] targets;
+                        targets = newtargets;
+                    } else {newtargets[0]=cardd; targets = newtargets;}
+                }
+            }
+        }
+        this->setTargetList(targets,n_targets);
+}
+
 short CardBase::highestLevelInTargetList()
 {
     short lvl = -1;

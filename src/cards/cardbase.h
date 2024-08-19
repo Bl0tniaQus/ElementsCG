@@ -79,6 +79,7 @@ public:
     void minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element);
     void minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
     void minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl);
+    void minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Card* card, const char* element1, const char* element2, short lvl);
     void minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name);
 
     short highestLevelInTargetList();
