@@ -30,5 +30,6 @@
     <file alias="breeze">resources/images/breeze.jpg</file>
     <file alias="supplydrop">resources/images/supplydrop.jpg</file>
     <file alias="drilldragon">resources/images/drilldragon.jpg</file>
+    <file alias="paperairplane">resources/images/paperairplane.jpg</file>
 </qresource>
 </RCC>

@@ -37,6 +37,7 @@ public:
     short makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
     void setDecks(int a, int b) {this->playerDeck = a; this->opponentDeck = b;}
+    void delay();
 public slots:
     void initiateDuel();
     void playFromHand(short id);
@@ -51,6 +52,7 @@ signals:
     void drawGraveyard();
     void drawOpponentGraveyard();
     void drawLogs();
+    void drawTurnPlayer();
     void handCardPlayed(short id = -1);
     void specialMinionPlayed(short id = -1);
     void drawSpellTargets(Card* card);

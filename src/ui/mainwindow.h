@@ -95,6 +95,7 @@ public slots:
     void defenderCancel();
     void clearTabs();
     void turnEnd();
+    void turnPlayer();
     void endDuel(short result);
 signals:
     void duelStartSignal();

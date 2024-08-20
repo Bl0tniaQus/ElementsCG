@@ -63,6 +63,7 @@ void MainWindow::startDuel()
     connect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
     connect(this->bridge,&DuelUiBridge::specialMinionPlayed,this, &MainWindow::specialDeckTarget);
     connect(this->bridge,&DuelUiBridge::duelEndSignal, this, &MainWindow::endDuel);
+    connect(this->bridge, &DuelUiBridge::drawTurnPlayer, this, &MainWindow::turnPlayer);
     connect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
     connect(this->ui->endDuelButton, &QPushButton::released, this, &MainWindow::clearDuel);
 
@@ -1045,6 +1046,7 @@ void MainWindow::clearDuel()
     disconnect(this->bridge,&DuelUiBridge::handCardPlayed,this, &MainWindow::handTarget);
     disconnect(this->bridge,&DuelUiBridge::specialMinionPlayed,this, &MainWindow::specialDeckTarget);
     disconnect(this->bridge,&DuelUiBridge::duelEndSignal, this, &MainWindow::endDuel);
+    disconnect(this->bridge, &DuelUiBridge::drawTurnPlayer, this, &MainWindow::turnPlayer);
     disconnect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
     disconnect(this->ui->endDuelButton, &QPushButton::released, this, &MainWindow::clearDuel);
 
@@ -1052,6 +1054,14 @@ void MainWindow::clearDuel()
     delete this->duel;
     delete this->bridge;
     this->ui->stackedWidget->setCurrentIndex(0);
+}
+void MainWindow::turnPlayer()
+{
+    short tc = this->duel->getTurnCount();
+    std::string name = std::string(this->duel->getPlayer(this->duel->getTurnPlayer())->getName());
+    std::string str = "Turn " + std::to_string(tc) + "[" + name + "]";
+    QString qstr = QString::fromStdString(str);
+    this->ui->turnPlayerLabel->setText(qstr);
 }
 void MainWindow::loadDecks()
 {

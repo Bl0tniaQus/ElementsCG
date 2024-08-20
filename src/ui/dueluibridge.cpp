@@ -3,6 +3,7 @@
 #include "../engine/card.h"
 #include "../engine/bot.h"
 #include <QDebug>
+#include <QThread>
 DuelUiBridge::DuelUiBridge()
 {
 
@@ -12,9 +13,12 @@ DuelUiBridge::DuelUiBridge()
 void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
 {
     this->duel->startDuel(deck0,deck1);
-    if (this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()!=nullptr)
-    {this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()->playTurn(this->duel);}
     this->updateBoard();
+    if (this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()!=nullptr)
+    {
+        this->delay();
+        this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()->playTurn(this->duel);}
+
 }
 void DuelUiBridge::initiateDuel()
 {
@@ -59,6 +63,7 @@ void DuelUiBridge::updateBoard()
     emit drawOpponentGraveyard();
     emit drawResources();
     emit drawLogs();
+    emit drawTurnPlayer();
 }
 short DuelUiBridge::makeSpellChoice(Card* card)
 {
@@ -134,6 +139,7 @@ void DuelUiBridge::passTurn()
     this->duel->passTurn();
     if (opponent->getBot()!=nullptr)
     {
+        this->delay();
         opponent->getBot()->playTurn(this->duel);
     }
     this->updateBoard();
@@ -184,6 +190,14 @@ void DuelUiBridge::endDuel(short result)
         emit duelEndSignal(result);
     }
 }
+void DuelUiBridge::delay()
+{
+    this->updateBoard();
+    QThread::msleep(800);
+
+
+}
+
 
 
 

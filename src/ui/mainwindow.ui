@@ -191,7 +191,7 @@
             <x>10</x>
             <y>50</y>
             <width>321</width>
-            <height>171</height>
+            <height>191</height>
            </rect>
           </property>
           <property name="font">
@@ -288,7 +288,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>220</y>
+            <y>240</y>
             <width>156</width>
             <height>41</height>
            </rect>
@@ -321,7 +321,7 @@
           <property name="geometry">
            <rect>
             <x>170</x>
-            <y>220</y>
+            <y>240</y>
             <width>156</width>
             <height>41</height>
            </rect>
@@ -475,7 +475,7 @@
          <enum>QTabWidget::North</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="handTab">
          <attribute name="title">
@@ -1062,7 +1062,7 @@
         </property>
         <widget class="QWidget" name="playerNameTab">
          <attribute name="title">
-          <string>playerName</string>
+          <string/>
          </attribute>
          <widget class="QLabel" name="playerSummonLimitLabel">
           <property name="geometry">
@@ -1197,7 +1197,7 @@
         </property>
         <widget class="QWidget" name="opponentResourcesTab">
          <attribute name="title">
-          <string>opponentName</string>
+          <string/>
          </attribute>
          <widget class="QLabel" name="opponentManaValue">
           <property name="geometry">
@@ -1451,11 +1451,50 @@
           <height>23</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true">QProgressBar::chunk {background-color: red; width: 20px; }</string>
         </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
         <property name="value">
-         <number>100</number>
+         <number>15</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="format">
+         <string>%v/30</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="turnPlayerLabel">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>750</y>
+          <width>381</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>22</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>
