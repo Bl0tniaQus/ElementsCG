@@ -456,19 +456,20 @@ void Duel::turnEndEffects()
 
     for (int i=0;i<n_effects;i++)
     {
-        this->botDelay();
+        this->botDelay(200);
         this->onTurnEnd(effects[i]);
     }
     Card** effectsTE = new Card* [this->n_lingering_end];
     short n = this->n_lingering_end;
     for (int i=0;i<this->n_lingering_end;i++)
     {
+
         effectsTE[i] = this->turnEndLingeringEffects[i];
     }
     this->clearTurnEndLingeringEffects();
     for (int i=0;i<n;i++)
     {
-        this->botDelay();
+        this->botDelay(200);
         this->onTurnEnd(effectsTE[i]);
     }
     delete [] effectsTE;
@@ -524,7 +525,7 @@ void Duel::turnStartEffects()
 
     for (int i=0;i<n_effects;i++)
     {
-        this->botDelay();
+        this->botDelay(200);
         this->onTurnStart(effects[i]);
     }
     Card** effectsTS = new Card* [this->n_lingering_start];
@@ -536,7 +537,7 @@ void Duel::turnStartEffects()
     this->clearTurnStartLingeringEffects();
     for (int i=0;i<n;i++)
     {
-        this->botDelay();
+        this->botDelay(200);
         this->onTurnStart(effectsTS[i]);
     }
     delete [] effectsTS;
@@ -810,11 +811,11 @@ Card* Duel::getCardFromCopyId(int id)
     }
     return nullptr;
 }
-void Duel::botDelay()
+void Duel::botDelay(int ms)
 {
     if (this->uiBridge!=nullptr)
     {
-        uiBridge->delay();
+        uiBridge->delay(ms);
     }
 }
 void Duel::startDuel(Deck *deck0, Deck* deck1)

@@ -62,6 +62,7 @@ set(PROJECT_SOURCES
         src/cards/paperairplane.cpp
         src/cards/barrelroll.cpp
         src/cards/drilldragon.cpp
+        src/cards/wind-upcopter.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

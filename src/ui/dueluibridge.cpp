@@ -16,7 +16,7 @@ void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
     this->updateBoard();
     if (this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()!=nullptr)
     {
-        this->delay();
+        this->delay(200);
         this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()->playTurn(this->duel);}
 
 }
@@ -139,7 +139,7 @@ void DuelUiBridge::passTurn()
     this->duel->passTurn();
     if (opponent->getBot()!=nullptr)
     {
-        this->delay();
+        this->delay(200);
         opponent->getBot()->playTurn(this->duel);
     }
     this->updateBoard();
@@ -190,10 +190,10 @@ void DuelUiBridge::endDuel(short result)
         emit duelEndSignal(result);
     }
 }
-void DuelUiBridge::delay()
+void DuelUiBridge::delay(int ms)
 {
     this->updateBoard();
-    QThread::msleep(800);
+    QThread::msleep(ms);
 
 
 }

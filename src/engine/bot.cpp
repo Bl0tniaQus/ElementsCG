@@ -437,7 +437,7 @@ void Bot::conductBattlePhase(Duel* duel)
             {
                 duel->directAttack(attacker);
             }
-            duel->botDelay();
+            duel->botDelay(600);
         }
         this->endBattleTesting();
         if (duel->getDuelEnded()) {return;}
@@ -508,7 +508,7 @@ void Bot::playTurn(Duel* duel)
                     { c = duel->getCardFromCopyId(mats[2]);}
                     this->material1 = a; this->material2 = b; this->material3 = c;
                     duel->summonSpecialMinion(card);
-                    duel->botDelay();
+                    duel->botDelay(600);
                     this->material1 = nullptr; this->material2 = nullptr; this->material3 = nullptr;
 
                 }
@@ -519,7 +519,7 @@ void Bot::playTurn(Duel* duel)
                     this->testing = false;
                     this->testingTargets = false;
                     duel->playFromHand(duel->getCardFromCopyId(option));
-                    duel->botDelay();
+                    duel->botDelay(600);
                 }
                 }
                 this->endHandTesting();

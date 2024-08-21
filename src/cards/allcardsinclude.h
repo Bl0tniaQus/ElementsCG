@@ -35,5 +35,6 @@
 #include "paperairplane.h" //32
 #include "barrelroll.h" //33
 #include "drilldragon.h" //34
+#include "wind-upcopter.h" //35
 
 #endif // ALLCARDS_H

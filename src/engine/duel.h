@@ -88,7 +88,7 @@ public:
     std::string* getLogs() {return this->logs;}
     short* getLogSources() {return this->logsSource;}
     int getLogsNumber() {return this->n_logs;}
-    void botDelay();
+    void botDelay(int ms);
     std::string cardFromHandLog(Card* card);
     std::string manaChangeLog(Player* player, short value);
     std::string lifeChangeLog(Player* player, short value);

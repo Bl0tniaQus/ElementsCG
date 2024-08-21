@@ -1059,7 +1059,7 @@ void MainWindow::turnPlayer()
 {
     short tc = this->duel->getTurnCount();
     std::string name = std::string(this->duel->getPlayer(this->duel->getTurnPlayer())->getName());
-    std::string str = "Turn " + std::to_string(tc) + "[" + name + "]";
+    std::string str = "Turn " + std::to_string(tc) + " [" + name + "]";
     QString qstr = QString::fromStdString(str);
     this->ui->turnPlayerLabel->setText(qstr);
 }
