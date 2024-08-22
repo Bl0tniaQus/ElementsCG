@@ -31,5 +31,6 @@
     <file alias="supplydrop">resources/images/supplydrop.jpg</file>
     <file alias="drilldragon">resources/images/drilldragon.jpg</file>
     <file alias="paperairplane">resources/images/paperairplane.jpg</file>
+    <file alias="wind-upcopter">resources/images/wind-upcopter.jpg</file>
 </qresource>
 </RCC>

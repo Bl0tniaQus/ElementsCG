@@ -10,7 +10,7 @@ void Nailpecker::onSummon(Duel* duel, Card* card)
     {
         this->effectLog(duel, card);
         duel->changeStats(card,1,0);
-        duel->changeLevel(card,1);
+        duel->changeLevel(card,card->getLevel()+1);
     }
 
 
