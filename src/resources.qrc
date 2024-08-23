@@ -32,5 +32,6 @@
     <file alias="drilldragon">resources/images/drilldragon.jpg</file>
     <file alias="paperairplane">resources/images/paperairplane.jpg</file>
     <file alias="wind-upcopter">resources/images/wind-upcopter.jpg</file>
+    <file alias="nailpecker">resources/images/nailpecker.jpg</file>
 </qresource>
 </RCC>
