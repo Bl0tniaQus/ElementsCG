@@ -1,11 +1,11 @@
-#include "barrelroll.h"
+#include "wind-upoverload.h"
 #include "../engine/duel.h"
 #include "../engine/card.h"
 #include "../engine/zone.h"
 #include "../engine/bot.h"
-bool BarrelRoll::onSpell(Duel* duel, Card* card)
+bool WindUpOverload::onSpell(Duel* duel, Card* card)
 {
-
+    this->target = nullptr;
     this->minionsOnYourFieldWithSameElement(duel,card,"Air");
     Card** targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
@@ -17,28 +17,24 @@ bool BarrelRoll::onSpell(Duel* duel, Card* card)
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
         Card* targetCard = targets[target];
+        short orAtk = targetCard->getOriginalAttack();
         if (!targetCard->getIsSpellImmune())
         {
-            duel->changeSpellImmunity(targetCard,true);
             this->target = targetCard;
-            duel->addTurnStartLingeringEffect(card);
-            this->playerId = duel->getTurnPlayer();
-
+            duel->changeStats(targetCard,orAtk*2 - targetCard->getAttack(),0);
+            duel->addTurnEndLingeringEffect(card);
         }
         else duel->appendSILog(card,targetCard);
         return true;
     }
 }
-void BarrelRoll::onTurnStart(Duel* duel, Card* card)
+void WindUpOverload::onTurnEnd(Duel* duel, Card* card)
 {
-    if (this->target->getPlace()==2&&duel->getTurnPlayer()!=this->playerId)
-    {
-        duel->addTurnStartLingeringEffect(card);
-    }
-    else if (this->target->getPlace()==2&&this->target->getIsSpellImmune())
+    if (this->target->getPlace()==2)
     {
         this->effectLog(duel, card);
-        duel->changeSpellImmunity(this->target, false);
+        duel->destruction(this->target);
+        this->target = nullptr;
     }
 }
 

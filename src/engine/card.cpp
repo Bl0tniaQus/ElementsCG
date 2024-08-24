@@ -96,6 +96,7 @@ CardBase* Card::getCardNameById(int id)
         case 34: cardbase = new DrillDragon; break;
         case 35: cardbase = new WindUpCopter; break;
         case 36: cardbase = new Nailpecker; break;
+        case 37: cardbase = new WindUpOverload; break;
     }
     return cardbase;
 }

@@ -33,6 +33,7 @@ void DrillDragon::afterAttack(Duel* duel, Card* card, Card* target, short damage
 {
     if (!card->getIsNegated()&&this->effectUsed)
     {
+        this->firstEffectLog(duel,card);
         duel->changeStats(card,-2,0);
         this->effectUsed = false;
     }
