@@ -38,5 +38,7 @@
 #include "wind-upcopter.h" //35
 #include "nailpecker.h" //36
 #include "wind-upoverload.h" //37
+#include "flyinglizard.h" //38
+#include "wind-upairplane.h" //39
 
 #endif // ALLCARDS_H

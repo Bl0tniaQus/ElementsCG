@@ -65,6 +65,8 @@ set(PROJECT_SOURCES
         src/cards/wind-upcopter.cpp
         src/cards/nailpecker.cpp
         src/cards/wind-upoverload.cpp
+        src/cards/flyinglizard.cpp
+        src/cards/wind-upairplane.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

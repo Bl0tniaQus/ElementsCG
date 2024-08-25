@@ -4,7 +4,7 @@
 void LithiumLizard::onSpecialSummonRelease(Duel* duel, Card* card, Card* sp_minion)
 {
     this->effectLog(duel, card);
-    card->getOwner()->changeMana(sp_minion->getOriginalLevel());
+    card->getOwner()->changeMana(4);
 }
 
 

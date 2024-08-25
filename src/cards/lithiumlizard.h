@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Lithium Lizard", //name
         "lithiumlizard",
-        "When this card is released as a material to summon a special minion: gain mana equal to that special minion's level."
+        "When this card is released as a material to summon a special minion: gain 4 mana."
     ) {};
     void onSpecialSummonRelease(Duel * duel, Card * card, Card * sp_minion) override;
 };
