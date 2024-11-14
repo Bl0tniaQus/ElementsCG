@@ -33,5 +33,7 @@
     <file alias="paperairplane">resources/images/paperairplane.jpg</file>
     <file alias="wind-upcopter">resources/images/wind-upcopter.jpg</file>
     <file alias="nailpecker">resources/images/nailpecker.jpg</file>
+    <file alias="wind-upairplane">resources/images/wind-upairplane.jpg</file>
+    <file alias="wind-upbiplane">resources/images/wind-upbiplane.jpg</file>
 </qresource>
 </RCC>

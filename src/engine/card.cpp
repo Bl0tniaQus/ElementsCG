@@ -99,6 +99,7 @@ CardBase* Card::getCardNameById(int id)
         case 37: cardbase = new WindUpOverload; break;
         case 38: cardbase = new FlyingLizard; break;
         case 39: cardbase = new WindUpAirplane; break;
+        case 40: cardbase = new WindUpBiplane; break;
     }
     return cardbase;
 }
