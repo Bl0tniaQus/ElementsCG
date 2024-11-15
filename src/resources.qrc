@@ -35,5 +35,6 @@
     <file alias="nailpecker">resources/images/nailpecker.jpg</file>
     <file alias="wind-upairplane">resources/images/wind-upairplane.jpg</file>
     <file alias="wind-upbiplane">resources/images/wind-upbiplane.jpg</file>
+    <file alias="barrelroll">resources/images/barrelroll.jpg</file>
 </qresource>
 </RCC>

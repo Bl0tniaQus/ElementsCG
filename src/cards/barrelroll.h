@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Barrel Roll", //name
         "barrelroll",
-        "Target 1 earth minion you control: it gains attack equal to combined attack of all other earth minions you control until the end of the turn, also your other earth minions can't attack this turn."
+        "Target 1 air minion you control: it gains spell immunity until the start of your next turn."
     ) {};
     bool onSpell(Duel* duel, Card* card) override;
     void onTurnStart(Duel * duel, Card * card) override;
