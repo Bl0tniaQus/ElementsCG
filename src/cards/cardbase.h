@@ -18,6 +18,7 @@ private:
     char* image;
     char* cardText;
     Card* cardEntity;
+    Card** usedMaterials;
     TargetList* targetList;
 public:
     CardBase() {};
@@ -31,6 +32,8 @@ public:
     short getAttack() {return this->attack;}
     char* getCardText() {return this->cardText;}
     void setMaterialNumber(short n) {this->materials = n;}
+    void setTwoMaterials(Card* material1, Card* material2);
+    void setThreeMaterials(Card* material1, Card* material2, Card* material3);
     short getMaterialNumber() {return this->materials;}
     short getDefence() {return this->defence;}
     char* getElement() {return this->element;}
@@ -51,6 +54,7 @@ public:
     void release3Log(Card* c1, Card* c2, Card* c3, Duel* duel);
 
     virtual void onSummon(Duel* duel, Card* card) {};
+    virtual void onspecialSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};
     virtual void onDestroy(Duel* duel, Card* card) {};
     virtual void onAttack(Duel* duel, Card* card, Card* target) {};

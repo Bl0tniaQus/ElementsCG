@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Flying lizard", //name
         "flyinglizard",
-        "When this card is released as a material to summon a special minion: increase defence of that speciall minion by 1 and also gain 2 mana."
+        "When this card is released as a material to summon a special minion: increase defence of that special minion by 1 and also gain 2 mana."
     ) {};
     void onSpecialSummonRelease(Duel * duel, Card * card, Card * sp_minion) override;
 };

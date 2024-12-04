@@ -17,6 +17,7 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, cons
     this->defence = d;
     this->targetList = new TargetList;
     this->element = new char[strlen(el)+1];
+    this->usedMaterials = new Card* [0];
     strcpy(this->element, el);
     this->name = new char[strlen(n)+1];
     strcpy(this->name, n);
@@ -43,6 +44,27 @@ void CardBase::onTurnStart(Duel* duel, Card* card)
     {
         card->setAttacks(1);
     }
+}
+void CardBase::setTwoMaterials(Card* material1, Card* material2)
+{
+    delete this->usedMaterials;
+
+    this->usedMaterials = new Card* [2];
+
+    this->usedMaterials[0] = material1;
+    this->usedMaterials[1] = material2;
+
+}
+void CardBase::setThreeMaterials(Card* material1, Card* material2, Card* material3)
+{
+    delete this->usedMaterials;
+
+    this->usedMaterials = new Card* [3];
+
+    this->usedMaterials[0] = material1;
+    this->usedMaterials[1] = material2;
+    this->usedMaterials[2] = material3;
+
 }
 short CardBase::singleChoice(Duel* duel, Card* card)
 {
@@ -497,6 +519,7 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
             targetCard2 = card->getOwner()->getBot()->getSecondMaterial();
         }
         this->release2Log(targetCard,targetCard2, duel);
+        this->setTwoMaterials(targetCard, targetCard2);
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
         return true;
@@ -593,6 +616,7 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
             targetCard3 = card->getOwner()->getBot()->getThirdMaterial();
         }
         this->release3Log(targetCard,targetCard2,targetCard3, duel);
+        this->setThreeMaterials(targetCard, targetCard2, targetCard3);
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
         duel->releaseForSpecialSummon(targetCard3, card);
