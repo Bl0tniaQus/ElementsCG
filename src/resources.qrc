@@ -38,5 +38,6 @@
     <file alias="barrelroll">resources/images/barrelroll.jpg</file>
     <file alias="wind-upoverload">resources/images/wind-upoverload.jpg</file>
     <file alias="flyinglizard">resources/images/flyinglizard.jpg</file>
+    <file alias="wind-uprestart">resources/images/wind-uprestart.jpg</file>
 </qresource>
 </RCC>

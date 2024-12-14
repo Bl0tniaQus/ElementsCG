@@ -25,7 +25,7 @@ short attacks;
 short barrier;
 bool isNegated;
 bool isSpellImmune;
-
+short turnPlayed;
 public:
     Card();
     ~Card();
@@ -67,6 +67,8 @@ public:
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);
     void returnToOriginal();
+    short getTurnPlayed() {return this->turnPlayed;}
+    void setTurnPlayed(short t) {this->turnPlayed = t;}
     CardBase* getCardName() {return this->cardName;}
     CardBase* getCardNameById(int id);
 };

@@ -22,6 +22,7 @@ Card::Card(int entryId)
     this->isNegated = false;
     this->isSpellImmune = false;
     this->zone = nullptr;
+    this->turnPlayed = -1;
 }
 void Card::getValuesFromId(int entryId)
 {
@@ -39,6 +40,7 @@ void Card::getValuesFromId(int entryId)
     this->isNegated = false;
     this->isSpellImmune = false;
     this->zone = nullptr;
+    this->turnPlayed = -1;
 }
 void Card::copyProperties(Card* card)
 {
@@ -54,6 +56,7 @@ void Card::copyProperties(Card* card)
     this->barrier = card->getBarrier();
     this->isNegated = card->getIsNegated();
     this->isSpellImmune = card->getIsSpellImmune();
+    this->turnPlayed = card->getTurnPlayed();
 }
 CardBase* Card::getCardNameById(int id)
 {
@@ -100,6 +103,7 @@ CardBase* Card::getCardNameById(int id)
         case 38: cardbase = new FlyingLizard; break;
         case 39: cardbase = new WindUpAirplane; break;
         case 40: cardbase = new WindUpBiplane; break;
+        case 41: cardbase = new WindUpRestart; break;
     }
     return cardbase;
 }

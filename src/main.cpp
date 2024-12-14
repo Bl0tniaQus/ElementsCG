@@ -36,3 +36,4 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
+//TODO major target lists refatoring, wind up restart effect

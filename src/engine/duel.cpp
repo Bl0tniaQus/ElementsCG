@@ -387,6 +387,7 @@ void Duel::onSummon(Card* card)
 {
     if (card->getCardType()!=0)
     {
+        card->setTurnPlayed(this->turnCount);
         this->appendLog(this->summonLog(card),this->getPlayerId(card->getOwner()));
         card->getCardName()->onSummon(this, card);
     }
@@ -567,6 +568,7 @@ void Duel::playFromHand(Card* card)
         {
             if (this->activateSpell(card))
             {
+                card->setTurnPlayed(this->turnCount);
                 this->toGraveyard(card);
                 success=1;
             }

@@ -12,7 +12,7 @@ public:
         1, //attack
         1, //defence
         "Air", //element
-        "Flying lizard", //name
+        "Flying Lizard", //name
         "flyinglizard",
         "When this card is released as a material to summon a special minion: increase defence of that special minion by 1 and also gain 2 mana."
     ) {};
