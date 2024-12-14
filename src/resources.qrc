@@ -36,5 +36,7 @@
     <file alias="wind-upairplane">resources/images/wind-upairplane.jpg</file>
     <file alias="wind-upbiplane">resources/images/wind-upbiplane.jpg</file>
     <file alias="barrelroll">resources/images/barrelroll.jpg</file>
+    <file alias="wind-upoverload">resources/images/wind-upoverload.jpg</file>
+    <file alias="flyinglizard">resources/images/flyinglizard.jpg</file>
 </qresource>
 </RCC>
