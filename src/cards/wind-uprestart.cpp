@@ -18,7 +18,7 @@ bool WindUpRestart::onSpell(Duel* duel, Card* card)
         Card* targetCard = targets[target];
         if (!targetCard->getIsSpellImmune())
         {
-            duel->onSummon(targetCard);
+            targetCard->getCardName()->onSummon(duel, targetCard);
         }
         else duel->appendSILog(card,targetCard);
         return true;
