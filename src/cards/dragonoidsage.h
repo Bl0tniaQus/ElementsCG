@@ -15,7 +15,7 @@ public:
         "Dragonoid Sage", //name
         "dragonoidsage",
         "At the end of your turn: gain 2 mana."
-    ) {};
+    ) {this->setHasOnTurnEnd(1);};
     void onTurnEnd(Duel* duel, Card* card) override;
 };
 

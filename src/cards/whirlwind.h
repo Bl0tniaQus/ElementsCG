@@ -15,7 +15,7 @@ public:
         "Whirlwind", //name
         "whirlwind",
         "Target 1 minion on the field: return it to it's owner's hand."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

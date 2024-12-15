@@ -15,7 +15,7 @@ public:
         "Brass Beetle", //name
         "brassbeetle",
         "[Any 2 earth minions]\nAfter this card has attacked: gain 1 attack."
-    ) {this->setMaterialNumber(2);}
+    ) {this->setMaterialNumber(2); this->setHasAfterAttack(1);}
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

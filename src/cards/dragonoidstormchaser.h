@@ -15,7 +15,7 @@ public:
         "Dragonoid Storm Chaser", //name
         "dragonoidstormchaser",
         "[\"Dragonoid\" minion + any air minion]\n1) When this card is summoned if you have at least 12 mana: gain +1/+1;\n2) After this card battles: gain 2 mana."
-    ) {this->setMaterialNumber(2);};
+    ) {this->setMaterialNumber(2); this->setHasOnSummon(1); this->setHasAfterAttack(1); this->setHasAfterDefence(1);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

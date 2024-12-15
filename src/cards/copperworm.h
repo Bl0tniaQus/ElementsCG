@@ -15,7 +15,7 @@ public:
         "Copper Worm", //name
         "copperworm",
         "When this card is summoned: summon 1 \"Copper Worm\" from your hand."
-    ) {};
+    ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
 };
 

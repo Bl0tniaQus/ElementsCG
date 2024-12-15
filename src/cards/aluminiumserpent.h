@@ -15,7 +15,7 @@ public:
         "Aluminium Serpent", //name
         "aluminiumserpent",
         "Add a left-most level 2 or lower non-special earth minion from your graveyard to your hand."
-    ) {};
+    ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
 };
 

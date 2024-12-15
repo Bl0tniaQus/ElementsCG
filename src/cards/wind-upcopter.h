@@ -15,7 +15,7 @@ public:
         "Wind-up Copter", //name
         "wind-upcopter",
         "When this card is summoned: this card's attack become 4 until end of this turn."
-    ) {};
+    ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
     void onTurnEnd(Duel* duel, Card* card) override;
 private:

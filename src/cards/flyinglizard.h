@@ -15,7 +15,7 @@ public:
         "Flying Lizard", //name
         "flyinglizard",
         "When this card is released as a material to summon a special minion: increase defence of that special minion by 1 and also gain 2 mana."
-    ) {};
+    ) {this->setHasOnSpecialSummonRelease(1);};
     void onSpecialSummonRelease(Duel * duel, Card * card, Card * sp_minion) override;
 };
 

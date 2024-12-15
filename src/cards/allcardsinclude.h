@@ -40,7 +40,8 @@
 #include "wind-upoverload.h" //37
 #include "flyinglizard.h" //38
 #include "wind-upairplane.h" //39
-#include "wind-upbiplane.h" //39
-#include "wind-uprestart.h" //40
+#include "wind-upbiplane.h" //40
+#include "wind-uprestart.h" //41
+#include "supplybaloon.h" //42
 
 #endif // ALLCARDS_H

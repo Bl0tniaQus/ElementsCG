@@ -15,7 +15,7 @@ public:
         "Supply Drop", //name
         "supplydrop",
         "Summon 1 minion from your hand whose level is lower than the highest level among air minions you control."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

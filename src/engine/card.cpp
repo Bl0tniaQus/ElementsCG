@@ -104,6 +104,7 @@ CardBase* Card::getCardNameById(int id)
         case 39: cardbase = new WindUpAirplane; break;
         case 40: cardbase = new WindUpBiplane; break;
         case 41: cardbase = new WindUpRestart; break;
+        case 42: cardbase = new SupplyBaloon; break;
     }
     return cardbase;
 }

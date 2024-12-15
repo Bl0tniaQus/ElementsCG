@@ -15,7 +15,7 @@ public:
         "Breeze", //name
         "breeze",
         "Your air minions gain +1/+1. Gain 1 mana for every air minion you control."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

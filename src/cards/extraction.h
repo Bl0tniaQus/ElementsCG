@@ -15,7 +15,7 @@ public:
         "Extraction", //name
         "Extraction",
         ""
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

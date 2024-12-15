@@ -15,7 +15,7 @@ public:
         "Dragonoid Scout", //name
         "dragonoidscout",
         "When this card is summoned: draw 1 card."
-    ) {};
+    ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
 };
 

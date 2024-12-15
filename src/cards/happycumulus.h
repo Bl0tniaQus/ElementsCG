@@ -15,7 +15,7 @@ public:
         "Happy Cumulus", //name
         "happycumulus",
         "When this card is summoned if you have at least 12 mana: increase your summon limit by 1."
-    ) {};
+    ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
 };
 

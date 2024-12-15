@@ -20,6 +20,18 @@ private:
     Card* cardEntity;
     Card** usedMaterials;
     TargetList* targetList;
+
+    bool hasOnTurnStart = false;
+    bool hasOnTurnEnd = false;
+    bool hasOnSummon = false;
+    bool hasOnSpecialSummon = false;
+    bool hasOnAttack = false;
+    bool hasAfterAttack = false;
+    bool hasOnDefence = false;
+    bool hasAfterDefence = false;
+    bool hasOnSpecialSummonRelease = false;
+    bool hasOnSpell = false;
+    bool hasOnDestroy = false;
 public:
     CardBase() {};
     virtual ~CardBase();
@@ -40,6 +52,31 @@ public:
     char* getName() {return this->name;}
     char* getImage() {return this->image;}
     Card* getCardEntity() {return this->cardEntity;}
+
+
+    bool getHasOnTurnStart() {return this->hasOnTurnStart;}
+    void setHasOnTurnStart(bool t) {this->hasOnTurnStart = t;}
+    bool getHasOnTurnEnd() {return this->hasOnTurnEnd;}
+    void setHasOnTurnEnd(bool t) {this->hasOnTurnEnd = t;}
+    bool getHasOnSummon() {return this->hasOnSummon;}
+    void setHasOnSummon(bool t) {this->hasOnSummon = t;}
+    bool getHasOnSpecialSummon() {return this->hasOnSpecialSummon;}
+    void setHasOnSpecialSummon(bool t) {this->hasOnSpecialSummon = t;}
+    bool getHasOnAttack() {return this->hasOnAttack;}
+    void setHasOnAttack(bool t) {this->hasOnAttack = t;}
+    bool getHasOnDefence() {return this->hasOnDefence;}
+    void setHasOnDefence(bool t) {this->hasOnDefence = t;}
+    bool getHasAfterAttack() {return this->hasAfterAttack;}
+    void setHasAfterAttack(bool t) {this->hasAfterAttack = t;}
+    bool getHasAfterDefence() {return this->hasAfterDefence;}
+    void setHasAfterDefence(bool t) {this->hasAfterDefence = t;}
+    bool getHasOnDestroy() {return this->hasOnDestroy;}
+    void setHasOnDestroy(bool t) {this->hasOnDestroy = t;}
+    bool getHasOnSpecialSummonRelease() {return this->hasOnSpecialSummonRelease;}
+    void setHasOnSpecialSummonRelease(bool t) {this->hasOnSpecialSummonRelease = t;}
+    bool getHasOnSpell() {return this->hasOnSpell;}
+    void setHasOnSpell(bool t) {this->hasOnSpell = t;}
+
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(Card** tl, short n);
     void clearTargetList();
@@ -54,7 +91,7 @@ public:
     void release3Log(Card* c1, Card* c2, Card* c3, Duel* duel);
 
     virtual void onSummon(Duel* duel, Card* card) {};
-    virtual void onspecialSummon(Duel* duel, Card* card) {};
+    virtual void onSpecialSummon(Duel* duel, Card* card) {};
     virtual bool onSpell(Duel* duel, Card* card) {return false;};
     virtual void onDestroy(Duel* duel, Card* card) {};
     virtual void onAttack(Duel* duel, Card* card, Card* target) {};

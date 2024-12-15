@@ -15,7 +15,7 @@ public:
         "Earthquake", //name
         "earthquake",
         "Reduce defence of every minion on the field to 0."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

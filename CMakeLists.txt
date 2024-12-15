@@ -69,6 +69,7 @@ set(PROJECT_SOURCES
         src/cards/wind-upairplane.cpp
         src/cards/wind-upbiplane.cpp
         src/cards/wind-uprestart.cpp
+        src/cards/supplybaloon.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

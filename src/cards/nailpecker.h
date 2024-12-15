@@ -15,7 +15,7 @@ public:
         "Nailpecker", //name
         "nailpecker",
         "When this card is summoned if there is an earth minion on the field: it gains 1 attack and 1 level."
-    ) {};
+    ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
 };
 

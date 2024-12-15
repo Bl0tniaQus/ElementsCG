@@ -15,7 +15,7 @@ public:
         "Shield Bash", //name
         "shieldbash",
         "Target one earth minion your control: deal damage to your opponent equal to it's defence."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

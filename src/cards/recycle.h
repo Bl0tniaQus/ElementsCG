@@ -15,7 +15,7 @@ public:
         "Recycle", //name
         "recycle",
         "Target 1 earth card in your graveyard: return all cards with the same name from your graveyard to your hand."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

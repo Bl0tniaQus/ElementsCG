@@ -40,7 +40,7 @@ Deck::Deck(short deckid)
         this->mainDeck[12].getValuesFromId(36);
         this->mainDeck[13].getValuesFromId(37);
         this->mainDeck[14].getValuesFromId(38);
-        this->mainDeck[15].getValuesFromId(38);
+        this->mainDeck[15].getValuesFromId(42);
         this->mainDeck[16].getValuesFromId(41);
         for (int i=0;i<this->n_cards;i++)
         {

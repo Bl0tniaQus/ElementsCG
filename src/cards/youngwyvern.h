@@ -15,7 +15,7 @@ public:
         "Young Wyvern", //name
         "youngwyvern",
         "[Any 2 air minions]\nIf this card destroys other minion in battle: gain 1 mana."
-    ) {this->setMaterialNumber(2);};
+    ) {this->setMaterialNumber(2);this->setHasAfterAttack(1);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

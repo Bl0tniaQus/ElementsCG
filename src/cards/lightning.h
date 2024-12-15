@@ -15,7 +15,7 @@ public:
         "Lightning", //name
         "lightning",
         "Inflict damage to your opponent equal to ammount of mana points above 15 you have."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

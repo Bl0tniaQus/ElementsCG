@@ -15,7 +15,7 @@ public:
         "Dragonoid Call", //name
         "dragonoidcall",
         "Summon 1 \"Dragonoid\" minion from your hand."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

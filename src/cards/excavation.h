@@ -15,7 +15,7 @@ public:
         "Excavation", //name
         "excavation",
         "Reveal 3 top cards from your deck, then you can target one earth card among them and add it to your hand."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 
 };

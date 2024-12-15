@@ -15,7 +15,7 @@ public:
         "Tungsten Firefly", //name
         "tungstenfirefly",
         "At the end of your turn: draw 1 card."
-    ) {};
+    ) {this->setHasOnTurnEnd(1);};
     void onTurnEnd(Duel* duel, Card* card) override;
 };
 

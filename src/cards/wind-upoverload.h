@@ -15,7 +15,7 @@ public:
         "Wind-up Overload", //name
         "wind-upoverload",
         "Target 1 air minion you control: it's attack becomes double it's original attack, but it's destroyed at the end of your turn."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
     void onTurnEnd(Duel * duel, Card * card) override;
 private:

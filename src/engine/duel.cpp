@@ -457,7 +457,8 @@ void Duel::turnEndEffects()
 
     for (int i=0;i<n_effects;i++)
     {
-        this->botDelay(200);
+        if (effects[i]->getCardName()->getHasOnTurnEnd())
+        {this->botDelay(200);}
         this->onTurnEnd(effects[i]);
     }
     Card** effectsTE = new Card* [this->n_lingering_end];
@@ -526,7 +527,8 @@ void Duel::turnStartEffects()
 
     for (int i=0;i<n_effects;i++)
     {
-        this->botDelay(200);
+        if (effects[i]->getCardName()->getHasOnTurnStart())
+        {this->botDelay(200);}
         this->onTurnStart(effects[i]);
     }
     Card** effectsTS = new Card* [this->n_lingering_start];

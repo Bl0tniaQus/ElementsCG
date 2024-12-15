@@ -15,7 +15,7 @@ public:
         "Lithium Lizard", //name
         "lithiumlizard",
         "When this card is released as a material to summon a special minion: gain 4 mana."
-    ) {};
+    ) {this->setHasOnSpecialSummonRelease(1);};
     void onSpecialSummonRelease(Duel * duel, Card * card, Card * sp_minion) override;
 };
 

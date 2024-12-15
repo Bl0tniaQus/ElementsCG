@@ -15,7 +15,7 @@ public:
         "Magnetize", //name
         "magnetize",
         "Target 1 earth minion you control: it gains attack equal to combined attack of all other earth minions you control until the end of the turn, also your other earth minions can't attack this turn."
-    ) {};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
     void onTurnEnd(Duel * duel, Card * card) override;
 private:
