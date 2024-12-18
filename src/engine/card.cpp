@@ -58,6 +58,11 @@ void Card::copyProperties(Card* card)
     this->isSpellImmune = card->getIsSpellImmune();
     this->turnPlayed = card->getTurnPlayed();
 }
+void Card::copyCardName(CardBase* c)
+{
+    this->cardName->copy(this->getOwner()->getDuel(), c);
+}
+
 CardBase* Card::getCardNameById(int id)
 {
     CardBase* cardbase;

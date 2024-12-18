@@ -87,11 +87,24 @@ Gamestate::Gamestate(Duel* duel):Duel()
         short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
         Card* originalDeck = player->getOriginalDeck();
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
-        player_new->setOriginalDeck(originalDeck, originalDeckSize);
-        player_new->setOriginalSpecialDeck(originalSpecialDeck,originalSpecialDeckSize);
-        Card* originalDeckCopy = player_new->getOriginalDeck();
-
         Card** deckCopy = new Card* [deckSize];
+        //Card* originalDeckCopy = player_new->getOriginalDeck();
+        Card* originalDeckCopy = new Card [originalDeckSize];
+        Card** specialDeckCopy = new Card* [specialDeckSize];
+
+        //Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
+        Card* originalSpecialDeckCopy = new Card [originalSpecialDeckSize];
+        player_new->setDeck(deckCopy, deckSize);
+        player_new->setSpecialDeck(specialDeckCopy, specialDeckSize);
+        player_new->setOriginalDeck(originalDeckCopy, originalDeckSize);
+        player_new->setOriginalSpecialDeck(originalSpecialDeckCopy,originalSpecialDeckSize);
+        player_new->setDeckOwnership();
+        for (short i = 0; i<originalDeckSize; i++)
+        {
+            originalDeckCopy[i].copyProperties(&originalDeck[i]);
+            originalDeckCopy[i].copyCardName(originalDeck[i].getCardName());
+        }
+
         for (int j=0;j<deckSize;j++)
         {
             int id = cardsInDeck[j];
@@ -105,8 +118,12 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 }
             }
         }
-        Card** specialDeckCopy = new Card* [specialDeckSize];
-        Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
+
+        for (short i = 0; i<originalSpecialDeckSize; i++)
+        {
+            originalSpecialDeckCopy[i].copyProperties(&originalSpecialDeck[i]);
+            originalSpecialDeckCopy[i].copyCardName(originalSpecialDeck[i].getCardName());
+        }
         for (int j=0;j<specialDeckSize;j++)
         {
             int id = cardsInSpecialDeck[j];

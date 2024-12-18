@@ -41,5 +41,21 @@ void BarrelRoll::onTurnStart(Duel* duel, Card* card)
         duel->changeSpellImmunity(this->target, false);
     }
 }
+short BarrelRoll::getShort(short n)
+{
+    return this->playerId;
+}
+Card * BarrelRoll::getCard(short n)
+{
+    return this->target;
+}
+
+void BarrelRoll::copy(Duel* duel, CardBase* c)
+{
+
+this->target = duel->getCardFromCopyId(c->getCard(0)->getCopyId());
+this->playerId = c->getShort(0);
+
+}
 
 

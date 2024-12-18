@@ -40,6 +40,7 @@ public:
     void setHp(short hp) {this->hp = hp;}
     void setName(const char* name);
     void setDuel(Duel* duel) {this->duel = duel;}
+    Duel* getDuel() {return this->duel;}
     char* getName() {return this->name;}
     Zone* getMinionField() {return minionField;}
     Player* getOpponent() {return opponent;}

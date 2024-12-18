@@ -38,3 +38,4 @@ int main(int argc, char *argv[])
 }
 //TODO major target lists refatoring, wind up restart effect
 //TODO copy card properties in gamestate
+//TODO deck copy(utwórz, połącz, utwórz połączenie)

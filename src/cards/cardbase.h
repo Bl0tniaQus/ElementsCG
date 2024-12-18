@@ -134,6 +134,10 @@ public:
     virtual void getSecondMaterialList(Duel* duel, Card* card) {};
     virtual void getThirdMaterialList(Duel* duel, Card* card) {};
 
+    virtual void copy(Duel* duel, CardBase* c) {};
+    virtual short getShort(short n) {return -1;};
+    virtual Card* getCard(short n) { return nullptr;};
+    virtual bool getBool(short n) {return -1;};
 
 
 };

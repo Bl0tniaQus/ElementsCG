@@ -71,5 +71,6 @@ public:
     void setTurnPlayed(short t) {this->turnPlayed = t;}
     CardBase* getCardName() {return this->cardName;}
     CardBase* getCardNameById(int id);
+    void copyCardName(CardBase* c);
 };
 #endif // CARD_H
