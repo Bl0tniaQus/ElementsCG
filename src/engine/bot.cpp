@@ -5,6 +5,7 @@
 Bot::Bot()
 {
     this->testedOptions = 0;
+    this->testedSpecialMinionOptions = 0;
     this->handOptions = new int [0];
     this->targetsForOptions = new int [0];
     this->handValues = new float [0];
@@ -28,6 +29,16 @@ Bot::~Bot()
     delete [] handOptions;
     delete [] targetsForOptions;
     delete [] handValues;
+    delete [] this->battleValues;
+    delete [] this->battleOptions;
+    delete [] this->targetsForBattleOptions;
+    delete[] this->specialMinionOptions;
+    delete[] this->materialNumbers;
+    delete[] this->specialMinionValues;
+    for (int i=0; i<this->testedSpecialMinionOptions-1;i++)
+    {
+        delete[] this->specialMinionMaterials[i];
+    }
 }
 void Bot::generateBaseGamestate(Duel* duel)
 {

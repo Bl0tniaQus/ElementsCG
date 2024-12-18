@@ -40,3 +40,4 @@ int main(int argc, char *argv[])
 //TODO copy card properties in gamestate
 //TODO deck copy(utwórz, połącz, utwórz połączenie)
 //TODO use new deck constructor
+//TODO fix leak after duel

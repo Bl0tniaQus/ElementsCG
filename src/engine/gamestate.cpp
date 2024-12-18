@@ -87,23 +87,17 @@ Gamestate::Gamestate(Duel* duel):Duel()
         short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
         Card* originalDeck = player->getOriginalDeck();
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
-        Card* originalDCopy = new Card [originalDeckSize];
-        Card* originalSDCopy = new Card [originalSpecialDeckSize];
 
-        player_new->setOriginalDeck(originalDCopy, originalDeckSize);
-        player_new->setOriginalSpecialDeck(originalSDCopy, originalSpecialDeckSize);
-        delete[] originalDCopy;
-        delete[] originalSDCopy;
+        Deck* OGDeck = new Deck(originalDeck, originalDeckSize, originalSpecialDeck, originalSpecialDeckSize);
+        player_new->setOriginalDeck(OGDeck->getDeck(), originalDeckSize);
+        player_new->setOriginalSpecialDeck(OGDeck->getSpecialDeck(), originalSpecialDeckSize);
+        delete OGDeck;
 
 
-        Card** deckCopy = player_new->getDeck();
-        Card** specialDeckCopy = player_new->getSpecialDeck();
+        Card** deckCopy = new Card* [deckSize];
+        Card** specialDeckCopy = new Card* [specialDeckSize];
         Card* originalDeckCopy = player_new->getOriginalDeck();
         Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
-
-
-
-        player_new->setOriginalSpecialDeck(originalSpecialDeckCopy,originalSpecialDeckSize);
         player_new->setDeckOwnership();
         for (short i = 0; i<originalDeckSize; i++)
         {
@@ -143,9 +137,8 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 }
             }
         }
-        //player_new->setDeck(deckCopy,deckSize);
-        //player_new->setSpecialDeck(specialDeckCopy,specialDeckSize);
-       // player_new->setDeckOwnership();
+        player_new->setDeck(deckCopy, deckSize);
+        player_new->setSpecialDeck(specialDeckCopy, specialDeckSize);
         Card** handCopy = new Card* [handSize];
         for (int j=0;j<handSize;j++)
         {

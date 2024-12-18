@@ -35,7 +35,6 @@ void Player::setName(const char* name)
     this->name = new char[strlen(name)+1];
     strcpy(this->name, name);
 }
-
 void Player::changeHp(short val)
 {
     this->duel->appendLog(this->duel->lifeChangeLog(this,val),duel->getPlayerId(this));

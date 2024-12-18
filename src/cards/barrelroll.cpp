@@ -52,8 +52,7 @@ Card * BarrelRoll::getCard(short n)
 
 void BarrelRoll::copy(Duel* duel, CardBase* c)
 {
-
-this->target = duel->getCardFromCopyId(c->getCard(0)->getCopyId());
+if (c->getCard(0)!=nullptr){this->target = duel->getCardFromCopyId(c->getCard(0)->getCopyId());}
 this->playerId = c->getShort(0);
 
 }
