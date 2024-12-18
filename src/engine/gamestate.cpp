@@ -87,16 +87,22 @@ Gamestate::Gamestate(Duel* duel):Duel()
         short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
         Card* originalDeck = player->getOriginalDeck();
         Card* originalSpecialDeck = player->getOriginalSpecialDeck();
-        Card** deckCopy = new Card* [deckSize];
-        //Card* originalDeckCopy = player_new->getOriginalDeck();
-        Card* originalDeckCopy = new Card [originalDeckSize];
-        Card** specialDeckCopy = new Card* [specialDeckSize];
+        Card* originalDCopy = new Card [originalDeckSize];
+        Card* originalSDCopy = new Card [originalSpecialDeckSize];
 
-        //Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
-        Card* originalSpecialDeckCopy = new Card [originalSpecialDeckSize];
-        player_new->setDeck(deckCopy, deckSize);
-        player_new->setSpecialDeck(specialDeckCopy, specialDeckSize);
-        player_new->setOriginalDeck(originalDeckCopy, originalDeckSize);
+        player_new->setOriginalDeck(originalDCopy, originalDeckSize);
+        player_new->setOriginalSpecialDeck(originalSDCopy, originalSpecialDeckSize);
+        delete[] originalDCopy;
+        delete[] originalSDCopy;
+
+
+        Card** deckCopy = player_new->getDeck();
+        Card** specialDeckCopy = player_new->getSpecialDeck();
+        Card* originalDeckCopy = player_new->getOriginalDeck();
+        Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
+
+
+
         player_new->setOriginalSpecialDeck(originalSpecialDeckCopy,originalSpecialDeckSize);
         player_new->setDeckOwnership();
         for (short i = 0; i<originalDeckSize; i++)
@@ -137,9 +143,9 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 }
             }
         }
-        player_new->setDeck(deckCopy,deckSize);
-        player_new->setSpecialDeck(specialDeckCopy,specialDeckSize);
-        player_new->setDeckOwnership();
+        //player_new->setDeck(deckCopy,deckSize);
+        //player_new->setSpecialDeck(specialDeckCopy,specialDeckSize);
+       // player_new->setDeckOwnership();
         Card** handCopy = new Card* [handSize];
         for (int j=0;j<handSize;j++)
         {

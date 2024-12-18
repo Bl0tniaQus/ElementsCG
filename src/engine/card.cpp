@@ -4,7 +4,7 @@
 #include "player.h"
 Card::Card()
 {
-
+    this->cardName = nullptr;
 }
 Card::Card(int entryId)
 {
@@ -118,7 +118,7 @@ Card::~Card()
     this->owner = nullptr;
     this->originalOwner = nullptr;
     this->zone = nullptr;
-    delete this->cardName;
+    if (this->cardName !=nullptr) {delete this->cardName;}
 }
 void Card::returnToOriginal()
 {
