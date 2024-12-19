@@ -8,7 +8,7 @@
 class Duel
 {
 private:
-    Player players[2]; //0 - player 1, 1 - player2
+    Player* players; //0 - player 1, 1 - player2
     TargetList* attackersTargetList;
     TargetList* defendersTargetList;
     DuelUiBridge* uiBridge;

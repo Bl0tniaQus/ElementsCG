@@ -5,6 +5,7 @@
 #include <iostream>
 Duel::Duel()
 {
+    players = new Player[2];
     players[0].setOpponent(&players[1]);
     players[1].setOpponent(&players[0]);
     players[0].setName("Player 1");
@@ -31,6 +32,7 @@ Duel::~Duel()
     delete [] this->turnStartLingeringEffects;
     delete [] this->logs;
     delete [] this->logsSource;
+    delete [] this->players;
 }
 void Duel::drawField(char p)
 {

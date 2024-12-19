@@ -257,8 +257,13 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 }
             }
         }
-
     }
+        delete [] usedZonesArr[0];delete [] usedZonesArr[1];
+        delete [] usedZonesArr;
+        delete [] fieldCardsArr[0];delete [] fieldCardsArr[1];
+        delete [] fieldCardsArr;
+        delete [] cardsOnFieldArr;
+
     short n_lingering_end = duel->getTurnEndLingeringEffectsNumber();
     short n_lingering_start = duel->getTurnStartLingeringEffectsNumber();
     Card** turnEndLingering = duel->getTurnEndLingeringEffects();

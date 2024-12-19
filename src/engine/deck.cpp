@@ -140,12 +140,12 @@ Deck::Deck(Card* deck, short n_deck, Card* sp_deck, short n_special)
 
     for (short i = 0; i<n_deck; i++)
     {
-        this->mainDeck[i].getValuesFromId(deck[i].getCardId());
+        this->mainDeck[i].getValuesFromId(deck[i].getCardId(), true);
         this->mainDeck[i].setPlace(deck[i].getPlace());
     }
     for (short i = 0; i<n_special; i++)
     {
-        this->specialDeck[i].getValuesFromId(sp_deck[i].getCardId());
+        this->specialDeck[i].getValuesFromId(sp_deck[i].getCardId(), true);
         this->specialDeck[i].setPlace(sp_deck[i].getPlace());
     }
 

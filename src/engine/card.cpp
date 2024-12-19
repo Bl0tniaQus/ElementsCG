@@ -24,11 +24,11 @@ Card::Card(int entryId)
     this->zone = nullptr;
     this->turnPlayed = -1;
 }
-void Card::getValuesFromId(int entryId)
+void Card::getValuesFromId(int entryId, bool noCopyId)
 {
+    if (!noCopyId) {this->copyId = ++Card::COPYID;}
     this->cardName = this->getCardNameById(entryId);
     this->cardName->bindCard(this);
-    this->copyId = ++Card::COPYID;
     this->attacks = 1;
     if (this->getCardType()==2) {this->place = 4;}
     else {this->place = 0;}
@@ -118,7 +118,8 @@ Card::~Card()
     this->owner = nullptr;
     this->originalOwner = nullptr;
     this->zone = nullptr;
-    if (this->cardName !=nullptr) {delete this->cardName;}
+ //if (this->cardName !=nullptr) {delete this->cardName;}
+    delete this->cardName;
 }
 void Card::returnToOriginal()
 {
