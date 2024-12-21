@@ -40,5 +40,6 @@
     <file alias="flyinglizard">resources/images/flyinglizard.jpg</file>
     <file alias="wind-uprestart">resources/images/wind-uprestart.jpg</file>
     <file alias="supplybaloon">resources/images/supplybaloon.jpg</file>
+    <file alias="irisversicolor">resources/images/irisversicolor.jpg</file>
 </qresource>
 </RCC>

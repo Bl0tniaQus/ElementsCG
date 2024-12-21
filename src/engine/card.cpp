@@ -110,6 +110,7 @@ CardBase* Card::getCardNameById(int id)
         case 40: cardbase = new WindUpBiplane; break;
         case 41: cardbase = new WindUpRestart; break;
         case 42: cardbase = new SupplyBaloon; break;
+        case 43: cardbase = new IrisVersicolor; break;
     }
     return cardbase;
 }

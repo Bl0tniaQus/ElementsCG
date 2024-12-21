@@ -43,5 +43,6 @@
 #include "wind-upbiplane.h" //40
 #include "wind-uprestart.h" //41
 #include "supplybaloon.h" //42
+#include "irisversicolor.h" //43
 
 #endif // ALLCARDS_H

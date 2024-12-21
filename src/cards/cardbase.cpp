@@ -33,7 +33,7 @@ CardBase::~CardBase()
     delete[] this->image;
     delete[] this->cardText;
     delete this->targetList;
-    delete this->usedMaterials;
+    delete [] this->usedMaterials;
 }
 void CardBase::setTargetList(Card** tl, short n)
 {

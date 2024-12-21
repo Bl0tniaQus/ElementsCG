@@ -70,6 +70,7 @@ set(PROJECT_SOURCES
         src/cards/wind-upbiplane.cpp
         src/cards/wind-uprestart.cpp
         src/cards/supplybaloon.cpp
+        src/cards/irisversicolor.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
