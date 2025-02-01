@@ -7,8 +7,6 @@ class Zone;
 class Player;
 class Card
 {
-protected:
-
 private:
 static int COPYID;
 Zone* zone;
@@ -43,9 +41,9 @@ public:
     void setPlace(short place) {this->place = place;}
     char getCardType() {return this->cardName->getCardType();}
     char getPlace() {return this->place;}
-    const char* getElement() {return this->cardName->getElement();}
-    const char* getName() {return this->cardName->getName();}
-    const char* getCardText() {return this->cardName->getCardText();}
+    std::string getElement() {return this->cardName->getElement();}
+    std::string getName() {return this->cardName->getName();}
+    std::string getCardText() {return this->cardName->getCardText();}
     short getAttack() {return this->attack;}
     void setAttack(short atk) {this->attack = atk;}
     short getDefence() {return this->defence;}

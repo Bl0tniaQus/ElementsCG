@@ -5,11 +5,11 @@ void TopazAmberFossil::onSummon(Duel* duel, Card* card)
 {
     this->specialMinionsInYourGraveyardWithSameElement(duel,card,"Earth");
     short n = this->getTargetList()->getTargetsNumber();
-    Card** tl = this->getTargetList()->getTargetList();
+    std::vector<Card*>* tl = this->getTargetList()->getTargetList();
     if (n>0)
     {
     this->effectLog(duel, card);
-    Card* target = tl[0];
+    Card* target = tl->at(0);
     duel->toHand(target);
     duel->removeFromGraveyard(target);
     }

@@ -1,5 +1,7 @@
 #ifndef CARDBASE_H
 #define CARDBASE_H
+#include <string>
+#include <vector>
 class Card;
 class Duel;
 class TargetList;
@@ -13,10 +15,10 @@ private:
     short attack;
     short defence;
     short materials = 0;
-    char* element;
-    char* name;
-    char* image;
-    char* cardText;
+    std::string element;
+    std::string name;
+    std::string image;
+    std::string cardText;
     Card* cardEntity;
     Card** usedMaterials;
     TargetList* targetList;
@@ -35,22 +37,22 @@ private:
 public:
     CardBase() {};
     virtual ~CardBase();
-    CardBase(short cid, short c, short ct, short l, short a, short d, const char* el, const char* n, const char* i, const char* ctx);
+    CardBase(short cid, short c, short ct, short l, short a, short d, std::string el, std::string n, std::string i, std::string ctx);
     void bindCard(Card* card) {this->cardEntity = card;}
     short getCardId() {return this->cardId;}
     short getCost() {return this->cost;}
     short getCardType() {return this->cardType;}
     short getLevel() {return this->level;}
     short getAttack() {return this->attack;}
-    char* getCardText() {return this->cardText;}
+    std::string getCardText() {return this->cardText;}
     void setMaterialNumber(short n) {this->materials = n;}
     void setTwoMaterials(Card* material1, Card* material2);
     void setThreeMaterials(Card* material1, Card* material2, Card* material3);
     short getMaterialNumber() {return this->materials;}
     short getDefence() {return this->defence;}
-    char* getElement() {return this->element;}
-    char* getName() {return this->name;}
-    char* getImage() {return this->image;}
+    std::string getElement() {return this->element;}
+    std::string getName() {return this->name;}
+    std::string getImage() {return this->image;}
     Card* getCardEntity() {return this->cardEntity;}
 
 
@@ -78,7 +80,7 @@ public:
     void setHasOnSpell(bool t) {this->hasOnSpell = t;}
 
     TargetList* getTargetList() {return this->targetList;}
-    void setTargetList(Card** tl, short n);
+    void setTargetList(std::vector<Card*>*);
     void clearTargetList();
     void spellCost(Card* card);
     void effectLog(Duel* duel, Card* card);
@@ -107,21 +109,21 @@ public:
     void allMinionsOnField(Duel* duel, Card* card);
     void cardsInHandWithTheSameName(Duel* duel, Card* card);
     void nTopCardsFromDeck(Duel* duel, Card* card, short n);
-    void cardsWithSameElementInTargetList(const char* element);
-    void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
-    void cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
-    void minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl);
-    void cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element);
-    void cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const char* name);
-    void specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const char* element);
-    void specialMinionsOnYourFieldWithSameAttribute(Duel* duel, Card* card, const char* element);
+    void cardsWithSameElementInTargetList(const std::string& element);
+    void cardsInHandWithCommonNamePart(Duel* duel, Card* card, const std::string& namePart);
+    void cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const std::string& namePart);
+    void minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const std::string& element, short lvl);
+    void cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const std::string& element);
+    void cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const std::string& name);
+    void specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const std::string& element);
+    void specialMinionsOnYourFieldWithSameAttribute(Duel* duel, Card* card, const std::string& element);
     void minionsInHandWithMaximumLevel(Duel* duel, Card* card, short level);
-    void minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const char* namePart);
-    void minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const char* element);
-    void minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const char* element, short lvl);
-    void minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const char* element, short lvl);
-    void minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Card* card, const char* element1, const char* element2, short lvl);
-    void minionsOnYourFieldWithExactName(Duel* duel, Card* card, const char* name);
+    void minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const std::string& namePart);
+    void minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const std::string& element);
+    void minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const std::string& element, short lvl);
+    void minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const std::string&, short lvl);
+    void minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Card* card, const std::string& element1, const std::string& element2, short lvl);
+    void minionsOnYourFieldWithExactName(Duel* duel, Card* card, const std::string& name);
 
     short highestLevelInTargetList();
 

@@ -12,7 +12,7 @@ void SadNimbus::onSummon(Duel* duel, Card* card)
         else
         {
             short zoneid = duel->getEmptyMinionZone(card->getOwner());
-            Card* targetCard = this->getTargetList()->getTargetList()[0];
+            Card* targetCard = this->getTargetList()->getTargetList()->at(0);
             if (zoneid!=-1) {
                 this->effectLog(duel, card);
                 duel->summonFromGraveyard(targetCard, zoneid);

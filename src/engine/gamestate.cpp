@@ -373,19 +373,19 @@ float Gamestate::fieldPresenceFactor()
     }
     this->generateAttackersList();
     this->generateDefendersList();
-    Card** attackers = this->getAttackersList()->getTargetList();
+    std::vector<Card*>* attackers = this->getAttackersList()->getTargetList();
     short n_attackers = this->getAttackersList()->getTargetsNumber();
-    Card** defenders = this->getDefendersList()->getTargetList();
+    std::vector<Card*>* defenders = this->getDefendersList()->getTargetList();
     short n_defenders = this->getDefendersList()->getTargetsNumber();
 
     //offense
     short vulnerable_defenders = 0;
     for (int i=0;i<n_defenders;i++)
     {
-        Card* defender = defenders[i];
+        Card* defender = defenders->at(i);
         for (int j=0;j<n_attackers;j++)
         {
-            Card* attacker = attackers[j];
+            Card* attacker = attackers->at(j);
             if (attacker->getAttack()>defender->getDefence())
             {
                 vulnerable_defenders++;
@@ -399,10 +399,10 @@ float Gamestate::fieldPresenceFactor()
     short barriers = 0;
     for (int i=0;i<n_attackers;i++)
     {
-        Card* defender = attackers[i]; //turn player's defence
+        Card* defender = attackers->at(i); //turn player's defence
         for (int j=0;j<n_defenders;j++)
         {
-            Card* attacker = defenders[j]; //opponent's offense
+            Card* attacker = defenders->at(j); //opponent's offense
             if (defender->getDefence()>=attacker->getAttack())
             {
                 mitigated_attacks++;

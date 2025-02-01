@@ -27,12 +27,12 @@ void TopazMantis::onDestroy(Duel* duel, Card* card)
 
         this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
         short nt = this->getTargetList()->getTargetsNumber();
-        Card** cards = this->getTargetList()->getTargetList();
+        std::vector<Card*>* cards = this->getTargetList()->getTargetList();
         short deckSize = card->getOwner()->getDeckSize();
         if (deckSize>0 || nt>0) {this->secondEffectLog(duel, card);}
         for (short i=0;i<nt;i++)
         {
-            duel->changeStats(cards[i],2,2);
+            duel->changeStats(cards->at(i),2,2);
         }
         if (card->getOwner()->getDeckSize()>0)
         {

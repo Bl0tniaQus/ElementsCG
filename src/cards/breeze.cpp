@@ -9,12 +9,12 @@ bool Breeze::onSpell(Duel* duel, Card* card)
         this->spellCost(card);
         this->minionsOnYourFieldWithSameElement(duel,card,"Air");
         short nt = this->getTargetList()->getTargetsNumber();
-        Card** cards = this->getTargetList()->getTargetList();
+        std::vector<Card*>* cards = this->getTargetList()->getTargetList();
         for (short i=0;i<nt;i++)
         {
-            if (!cards[i]->getIsSpellImmune())
-            duel->changeStats(cards[i],1,0);
-            else duel->appendSILog(card,cards[i]);
+            if (!cards->at(i)->getIsSpellImmune())
+            duel->changeStats(cards->at(i),1,0);
+            else duel->appendSILog(card,cards->at(i));
         }
         card->getOwner()->changeMana(nt);
         return true;

@@ -724,8 +724,7 @@ void Duel::passTurn()
 }
 void Duel::generateAttackersList()
 {
-    Card** attackers = new Card* [0];
-    short n = 0;
+    std::vector<Card*>* attackers = new std::vector<Card*>;
     Player* player = this->getPlayer(this->turnPlayer);
     for (int i=0;i<5;i++)
     {
@@ -735,31 +734,15 @@ void Duel::generateAttackersList()
         {
             if (card->getAttacks()>0)
             {
-                n++;
-                Card** newAttackers = new Card* [n];
-                if (n>1)
-                {
-                    for (int j=0;j<n-1;j++)
-                    {
-                        newAttackers[j] = attackers[j];
-                    }
-                    newAttackers[n-1] = card;
-                }
-                else
-                {
-                    newAttackers[0] = card;
-                }
-                delete[]attackers;
-                attackers = newAttackers;
+                attackers->push_back(card);
             }
         }
     }
-    this->getAttackersList()->setTargetList(attackers,n);
+    this->getAttackersList()->setTargetList(attackers);
 }
 void Duel::generateDefendersList()
 {
-    Card** defenders = new Card* [0];
-    short n = 0;
+    std::vector<Card*>* defenders = new std::vector<Card*>;
     Player* player = this->getPlayer(this->turnPlayer)->getOpponent();
     for (int i=0;i<5;i++)
     {
@@ -767,25 +750,10 @@ void Duel::generateDefendersList()
         Card* card = zone->getCard();
         if (card!=nullptr)
         {
-                n++;
-                Card** newDefenders = new Card* [n];
-                if (n>1)
-                {
-                    for (int j=0;j<n-1;j++)
-                    {
-                        newDefenders[j] = defenders[j];
-                    }
-                    newDefenders[n-1] = card;
-                }
-                else
-                {
-                    newDefenders[0] = card;
-                }
-                delete[]defenders;
-                defenders = newDefenders;
+            defenders->push_back(card);
         }
     }
-    this->getDefendersList()->setTargetList(defenders,n);
+    this->getDefendersList()->setTargetList(defenders);
 }
 Card* Duel::getCardFromCopyId(int id)
 {
@@ -998,13 +966,13 @@ short Duel::makeSpellChoice(Card* card)
     }
     else
     {
-        Card** targets = card->getCardName()->getTargetList()->getTargetList();
+        std::vector<Card*>* targets = card->getCardName()->getTargetList()->getTargetList();
         short nt = card->getCardName()->getTargetList()->getTargetsNumber();
         short target;
         std::cout<<"0 - cancel"<<std::endl;
         for (int i=0;i<nt;i++)
         {
-            std::cout<<i+1<<" - "<<targets[i]->getName()<<std::endl;
+            std::cout<<i+1<<" - "<<targets->at(i)->getName()<<std::endl;
         }
         std::cout<<"Target: ";
         std::cin>>target;
@@ -1020,13 +988,13 @@ short Duel::makeSpecialMinionMaterialChoice(Card* card)
     }
     else
     {
-        Card** targets = card->getCardName()->getTargetList()->getTargetList();
+        std::vector<Card*>* targets = card->getCardName()->getTargetList()->getTargetList();
         short nt = card->getCardName()->getTargetList()->getTargetsNumber();
         short target;
         std::cout<<"0 - cancel"<<std::endl;
         for (int i=0;i<nt;i++)
         {
-            std::cout<<i+1<<" - "<<targets[i]->getName()<<std::endl;
+            std::cout<<i+1<<" - "<<targets->at(i)->getName()<<std::endl;
         }
         std::cout<<"Select minion: ";
         std::cin>>target;

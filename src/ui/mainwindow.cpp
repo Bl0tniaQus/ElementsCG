@@ -105,8 +105,8 @@ void MainWindow::setHandImages()
     for (i=0;i<n_hand;i++)
     {
         c = player->getHand()[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         handImages[i] = new CardLabel;
         handImages[i]->setParent(this->ui->handCardsAreaContents);
@@ -145,8 +145,8 @@ void MainWindow::setSpecialDeckImages()
     for (i=0;i<n_special;i++)
     {
         c = player->getSpecialDeck()[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         specialDeckImages[i] = new CardLabel;
         specialDeckImages[i]->setParent(this->ui->specialDeckCardsAreaContents);
@@ -185,8 +185,8 @@ void MainWindow::setGraveyardImages()
     for (i=0;i<n_graveyard;i++)
     {
         c = player->getGraveyard()[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/") + img);
         QPixmap pm(imgName);
         graveyardImages[i] = new CardLabel;
         graveyardImages[i]->setParent(this->ui->graveyardCardsAreaContents);
@@ -223,8 +223,8 @@ void MainWindow::setOpponentGraveyardImages()
     for (i=0;i<n_graveyard;i++)
     {
         c = opponent->getGraveyard()[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         opponentGraveyardImages[i] = new CardLabel;
         opponentGraveyardImages[i]->setParent(this->ui->opponentGraveyardCardsAreaContents);
@@ -453,8 +453,8 @@ void MainWindow::setFieldImagesAndLabels()
 
         if (cardPlayer!=nullptr)
         {
-            char* img = cardPlayer->getCardName()->getImage();
-            QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+            std::string img = cardPlayer->getCardName()->getImage();
+            QString imgName = QString::fromStdString(std::string(":/")+img);
             QPixmap pm(imgName);
             playerFieldImages[i]->setCard(cardPlayer);
             playerFieldImages[i]->setId(i);
@@ -479,8 +479,8 @@ void MainWindow::setFieldImagesAndLabels()
         }
         if (cardOpp!=nullptr)
         {
-            char* img = cardOpp->getCardName()->getImage();
-            QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+            std::string img = cardOpp->getCardName()->getImage();
+            QString imgName = QString::fromStdString(std::string(":/")+img);
             QPixmap pm(imgName);
             opponentFieldImages[4-i]->setCard(cardOpp);
             opponentFieldImages[4-i]->setId(i);
@@ -528,7 +528,7 @@ void MainWindow::setResources()
 }
 void MainWindow::setSpellTargetImages(Card* card)
 {
-    Card** targets = card->getCardName()->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = card->getCardName()->getTargetList()->getTargetList();
     short nt = card->getCardName()->getTargetList()->getTargetsNumber();
     Card* c;
     int i;
@@ -547,9 +547,9 @@ void MainWindow::setSpellTargetImages(Card* card)
     this->targetImages = new CardLabel* [nt];
     for (i=0;i<nt;i++)
     {
-        c = targets[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        c = targets->at(i);
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
@@ -575,7 +575,7 @@ void MainWindow::setSpellTargetImages(Card* card)
 }
 void MainWindow::setAttackerTargetImages()
 {
-    Card** targets = this->duel->getAttackersList()->getTargetList();
+    std::vector<Card*>* targets = this->duel->getAttackersList()->getTargetList();
     short nt = this->duel->getAttackersList()->getTargetsNumber();
     Card* c;
     int i;
@@ -596,9 +596,9 @@ void MainWindow::setAttackerTargetImages()
     this->targetImages = new CardLabel* [nt];
     for (i=0;i<nt;i++)
     {
-        c = targets[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        c = targets->at(i);
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
@@ -624,7 +624,7 @@ void MainWindow::setAttackerTargetImages()
 }
 void MainWindow::setDefenderTargetImages()
 {
-    Card** targets = this->duel->getDefendersList()->getTargetList();
+    std::vector<Card*>* targets = this->duel->getDefendersList()->getTargetList();
     short nt = this->duel->getDefendersList()->getTargetsNumber();
     Card* c;
     int i;
@@ -646,9 +646,9 @@ void MainWindow::setDefenderTargetImages()
 
     for (i=0;i<nt;i++)
     {
-        c = targets[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        c = targets->at(i);
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);
@@ -698,7 +698,7 @@ void MainWindow::setDefenderTargetImages()
 
 void MainWindow::setMaterialTargetImages(Card* card)
 {
-    Card** targets = card->getCardName()->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = card->getCardName()->getTargetList()->getTargetList();
     short nt = card->getCardName()->getTargetList()->getTargetsNumber();
     Card* c;
     int i;
@@ -710,9 +710,9 @@ void MainWindow::setMaterialTargetImages(Card* card)
     this->targetImages = new CardLabel* [nt];
     for (i=0;i<nt;i++)
     {
-        c = targets[i];
-        char* img = c->getCardName()->getImage();
-        QString imgName = QString::fromStdString(std::string(":/")+std::string(img));
+        c = targets->at(i);
+        std::string img = c->getCardName()->getImage();
+        QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
         this->targetImages[i] = new CardLabel;
         this->targetImages[i]->setParent(this->ui->targetsAreaContents);

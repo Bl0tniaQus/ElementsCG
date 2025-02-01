@@ -12,7 +12,7 @@ bool SupplyDrop::onSpell(Duel* duel, Card* card)
     this->minionsInHandWithMaximumLevel(duel,card,lv-1);
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
-    Card** targets = this->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
@@ -23,11 +23,11 @@ bool SupplyDrop::onSpell(Duel* duel, Card* card)
         {
                 this->spellFromHandLog(duel,card);
                 this->spellCost(card);
-                Card* targetCard = targets[target];
+                Card* targetCard = targets->at(target);
                 duel->summonFromHand(targetCard, zoneid);
                 return true;
         }
     }
-    this->setTargetList(nullptr,0);
+    this->setTargetList(nullptr);
 }
 

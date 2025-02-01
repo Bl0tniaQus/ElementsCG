@@ -1,19 +1,18 @@
 #ifndef TARGETLIST_H
 #define TARGETLIST_H
+#include <vector>
 class Card;
 class TargetList
 {
 private:
-    Card** targetList;
-    short n_targets;
+    std::vector<Card*>* targetList;
 public:
     TargetList();
     ~TargetList();
-    TargetList(Card** targetList, short n_targets);
-    Card** getTargetList() {return this->targetList;}
-    short getTargetsNumber() {return this->n_targets;}
-    void setTargetList(Card** targets, short n);
-    void setTargetNumber(short n_targets) {this->n_targets = n_targets;}
+    TargetList(std::vector<Card*>* targetList);
+    std::vector<Card*>* getTargetList() {return this->targetList;}
+    short getTargetsNumber() {return this->targetList->size();}
+    void setTargetList(std::vector<Card*>* targets);
 };
 
 #endif // TARGETLIST_H

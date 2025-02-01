@@ -6,18 +6,18 @@
 bool Whirlwind::onSpell(Duel* duel, Card* card)
 {
     this->allMinionsOnField(duel, card);
-    Card** targets = this->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
     {
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        Card* targetCard = targets[target];
+        Card* targetCard = targets->at(target);
         if (!targetCard->getIsSpellImmune())
         {
         duel->toHand(targetCard);
-        this->setTargetList(nullptr,0);
+        this->setTargetList(nullptr);
         }
         else duel->appendSILog(card,targetCard);
         return true;

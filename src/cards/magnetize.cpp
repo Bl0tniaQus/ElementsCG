@@ -7,7 +7,7 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
 {
 
     this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
-    Card** targets = this->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<2) {return false;}
     short target = singleChoice(duel,card);
@@ -16,17 +16,17 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
     {
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        Card* targetCard = targets[target];
+        Card* targetCard = targets->at(target);
         short atk = 0;
         if (!targetCard->getIsSpellImmune())
         {
 
             for (short i=0; i<nt;i++)
             {
-                if (targets[i]!=targetCard)
+                if (targets->at(i)!=targetCard)
                 {
-                    atk+=targets[i]->getAttack();
-                    targets[i]->setAttacks(0);
+                    atk+=targets->at(i)->getAttack();
+                    targets->at(i)->setAttacks(0);
                 }
             }
             this->target = targetCard;

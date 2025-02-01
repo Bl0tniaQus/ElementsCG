@@ -9,12 +9,12 @@ bool Earthquake::onSpell(Duel* duel, Card* card)
     this->spellCost(card);
     this->allMinionsOnField(duel, card);
     short nt = this->getTargetList()->getTargetsNumber();
-    Card** cards = this->getTargetList()->getTargetList();
+    std::vector<Card*>* cards = this->getTargetList()->getTargetList();
     for (short i=0;i<nt;i++)
     {
-        if (!cards[i]->getIsSpellImmune())
-        duel->changeStats(cards[i],0,-cards[i]->getDefence());
-        else duel->appendSILog(card,cards[i]);
+        if (!cards->at(i)->getIsSpellImmune())
+        duel->changeStats(cards->at(i),0,-cards->at(i)->getDefence());
+        else duel->appendSILog(card,cards->at(i));
     }
         return true;
 }

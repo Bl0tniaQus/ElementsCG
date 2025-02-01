@@ -17,8 +17,10 @@ void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
     if (this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()!=nullptr)
     {
         this->delay(200);
-        this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()->playTurn(this->duel);}
+        this->duel->getPlayer(this->duel->getTurnPlayer())->getBot()->playTurn(this->duel);
 
+    }
+    this->updateBoard();
 }
 void DuelUiBridge::initiateDuel()
 {
@@ -168,14 +170,14 @@ void DuelUiBridge::battlePhase()
             emit drawDefenders();
             mutex->acquire(); mutex->acquire(); mutex->release();
             id_defender = this->defenderTarget;
-            Card* attacker = this->duel->getAttackersList()->getTargetList()[id_attacker];
+            Card* attacker = this->duel->getAttackersList()->getTargetList()->at(id_attacker);
             if (id_defender==10)
             {
                 this->duel->directAttack(attacker);
             }
             else if (id_defender!=-1&&id_defender!=10)
             {
-                Card* defender = this->duel->getDefendersList()->getTargetList()[id_defender];
+                Card* defender = this->duel->getDefendersList()->getTargetList()->at(id_defender);
                 this->duel->combat(attacker,defender);
             }
             this->attackerTarget = -2;

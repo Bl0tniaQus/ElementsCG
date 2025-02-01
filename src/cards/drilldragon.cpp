@@ -20,7 +20,7 @@ void DrillDragon::onAttack(Duel* duel, Card* card, Card* target)
     this->effectUsed = false;
     if (!card->getIsNegated()&&target!=nullptr)
     {
-        if (strcmp(target->getElement(),"Earth")==0)
+        if (target->getElement() == "Earth")
         {
             duel->changeStats(card,2,0);
             this->effectUsed = true;

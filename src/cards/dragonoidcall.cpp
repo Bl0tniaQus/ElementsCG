@@ -6,7 +6,7 @@
 bool DragonoidCall::onSpell(Duel* duel, Card* card)
 {
     this->cardsInHandWithCommonNamePart(duel, card,"Dragonoid");
-    Card** targets = this->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
@@ -17,11 +17,10 @@ bool DragonoidCall::onSpell(Duel* duel, Card* card)
         {
                 this->spellFromHandLog(duel,card);
                 this->spellCost(card);
-                Card* targetCard = targets[target];
+                Card* targetCard = targets->at(target);
                 duel->summonFromHand(targetCard, zoneid);
                 return true;
         }
     }
-    this->setTargetList(nullptr,0);
 }
 

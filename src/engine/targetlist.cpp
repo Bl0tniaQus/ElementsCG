@@ -1,31 +1,25 @@
 #include "targetlist.h"
 TargetList::TargetList()
 {
-    this->targetList = new Card* [0];
-    this->n_targets = 0;
+    this->targetList = new std::vector<Card*>;
 }
-TargetList::TargetList(Card** targetList, short n_targets)
+TargetList::TargetList(std::vector<Card*>* targetList)
 {
-delete [] this->targetList;
+delete this->targetList;
 this->targetList = targetList;
-this->n_targets=n_targets;
 }
-void TargetList::setTargetList(Card** targets, short n)
+void TargetList::setTargetList(std::vector<Card*>* targets)
 {
-
-    delete [] this->targetList;
-    this->targetList = new Card* [n];
-    if (n==1) {this->targetList[0] = targets[0];}
-    else{
-    for (int i=0;i<n;i++)
+    if (targets==nullptr) {return;}
+    delete this->targetList;
+    this->targetList = new std::vector<Card*>;
+    for (int i = 0; i<targets->size(); i++)
     {
-        this->targetList[i] = targets[i];
+        this->targetList->push_back(targets->at(i));
     }
-    }
-    this->n_targets = n;
 }
 TargetList::~TargetList()
 {
-    delete [] targetList;
+    delete targetList;
 }
 

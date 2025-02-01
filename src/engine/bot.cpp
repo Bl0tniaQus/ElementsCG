@@ -116,31 +116,31 @@ void Bot::testSpecialMinion(int c, Duel* duel)
 
 
     cardBase->getFirstMaterialList(this->tempGamestate,card);
-    Card** firstList = cardBase->getTargetList()->getTargetList();
+    std::vector<Card*>* firstList = cardBase->getTargetList()->getTargetList();
     short firstN = cardBase->getTargetList()->getTargetsNumber();
     int* firstIds = new int[firstN];
     for (short i=0;i<firstN;i++)
     {
-        firstIds[i] = firstList[i]->getCopyId();
+        firstIds[i] = firstList->at(i)->getCopyId();
     }
 
 
     cardBase->getSecondMaterialList(this->tempGamestate,card);
-    Card** secondList = cardBase->getTargetList()->getTargetList();
+    std::vector<Card*>* secondList = cardBase->getTargetList()->getTargetList();
     short secondN = cardBase->getTargetList()->getTargetsNumber();
     int* secondIds = new int[secondN];
     for (short i=0;i<secondN;i++)
     {
-        secondIds[i] = secondList[i]->getCopyId();
+        secondIds[i] = secondList->at(i)->getCopyId();
     }
 
     cardBase->getThirdMaterialList(this->tempGamestate,card);
-    Card** thirdList = cardBase->getTargetList()->getTargetList();
+    std::vector<Card*>* thirdList = cardBase->getTargetList()->getTargetList();
     short thirdN = cardBase->getTargetList()->getTargetsNumber();
     int* thirdIds = new int[thirdN];
     for (short i=0;i<thirdN;i++)
     {
-        thirdIds[i] = thirdList[i]->getCopyId();
+        thirdIds[i] = thirdList->at(i)->getCopyId();
     }
 
 
@@ -395,8 +395,8 @@ void Bot::testCardBattle(short c, Duel* duel)
     for (int i=0;i<n_defenders;i++)
     {
         this->generateTempGamestate(duel);
-        Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()[c];
-        Card* defender = this->tempGamestate->getDefendersList()->getTargetList()[i];
+        Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()->at(c);
+        Card* defender = this->tempGamestate->getDefendersList()->getTargetList()->at(i);
 
         this->tempGamestate->combat(attacker,defender);
         float v = this->tempGamestate->evaluate();
@@ -405,7 +405,7 @@ void Bot::testCardBattle(short c, Duel* duel)
     if (n_defenders == 0)
     {
         this->generateTempGamestate(duel);
-        Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()[c];
+        Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()->at(c);
         this->tempGamestate->directAttack(attacker);
         float v = this->tempGamestate->evaluate();
         this->saveAttackOption(c,-1,v-bv);
@@ -438,10 +438,10 @@ void Bot::conductBattlePhase(Duel* duel)
             if (val<=0) {break;}
             duel->generateAttackersList();
             duel->generateDefendersList();
-            Card* attacker = duel->getAttackersList()->getTargetList()[atk];
+            Card* attacker = duel->getAttackersList()->getTargetList()->at(atk);
             if (target!=-1)
             {
-                Card* defender = duel->getDefendersList()->getTargetList()[target];
+                Card* defender = duel->getDefendersList()->getTargetList()->at(target);
                 duel->combat(attacker,defender);
             }
             else

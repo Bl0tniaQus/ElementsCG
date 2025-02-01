@@ -5,11 +5,11 @@ void AluminiumSerpent::onSummon(Duel* duel, Card* card)
 {
     this->minionsInYourGraveyardWithSameElementAndMaximumLevel(duel,card,"Earth",2);
     short n = this->getTargetList()->getTargetsNumber();
-    Card** tl = this->getTargetList()->getTargetList();
+    std::vector<Card*>* tl = this->getTargetList()->getTargetList();
     if (n>0)
     {
     this->effectLog(duel, card);
-    Card* target = tl[0];
+    Card* target = tl->at(0);
     duel->toHand(target);
     duel->removeFromGraveyard(target);
     }

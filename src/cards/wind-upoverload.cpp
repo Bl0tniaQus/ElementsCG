@@ -7,7 +7,7 @@ bool WindUpOverload::onSpell(Duel* duel, Card* card)
 {
     this->target = nullptr;
     this->minionsOnYourFieldWithSameElement(duel,card,"Air");
-    Card** targets = this->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
     short target = singleChoice(duel,card);
@@ -16,7 +16,7 @@ bool WindUpOverload::onSpell(Duel* duel, Card* card)
     {
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        Card* targetCard = targets[target];
+        Card* targetCard = targets->at(target);
         short orAtk = targetCard->getOriginalAttack();
         if (!targetCard->getIsSpellImmune())
         {

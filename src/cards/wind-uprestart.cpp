@@ -6,7 +6,7 @@
 bool WindUpRestart::onSpell(Duel* duel, Card* card)
 {
     this->minionsOnYourFieldWithSameElement(duel,card,"Air");
-    Card** targets = this->getTargetList()->getTargetList();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
     short target = singleChoice(duel,card);
@@ -15,7 +15,7 @@ bool WindUpRestart::onSpell(Duel* duel, Card* card)
     {
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        Card* targetCard = targets[target];
+        Card* targetCard = targets->at(target);
         if (!targetCard->getIsSpellImmune())
         {
             targetCard->getCardName()->onSummon(duel, targetCard);

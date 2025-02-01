@@ -7,13 +7,13 @@ void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
 {
     if (image)
     {
-       QString imgName = QString::fromStdString(std::string(":/")+std::string(card->getCardName()->getImage()));
+       QString imgName = QString::fromStdString(std::string(":/")+card->getCardName()->getImage());
        QPixmap pm(imgName);
-       QString text = QString(card->getCardText());
-       QString name = QString(card->getName());
+       QString text = QString::fromStdString(card->getCardText());
+       QString name = QString::fromStdString(card->getName());
        QString color = "black";
        QString TL,TR,BL,BR;
-       std::string attribute = std::string(card->getElement());
+       std::string attribute = card->getElement();
        if (attribute=="Earth")
        {
         color = "#854500";
