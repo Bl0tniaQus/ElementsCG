@@ -17,7 +17,7 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, std:
     this->defence = d;
     this->targetList = new TargetList;
     this->element = el;
-    this->usedMaterials = new Card* [0];
+    this->usedMaterials = std::vector<Card*>(0);
     this->name = n;
     this->image = i;
     this->cardText = ctx;
@@ -25,11 +25,14 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, std:
 CardBase::~CardBase()
 {
     delete this->targetList;
-    delete [] this->usedMaterials;
 }
-void CardBase::setTargetList(std::vector<Card*>* tl)
+void CardBase::setTargetList(std::vector<Card*>& tl)
 {
     this->targetList->setTargetList(tl);
+}
+void CardBase::clearTargetList()
+{
+    this->targetList->clearTargetList();
 }
 void CardBase::onTurnStart(Duel* duel, Card* card)
 {
@@ -38,30 +41,61 @@ void CardBase::onTurnStart(Duel* duel, Card* card)
         card->setAttacks(1);
     }
 }
-void CardBase::setTwoMaterials(Card* material1, Card* material2)
+void CardBase::spellCost(Card* card)
 {
-    delete [] this->usedMaterials;
-
-    this->usedMaterials = new Card* [2];
-
-    this->usedMaterials[0] = material1;
-    this->usedMaterials[1] = material2;
-
+    card->getOwner()->changeMana(-card->getCost());
 }
-void CardBase::setThreeMaterials(Card* material1, Card* material2, Card* material3)
+void CardBase::effectLog(Duel* duel, Card* card)
 {
-    delete this->usedMaterials;
-
-    this->usedMaterials = new Card* [3];
-
-    this->usedMaterials[0] = material1;
-    this->usedMaterials[1] = material2;
-    this->usedMaterials[2] = material3;
-
+    std::string cardName = this->getName();
+    std::string str = "["+cardName+"]"+"'s effect activates";
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
+}
+void CardBase::firstEffectLog(Duel* duel, Card* card)
+{
+    std::string cardName = this->getName();
+    std::string str = "["+cardName+"]"+"'s first effect activates";
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
+}
+void CardBase::secondEffectLog(Duel* duel, Card* card)
+{
+    std::string cardName = this->getName();
+    std::string str = "["+cardName+"]"+"'s second effect activates";
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
+}
+void CardBase::thirdEffectLog(Duel* duel, Card* card)
+{
+    std::string cardName = this->getName();
+    std::string str = "["+cardName+"]"+"'s third effect activates";
+    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
+}
+void CardBase::release2Log(Card* c1, Card* c2, Duel* duel)
+{
+    std::string playerName = std::string(c1->getOwner()->getName());
+    std::string n1 = std::string(c1->getName());
+    std::string n2 = std::string(c2->getName());
+    std::string str = "[" + playerName + "] releases [" + n1 + "] and [" + n2 + "]";
+    duel->appendLog(str,duel->getPlayerId(c1->getOwner()));
+}
+void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
+{
+    std::string playerName = std::string(c1->getOwner()->getName());
+    std::string n1 = std::string(c1->getName());
+    std::string n2 = std::string(c2->getName());
+    std::string n3 = std::string(c3->getName());
+    std::string str = "[" + playerName + "] releases [" + n1 + "], [" + n2 + "] and [" + n3 + "]";
+    duel->appendLog(str,duel->getPlayerId(c1->getOwner()));
+}
+void CardBase::spellFromHandLog(Duel* duel, Card* card)
+{
+    duel->appendLog(duel->cardFromHandLog(card),duel->getPlayerId(card->getOwner()));
+}
+void CardBase::setMaterials(std::vector<Card *> mats)
+{
+    this->usedMaterials = std::vector<Card*>(mats);
 }
 short CardBase::singleChoice(Duel* duel, Card* card)
 {
-    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     Player* owner = card->getOwner();
     Bot* bot = owner->getBot();
@@ -95,158 +129,9 @@ short CardBase::singleChoice(Duel* duel, Card* card)
     }
     return -1;
 }
-void CardBase::allMinionsOnField(Duel* duel, Card* card)
-{
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Zone* zone;
-    Player* player;
-    player = duel->getPlayer(duel->getTurnPlayer())->getOpponent();
-    for (int i=0;i<5;i++)
-        {
-            zone = &player->getMinionField()[i];
-            Card *cardd = zone->getCard();
-
-            if (cardd!=nullptr)
-            {
-            targets->push_back(cardd);
-            }
-        }
-        player = duel->getPlayer(duel->getTurnPlayer());
-        for (int i=0;i<5;i++)
-        {
-            zone = &player->getMinionField()[i];
-            Card *cardd = zone->getCard();
-            if (cardd!=nullptr)
-            {
-            targets->push_back(cardd);
-            }
-        }
-        this->setTargetList(targets);
-}
-void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Card* card, const std::string& element)
-{
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Zone* zone;
-    Player* player;
-        player = card->getOwner();
-        for (int i=0;i<5;i++)
-        {
-            zone = &player->getMinionField()[i];
-            Card *cardd = zone->getCard();
-            if (cardd!=nullptr)
-            {
-                if (element == cardd->getElement())
-                {
-                    targets->push_back(cardd);
-                }
-            }
-        }
-        this->setTargetList(targets);
-}
-void CardBase::cardsWithSameElementInTargetList(const std::string& element)
-{
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    std::vector<Card*>* targetList = this->getTargetList()->getTargetList();
-    short n = this->getTargetList()->getTargetsNumber();
-    for (int i=0; i<n;i++)
-    {
-        Card* cardd = targetList->at(i);
-        if (element == cardd->getElement())
-        {
-                    targets->push_back(cardd);
-                }
-    }
-    this->setTargetList(targets);
-}
-
-void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
-{
-    this->setTargetList(nullptr);
-    short handSize = card->getOwner()->getHandSize();
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    for (int i=0;i<handSize;i++)
-        {
-            Card *target = card->getOwner()->getHand()->at(i);
-            if ((target!=nullptr)&&(target->getCardId() == card->getCardId())&&(card!=target))
-            {
-            targets->push_back(target);
-            }
-
-    }
-    this->setTargetList(targets);
-}
-void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const std::string& namePart)
-{
-    this->setTargetList(nullptr);
-    short handSize = card->getOwner()->getHandSize();
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    for (int i=0;i<handSize;i++)
-        {
-            Card *target = card->getOwner()->getHand()->at(i);
-            if ((target!=nullptr)&&(target->getName().find(namePart)!=std::string::npos)&&(card!=target))
-            {
-            targets->push_back(target);
-            }
-
-    }
-    this->setTargetList(targets);
-}
-void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const std::string& namePart)
-{
-    this->setTargetList(nullptr);
-    short deckSize = card->getOwner()->getDeckSize();
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    for (int i=0;i<deckSize;i++)
-        {
-            Card *target = card->getOwner()->getDeck()->at(i);
-            if ((target!=nullptr)&&(target->getName().find(namePart)!=std::string::npos)&&(card!=target))
-            {
-            targets->push_back(target);
-            }
-
-    }
-    this->setTargetList(targets);
-}
-void CardBase::nTopCardsFromDeck(Duel* duel, Card* card, short n)
-{
-    this->setTargetList(nullptr);
-    short deckSize = card->getOwner()->getDeckSize();
-    if (deckSize<n) {return;}
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    for (int i=0;i<n;i++)
-        {
-            Card *target = card->getOwner()->getDeck()->at(deckSize-(i+1));
-            targets->push_back(target);
-
-    }
-    this->setTargetList(targets);
-}
-
-void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Card* card, const std::string& namePart)
-{
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Player* player = card->getOwner();
-    Zone* zone;
-    for (int i=0;i<5;i++)
-        {
-            zone = &player->getMinionField()[i];
-            Card *cardd = zone->getCard();
-            if (cardd!=nullptr)
-            {
-                if (cardd->getName().find(namePart)!=std::string::npos)
-                {
-                    targets->push_back(cardd);
-                }
-            }
-        }
-    this->setTargetList(targets);
-}
 bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 {
-        if (card->getCardName()->getMaterialNumber()!=2) {return false;}
+        if (card->getCardName()->getRequiredMaterialsNumber()!=2) {return false;}
         bool result = true;
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
@@ -283,7 +168,7 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 }
 bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
 {
-        if (card->getCardName()->getMaterialNumber()!=3) {return false;}
+        if (card->getCardName()->getRequiredMaterialsNumber()!=3) {return false;}
         bool result = false;
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
@@ -381,7 +266,7 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
                    new_targets2->at(j)=targets2->at(j);
                 }
             }
-        card->getCardName()->setTargetList(new_targets2);
+        card->getCardName()->setTargetList(*new_targets2);
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
         targetCard2 = new_targets2->at(target);
@@ -392,7 +277,7 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
             targetCard2 = card->getOwner()->getBot()->getSecondMaterial();
         }
         this->release2Log(targetCard,targetCard2, duel);
-        this->setTwoMaterials(targetCard, targetCard2);
+        this->setMaterials({targetCard, targetCard2});
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
         return true;
@@ -442,7 +327,7 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
                    new_targets2->at(j)=targets2->at(j);
                 }
             }
-        card->getCardName()->setTargetList(new_targets2);
+        card->getCardName()->setTargetList(*new_targets2);
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
         targetCard2 = new_targets2->at(target);
@@ -477,7 +362,7 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
                    new_targets3->at(j)=targets3->at(j);
                 }
             }
-        card->getCardName()->setTargetList(new_targets3);
+        card->getCardName()->setTargetList(*new_targets3);
         target = duel->makeSpecialMinionMaterialChoice(card);
         if (target==-1) {return false;}
         targetCard3 = new_targets3->at(target);
@@ -489,7 +374,7 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
             targetCard3 = card->getOwner()->getBot()->getThirdMaterial();
         }
         this->release3Log(targetCard,targetCard2,targetCard3, duel);
-        this->setThreeMaterials(targetCard, targetCard2, targetCard3);
+        this->setMaterials({targetCard, targetCard2, targetCard3});
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
         duel->releaseForSpecialSummon(targetCard3, card);
@@ -497,196 +382,134 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
     }
     return false;
 }
-void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Card* card, const std::string& element, short lvl)
+void CardBase::allMinionsOnField(Duel* duel)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Player* owner = card->getOriginalOwner();
-        for (int i=0;i<5;i++)
-        {
-            Card* cardd = owner->getMinionField()[i].getCard();
-            if (cardd!=nullptr)
-            {
-                if (element == cardd->getElement()&&cardd->getLevel()>=lvl)
-                {
-                   targets->push_back(cardd);
-                }
-            }
-        }
-
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
     this->setTargetList(targets);
 }
-void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Card* card, const std::string& element, short lvl)
+void CardBase::cardsInHandWithTheSameName(Player* player, const std::string& name)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Player* owner = card->getOriginalOwner();
-        for (int i=0;i<5;i++)
-        {
-            Card* cardd = owner->getMinionField()[i].getCard();
-            if (cardd!=nullptr)
-            {
-                if (element == cardd->getElement()&&cardd->getLevel()<=lvl)
-                {
-                    targets->push_back(cardd);
-                }
-            }
-        }
-
+    std::vector<Card*> targets = this->targetList->cardsInHand(player);
+    targets = this->targetList->filterCardName(targets, name);
     this->setTargetList(targets);
 }
-
-void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, Card* card, const std::string& element, short lvl)
+void CardBase::cardsWithSameElementInTargetList(const std::string& element)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
-    short n_graveyard = card->getOwner()->getGraveyardSize();
-        for (int i=0;i<n_graveyard;i++)
-        {
-            Card* cardd = graveyard->at(i);
-            if (element == cardd->getElement()&&cardd->getLevel()<=lvl&&cardd->getCardType()==1)
-            {
-                targets->push_back(cardd);
-            }
-
-        }
+    std::vector<Card*> targets(*this->targetList->getTargetList());
+    targets = this->targetList->filterOneElement(targets, element);
     this->setTargetList(targets);
 }
-void CardBase::cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const std::string& element)
+void CardBase::cardsInHandWithCommonNamePart(Player* player, const std::string& namePart)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
-    short n_graveyard = card->getOwner()->getGraveyardSize();
-        for (int i=0;i<n_graveyard;i++)
-        {
-            Card* cardd = graveyard->at(i);
-            if (element == cardd->getElement())
-            {
-                targets->push_back(cardd);
-            }
-
-        }
+    std::vector<Card*> targets = this->targetList->cardsInHand(player);
+    targets = this->targetList->filterNamePart(targets, namePart);
     this->setTargetList(targets);
 }
-void CardBase::cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const std::string& name)
+void CardBase::cardsInDeckWithCommonNamePart(Player* player, const std::string& namePart)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
-    short n_graveyard = card->getOwner()->getGraveyardSize();
-        for (int i=0;i<n_graveyard;i++)
-        {
-            Card* cardd = graveyard->at(i);
-            if (name == cardd->getName())
-            {
-                targets->push_back(cardd);
-            }
-
-        }
+    std::vector<Card*> targets = this->targetList->cardsInDeck(player);
+    targets = this->targetList->filterNamePart(targets, namePart);
     this->setTargetList(targets);
 }
-
-void CardBase::specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* card, const std::string& element)
+void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Player* player, const std::string& element, short lvl)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
-    short n_graveyard = card->getOwner()->getGraveyardSize();
-        for (int i=0;i<n_graveyard;i++)
-        {
-            Card* cardd = graveyard->at(i);
-            if (element == cardd->getElement()&&cardd->getCardType()==2)
-            {
-                targets->push_back(cardd);
-            }
-
-        }
+    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterOneElement(targets, element);
+    targets = this->targetList->filterLevelRange(targets, 0, lvl);
     this->setTargetList(targets);
 }
-void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Card* card, const std::string& name)
+void CardBase::cardsInYourGraveyardWithSameElement(Player* player, const std::string& element)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Player* owner = card->getOriginalOwner();
-    Zone* zone;
-    Card* cardd;
-        for (int i=0;i<5;i++)
-        {
-            zone = &owner->getMinionField()[i];
-            cardd = zone->getCard();
-
-            if (cardd!=nullptr)
-            {
-                if (name == cardd->getName())
-                {
-                    targets->push_back(cardd);
-                }
-            }
-        }
-
+    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
+    targets = this->targetList->filterOneElement(targets, element);
     this->setTargetList(targets);
 }
-void CardBase::specialMinionsOnYourFieldWithSameAttribute(Duel* duel, Card* card, const std::string& element)
+void CardBase::cardsInYourGraveyardWithExactName(Player* player, const std::string& name)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Zone* zone;
-    Player* player;
-        player = card->getOwner();
-        for (int i=0;i<5;i++)
-        {
-            zone = &player->getMinionField()[i];
-            Card *cardd = zone->getCard();
-            if (cardd!=nullptr)
-            {
-                if (cardd->getCardType()==2&&element == cardd->getElement())
-                {
-                    targets->push_back(cardd);
-                }
-            }
-        }
-        this->setTargetList(targets);
-}
-void CardBase::minionsInHandWithMaximumLevel(Duel* duel, Card* card, short level)
-{
-    this->setTargetList(nullptr);
-    short handSize = card->getOwner()->getHandSize();
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    for (int i=0;i<handSize;i++)
-        {
-            Card *target = card->getOwner()->getHand()->at(i);
-            if (target!=nullptr&&target->getLevel()<=level&&target->getCardType()==1)
-            {
-            targets->push_back(target);
-            }
-
-    }
+    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
+    targets = this->targetList->filterCardName(targets, name);
     this->setTargetList(targets);
 }
-void CardBase::minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Card* card, const std::string& element1, const std::string& element2, short lvl)
+void CardBase::specialMinionsInYourGraveyardWithSameElement(Player* player, const std::string& element)
 {
-    this->setTargetList(nullptr);
-    std::vector<Card*>* targets = new std::vector<Card*>;
-    Zone* zone;
-    Player* player;
-        player = card->getOwner();
-        for (int i=0;i<5;i++)
-        {
-            zone = &player->getMinionField()[i];
-            Card *cardd = zone->getCard();
-            if (cardd!=nullptr)
-            {
-                if ((element1 == cardd->getElement()||element2 == cardd->getElement())&&cardd->getLevel()>=lvl)
-                {
-                    targets->push_back(cardd);
-                }
-            }
-        }
-        this->setTargetList(targets);
+    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
+    targets = this->targetList->filterCardType(targets, 2);
+    targets = this->targetList->filterOneElement(targets, element);
+    this->setTargetList(targets);
 }
-
+void CardBase::specialMinionsOnYourFieldWithSameElement(Duel* duel, Player* player, const std::string& element)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterCardType(targets, 2);
+    targets = this->targetList->filterOneElement(targets, element);
+    this->setTargetList(targets);
+}
+void CardBase::minionsInHandWithMaximumLevel(Player* player, short level)
+{
+    std::vector<Card*> targets = this->targetList->cardsInHand(player);
+    targets = this->targetList->filterCardType(targets, 1);
+    targets = this->targetList->filterLevelRange(targets, 0, level);
+    this->setTargetList(targets);
+}
+void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Player* player, const std::string& namePart)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterNamePart(targets, namePart);
+    this->setTargetList(targets);
+}
+void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Player* player, const std::string& element)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterOneElement(targets, element);
+    this->setTargetList(targets);
+}
+void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Player* player, const std::string& element, short lvl)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterOneElement(targets, element);
+    targets = this->targetList->filterLevelRange(targets, lvl, 100);
+    this->setTargetList(targets);
+}
+void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Player* player, const std::string& element, short lvl)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterOneElement(targets, element);
+    targets = this->targetList->filterLevelRange(targets, 0, lvl);
+    this->setTargetList(targets);
+}
+void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Player* player, const std::string& name)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterCardName(targets, name);
+    this->setTargetList(targets);
+}
+void CardBase::minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Player* player, const std::string& element1, const std::string& element2, short lvl)
+{
+    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    targets = this->targetList->filterPlayer(targets, player);
+    targets = this->targetList->filterOutCardType(targets, 0);
+    targets = this->targetList->filterTwoElements(targets, element1, element2);
+    targets = this->targetList->filterLevelRange(targets, lvl, 100);
+    this->setTargetList(targets);
+}
+void CardBase::nTopCardsFromDeck(Player* player, short n)
+{
+    std::vector<Card*> targets = this->targetList->cardsInDeck(player);
+    targets = this->targetList->nTopCards(targets, n);
+    this->setTargetList(targets);
+}
 short CardBase::highestLevelInTargetList()
 {
     short lvl = -1;
@@ -701,54 +524,9 @@ short CardBase::highestLevelInTargetList()
     return lvl;
 }
 
-void CardBase::spellCost(Card* card)
-{
-    card->getOwner()->changeMana(-card->getCost());
-}
-void CardBase::effectLog(Duel* duel, Card* card)
-{
-    std::string cardName = this->getName();
-    std::string str = "["+cardName+"]"+"'s effect activates";
-    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
-}
-void CardBase::firstEffectLog(Duel* duel, Card* card)
-{
-    std::string cardName = this->getName();
-    std::string str = "["+cardName+"]"+"'s first effect activates";
-    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
-}
-void CardBase::secondEffectLog(Duel* duel, Card* card)
-{
-    std::string cardName = this->getName();
-    std::string str = "["+cardName+"]"+"'s second effect activates";
-    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
-}
-void CardBase::thirdEffectLog(Duel* duel, Card* card)
-{
-    std::string cardName = this->getName();
-    std::string str = "["+cardName+"]"+"'s third effect activates";
-    duel->appendLog(str,duel->getPlayerId(card->getOwner()));
-}
-void CardBase::release2Log(Card* c1, Card* c2, Duel* duel)
-{
-    std::string playerName = std::string(c1->getOwner()->getName());
-    std::string n1 = std::string(c1->getName());
-    std::string n2 = std::string(c2->getName());
-    std::string str = "[" + playerName + "] releases [" + n1 + "] and [" + n2 + "]";
-    duel->appendLog(str,duel->getPlayerId(c1->getOwner()));
-}
-void CardBase::release3Log(Card* c1, Card* c2, Card* c3, Duel* duel)
-{
-    std::string playerName = std::string(c1->getOwner()->getName());
-    std::string n1 = std::string(c1->getName());
-    std::string n2 = std::string(c2->getName());
-    std::string n3 = std::string(c3->getName());
-    std::string str = "[" + playerName + "] releases [" + n1 + "], [" + n2 + "] and [" + n3 + "]";
-    duel->appendLog(str,duel->getPlayerId(c1->getOwner()));
-}
-void CardBase::spellFromHandLog(Duel* duel, Card* card)
-{
-    duel->appendLog(duel->cardFromHandLog(card),duel->getPlayerId(card->getOwner()));
-}
+
+
+
+
 
 

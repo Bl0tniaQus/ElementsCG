@@ -8,11 +8,11 @@ bool DragonoidStormChaser::specialSummon(Duel* duel, Card* card)
 }
 void DragonoidStormChaser::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithCommonNamePart(duel, card, "Dragonoid");
+    this->minionsOnYourFieldWithCommonNamePart(duel, card->getOwner(), "Dragonoid");
 }
 void DragonoidStormChaser::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElement(duel, card, "Air");
+    this->minionsOnYourFieldWithSameElement(duel, card->getOwner(), "Air");
 }
 void DragonoidStormChaser::onSummon(Duel* duel, Card* card)
 {

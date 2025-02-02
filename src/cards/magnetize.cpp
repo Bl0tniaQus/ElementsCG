@@ -6,7 +6,7 @@
 bool Magnetize::onSpell(Duel* duel, Card* card)
 {
 
-    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Earth");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<2) {return false;}

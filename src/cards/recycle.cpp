@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool Recycle::onSpell(Duel* duel, Card* card)
 {
-    this->cardsInYourGraveyardWithSameElement(duel,card,"Earth");
+    this->cardsInYourGraveyardWithSameElement(card->getOwner(),"Earth");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
@@ -14,7 +14,7 @@ bool Recycle::onSpell(Duel* duel, Card* card)
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
         Card* targetCard = targets->at(target);
-        this->cardsInYourGraveyardWithExactName(duel, card, targetCard->getName());
+        this->cardsInYourGraveyardWithExactName(card->getOwner(), targetCard->getName());
         short n = this->getTargetList()->getTargetsNumber();
         std::vector<Card*>* targets2 = this->getTargetList()->getTargetList();
         for (short i = 0; i<n; i++)

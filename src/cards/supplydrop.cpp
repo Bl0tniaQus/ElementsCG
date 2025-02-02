@@ -5,11 +5,11 @@
 #include "../engine/bot.h"
 bool SupplyDrop::onSpell(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElement(duel,card,"Air");
+    this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
     short n = this->getTargetList()->getTargetsNumber();
     if (n<1) {return false;}
     short lv = this->highestLevelInTargetList();
-    this->minionsInHandWithMaximumLevel(duel,card,lv-1);
+    this->minionsInHandWithMaximumLevel(card->getOwner(),lv-1);
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
@@ -28,6 +28,6 @@ bool SupplyDrop::onSpell(Duel* duel, Card* card)
                 return true;
         }
     }
-    this->setTargetList(nullptr);
+
 }
 

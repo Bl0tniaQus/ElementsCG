@@ -8,11 +8,11 @@ bool TopazMantis::specialSummon(Duel* duel, Card* card)
 }
 void TopazMantis::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithExactName(duel,card,"Topaz Amber Fossil");
+    this->minionsOnYourFieldWithExactName(duel,card->getOwner(),"Topaz Amber Fossil");
 }
 void TopazMantis::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
+    this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Earth");
 }
 void TopazMantis::onSummon(Duel* duel, Card* card)
 {
@@ -25,7 +25,7 @@ void TopazMantis::onTurnStart(Duel * duel, Card * card)
 void TopazMantis::onDestroy(Duel* duel, Card* card)
 {
 
-        this->minionsOnYourFieldWithSameElement(duel,card,"Earth");
+        this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Earth");
         short nt = this->getTargetList()->getTargetsNumber();
         std::vector<Card*>* cards = this->getTargetList()->getTargetList();
         short deckSize = card->getOwner()->getDeckSize();

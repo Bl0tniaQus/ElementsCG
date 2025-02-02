@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool DragonoidCall::onSpell(Duel* duel, Card* card)
 {
-    this->cardsInHandWithCommonNamePart(duel, card,"Dragonoid");
+    this->cardsInHandWithCommonNamePart(card->getOwner(),"Dragonoid");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}

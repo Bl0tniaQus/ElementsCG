@@ -3,7 +3,7 @@
 #include "../engine/card.h"
 void TopazAmberFossil::onSummon(Duel* duel, Card* card)
 {
-    this->specialMinionsInYourGraveyardWithSameElement(duel,card,"Earth");
+    this->specialMinionsInYourGraveyardWithSameElement(card->getOwner(),"Earth");
     short n = this->getTargetList()->getTargetsNumber();
     std::vector<Card*>* tl = this->getTargetList()->getTargetList();
     if (n>0)

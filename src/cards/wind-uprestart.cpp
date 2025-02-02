@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool WindUpRestart::onSpell(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElement(duel,card,"Air");
+    this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}

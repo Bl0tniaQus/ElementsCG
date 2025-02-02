@@ -15,7 +15,7 @@ public:
         "Amber Treant", //name
         "ambertreant",
         "[level 3 or higher earth minion + level 3 or lower earth minion]\n1) When this card is summoned: draw 1 \"Amber Fossil\";\n2) At the end of your turn: gain 1 defence."
-    ) {this->setMaterialNumber(2); this->setHasOnSummon(1); this->setHasOnTurnEnd(1);}
+    ) {this->setRequiredMaterialsNumber(2);this->setHasOnTurnEnd(1);}
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

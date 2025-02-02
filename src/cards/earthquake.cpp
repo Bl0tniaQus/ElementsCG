@@ -7,7 +7,7 @@ bool Earthquake::onSpell(Duel* duel, Card* card)
 {
     this->spellFromHandLog(duel,card);
     this->spellCost(card);
-    this->allMinionsOnField(duel, card);
+    this->allMinionsOnField(duel);
     short nt = this->getTargetList()->getTargetsNumber();
     std::vector<Card*>* cards = this->getTargetList()->getTargetList();
     for (short i=0;i<nt;i++)

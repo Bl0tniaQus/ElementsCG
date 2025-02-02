@@ -8,11 +8,11 @@ bool DrillDragon::specialSummon(Duel* duel, Card* card)
 }
 void DrillDragon::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card,"Air",3);
+    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card->getOwner(),"Air",3);
 }
 void DrillDragon::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(duel,card,"Air","Earth",3);
+    this->minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(duel,card->getOwner(),"Air","Earth",3);
 }
 void DrillDragon::onAttack(Duel* duel, Card* card, Card* target)
 {

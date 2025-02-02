@@ -15,5 +15,4 @@ void Zone::destroyCard()
 Zone::~Zone()
 {
     this->card = nullptr;
-
 }

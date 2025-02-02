@@ -180,7 +180,7 @@ void Duel::toGraveyard(Card* card)
     card->setPlace(3);
     Player* owner = card->getOriginalOwner();
     card->returnToOriginal();
-    owner->removeFromGraveyard(card);
+    owner->addToGraveyard(card);
 }
 void Duel::toSpecialDeck(Card* card)
 {
@@ -581,7 +581,7 @@ void Duel::passTurn()
 }
 void Duel::generateAttackersList()
 {
-    std::vector<Card*>* attackers = new std::vector<Card*>;
+    std::vector<Card*> attackers = std::vector<Card*>(0);
     Player* player = this->getPlayer(this->turnPlayer);
     for (int i=0;i<5;i++)
     {
@@ -591,7 +591,7 @@ void Duel::generateAttackersList()
         {
             if (card->getAttacks()>0)
             {
-                attackers->push_back(card);
+                attackers.push_back(card);
             }
         }
     }
@@ -599,7 +599,7 @@ void Duel::generateAttackersList()
 }
 void Duel::generateDefendersList()
 {
-    std::vector<Card*>* defenders = new std::vector<Card*>;
+    std::vector<Card*> defenders = std::vector<Card*>(0);
     Player* player = this->getPlayer(this->turnPlayer)->getOpponent();
     for (int i=0;i<5;i++)
     {
@@ -607,7 +607,7 @@ void Duel::generateDefendersList()
         Card* card = zone->getCard();
         if (card!=nullptr)
         {
-            defenders->push_back(card);
+            defenders.push_back(card);
         }
     }
     this->getDefendersList()->setTargetList(defenders);

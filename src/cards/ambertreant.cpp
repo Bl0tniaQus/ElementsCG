@@ -8,15 +8,15 @@ bool AmberTreant::specialSummon(Duel* duel, Card* card)
 }
 void AmberTreant::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card,"Earth",3);
+    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card->getOwner(),"Earth",3);
 }
 void AmberTreant::getSecondMaterialList(Duel* duel, Card* card)
 {
-   this->minionsOnYourFieldWithSameElementAndMaximumLevel(duel,card,"Earth",3);
+   this->minionsOnYourFieldWithSameElementAndMaximumLevel(duel,card->getOwner(),"Earth",3);
 }
 void AmberTreant::onSummon(Duel* duel, Card* card)
 {
-    this->cardsInDeckWithCommonNamePart(duel,card,"Amber Fossil");
+    this->cardsInDeckWithCommonNamePart(card->getOwner(),"Amber Fossil");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt>0)

@@ -25,7 +25,8 @@ void DuelUiBridge::duelControl(Deck* deck0, Deck* deck1)
 void DuelUiBridge::initiateDuel()
 {
     Deck* deck = new Deck(0);
-    Deck* deck2 = new Deck(this->opponentDeck);
+    //Deck* deck2 = new Deck(this->opponentDeck);
+    Deck* deck2 = new Deck(0);
     this->duelControl(deck,deck2);
     delete deck;
     delete deck2;
@@ -80,7 +81,7 @@ short DuelUiBridge::makeSpellChoice(Card* card)
 short DuelUiBridge::makeSpecialMinionMaterialChoice(Card* card)
 {
     short id = -1;
-    short n_materials = card->getCardName()->getMaterialNumber();
+    short n_materials = card->getCardName()->getRequiredMaterialsNumber();
     if (n_materials == 2 )
     {
         if (this->selectedMaterials==0)

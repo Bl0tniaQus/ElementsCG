@@ -15,7 +15,7 @@ public:
         "Drill Dragon", //name
         "drilldragon",
         "[Lv. 3 or higher air minion + Lv.3 or higher earth or air minion]\n1) When this attacks an earth minion: it gains 2 attack for that attack."
-    ) {this->setMaterialNumber(2); this->setHasOnAttack(1); this->setHasAfterAttack(1);};
+    ) {this->setRequiredMaterialsNumber(2);this->setHasOnAttack(1); this->setHasAfterAttack(1);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

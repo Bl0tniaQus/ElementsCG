@@ -142,11 +142,8 @@ void Bot::testSpecialMinion(int c, Duel* duel)
     {
         thirdIds[i] = thirdList->at(i)->getCopyId();
     }
-
-
-
     Card* cardA; Card* cardB; Card* cardC;
-    if (cardBase->getMaterialNumber()==2)
+    if (cardBase->getRequiredMaterialsNumber()==2)
     {
 
         for (short i = 0; i<firstN; i++)

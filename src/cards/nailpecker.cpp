@@ -3,7 +3,7 @@
 #include "../engine/card.h"
 void Nailpecker::onSummon(Duel* duel, Card* card)
 {
-    this->allMinionsOnField(duel,card);
+    this->allMinionsOnField(duel);
     this->cardsWithSameElementInTargetList("Earth");
     short n = this->getTargetList()->getTargetsNumber();
     if (n>0)

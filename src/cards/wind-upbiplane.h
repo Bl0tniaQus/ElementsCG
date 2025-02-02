@@ -15,7 +15,7 @@ public:
         "Wind-up Biplane", //name
         "wind-upbiplane",
         "[]\n1) "
-    ) {this->setMaterialNumber(2);};
+    ) {this->setRequiredMaterialsNumber(2);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

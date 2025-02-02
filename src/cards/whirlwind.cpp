@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool Whirlwind::onSpell(Duel* duel, Card* card)
 {
-    this->allMinionsOnField(duel, card);
+    this->allMinionsOnField(duel);
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short target = singleChoice(duel,card);
     if (target==-1) {return false;}
@@ -17,7 +17,7 @@ bool Whirlwind::onSpell(Duel* duel, Card* card)
         if (!targetCard->getIsSpellImmune())
         {
         duel->toHand(targetCard);
-        this->setTargetList(nullptr);
+        this->clearTargetList();
         }
         else duel->appendSILog(card,targetCard);
         return true;

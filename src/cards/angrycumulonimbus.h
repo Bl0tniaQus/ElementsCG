@@ -15,7 +15,7 @@ public:
         "Angry Cumulonimbus", //name
         "angrycumulonimbus",
         "[\"Happy Cumulus\" + \"Sad Nimbus\"]\nWhen this card is summoned: gain 1 attack for every 4 mana points you have."
-    ) {this->setMaterialNumber(2);this->setHasOnSummon(1);};
+    ) {this->setRequiredMaterialsNumber(2);this->setHasOnSummon(1);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;

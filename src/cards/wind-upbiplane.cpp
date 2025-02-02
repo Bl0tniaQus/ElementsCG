@@ -8,11 +8,11 @@ bool WindUpBiplane::specialSummon(Duel* duel, Card* card)
 }
 void WindUpBiplane::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card,"Air",3);
+    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card->getOwner(),"Air",3);
 }
 void WindUpBiplane::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(duel,card,"Air","Earth",3);
+    this->minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(duel,card->getOwner(),"Air","Earth",3);
 }
 
 

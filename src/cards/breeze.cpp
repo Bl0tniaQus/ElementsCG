@@ -7,7 +7,7 @@ bool Breeze::onSpell(Duel* duel, Card* card)
 {
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        this->minionsOnYourFieldWithSameElement(duel,card,"Air");
+        this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
         short nt = this->getTargetList()->getTargetsNumber();
         std::vector<Card*>* cards = this->getTargetList()->getTargetList();
         for (short i=0;i<nt;i++)

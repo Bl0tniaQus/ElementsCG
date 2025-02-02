@@ -3,7 +3,7 @@
 #include "../engine/card.h"
 void CopperWorm::onSummon(Duel* duel, Card* card)
 {
-        this->cardsInHandWithTheSameName(duel, card);
+        this->cardsInHandWithTheSameName(card->getOwner(), card->getName());
         if (this->getTargetList()->getTargetsNumber()>0)
         {
             std::vector<Card*>* targets = this->getTargetList()->getTargetList();

@@ -8,7 +8,7 @@ bool Excavation::onSpell(Duel* duel, Card* card)
     if (card->getOwner()->getDeckSize()<3) {return false;}
     this->spellFromHandLog(duel,card);
     this->spellCost(card);
-    this->nTopCardsFromDeck(duel,card,3);
+    this->nTopCardsFromDeck(card->getOwner(),3);
     short n_revealed = this->getTargetList()->getTargetsNumber();
     std::vector<Card*>* revealed = this->getTargetList()->getTargetList();
     for (short i = 0; i<n_revealed; i++)
