@@ -461,7 +461,7 @@ void Bot::testHand(Duel* duel)
     short n_hand = player->getHandSize();
     for (int z = 0;z<n_hand;z++)
     {
-        this->testCardFromHand(player->getHand()[z]->getCopyId(), duel);
+        this->testCardFromHand(player->getHand()->at(z)->getCopyId(), duel);
     }
 }
 void Bot::testSpecialMinions(Duel* duel)
@@ -471,7 +471,7 @@ void Bot::testSpecialMinions(Duel* duel)
     short n_special = player->getSpecialDeckSize();
     for (int z = 0;z<n_special;z++)
     {
-        this->testSpecialMinion(player->getSpecialDeck()[z]->getCopyId(), duel);
+        this->testSpecialMinion(player->getSpecialDeck()->at(z)->getCopyId(), duel);
     }
 }
 int* Bot::getBestMaterials()

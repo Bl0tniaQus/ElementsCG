@@ -8,7 +8,13 @@
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-
+   /* Duel* duel = new Duel;
+    duel->getPlayer(1)->setBot(&bot);
+    Deck* deck = new Deck(0);
+    Deck* deck2 = new Deck(0);
+    duel->DuelControl(deck, deck2);
+    delete deck;
+    delete deck2;*/
     QApplication a(argc, argv);
     //shoutout to QuantumCD for theme
     //https://gist.github.com/QuantumCD/6245215
@@ -35,9 +41,11 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     return a.exec();
+
 }
 //TODO major target lists refatoring, wind up restart effect
 //TODO copy card properties in gamestate
 //TODO deck copy(utwórz, połącz, utwórz połączenie)
 //TODO use new deck constructor
 //TODO fix leak after duel
+//TODO bot nie działa gdy ma pierwszą turę

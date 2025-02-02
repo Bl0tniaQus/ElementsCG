@@ -19,7 +19,7 @@ bool Recycle::onSpell(Duel* duel, Card* card)
         std::vector<Card*>* targets2 = this->getTargetList()->getTargetList();
         for (short i = 0; i<n; i++)
         {
-            duel->removeFromGraveyard(targets2->at(i));
+            targets2->at(i)->getOriginalOwner()->removeFromGraveyard(targets2->at(i));
             duel->toHand(targets2->at(i));
         }
         return true;

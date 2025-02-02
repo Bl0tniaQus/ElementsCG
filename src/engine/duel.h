@@ -55,8 +55,6 @@ public:
     void playFromHand(Card* card);
     void summonFromHand(Card* minion, short zoneid);
     void summonFromGraveyard(Card* minion, short zoneid);
-    void removeFromGraveyard(Card* card);
-    void removeFromDeck(Card* card);
     bool onSpell(Card* card);
     void onSummon(Card* card);
     void onTurnEnd(Card* card);

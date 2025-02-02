@@ -37,7 +37,7 @@ void DuelUiBridge::playFromHand(short id)
         Player* player = this->duel->getPlayer(0);
         if (id>=0 && id<player->getHandSize())
         {
-            this->duel->playFromHand(player->getHand()[id]);
+            this->duel->playFromHand(player->getHand()->at(id));
             emit handCardPlayed(-1);
             this->updateBoard();
         }
@@ -51,7 +51,7 @@ void DuelUiBridge::playSpecialMinion(short id)
         Player* player = this->duel->getPlayer(0);
         if (id>=0 && id<player->getSpecialDeckSize())
         {
-            this->duel->summonSpecialMinion(player->getSpecialDeck()[id]);
+            this->duel->summonSpecialMinion(player->getSpecialDeck()->at(id));
             emit specialMinionPlayed(-1);
             this->updateBoard();
         }

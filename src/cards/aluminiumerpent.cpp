@@ -11,7 +11,7 @@ void AluminiumSerpent::onSummon(Duel* duel, Card* card)
     this->effectLog(duel, card);
     Card* target = tl->at(0);
     duel->toHand(target);
-    duel->removeFromGraveyard(target);
+    target->getOriginalOwner()->removeFromGraveyard(target);
     }
 }
 

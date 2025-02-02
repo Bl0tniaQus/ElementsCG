@@ -40,7 +40,7 @@ void CardBase::onTurnStart(Duel* duel, Card* card)
 }
 void CardBase::setTwoMaterials(Card* material1, Card* material2)
 {
-    delete this->usedMaterials;
+    delete [] this->usedMaterials;
 
     this->usedMaterials = new Card* [2];
 
@@ -168,7 +168,7 @@ void CardBase::cardsInHandWithTheSameName(Duel* duel, Card* card)
     std::vector<Card*>* targets = new std::vector<Card*>;
     for (int i=0;i<handSize;i++)
         {
-            Card *target = card->getOwner()->getHand()[i];
+            Card *target = card->getOwner()->getHand()->at(i);
             if ((target!=nullptr)&&(target->getCardId() == card->getCardId())&&(card!=target))
             {
             targets->push_back(target);
@@ -184,7 +184,7 @@ void CardBase::cardsInHandWithCommonNamePart(Duel* duel, Card* card, const std::
     std::vector<Card*>* targets = new std::vector<Card*>;
     for (int i=0;i<handSize;i++)
         {
-            Card *target = card->getOwner()->getHand()[i];
+            Card *target = card->getOwner()->getHand()->at(i);
             if ((target!=nullptr)&&(target->getName().find(namePart)!=std::string::npos)&&(card!=target))
             {
             targets->push_back(target);
@@ -200,7 +200,7 @@ void CardBase::cardsInDeckWithCommonNamePart(Duel* duel, Card* card, const std::
     std::vector<Card*>* targets = new std::vector<Card*>;
     for (int i=0;i<deckSize;i++)
         {
-            Card *target = card->getOwner()->getDeck()[i];
+            Card *target = card->getOwner()->getDeck()->at(i);
             if ((target!=nullptr)&&(target->getName().find(namePart)!=std::string::npos)&&(card!=target))
             {
             targets->push_back(target);
@@ -217,7 +217,7 @@ void CardBase::nTopCardsFromDeck(Duel* duel, Card* card, short n)
     std::vector<Card*>* targets = new std::vector<Card*>;
     for (int i=0;i<n;i++)
         {
-            Card *target = card->getOwner()->getDeck()[deckSize-(i+1)];
+            Card *target = card->getOwner()->getDeck()->at(deckSize-(i+1));
             targets->push_back(target);
 
     }
@@ -540,11 +540,11 @@ void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Duel* duel, 
 {
     this->setTargetList(nullptr);
     std::vector<Card*>* targets = new std::vector<Card*>;
-    Card** graveyard = card->getOwner()->getGraveyard();
+    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
     short n_graveyard = card->getOwner()->getGraveyardSize();
         for (int i=0;i<n_graveyard;i++)
         {
-            Card* cardd = graveyard[i];
+            Card* cardd = graveyard->at(i);
             if (element == cardd->getElement()&&cardd->getLevel()<=lvl&&cardd->getCardType()==1)
             {
                 targets->push_back(cardd);
@@ -557,11 +557,11 @@ void CardBase::cardsInYourGraveyardWithSameElement(Duel* duel, Card* card, const
 {
     this->setTargetList(nullptr);
     std::vector<Card*>* targets = new std::vector<Card*>;
-    Card** graveyard = card->getOwner()->getGraveyard();
+    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
     short n_graveyard = card->getOwner()->getGraveyardSize();
         for (int i=0;i<n_graveyard;i++)
         {
-            Card* cardd = graveyard[i];
+            Card* cardd = graveyard->at(i);
             if (element == cardd->getElement())
             {
                 targets->push_back(cardd);
@@ -574,11 +574,11 @@ void CardBase::cardsInYourGraveyardWithExactName(Duel* duel, Card* card, const s
 {
     this->setTargetList(nullptr);
     std::vector<Card*>* targets = new std::vector<Card*>;
-    Card** graveyard = card->getOwner()->getGraveyard();
+    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
     short n_graveyard = card->getOwner()->getGraveyardSize();
         for (int i=0;i<n_graveyard;i++)
         {
-            Card* cardd = graveyard[i];
+            Card* cardd = graveyard->at(i);
             if (name == cardd->getName())
             {
                 targets->push_back(cardd);
@@ -592,11 +592,11 @@ void CardBase::specialMinionsInYourGraveyardWithSameElement(Duel* duel, Card* ca
 {
     this->setTargetList(nullptr);
     std::vector<Card*>* targets = new std::vector<Card*>;
-    Card** graveyard = card->getOwner()->getGraveyard();
+    std::vector<Card*>* graveyard = card->getOwner()->getGraveyard();
     short n_graveyard = card->getOwner()->getGraveyardSize();
         for (int i=0;i<n_graveyard;i++)
         {
-            Card* cardd = graveyard[i];
+            Card* cardd = graveyard->at(i);
             if (element == cardd->getElement()&&cardd->getCardType()==2)
             {
                 targets->push_back(cardd);
@@ -656,7 +656,7 @@ void CardBase::minionsInHandWithMaximumLevel(Duel* duel, Card* card, short level
     std::vector<Card*>* targets = new std::vector<Card*>;
     for (int i=0;i<handSize;i++)
         {
-            Card *target = card->getOwner()->getHand()[i];
+            Card *target = card->getOwner()->getHand()->at(i);
             if (target!=nullptr&&target->getLevel()<=level&&target->getCardType()==1)
             {
             targets->push_back(target);

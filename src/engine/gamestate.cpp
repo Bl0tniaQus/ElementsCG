@@ -10,9 +10,9 @@ Gamestate::Gamestate(Duel* duel):Duel()
 {
     this->setTurnCount(duel->getTurnCount());
     this->setTurnPlayer(duel->getTurnPlayer());
-    short** usedZonesArr = new short*[2];
-    short* cardsOnFieldArr = new short[2];
-    int** fieldCardsArr = new int*[2];
+    std::vector<std::vector<short>>* usedZonesArr = new std::vector<std::vector<short>>(2);
+    short* cardsOnFieldArr = new short(2);
+    std::vector<std::vector<int>>* fieldCardsArr = new std::vector<std::vector<int>>(2);
     Player* player;
     Player* player_new;
     for (int i=0;i<2;i++)
@@ -24,17 +24,17 @@ Gamestate::Gamestate(Duel* duel):Duel()
         player_new->setName(player->getName());
         player_new->setSummonLimit(player->getSummonLimit());
         if (player->getBot()!=nullptr) {player_new->setBot(player->getBot());}
-        //player_new->setOpponent(this->getPlayer(!i));
+        player_new->setOpponent(this->getPlayer(!i));
 
         short handSize = player->getHandSize();
         int* cardsInHand = new int [handSize];
-        Card** hand = player->getHand();
+        std::vector<Card*>* hand = player->getHand();
         for (int i=0;i<handSize;i++)
-        {cardsInHand[i] = hand[i]->getCopyId();}
+        {cardsInHand[i] = hand->at(i)->getCopyId();}
 
         short cardsOnField = 0;
-        short* usedZones = new short[0];
-        int* fieldCards = new int[0];
+        std::vector<short> usedZones(0);
+        std::vector<int> fieldCards(0);
         Zone *field;
         for (int j=0;j<5;j++)
         {
@@ -42,67 +42,46 @@ Gamestate::Gamestate(Duel* duel):Duel()
             if (field->getUsed())
             {
                 cardsOnField++;
-                short *new_usedZones = new short[cardsOnField];
-                int *new_fieldCards = new int[cardsOnField];
-                if (cardsOnField>1)
-                {
-                    for (int k=0;k<cardsOnField-1;k++)
-                    {
-                        new_usedZones[k] = usedZones[k];
-                        new_fieldCards[k] = fieldCards[k];
-                    }
-                    new_usedZones[cardsOnField-1] = field->getId();
-                    new_fieldCards[cardsOnField-1] = field->getCard()->getCopyId();
-                }
-                else
-                {
-                    new_usedZones[0] = field->getId();
-                    new_fieldCards[0] = field->getCard()->getCopyId();
-                }
-                delete[] usedZones;
-                delete[] fieldCards;
-                fieldCards = new_fieldCards;
-                usedZones = new_usedZones;
-                //delete[] new_fieldCards;
-                //delete[] new_usedZones;
+                usedZones.push_back(field->getId());
+                fieldCards.push_back(field->getCard()->getCopyId());
             }
         }
 
         short graveyardSize = player->getGraveyardSize();
         int* cardsInGraveyard = new int [graveyardSize];
-        Card** graveyard = player->getGraveyard();
-        for (int j=0;j<graveyardSize;j++){cardsInGraveyard[j] = graveyard[j]->getCopyId();}
+        std::vector<Card*>* graveyard = player->getGraveyard();
+        for (int j=0;j<graveyardSize;j++){cardsInGraveyard[j] = graveyard->at(j)->getCopyId();}
 
         short deckSize = player->getDeckSize();
         int* cardsInDeck = new int [deckSize];
-        Card** deck = player->getDeck();
-        for (int j=0;j<deckSize;j++){cardsInDeck[j] = deck[j]->getCopyId();}
+        std::vector<Card*>* deck = player->getDeck();
+        for (int j=0;j<deckSize;j++){cardsInDeck[j] = deck->at(j)->getCopyId();}
 
         short specialDeckSize = player->getSpecialDeckSize();
         int* cardsInSpecialDeck = new int [specialDeckSize];
-        Card** specialDeck = player->getSpecialDeck();
-        for (int j=0;j<specialDeckSize;j++){cardsInSpecialDeck[j] = specialDeck[j]->getCopyId();}
+        std::vector<Card*>* specialDeck = player->getSpecialDeck();
+        for (int j=0;j<specialDeckSize;j++){cardsInSpecialDeck[j] = specialDeck->at(j)->getCopyId();}
 
         short originalDeckSize = player->getOriginalDeckSize();
         short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
-        Card* originalDeck = player->getOriginalDeck();
-        Card* originalSpecialDeck = player->getOriginalSpecialDeck();
+        std::vector<Card>* originalDeck = player->getOriginalDeck();
+        std::vector<Card>* originalSpecialDeck = player->getOriginalSpecialDeck();
 
-        Deck* OGDeck = new Deck(originalDeck, originalDeckSize, originalSpecialDeck, originalSpecialDeckSize);
-        player_new->setOriginalDeck(OGDeck->getDeck(), originalDeckSize);
-        player_new->setOriginalSpecialDeck(OGDeck->getSpecialDeck(), originalSpecialDeckSize);
+        Deck* OGDeck = new Deck(*originalDeck, *originalSpecialDeck);
+        player_new->setOriginalDeck(*OGDeck->getDeck());
+        player_new->setOriginalSpecialDeck(*OGDeck->getSpecialDeck());
         delete OGDeck;
 
 
-        Card** deckCopy = new Card* [deckSize];
-        Card** specialDeckCopy = new Card* [specialDeckSize];
-        Card* originalDeckCopy = player_new->getOriginalDeck();
-        Card* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
+        std::vector<Card*> deckCopy = std::vector<Card*>(deckSize);
+        std::vector<Card*> specialDeckCopy = std::vector<Card*>(specialDeckSize);
+        std::vector<Card>* originalDeckCopy = player_new->getOriginalDeck();
+        std::vector<Card>* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
         player_new->setDeckOwnership();
-        for (short i = 0; i<originalDeckSize; i++)
+        for (short j = 0; j<originalDeckSize; j++)
         {
-            originalDeckCopy[i].copyProperties(&originalDeck[i]);
-            originalDeckCopy[i].copyCardName(originalDeck[i].getCardName());
+            originalDeckCopy->at(j).copyProperties(&originalDeck->at(j));
+            originalDeckCopy->at(j).copyCardName(originalDeck->at(j).getCardName());
         }
 
         for (int j=0;j<deckSize;j++)
@@ -110,111 +89,107 @@ Gamestate::Gamestate(Duel* duel):Duel()
             int id = cardsInDeck[j];
             for (int k=0;k<originalDeckSize;k++)
             {
-                int originalId = originalDeckCopy[k].getCopyId();
+                int originalId = originalDeckCopy->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    deckCopy[j] = &originalDeckCopy[k];
+                    deckCopy[j] = &originalDeckCopy->at(k);
                     break;
                 }
             }
         }
 
-        for (short i = 0; i<originalSpecialDeckSize; i++)
+        for (short j = 0; j<originalSpecialDeckSize; j++)
         {
-            originalSpecialDeckCopy[i].copyProperties(&originalSpecialDeck[i]);
-            originalSpecialDeckCopy[i].copyCardName(originalSpecialDeck[i].getCardName());
+            originalSpecialDeckCopy->at(j).copyProperties(&originalSpecialDeck->at(j));
+            originalSpecialDeckCopy->at(j).copyCardName(originalSpecialDeck->at(j).getCardName());
         }
         for (int j=0;j<specialDeckSize;j++)
         {
             int id = cardsInSpecialDeck[j];
             for (int k=0;k<originalSpecialDeckSize;k++)
             {
-                int originalId = originalSpecialDeckCopy[k].getCopyId();
+                int originalId = originalSpecialDeckCopy->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    specialDeckCopy[j] = &originalSpecialDeckCopy[k];
+                    specialDeckCopy[j] = &originalSpecialDeckCopy->at(k);
                     break;
                 }
             }
         }
-        player_new->setDeck(deckCopy, deckSize);
-        player_new->setSpecialDeck(specialDeckCopy, specialDeckSize);
-        Card** handCopy = new Card* [handSize];
+        player_new->setDeck(deckCopy);
+        player_new->setSpecialDeck(specialDeckCopy);
+        std::vector<Card*> handCopy = std::vector<Card*>(handSize);
         for (int j=0;j<handSize;j++)
         {
             int id = cardsInHand[j];
             for (int k=0;k<originalDeckSize;k++)
             {
-                int originalId = originalDeckCopy[k].getCopyId();
+                int originalId = originalDeckCopy->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    handCopy[j] = &originalDeckCopy[k];
+                    handCopy[j] = &originalDeckCopy->at(k);
                     break;
                 }
             }
         }
-        Card** graveyardCopy = new Card* [graveyardSize];
+        std::vector<Card*> graveyardCopy = std::vector<Card*>(graveyardSize);
         for (int j=0;j<graveyardSize;j++)
         {
             int id = cardsInGraveyard[j];
             for (int k=0;k<originalDeckSize;k++)
             {
-                int originalId = originalDeckCopy[k].getCopyId();
+                int originalId = originalDeckCopy->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    graveyardCopy[j] = &originalDeckCopy[k];
+                    graveyardCopy[j] = &originalDeckCopy->at(k);
                     break;
                 }
             }
             for (int k=0;k<originalSpecialDeckSize;k++)
             {
-                int originalId = originalSpecialDeckCopy[k].getCopyId();
+                int originalId = originalSpecialDeckCopy->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    graveyardCopy[j] = &originalSpecialDeckCopy[k];
+                    graveyardCopy[j] = &originalSpecialDeckCopy->at(k);
                     break;
                 }
             }
         }
 
-        player_new->setHand(handCopy,handSize);
-        player_new->setGraveyard(graveyardCopy,graveyardSize);
+        player_new->setHand(handCopy);
+        player_new->setGraveyard(graveyardCopy);
 
-        usedZonesArr[i] = usedZones;
+        usedZonesArr->at(i) = usedZones;
         cardsOnFieldArr[i] = cardsOnField;
-        fieldCardsArr[i] = fieldCards;
+        fieldCardsArr->at(i) = fieldCards;
         player = nullptr;
         player_new = nullptr;
         delete[] cardsInHand;
         delete[] cardsInGraveyard;
         delete[] cardsInDeck;
         delete[] cardsInSpecialDeck;
-        delete[] handCopy;
-        delete[] graveyardCopy;
-        delete[] deckCopy;
-        delete[] specialDeckCopy;
     }
     for (int i=0;i<2;i++)
     {
-        Card* originalDeck = this->getPlayer(i)->getOriginalDeck();
+        std::vector<Card>* originalDeck = this->getPlayer(i)->getOriginalDeck();
         short originalDeckSize = this->getPlayer(i)->getOriginalDeckSize();
-        Card* originalSpecialDeck =  this->getPlayer(i)->getOriginalSpecialDeck();
+        std::vector<Card>* originalSpecialDeck =  this->getPlayer(i)->getOriginalSpecialDeck();
         short originalSpecialDeckSize = this->getPlayer(i)->getOriginalSpecialDeckSize();
-        Card* originalDeckOpp = this->getPlayer(!i)->getOriginalDeck();
+        std::vector<Card>* originalDeckOpp = this->getPlayer(!i)->getOriginalDeck();
         short originalDeckSizeOpp = this->getPlayer(!i)->getOriginalDeckSize();
-        Card* originalSpecialDeckOpp =  this->getPlayer(!i)->getOriginalSpecialDeck();
+        std::vector<Card>* originalSpecialDeckOpp =  this->getPlayer(!i)->getOriginalSpecialDeck();
         short originalSpecialDeckSizeOpp = this->getPlayer(!i)->getOriginalSpecialDeckSize();
         for (int j = 0; j<cardsOnFieldArr[i];j++)
         {
             bool found = false;
-            short zone = usedZonesArr[i][j];
-            int id = fieldCardsArr[i][j];
+            short zone = usedZonesArr->at(i)[j];
+            int id = fieldCardsArr->at(i)[j];
             for (int k = 0; k<originalDeckSize;k++)
             {
-                int originalId = originalDeck[k].getCopyId();
+                int originalId = originalDeck->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeck[k]);
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeck->at(k));
                     this->getPlayer(i)->getMinionField()[zone].setUsed(true);
                     found = true;
                     break;
@@ -223,10 +198,10 @@ Gamestate::Gamestate(Duel* duel):Duel()
             if (found) {continue;}
             for (int k = 0; k<originalSpecialDeckSize;k++)
             {
-                int originalId = originalSpecialDeck[k].getCopyId();
+                int originalId = originalSpecialDeck->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeck[k]);
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeck->at(k));
                     this->getPlayer(i)->getMinionField()[zone].setUsed(true);
                     found = true;
                     break;
@@ -235,11 +210,11 @@ Gamestate::Gamestate(Duel* duel):Duel()
             if (found) {continue;}
             for (int k = 0; k<originalDeckSizeOpp;k++)
             {
-                int originalId = originalDeckOpp[k].getCopyId();
+                int originalId = originalDeckOpp->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    originalDeckOpp[k].setOwner(this->getPlayer(i));
-                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeckOpp[k]);
+                    originalDeckOpp->at(k).setOwner(this->getPlayer(i));
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeckOpp->at(k));
                     found = true;
                     break;
                 }
@@ -247,22 +222,21 @@ Gamestate::Gamestate(Duel* duel):Duel()
             if (found) {continue;}
             for (int k = 0; k<originalSpecialDeckSizeOpp;k++)
             {
-                int originalId = originalSpecialDeckOpp[k].getCopyId();
+                int originalId = originalSpecialDeckOpp->at(k).getCopyId();
                 if (id==originalId)
                 {
-                    originalSpecialDeckOpp[k].setOwner(this->getPlayer(i));
-                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeckOpp[k]);
+                    originalSpecialDeckOpp->at(k).setOwner(this->getPlayer(i));
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeckOpp->at(k));
                     found = true;
                     break;
                 }
             }
         }
     }
-        delete [] usedZonesArr[0];delete [] usedZonesArr[1];
-        delete [] usedZonesArr;
-        delete [] fieldCardsArr[0];delete [] fieldCardsArr[1];
-        delete [] fieldCardsArr;
-        delete [] cardsOnFieldArr;
+
+        delete usedZonesArr;
+        delete fieldCardsArr;
+        delete cardsOnFieldArr;
 
     short n_lingering_end = duel->getTurnEndLingeringEffectsNumber();
     short n_lingering_start = duel->getTurnStartLingeringEffectsNumber();

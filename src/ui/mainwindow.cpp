@@ -104,7 +104,7 @@ void MainWindow::setHandImages()
     this->handImages = new CardLabel* [n_hand];
     for (i=0;i<n_hand;i++)
     {
-        c = player->getHand()[i];
+        c = player->getHand()->at(i);
         std::string img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
@@ -144,7 +144,7 @@ void MainWindow::setSpecialDeckImages()
     this->specialDeckImages = new CardLabel* [n_special];
     for (i=0;i<n_special;i++)
     {
-        c = player->getSpecialDeck()[i];
+        c = player->getSpecialDeck()->at(i);
         std::string img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
@@ -184,7 +184,7 @@ void MainWindow::setGraveyardImages()
     this->graveyardImages = new CardLabel* [n_graveyard];
     for (i=0;i<n_graveyard;i++)
     {
-        c = player->getGraveyard()[i];
+        c = player->getGraveyard()->at(i);
         std::string img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/") + img);
         QPixmap pm(imgName);
@@ -222,7 +222,7 @@ void MainWindow::setOpponentGraveyardImages()
     this->opponentGraveyardImages = new CardLabel* [n_graveyard];
     for (i=0;i<n_graveyard;i++)
     {
-        c = opponent->getGraveyard()[i];
+        c = opponent->getGraveyard()->at(i);
         std::string img = c->getCardName()->getImage();
         QString imgName = QString::fromStdString(std::string(":/")+img);
         QPixmap pm(imgName);
@@ -512,13 +512,13 @@ void MainWindow::setResources()
     Player* player = this->duel->getPlayer(0);
     Player* opponent = this->duel->getPlayer(1);
 
-    ui->playerResources->setTabText(0, QString(player->getName()));
+    ui->playerResources->setTabText(0, QString::fromStdString(player->getName()));
     ui->playerLifeValue->setText(QString::number(player->getHp()));
     ui->playerManaValue->setText(QString::number(player->getMana()));
     ui->playerDeckCount->setText(QString::number(player->getDeckSize()));
     ui->playerSummonLimitValue->setText(QString::number(player->getSummonLimit()));
 
-    ui->opponentResources->setTabText(0, QString(opponent->getName()));
+    ui->opponentResources->setTabText(0, QString::fromStdString(opponent->getName()));
     ui->opponentLifeValue->setText(QString::number(opponent->getHp()));
     ui->opponentManaValue->setText(QString::number(opponent->getMana()));
     ui->opponentDeckCount->setText(QString::number(opponent->getDeckSize()));
