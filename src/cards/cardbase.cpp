@@ -123,7 +123,7 @@ short CardBase::singleChoice(Duel* duel, Card* card)
             }
             else
             {
-                return bot->getBestTarget();
+                return bot->getBestSingleTarget(duel);
             }
         }
     }

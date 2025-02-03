@@ -4,18 +4,7 @@
 #include <QDebug>
 Bot::Bot()
 {
-    this->testedOptions = 0;
-    this->testedSpecialMinionOptions = 0;
-    this->handOptions = new int [0];
-    this->targetsForOptions = new int [0];
-    this->handValues = new float [0];
-    this->battleOptions = new int [0];
-    this->specialMinionMaterials = new int*[0];
-    this->specialMinionOptions = new int[0];
-    this->specialMinionValues = new float[0];
-    this->materialNumbers = new short[0];
-    this->targetsForBattleOptions = new int [0];
-    this->battleValues = new float [0];
+    this->options = {};
     this->baseGamestate = new Gamestate;
     this->tempGamestate = new Gamestate;
     this->material1 = nullptr;
@@ -26,19 +15,6 @@ Bot::~Bot()
 {
     delete baseGamestate;
     delete tempGamestate;
-    delete [] handOptions;
-    delete [] targetsForOptions;
-    delete [] handValues;
-    delete [] this->battleValues;
-    delete [] this->battleOptions;
-    delete [] this->targetsForBattleOptions;
-    delete[] this->specialMinionOptions;
-    delete[] this->materialNumbers;
-    delete[] this->specialMinionValues;
-    for (int i=0; i<this->testedSpecialMinionOptions-1;i++)
-    {
-        delete[] this->specialMinionMaterials[i];
-    }
 }
 void Bot::generateBaseGamestate(Duel* duel)
 {
@@ -101,9 +77,9 @@ void Bot::testSpecialMinion(int c, Duel* duel)
 {
     Player* player;
     Card* card;
-    this->material1 = nullptr;
-    this->material2 = nullptr;
-    this->material3 = nullptr;
+    Card* material1 = nullptr;
+    Card* material2 = nullptr;
+    Card* material3 = nullptr;
     this->generateTempGamestate(duel);
     this->testing = true;
     float value;
@@ -175,215 +151,81 @@ void Bot::testSpecialMinion(int c, Duel* duel)
 }
 void Bot::saveHandOption(int card, short target, float val)
 {
-
-    this->testedOptions++;
-    int *newHandOptions = new int[this->testedOptions];
-    int *newTargets = new int[this->testedOptions];
-    float *newValues = new float[this->testedOptions];
-    if (this->testedOptions>1)
-    {
-        for (int i=0;i<this->testedOptions-1;i++)
-        {
-            newHandOptions[i] = this->handOptions[i];
-            newTargets[i] = this->targetsForOptions[i];
-            newValues[i] = this->handValues[i];
-        }
-            newHandOptions[this->testedOptions-1] = card;
-            newTargets[this->testedOptions-1] = target;
-            newValues[this->testedOptions-1] = val;
-    }
-    else
-    {
-            newHandOptions[0] = card;
-            newTargets[0] = target;
-            newValues[0] = val;
-    }
-    delete[] this->handOptions;
-    delete[] this->targetsForOptions;
-    delete[] this->handValues;
-    this->handOptions = newHandOptions;
-    this->targetsForOptions = newTargets;
-    this->handValues = newValues;
+    Option option;
+    option.getCardIds()->push_back(card);
+    option.getTargets()->push_back({target});
+    option.setValue(val);
+    this->options.push_back(option);
 }
 void Bot::saveSpecialMinionOption(int card, int material1, int material2, int material3, float val)
 {
-
-    this->testedSpecialMinionOptions++;
-    short n_materials;
-    if (material3==-1) {n_materials = 2;} else {n_materials = 3;}
-    int *newSpecialMinionOptions = new int[this->testedSpecialMinionOptions];
-    short *newMaterialNumbers = new short[this->testedSpecialMinionOptions];
-    int **newMaterials = new int*[this->testedSpecialMinionOptions];
-    float *newSpecialMinionValues = new float[this->testedSpecialMinionOptions];
-    if (this->testedSpecialMinionOptions>1)
+    Option option;
+    option.getCardIds()->push_back(card);
+    if (material3 == -1)
     {
-        for (int i=0;i<this->testedSpecialMinionOptions-1;i++)
-        {
-            newSpecialMinionOptions[i] = this->specialMinionOptions[i];
-            newMaterialNumbers[i] = this->materialNumbers[i];
-            newMaterials[i] = new int[3];
-            for (int j=0;j<3;j++)
-            {
-                newMaterials[i][j] = this->specialMinionMaterials[i][j];
-            }
-            newSpecialMinionValues[i] = this->specialMinionValues[i];
-        }
-            newSpecialMinionOptions[this->testedSpecialMinionOptions-1] = card;
-            newMaterialNumbers[this->testedSpecialMinionOptions-1] = n_materials;
-            newMaterials[this->testedSpecialMinionOptions-1] = new int[3];
-            newMaterials[testedSpecialMinionOptions-1][0] = material1;
-            newMaterials[testedSpecialMinionOptions-1][1] = material2;
-            newMaterials[testedSpecialMinionOptions-1][2] = material3;
-            newSpecialMinionValues[this->testedSpecialMinionOptions-1] = val;
+        option.getTargets()->push_back({material1, material2});
     }
     else
     {
-            newSpecialMinionOptions[0] = card;
-            newMaterialNumbers[0] = n_materials;
-            newMaterials[0] = new int[3];
-            newMaterials[0][0] = material1;
-            newMaterials[0][1] = material2;
-            newMaterials[0][2] = material3;
-            newSpecialMinionValues[0] = val;
+        option.getTargets()->push_back({material1, material2, material3});
     }
-    delete[] this->specialMinionOptions;
-    delete[] this->materialNumbers;
-    delete[] this->specialMinionValues;
-    for (int i=0; i<this->testedSpecialMinionOptions-1;i++)
-
-    {
-        delete[] this->specialMinionMaterials[i];
-    }
-    delete[] this->specialMinionMaterials;
-    this->specialMinionOptions = newSpecialMinionOptions;
-    this->materialNumbers = newMaterialNumbers;
-    this->specialMinionMaterials = newMaterials;
-    this->specialMinionValues = newSpecialMinionValues;
+    option.setValue(val);
+    this->options.push_back(option);
 }
 void Bot::saveAttackOption(short card, short target, float val)
 {
+    Option option;
+    option.getCardIds()->push_back(card);
+    option.getTargets()->push_back({target});
+    option.setValue(val);
+    this->options.push_back(option);
+}
+int Bot::getBestOption()
+{
+    int n = this->options.size();
+    int bestOption = -1;
+    if (n>0)
+    {
+        float bestValue = this->options[0].getValue();
+        bestOption = 0;
+        for (int i=1;i<n;i++)
+        {
+            if (this->options[i].getValue()>bestValue)
+            {
+                bestValue = this->options[i].getValue();
+                bestOption = i;
+            }
+        }
+    }
+    return bestOption;
+}
+int Bot::getBestSingleTarget(Duel* duel)
+{
+    int option = this->getBestOption();
+    if (option!=-1)
+    {
+        int cardId = this->options[option].getCardIds()->at(0);
+        Card* card;
+        card = duel->getCardFromCopyId(cardId);
+        short place = card->getPlace();
+        if (place==1)
+        {
+            return this->options[option].getTargets()->at(0)[0];
+        }
+    }
+    return -1;
+}
 
-    this->testedBattleOptions++;
-    int *newBattleOptions = new int[this->testedBattleOptions];
-    int *newBattleTargets = new int[this->testedBattleOptions];
-    float *newBattleValues = new float[this->testedBattleOptions];
-    if (this->testedBattleOptions>1)
-    {
-        for (int i=0;i<this->testedBattleOptions-1;i++)
-        {
-            newBattleOptions[i] = this->battleOptions[i];
-            newBattleTargets[i] = this->targetsForBattleOptions[i];
-            newBattleValues[i] = this->battleValues[i];
-        }
-            newBattleOptions[this->testedBattleOptions-1] = card;
-            newBattleTargets[this->testedBattleOptions-1] = target;
-            newBattleValues[this->testedBattleOptions-1] = val;
-    }
-    else
-    {
-            newBattleOptions[0] = card;
-            newBattleTargets[0] = target;
-            newBattleValues[0] = val;
-    }
-    delete[] this->battleOptions;
-    delete[] this->targetsForBattleOptions;
-    delete[] this->battleValues;
-    this->battleOptions = newBattleOptions;
-    this->targetsForBattleOptions = newBattleTargets;
-    this->battleValues = newBattleValues;
-}
-void Bot::getBestOption()
+void Bot::endTesting()
 {
-    if (this->testedOptions>0)
-    {
-        float bestValue = this->handValues[0];
-        int bestOption = 0;
-        for (int i=1;i<this->testedOptions;i++)
-        {
-            if (this->handValues[i]>bestValue)
-            {
-                bestValue = this->handValues[i];
-                bestOption = i;
-            }
-        }
-        this->bestOption = bestOption;
-    }
-}
-void Bot::getBestSpecialMinionOption()
-{
-    if (this->testedSpecialMinionOptions>0)
-    {
-        float bestValue = this->specialMinionValues[0];
-        int bestOption = 0;
-        for (int i=1;i<this->testedSpecialMinionOptions;i++)
-        {
-            if (this->specialMinionValues[i]>bestValue)
-            {
-                bestValue = this->specialMinionValues[i];
-                bestOption = i;
-            }
-        }
-        this->bestSpecialMinionOption = bestOption;
-    }
-}
-void Bot::getBestAttackOption()
-{
-    if (this->testedBattleOptions>0)
-    {
-        float bestValue = this->battleValues[0];
-        int bestOption = 0;
-        for (int i=1;i<this->testedBattleOptions;i++)
-        {
-            if (this->battleValues[i]>bestValue)
-            {
-                bestValue = this->battleValues[i];
-                bestOption = i;
-            }
-        }
-        this->bestAttackOption = bestOption;
-    }
-}
-void Bot::endHandTesting()
-{
-    delete [] this->handValues;
-    delete [] this->handOptions;
-    delete [] this->targetsForOptions;
-    this->handOptions = new int [0];
-    this->targetsForOptions = new int [0];
-    this->handValues = new float [0];
+    this->options.clear();
     this->n_choices = 0;
     this->testing = false;
     this->testingTargets = false;
-    this->testedOptions = 0;
     this->tested = -1;
-}
-void Bot::endSpecialMinionTesting()
-{
-    delete[] this->specialMinionOptions;
-    delete[] this->materialNumbers;
-    delete[] this->specialMinionValues;
-    for (int i=0; i<this->testedSpecialMinionOptions-1;i++)
-
-    {
-        delete[] this->specialMinionMaterials[i];
-    }
-    delete[] this->specialMinionMaterials;
-    this->specialMinionMaterials = new int*[0];
-    this->specialMinionOptions = new int[0];
-    this->specialMinionValues = new float[0];
-    this->materialNumbers = new short[0];
-    this->testing = false;
-    this->testedSpecialMinionOptions=0;
-}
-void Bot::endBattleTesting()
-{
-    delete [] this->battleValues;
-    delete [] this->battleOptions;
-    delete [] this->targetsForBattleOptions;
-    this->battleOptions = new int [0];
-    this->targetsForBattleOptions = new int [0];
-    this->battleValues = new float [0];
-    this->testedBattleOptions = 0;
+    this->material1 = nullptr;
+    this->material2 = nullptr;
+    this->material3 = nullptr;
 }
 void Bot::testCardBattle(short c, Duel* duel)
 {
@@ -397,7 +239,7 @@ void Bot::testCardBattle(short c, Duel* duel)
 
         this->tempGamestate->combat(attacker,defender);
         float v = this->tempGamestate->evaluate();
-        this->saveAttackOption(c,i,v-bv);
+        this->saveAttackOption(attacker->getCopyId(),defender->getCopyId(),v-bv);
     }
     if (n_defenders == 0)
     {
@@ -405,7 +247,7 @@ void Bot::testCardBattle(short c, Duel* duel)
         Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()->at(c);
         this->tempGamestate->directAttack(attacker);
         float v = this->tempGamestate->evaluate();
-        this->saveAttackOption(c,-1,v-bv);
+        this->saveAttackOption(attacker->getCopyId(),-1,v-bv);
     }
 }
 void Bot::testBattlePhase(Duel* duel)
@@ -425,20 +267,21 @@ void Bot::conductBattlePhase(Duel* duel)
     {
         this->generateBaseGamestate(duel);
         this->testBattlePhase(duel);
-        if (this->testedBattleOptions==0) { this->endBattleTesting(); break;}
+        int n_options = this->getOptionsNumber();
+        if (n_options==0) { this->endTesting(); break;}
         else
         {
-            this->getBestAttackOption();
-            short atk = this->getBestAttacker();
-            short target = this->getBestAttackTarget();
-            float val = this->getBestAttackValue();
+            int option = this->getBestOption();
+            float val = this->options[option].getValue();
+            int cardId = this->options[option].getCardIds()->at(0);
+            int target = this->options[option].getTargets()->at(0)[0];
             if (val<=0) {break;}
             duel->generateAttackersList();
             duel->generateDefendersList();
-            Card* attacker = duel->getAttackersList()->getTargetList()->at(atk);
+            Card* attacker = duel->getCardFromCopyId(cardId);
             if (target!=-1)
             {
-                Card* defender = duel->getDefendersList()->getTargetList()->at(target);
+                Card* defender = duel->getCardFromCopyId(target);
                 duel->combat(attacker,defender);
             }
             else
@@ -447,7 +290,7 @@ void Bot::conductBattlePhase(Duel* duel)
             }
             duel->botDelay(600);
         }
-        this->endBattleTesting();
+        this->endTesting();
         if (duel->getDuelEnded()) {return;}
     }
 }
@@ -471,49 +314,33 @@ void Bot::testSpecialMinions(Duel* duel)
         this->testSpecialMinion(player->getSpecialDeck()->at(z)->getCopyId(), duel);
     }
 }
-int* Bot::getBestMaterials()
-{
-    return this->specialMinionMaterials[this->bestSpecialMinionOption];
-}
 void Bot::playTurn(Duel* duel)
 {
-            int option,optionS;
-            short n_hand;
             while (true)
             {
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
                 this->testHand(duel);
                 this->testSpecialMinions(duel);
-                this->getBestOption();
-                this->getBestSpecialMinionOption();
-                n_hand = player->getHandSize();
-                option = this->getBestCard();
-                optionS = this->getBestSpecialMinion();
-                if (this->getOptionsNumber()==0 && this->getSpecialMinionOptionsNumber()==0) { this->endHandTesting(); this->endSpecialMinionTesting(); break;}
-                float val = this->getBestHandValue();
-                float valS = this->getBestSpecialMinionValue();
-                if (this->getOptionsNumber()==0)
-                {
-                    val = -100;
-                }
-                if (this->getSpecialMinionOptionsNumber()==0)
-                {
-                    valS = -100;
-                }
-
-                if (val<=0 && valS<=0) {this->endHandTesting(); break;}
+                int n_options = this->getOptionsNumber();
+                if (n_options==0) { this->endTesting(); break;}
+                int option = this->getBestOption();
+                float val = this->options[option].getValue();
+                int cardId = this->options[option].getCardIds()->at(0);
+                if (val<=0) {this->endTesting(); break;}
                 Card* card;
-                if (valS >= val)
+                card = duel->getCardFromCopyId(cardId);
+                short place = card->getPlace();
+                if (place == 4)
                 {
-                    card = duel->getCardFromCopyId(optionS);
+                    card = duel->getCardFromCopyId(cardId);
                     this->testing = false;
                     this->testingTargets = false;
-                    int* mats = this->getBestMaterials();
-                    Card* a = duel->getCardFromCopyId(mats[0]);
-                    Card* b = duel->getCardFromCopyId(mats[1]);
+                    std::vector<int> materials(this->options[option].getTargets()->at(0));
+                    Card* a = duel->getCardFromCopyId(materials[0]);
+                    Card* b = duel->getCardFromCopyId(materials[1]);
                     Card* c = nullptr;
-                    if (this->getBestMaterialsNumber()==3)
-                    { c = duel->getCardFromCopyId(mats[2]);}
+                    if (materials.size()==3)
+                    { c = duel->getCardFromCopyId(materials[2]);}
                     this->material1 = a; this->material2 = b; this->material3 = c;
                     duel->summonSpecialMinion(card);
                     duel->botDelay(600);
@@ -522,16 +349,15 @@ void Bot::playTurn(Duel* duel)
                 }
                 else
                 {
-                    card = duel->getCardFromCopyId(option);
+                    card = duel->getCardFromCopyId(cardId);
                     if (card->getPlace()==1) {
                     this->testing = false;
                     this->testingTargets = false;
-                    duel->playFromHand(duel->getCardFromCopyId(option));
+                    duel->playFromHand(card);
                     duel->botDelay(600);
                 }
                 }
-                this->endHandTesting();
-                this->endSpecialMinionTesting();
+                this->endTesting();
                 if (duel->getDuelEnded())
                 {
                     return;

@@ -682,23 +682,9 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         if (turnPlayer->checkBot()) //AI
         {
            Bot* bot = turnPlayer->getBot();
-            bot->generateBaseGamestate(this);
-            short n_hand = turnPlayer->getHandSize();
-            for (int z = 0;z<n_hand;z++)
-            {
-                bot->testCardFromHand(z, this);
-
-            }
-             for (int y = 0;y<bot->getOptionsNumber();y++)
-            {
-                std::cout<<bot->getHandOptions()[y]<<" "<<bot->getTargetsForOptions()[y]<<" "<<bot->getHandValues()[y]<<std::endl;
-            }
-            bot->getBestOption();
-            short bc = bot->getBestCard();
-            if (bc>=0&&bc<n_hand) {this->playFromHand(turnPlayer->getHand()->at(bot->getBestCard()));}
-            bot->endHandTesting();
-            bot->conductBattlePhase(this);
-            this->passTurn();
+           bot->playTurn(this);
+           bot->generateBaseGamestate(this);
+           this->passTurn();
         }
         else //player
         {

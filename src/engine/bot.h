@@ -1,6 +1,22 @@
 #ifndef BOT_H
 #define BOT_H
 #include "gamestate.h"
+
+class Option
+{
+private:
+    std::vector<int> cardIds;
+    std::vector<std::vector<int>> targets;
+    float value;
+public:
+    void setValue(float v) {this->value = v;}
+    float getValue() {return this->value;}
+    std::vector<int>* getCardIds(){return &this->cardIds;}
+    std::vector<std::vector<int>>* getTargets(){return &this->targets;}
+    Option() {this->cardIds = {}; this->targets = {}; this->value = 0;}
+};
+
+
 class Bot
 {
 private:
@@ -13,26 +29,10 @@ private:
     bool testing;
     float baseGameStatevalue;
     bool testingTargets;
-    int* handOptions;
-    int* targetsForOptions;
-    float* handValues;
-    int* battleOptions;
-    int* targetsForBattleOptions;
-    float* battleValues;
-    float* specialMinionValues;
-    int* specialMinionOptions;
-    int** specialMinionMaterials;
-    short* materialNumbers;
+    std::vector<Option> options;
     Card* material1;
     Card* material2;
     Card* material3;
-
-    int testedOptions;
-    int testedBattleOptions;
-    int testedSpecialMinionOptions;
-    int bestOption;
-    int bestAttackOption;
-    int bestSpecialMinionOption;
 public:
     Bot();
     ~Bot();
@@ -40,9 +40,6 @@ public:
     void generateTempGamestate(Duel* duel);
     Gamestate* getBaseGamestate() {return this->baseGamestate;}
     Gamestate* getTempGamestate() {return this->tempGamestate;}
-    int* getHandOptions() {return this->handOptions;}
-    float* getHandValues() {return this->handValues;}
-    int* getTargetsForOptions() {return this->targetsForOptions;}
     void setChosenSingleTarget(short x) {this->chosenSingleTarget = x;}
     short getChosenSingleTarget() {return this->chosenSingleTarget;}
     void setChoicesNumber(short n) {this->n_choices = n;}
@@ -55,8 +52,6 @@ public:
     bool isTesting() {return this->testing;}
     void setTargetTesting(bool tt) {this->testingTargets = tt;}
     bool isTestingTargets() {return this->testingTargets;}
-    short getOptionsNumber() {return this->testedOptions;}
-    short getSpecialMinionOptionsNumber() {return this->testedSpecialMinionOptions;}
     void testCardFromHand(int c, Duel* duel);
     void testCardBattle(short c, Duel* duel);
     void testHand(Duel* duel);
@@ -67,22 +62,10 @@ public:
     void saveHandOption(int card, short target, float val);
     void saveSpecialMinionOption(int card, int material1, int material2, int material3, float val);
     void saveAttackOption(short card, short target, float val);
-    short getBestTarget() {return this->targetsForOptions[this->bestOption];}
-    short getBestCard() {return this->handOptions[this->bestOption];}
-    short getBestSpecialMinion() {return this->specialMinionOptions[this->bestSpecialMinionOption];}
-    float getBestHandValue() {return this->handValues[this->bestOption];}
-    short getBestAttacker() {return this->battleOptions[this->bestAttackOption];};
-    short getBestAttackTarget() {return this->targetsForBattleOptions[this->bestAttackOption];};
-    float getBestAttackValue() {return this->battleValues[this->bestAttackOption];}
-    void getBestOption();
-    void getBestSpecialMinionOption();
-    int* getBestMaterials();
-    short getBestMaterialsNumber() {return this->materialNumbers[this->bestSpecialMinionOption];}
-    float getBestSpecialMinionValue() {return this->specialMinionValues[this->bestSpecialMinionOption];}
-    void getBestAttackOption();
-    void endHandTesting();
-    void endSpecialMinionTesting();
-    void endBattleTesting();
+    int getBestOption();
+    int getOptionsNumber() {return this->options.size();}
+    int getBestSingleTarget(Duel* duel);
+    void endTesting();
     void playTurn(Duel* duel);
     Card* getFirstMaterial() {return this->material1;}
     Card* getSecondMaterial() {return this->material2;}
