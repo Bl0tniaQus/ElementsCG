@@ -2,6 +2,16 @@
 #include "card.h"
 #include <iostream>
 #include <QDebug>
+
+Option Option::combine(Option& op1, Option& op2)
+{
+    op1.setValue(op2.getValue());
+    op1.getCardIds()->push_back(op2.getCardIds()->at(0));
+    op1.getTargets()->push_back(op2.getTargets()->at(0));
+    return op1;
+}
+
+
 Bot::Bot()
 {
     this->options = {};
@@ -31,8 +41,9 @@ void Bot::generateTempGamestate(Duel* duel)
     this->tempGamestate->generateAttackersList();
     this->tempGamestate->generateDefendersList();
 }
-void Bot::testCardFromHand(int c, Duel* duel)
+Option Bot::testCardFromHand(int c, Duel* duel)
 {
+    Option option;
     Player* player;
     Card* card;
     this->generateTempGamestate(duel);
@@ -46,7 +57,7 @@ void Bot::testCardFromHand(int c, Duel* duel)
     card = this->tempGamestate->getCardFromCopyId(c);
     if (card->getCost()<=player->getMana())
     {
-        if (card->getCardType()==1 && !this->tempGamestate->canSummon(player)) {return;}
+        if (card->getCardType()==1 && !this->tempGamestate->canSummon(player)) {return option;}
         this->tempGamestate->playFromHand(card);
         if (this->testingTargets)
         {
@@ -60,21 +71,27 @@ void Bot::testCardFromHand(int c, Duel* duel)
                     card = this->tempGamestate->getCardFromCopyId(c);
                     this->tempGamestate->playFromHand(card);
                     value = this->tempGamestate->evaluate();
-                    this->saveHandOption(c,i,value-bValue);
+                    option.setValue(value - bValue);
+                    option.getCardIds()->push_back(c);
+                    option.getTargets()->push_back({i});
                 }
             }
         }
         else
         {
             value = this->tempGamestate->evaluate();
-            this->saveHandOption(c,-1,value-bValue);
+            option.getCardIds()->push_back(c);
+            option.getTargets()->push_back({-1});
+            option.setValue(value - bValue);
         }
     }
     this->testing = false;
     this->testingTargets = false;
+    return option;
 }
-void Bot::testSpecialMinion(int c, Duel* duel)
+Option Bot::testSpecialMinion(int c, Duel* duel)
 {
+    Option option;
     Player* player;
     Card* card;
     Card* material1 = nullptr;
@@ -88,7 +105,7 @@ void Bot::testSpecialMinion(int c, Duel* duel)
     card = this->tempGamestate->getCardFromCopyId(c);
     CardBase* cardBase = card->getCardName();
 
-    if (!cardBase->checkSummoningConditions2(this->tempGamestate,card) && !cardBase->checkSummoningConditions3(this->tempGamestate,card)) {this->testing = false; return;}
+    if (!cardBase->checkSummoningConditions2(this->tempGamestate,card) && !cardBase->checkSummoningConditions3(this->tempGamestate,card)) {this->testing = false; return option;}
 
 
     cardBase->getFirstMaterialList(this->tempGamestate,card);
@@ -136,7 +153,9 @@ void Bot::testSpecialMinion(int c, Duel* duel)
                     this->material2 = cardB;
                     this->tempGamestate->summonSpecialMinion(this->tempGamestate->getCardFromCopyId(c));
                     value = this->tempGamestate->evaluate();
-                    this->saveSpecialMinionOption(c,firstIds[i],secondIds[j],-1,value-bValue);
+                    option.setValue(value-bValue);
+                    option.getTargets()->push_back({firstIds[i],secondIds[j]});
+                    option.getCardIds()->push_back(c);
                 }
 
             }
@@ -148,29 +167,12 @@ void Bot::testSpecialMinion(int c, Duel* duel)
     this->material1 = nullptr;
     this->material2 = nullptr;
     this->material3 = nullptr;
+    return option;
 }
-void Bot::saveHandOption(int card, short target, float val)
+void Bot::saveOption(Option& option)
 {
-    Option option;
-    option.getCardIds()->push_back(card);
-    option.getTargets()->push_back({target});
-    option.setValue(val);
-    this->options.push_back(option);
-}
-void Bot::saveSpecialMinionOption(int card, int material1, int material2, int material3, float val)
-{
-    Option option;
-    option.getCardIds()->push_back(card);
-    if (material3 == -1)
-    {
-        option.getTargets()->push_back({material1, material2});
-    }
-    else
-    {
-        option.getTargets()->push_back({material1, material2, material3});
-    }
-    option.setValue(val);
-    this->options.push_back(option);
+    if (option.getCardIds()->size()>0)
+        this->options.push_back(option);
 }
 void Bot::saveAttackOption(short card, short target, float val)
 {
@@ -301,7 +303,8 @@ void Bot::testHand(Duel* duel)
     short n_hand = player->getHandSize();
     for (int z = 0;z<n_hand;z++)
     {
-        this->testCardFromHand(player->getHand()->at(z)->getCopyId(), duel);
+        Option option = this->testCardFromHand(player->getHand()->at(z)->getCopyId(), duel);
+        this->saveOption(option);
     }
 }
 void Bot::testSpecialMinions(Duel* duel)
@@ -311,7 +314,8 @@ void Bot::testSpecialMinions(Duel* duel)
     short n_special = player->getSpecialDeckSize();
     for (int z = 0;z<n_special;z++)
     {
-        this->testSpecialMinion(player->getSpecialDeck()->at(z)->getCopyId(), duel);
+        Option option = this->testSpecialMinion(player->getSpecialDeck()->at(z)->getCopyId(), duel);
+        this->saveOption(option);
     }
 }
 void Bot::playTurn(Duel* duel)

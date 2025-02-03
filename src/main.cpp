@@ -43,9 +43,7 @@ int main(int argc, char *argv[])
     return a.exec();
 
 }
-//TODO major target lists refatoring, wind up restart effect
 //TODO copy card properties in gamestate
 //TODO deck copy(utwórz, połącz, utwórz połączenie)
-//TODO use new deck constructor
-//TODO fix leak after duel
-//TODO bot nie działa gdy ma pierwszą turę
+//TODO bot combinations
+//TODO copy ids instead of target list indexes in bot decisions
