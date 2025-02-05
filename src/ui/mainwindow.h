@@ -74,7 +74,7 @@ public slots:
     void setLogLabels();
     void handTarget(short id);
     void specialDeckTarget(short id);
-    void spellTargetingTarget(short id);
+    void spellTargetingTarget(int id);
     void materialTargetingTarget(short id);
     void attackerTargetingTarget(short id);
     void defenderTargetingTarget(short id);

@@ -10,13 +10,14 @@ bool WindUpOverload::onSpell(Duel* duel, Card* card)
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
-    short target = singleChoice(duel,card);
+    int target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
     {
+        Card* targetCard = duel->getCardFromCopyId(target);
+        if (targetCard == nullptr || !this->getTargetList()->isPresent(targetCard)) {return false;}
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        Card* targetCard = targets->at(target);
         short orAtk = targetCard->getOriginalAttack();
         if (!targetCard->getIsSpellImmune())
         {

@@ -75,7 +75,7 @@ public:
     void changeSpellImmunity(Card* card, bool si);
     void excavateCard(Card* card);
     void startDuel(Deck *deck0, Deck* deck1);
-    short makeSpellChoice(Card* card);
+    int makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
     void addTurnEndLingeringEffect(Card* card);
     void clearTurnEndLingeringEffects();

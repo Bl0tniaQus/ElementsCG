@@ -70,11 +70,11 @@ void DuelUiBridge::updateBoard()
     emit drawLogs();
     emit drawTurnPlayer();
 }
-short DuelUiBridge::makeSpellChoice(Card* card)
+int DuelUiBridge::makeSpellChoice(Card* card)
 {
     emit drawSpellTargets(card);
     mutex->acquire(); mutex->acquire(); mutex->release();
-    short id = this->spellTarget;
+    int id = this->spellTarget;
     this->spellTarget = -2;
     return id;
 }
@@ -172,11 +172,11 @@ void DuelUiBridge::battlePhase()
             mutex->acquire(); mutex->acquire(); mutex->release();
             id_defender = this->defenderTarget;
             Card* attacker = this->duel->getAttackersList()->getTargetList()->at(id_attacker);
-            if (id_defender==10)
+            if (id_defender==-10)
             {
                 this->duel->directAttack(attacker);
             }
-            else if (id_defender!=-1&&id_defender!=10)
+            else if (id_defender!=-1&&id_defender!=-10)
             {
                 Card* defender = this->duel->getDefendersList()->getTargetList()->at(id_defender);
                 this->duel->combat(attacker,defender);

@@ -10,7 +10,7 @@ private:
     Q_OBJECT
     Duel* duel;
     QSemaphore* mutex;
-    short spellTarget = -2;
+    int spellTarget = -2;
     short materialTarget = -2;
     short attackerTarget = -2;
     short defenderTarget = -2;
@@ -21,8 +21,8 @@ public:
     DuelUiBridge();
     void setDuel(Duel* duel) {this->duel=duel;}
     void setMutex(QSemaphore* mtx) {this->mutex = mtx;}
-    void setSpellTarget(short t) {this->spellTarget = t;}
-    short getSpellTarget() {return this->spellTarget;}
+    void setSpellTarget(int t) {this->spellTarget = t;}
+    int getSpellTarget() {return this->spellTarget;}
     void setMaterialTarget(short t) {this->materialTarget = t;}
     short getMaterialTarget() {return this->materialTarget;}
     void setAttackerTarget(short t) {this->attackerTarget = t;}
@@ -34,7 +34,7 @@ public:
     void duelControl(Deck* deck0, Deck* deck1);
     void updateBoard();
     void endDuel(short result);
-    short makeSpellChoice(Card* card);
+    int makeSpellChoice(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
     void setDecks(int a, int b) {this->playerDeck = a; this->opponentDeck = b;}
     void delay(int ms);

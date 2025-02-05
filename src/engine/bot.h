@@ -13,8 +13,8 @@ public:
     float getValue() {return this->value;}
     std::vector<int>* getCardIds(){return &this->cardIds;}
     std::vector<std::vector<int>>* getTargets(){return &this->targets;}
-    Option() {this->cardIds = {}; this->targets = {}; this->value = 0;}
-    Option combine(Option& op1, Option& op2);
+    Option() {this->cardIds = std::vector<int>(0); this->targets = std::vector<std::vector<int>>(0); this->value = 0;}
+    Option (Option& op1, Option& op2);
 };
 
 
@@ -23,6 +23,7 @@ class Bot
 private:
     Gamestate* baseGamestate;
     Gamestate* tempGamestate;
+    Gamestate* testingGamestate;
     short chosenSingleTarget = -1;
     short n_choices;
     short tested;
@@ -34,13 +35,16 @@ private:
     Card* material1;
     Card* material2;
     Card* material3;
+    int targetId = -1;
 public:
     Bot();
     ~Bot();
     void generateBaseGamestate(Duel* duel);
     void generateTempGamestate(Duel* duel);
+    void generateTestingGamestate(Duel* duel);
     Gamestate* getBaseGamestate() {return this->baseGamestate;}
     Gamestate* getTempGamestate() {return this->tempGamestate;}
+    Gamestate* getTestingGamestate() {return this->testingGamestate;}
     void setChosenSingleTarget(short x) {this->chosenSingleTarget = x;}
     short getChosenSingleTarget() {return this->chosenSingleTarget;}
     void setChoicesNumber(short n) {this->n_choices = n;}
@@ -53,11 +57,12 @@ public:
     bool isTesting() {return this->testing;}
     void setTargetTesting(bool tt) {this->testingTargets = tt;}
     bool isTestingTargets() {return this->testingTargets;}
-    Option testCardFromHand(int c, Duel* duel);
+    void testCardFromHand(int c, Duel* duel, Option& option);
     void testCardBattle(short c, Duel* duel);
+    void testOptionCombos(Duel* duel, short n);
     void testHand(Duel* duel);
     void testSpecialMinions(Duel* duel);
-    Option testSpecialMinion(int c, Duel* duel);
+    void testSpecialMinion(int c, Duel* duel, Option& option);
     void testBattlePhase(Duel* duel);
     void conductBattlePhase(Duel* duel);
     void saveOption(Option& option);
@@ -67,8 +72,12 @@ public:
     int getBestSingleTarget(Duel* duel);
     void endTesting();
     void playTurn(Duel* duel);
+    void generateOptions(Duel* duel, Option& option);
     Card* getFirstMaterial() {return this->material1;}
     Card* getSecondMaterial() {return this->material2;}
     Card* getThirdMaterial() {return this->material3;}
+    int getTargetId() {return this->targetId;}
+    void setTargetId(int id) {this->targetId = id;}
+    void performAction(Duel* duel, Option& option, bool display = false);
 };
 #endif // BOT_H

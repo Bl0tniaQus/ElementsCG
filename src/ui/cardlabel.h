@@ -27,6 +27,7 @@ public:
     short getId() {return this->id;}
     bool hasImage() {return this->image;}
     void setHasImage(bool i) {this->image = i;}
+    Card* getCard() {return this->card;}
 signals:
     void handCardHighlight(short id);
     void targetCardHighlight(short id);

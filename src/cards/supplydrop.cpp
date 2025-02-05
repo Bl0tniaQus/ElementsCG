@@ -13,7 +13,7 @@ bool SupplyDrop::onSpell(Duel* duel, Card* card)
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
-    short target = singleChoice(duel,card);
+    int target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
     {
@@ -21,9 +21,10 @@ bool SupplyDrop::onSpell(Duel* duel, Card* card)
         if (zoneid==-1) {return false;}
         else
         {
+                Card* targetCard = duel->getCardFromCopyId(target);
+                if (targetCard == nullptr || !this->getTargetList()->isPresent(targetCard)) {return false;}
                 this->spellFromHandLog(duel,card);
                 this->spellCost(card);
-                Card* targetCard = targets->at(target);
                 duel->summonFromHand(targetCard, zoneid);
                 return true;
         }

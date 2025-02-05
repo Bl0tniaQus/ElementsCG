@@ -94,7 +94,7 @@ void CardBase::setMaterials(std::vector<Card *> mats)
 {
     this->usedMaterials = std::vector<Card*>(mats);
 }
-short CardBase::singleChoice(Duel* duel, Card* card)
+int CardBase::singleChoice(Duel* duel, Card* card)
 {
     short nt = this->getTargetList()->getTargetsNumber();
     Player* owner = card->getOwner();
@@ -119,11 +119,13 @@ short CardBase::singleChoice(Duel* duel, Card* card)
         {
             if (bot->isTesting())
             {
-                return bot->getTestedNumber();
+                bot->setTargetId(this->getTargetList()->getTargetList()->at(bot->getTestedNumber())->getCopyId());
+                return this->getTargetList()->getTargetList()->at(bot->getTestedNumber())->getCopyId();
             }
             else
             {
-                return bot->getBestSingleTarget(duel);
+                //return bot->getBestSingleTarget(duel);
+                return bot->getTargetId();
             }
         }
     }
@@ -275,6 +277,11 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
         {
             targetCard = card->getOwner()->getBot()->getFirstMaterial();
             targetCard2 = card->getOwner()->getBot()->getSecondMaterial();
+            this->getFirstMaterialList(duel, card);
+            bool b1 = this->getTargetList()->isPresent(targetCard);
+            this->getSecondMaterialList(duel, card);
+            bool b2 = this->getTargetList()->isPresent(targetCard2);
+            if (!b1 || !b2) {return false;}
         }
         this->release2Log(targetCard,targetCard2, duel);
         this->setMaterials({targetCard, targetCard2});

@@ -19,10 +19,12 @@ bool Excavation::onSpell(Duel* duel, Card* card)
     this->cardsWithSameElementInTargetList("Earth");
     short n = this->getTargetList()->getTargetsNumber();
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
-    short target = this->singleChoice(duel, card);
+    int target = this->singleChoice(duel, card);
     if (target>-1)
     {
-        duel->searchCard(targets->at(target));
+        Card* targetCard = duel->getCardFromCopyId(target);
+        if (targetCard == nullptr || !this->getTargetList()->isPresent(targetCard)) {return false;}
+        duel->searchCard(targetCard);
     }
     return true;
 }

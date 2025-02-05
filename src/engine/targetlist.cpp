@@ -1,6 +1,7 @@
 #include "targetlist.h"
 #include "duel.h"
 #include "zone.h"
+#include <QDebug>
 TargetList::TargetList()
 {
     this->targetList = std::vector<Card*>(0);
@@ -73,7 +74,11 @@ std::vector<Card *> TargetList::listIntersect(std::vector<Card *>& a, std::vecto
 }
 bool TargetList::isPresent(Card* card)
 {
-    return true;
+    for (Card* c : this->targetList)
+    {
+        if (c == card) {return true;}
+    }
+    return false;
 }
 std::vector<Card *> TargetList::filterPlayer(std::vector<Card *>& l, Player* player)
 {

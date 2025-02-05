@@ -3,6 +3,7 @@
 #include "card.h"
 #include "zone.h"
 #include <iostream>
+#include <QDebug>
 Duel::Duel()
 {
     players = new Player[2];
@@ -801,7 +802,7 @@ void Duel::DuelControl(Deck *deck0, Deck* deck1)
         }
     }
 }
-short Duel::makeSpellChoice(Card* card)
+int Duel::makeSpellChoice(Card* card)
 {
     if (this->uiBridge!=nullptr)
     {

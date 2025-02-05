@@ -293,7 +293,7 @@ void MainWindow::maintainSpecialDeckTargetHighlight()
     this->specialDeckImages[this->selectedSpecialDeckCard]->setStyleSheet("border: 3px solid red;");
     }
 }
-void MainWindow::spellTargetingTarget(short id)
+void MainWindow::spellTargetingTarget(int id)
 {
     if (this->buttonBlock)
     {
@@ -334,7 +334,7 @@ void MainWindow::defenderTargetingTarget(short id)
         }
         if (id!=-1)
         {
-            if (id==10){this->targetImages[0]->setStyleSheet("border: 3px solid red;");}
+            if (id==-10){this->targetImages[0]->setStyleSheet("border: 3px solid red;");}
             else{this->targetImages[id]->setStyleSheet("border: 3px solid red;");}
         }
     }
@@ -677,7 +677,7 @@ void MainWindow::setDefenderTargetImages()
         this->targetImages[0]->setPlace(5);
         this->targetImages[0]->setText("Direct\nAttack");
         this->targetImages[0]->setAlignment(Qt::AlignCenter);
-        this->targetImages[0]->setId(10);
+        this->targetImages[0]->setId(-10);
         QFont f = this->targetImages[0]->font();
         f.setPointSize(18);
         this->targetImages[0]->setFont(f);
@@ -773,7 +773,7 @@ void MainWindow::spellConfirm()
 {
     if (this->selectedSpellTarget!=-1)
     {
-        this->bridge->setSpellTarget(this->selectedSpellTarget);
+        this->bridge->setSpellTarget(this->targetImages[this->selectedSpellTarget]->getCard()->getCopyId());
         this->buttonBlock = false;
         this->selectedSpellTarget = -1;
         disconnect(this->ui->cancelTargetButton, nullptr, nullptr, nullptr);

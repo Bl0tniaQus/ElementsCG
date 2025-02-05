@@ -7,13 +7,14 @@ bool Recycle::onSpell(Duel* duel, Card* card)
 {
     this->cardsInYourGraveyardWithSameElement(card->getOwner(),"Earth");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
-    short target = singleChoice(duel,card);
+    int target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
     {
+        Card* targetCard = duel->getCardFromCopyId(target);
+        if (targetCard == nullptr || !this->getTargetList()->isPresent(targetCard)) {return false;}
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
-        Card* targetCard = targets->at(target);
         this->cardsInYourGraveyardWithExactName(card->getOwner(), targetCard->getName());
         short n = this->getTargetList()->getTargetsNumber();
         std::vector<Card*>* targets2 = this->getTargetList()->getTargetList();

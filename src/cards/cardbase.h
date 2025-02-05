@@ -104,7 +104,7 @@ public:
     virtual void onTurnStart(Duel* duel, Card* card);
     virtual void onSpecialSummonRelease(Duel* duel, Card* card, Card* sp_minion) {};
 
-    short singleChoice(Duel* duel, Card* card);
+    int singleChoice(Duel* duel, Card* card);
     //common effect targets
     short highestLevelInTargetList();
 

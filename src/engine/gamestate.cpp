@@ -2,6 +2,7 @@
 #include "zone.h"
 #include "card.h"
 #include <iostream>
+#include <QDebug>
 Gamestate::Gamestate()
 {
 
@@ -10,9 +11,9 @@ Gamestate::Gamestate(Duel* duel):Duel()
 {
     this->setTurnCount(duel->getTurnCount());
     this->setTurnPlayer(duel->getTurnPlayer());
-    std::vector<std::vector<short>>* usedZonesArr = new std::vector<std::vector<short>>(2);
-    short* cardsOnFieldArr = new short(2);
-    std::vector<std::vector<int>>* fieldCardsArr = new std::vector<std::vector<int>>(2);
+    std::vector<std::vector<short>> usedZonesArr = std::vector<std::vector<short>>(2);
+    std::vector<short> cardsOnFieldArr = std::vector<short>(2);
+    std::vector<std::vector<int>> fieldCardsArr = std::vector<std::vector<int>>(2);
     Player* player;
     Player* player_new;
     for (int i=0;i<2;i++)
@@ -159,9 +160,9 @@ Gamestate::Gamestate(Duel* duel):Duel()
         player_new->setHand(handCopy);
         player_new->setGraveyard(graveyardCopy);
 
-        usedZonesArr->at(i) = usedZones;
+        usedZonesArr[i] = usedZones;
         cardsOnFieldArr[i] = cardsOnField;
-        fieldCardsArr->at(i) = fieldCards;
+        fieldCardsArr[i] = fieldCards;
         player = nullptr;
         player_new = nullptr;
         delete[] cardsInHand;
@@ -182,8 +183,8 @@ Gamestate::Gamestate(Duel* duel):Duel()
         for (int j = 0; j<cardsOnFieldArr[i];j++)
         {
             bool found = false;
-            short zone = usedZonesArr->at(i)[j];
-            int id = fieldCardsArr->at(i)[j];
+            short zone = usedZonesArr[i][j];
+            int id = fieldCardsArr[i][j];
             for (int k = 0; k<originalDeckSize;k++)
             {
                 int originalId = originalDeck->at(k).getCopyId();
@@ -233,11 +234,6 @@ Gamestate::Gamestate(Duel* duel):Duel()
             }
         }
     }
-
-        delete usedZonesArr;
-        delete fieldCardsArr;
-        delete cardsOnFieldArr;
-
     short n_lingering_end = duel->getTurnEndLingeringEffectsNumber();
     short n_lingering_start = duel->getTurnStartLingeringEffectsNumber();
     Card** turnEndLingering = duel->getTurnEndLingeringEffects();
