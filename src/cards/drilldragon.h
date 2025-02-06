@@ -21,8 +21,6 @@ public:
     void getSecondMaterialList(Duel* duel, Card* card) override;
     void onAttack(Duel* duel, Card* card, Card* target) override;
     void afterAttack(Duel* duel, Card* card, Card* target, short damage) override;
-private:
-    bool effectUsed;
 };
 
 #endif

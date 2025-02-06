@@ -250,9 +250,8 @@ Gamestate::Gamestate(Duel* duel):Duel()
         this->addTurnStartLingeringEffect(c);
     }
 }
-float Gamestate::resourceFactor()
+float Gamestate::resourceFactor(Player* player)
 {
-    Player* player = this->getPlayer(this->getTurnPlayer());
     Player* opponent = player->getOpponent();
 
     short playerHp = player->getHp();
@@ -273,9 +272,8 @@ float Gamestate::resourceFactor()
     return factor;
 
 }
-float Gamestate::cardAdvantageFactor()
+float Gamestate::cardAdvantageFactor(Player* player)
 {
-    Player* player = this->getPlayer(this->getTurnPlayer());
     Player* opponent = player->getOpponent();
 
     short playerHand = player->getHandSize();
@@ -291,11 +289,9 @@ float Gamestate::cardAdvantageFactor()
 
     return factor;
 }
-float Gamestate::fieldPresenceFactor()
+float Gamestate::fieldPresenceFactor(Player* player)
 {
     float factor;
-
-    Player* player = this->getPlayer(this->getTurnPlayer());
     Player* opponent = player->getOpponent();
 
     Zone* playerField = player->getMinionField();
@@ -341,8 +337,8 @@ float Gamestate::fieldPresenceFactor()
             sumDefOpp = sumDefOpp + def;
         }
     }
-    this->generateAttackersList();
-    this->generateDefendersList();
+    this->generateAttackersList(player);
+    this->generateDefendersList(player);
     std::vector<Card*>* attackers = this->getAttackersList()->getTargetList();
     short n_attackers = this->getAttackersList()->getTargetsNumber();
     std::vector<Card*>* defenders = this->getDefendersList()->getTargetList();
@@ -399,11 +395,11 @@ float Gamestate::fieldPresenceFactor()
     return factor;
 }
 
-float Gamestate::evaluate()
+float Gamestate::evaluate(Player* player)
 {
-    float resources = this->resourceFactor();
-    float cardAdvantage = this->cardAdvantageFactor();
-    float fieldPresenceFactor = this->fieldPresenceFactor();
+    float resources = this->resourceFactor(player);
+    float cardAdvantage = this->cardAdvantageFactor(player);
+    float fieldPresenceFactor = this->fieldPresenceFactor(player);
 
     short resourcesW = 1;
     short cardAdvantageW = 2;

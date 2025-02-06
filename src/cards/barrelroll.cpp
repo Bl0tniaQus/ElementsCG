@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool BarrelRoll::onSpell(Duel* duel, Card* card)
 {
-
+    this->getCardTargets()->clear(); this->getNumericValues()->clear();
     this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
@@ -21,9 +21,9 @@ bool BarrelRoll::onSpell(Duel* duel, Card* card)
         if (!targetCard->getIsSpellImmune())
         {
             duel->changeSpellImmunity(targetCard,true);
-            this->target = targetCard;
+            this->getCardTargets()->push_back(targetCard);
             duel->addTurnStartLingeringEffect(card);
-            this->playerId = duel->getTurnPlayer();
+            this->getNumericValues()->push_back(duel->getTurnPlayer());
 
         }
         else duel->appendSILog(card,targetCard);
@@ -32,30 +32,22 @@ bool BarrelRoll::onSpell(Duel* duel, Card* card)
 }
 void BarrelRoll::onTurnStart(Duel* duel, Card* card)
 {
-    if (this->target->getPlace()==2&&duel->getTurnPlayer()!=this->playerId)
+    std::vector<Card*>* cv = this->getCardTargets();
+    std::vector<int>* nv = this->getNumericValues();
+    if (cv->size() == 0 || nv->size() == 0) {return;}
+    Card* target = cv->at(0);
+    int playerId = nv->at(0);
+    if (target->getPlace()==2&&duel->getTurnPlayer()!=playerId)
     {
         duel->addTurnStartLingeringEffect(card);
     }
-    else if (this->target->getPlace()==2&&this->target->getIsSpellImmune())
+    else if (target->getPlace()==2&&target->getIsSpellImmune())
     {
         this->effectLog(duel, card);
-        duel->changeSpellImmunity(this->target, false);
+        duel->changeSpellImmunity(target, false);
+        nv->clear();
+        cv->clear();
     }
-}
-short BarrelRoll::getShort(short n)
-{
-    return this->playerId;
-}
-Card * BarrelRoll::getCard(short n)
-{
-    return this->target;
-}
-
-void BarrelRoll::copy(Duel* duel, CardBase* c)
-{
-if (c->getCard(0)!=nullptr){this->target = duel->getCardFromCopyId(c->getCard(0)->getCopyId());}
-this->playerId = c->getShort(0);
-
 }
 
 

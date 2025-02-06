@@ -5,7 +5,8 @@
 #include "../engine/bot.h"
 bool Magnetize::onSpell(Duel* duel, Card* card)
 {
-
+    this->getCardTargets()->clear();
+    this->getNumericValues()->clear();
     this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Earth");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
@@ -30,8 +31,8 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
                     targets->at(i)->setAttacks(0);
                 }
             }
-            this->target = targetCard;
-            this->atkChange = atk;
+            this->getCardTargets()->push_back(targetCard);
+            this->getNumericValues()->push_back(atk);
             duel->changeStats(targetCard,atk,0);
             duel->addTurnEndLingeringEffect(card);
         }
@@ -41,13 +42,16 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
 }
 void Magnetize::onTurnEnd(Duel* duel, Card* card)
 {
-    if (this->target->getPlace()==2)
+    if (this->getCardTargets()->size() == 0 || this->getNumericValues()->size()) {return;}
+    Card* target = this->getCardTargets()->at(0);
+    int atkChange = this->getNumericValues()->at(0);
+    if (target->getPlace()==2)
     {
         this->effectLog(duel, card);
-        duel->changeStats(this->target, -this->atkChange, 0);
-        this->atkChange = 0;
-        this->target = nullptr;
+        duel->changeStats(target, -atkChange, 0);
     }
+    this->getCardTargets()->clear();
+    this->getNumericValues()->clear();
 }
 
 

@@ -18,6 +18,9 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, std:
     this->targetList = new TargetList;
     this->element = el;
     this->usedMaterials = std::vector<Card*>(0);
+    this->cardTargets = std::vector<Card*>(0);
+    this->numericValues = std::vector<int>(0);
+    this->booleanValues = std::vector<bool>(0);
     this->name = n;
     this->image = i;
     this->cardText = ctx;
@@ -26,6 +29,25 @@ CardBase::~CardBase()
 {
     delete this->targetList;
 }
+void CardBase::copy(Duel* duel, CardBase* c)
+{
+    this->numericValues = std::vector<int>(*c->getNumericValues());
+    this->booleanValues = std::vector<bool>(*c->getBooleanValues());
+    int nm = c->getUsedMaterials()->size();
+    int nc = c->getCardTargets()->size();
+    this->usedMaterials = std::vector<Card*>(nm);
+    this->cardTargets = std::vector<Card*>(nc);
+
+    for (int i = 0; i<nm; i++)
+    {
+        this->usedMaterials[i] = duel->getCardFromCopyId(c->getUsedMaterials()->at(i)->getCopyId());
+    }
+    for (int i = 0; i<nc; i++)
+    {
+        this->cardTargets[i] = duel->getCardFromCopyId(c->getCardTargets()->at(i)->getCopyId());
+    }
+}
+
 void CardBase::setTargetList(std::vector<Card*>& tl)
 {
     this->targetList->setTargetList(tl);
@@ -133,7 +155,9 @@ int CardBase::singleChoice(Duel* duel, Card* card)
 }
 bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 {
-        if (card->getCardName()->getRequiredMaterialsNumber()!=2) {return false;}
+        if (card==nullptr) {return false;}
+        short n = card->getCardName()->getRequiredMaterialsNumber();
+        if (n!=2) {return false;}
         bool result = true;
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();
@@ -170,7 +194,9 @@ bool CardBase::checkSummoningConditions2(Duel* duel, Card* card)
 }
 bool CardBase::checkSummoningConditions3(Duel* duel, Card* card)
 {
-        if (card->getCardName()->getRequiredMaterialsNumber()!=3) {return false;}
+        if (card==nullptr) {return false;}
+        short n = card->getCardName()->getRequiredMaterialsNumber();
+        if (n!=3) {return false;}
         bool result = false;
         this->getFirstMaterialList(duel, card);
         short n_targets1 = this->getTargetList()->getTargetsNumber();

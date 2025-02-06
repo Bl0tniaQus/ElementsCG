@@ -66,8 +66,8 @@ public:
     void updateBoard();
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
-    void generateAttackersList();
-    void generateDefendersList();
+    void generateAttackersList(Player* player);
+    void generateDefendersList(Player* player);
     bool canSummon(Player* player);
     void changeStats(Card* card, short a, short d);
     void changeLevel(Card* card, short l);

@@ -18,10 +18,6 @@ public:
     ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
     void onTurnEnd(Duel * duel, Card * card) override;
-private:
-    Card* target;
-    short atkChange;
-
 };
 
 #endif

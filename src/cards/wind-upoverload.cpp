@@ -5,7 +5,7 @@
 #include "../engine/bot.h"
 bool WindUpOverload::onSpell(Duel* duel, Card* card)
 {
-    this->target = nullptr;
+    this->getCardTargets()->clear();
     this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
     short nt = this->getTargetList()->getTargetsNumber();
@@ -21,7 +21,7 @@ bool WindUpOverload::onSpell(Duel* duel, Card* card)
         short orAtk = targetCard->getOriginalAttack();
         if (!targetCard->getIsSpellImmune())
         {
-            this->target = targetCard;
+            this->getCardTargets()->push_back(targetCard);
             duel->changeStats(targetCard,orAtk*2 - targetCard->getAttack(),0);
             duel->addTurnEndLingeringEffect(card);
         }
@@ -31,12 +31,15 @@ bool WindUpOverload::onSpell(Duel* duel, Card* card)
 }
 void WindUpOverload::onTurnEnd(Duel* duel, Card* card)
 {
-    if (this->target->getPlace()==2)
+    std::vector<Card*>* cv = this->getCardTargets();
+    if (cv->size()==0) {return;}
+    Card* target = cv->at(0);
+    if (target->getPlace()==2)
     {
         this->effectLog(duel, card);
-        duel->destruction(this->target);
-        this->target = nullptr;
+        duel->destruction(target);
     }
+    cv->clear();
 }
 
 

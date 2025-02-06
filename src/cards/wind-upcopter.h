@@ -18,8 +18,6 @@ public:
     ) {this->setHasOnSummon(1);};
     void onSummon(Duel* duel, Card* card) override;
     void onTurnEnd(Duel* duel, Card* card) override;
-private:
-    bool eff_used;
 };
 
 #endif

@@ -160,8 +160,9 @@ void DuelUiBridge::battlePhase()
             this->defenderTarget = -2;
             break;
         }
-        this->duel->generateAttackersList();
-        this->duel->generateDefendersList();
+        Player * player = this->duel->getPlayer(this->duel->getTurnPlayer());
+        this->duel->generateAttackersList(player);
+        this->duel->generateDefendersList(player);
         emit drawAttackers();
         mutex->acquire(); mutex->acquire(); mutex->release();
         id_attacker = this->attackerTarget;

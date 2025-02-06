@@ -57,24 +57,18 @@ void Bot::generateBaseGamestate(Duel* duel)
 {
     delete this->baseGamestate;
     this->baseGamestate = new Gamestate(duel);
-    this->baseGamestate->generateAttackersList();
-    this->baseGamestate->generateDefendersList();
-    this->baseGameStatevalue = this->baseGamestate->evaluate();
+    this->baseGameStatevalue = this->baseGamestate->evaluate(this->baseGamestate->getPlayer(this->baseGamestate->getTurnPlayer()));
 }
 void Bot::generateTestingGamestate(Duel* duel)
 {
     delete this->testingGamestate;
     this->testingGamestate = new Gamestate(duel);
-    this->testingGamestate->generateAttackersList();
-    this->testingGamestate->generateDefendersList();
-    this->baseGameStatevalue = this->baseGamestate->evaluate();
 }
 void Bot::generateTempGamestate(Duel* duel)
 {
     delete this->tempGamestate;
     this->tempGamestate = new Gamestate(duel);
-    this->tempGamestate->generateAttackersList();
-    this->tempGamestate->generateDefendersList();
+
 }
 void Bot::testCardFromHand(int c, Duel* duel, Option& option)
 {
@@ -86,7 +80,7 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
     this->testing = true;
     this->testingTargets = false;
     float value;
-    float bValue = this->baseGamestate->evaluate();
+    float bValue = this->baseGamestate->evaluate(this->baseGamestate->getPlayer(this->baseGamestate->getTurnPlayer()));
     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
     card = this->tempGamestate->getCardFromCopyId(c);
     if (card->getCost()<=player->getMana())
@@ -104,7 +98,8 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     card = this->tempGamestate->getCardFromCopyId(c);
                     this->tempGamestate->playFromHand(card);
-                    value = this->tempGamestate->evaluate();
+                    this->tempGamestate->passTurn();
+                    value = this->tempGamestate->evaluate(player);
                     if (this->targetId!=-1)
                     {
                         Option new_option;
@@ -127,7 +122,9 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
         }
         else
         {
-            value = this->tempGamestate->evaluate();
+            player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+            this->tempGamestate->passTurn();
+            value = this->tempGamestate->evaluate(player);
             Option new_option;
             new_option.setValue(value-bValue);
             new_option.getTargets()->push_back({-1});
@@ -156,7 +153,7 @@ void Bot::testSpecialMinion(int c, Duel* duel, Option& option)
     this->generateTempGamestate(duel);
     this->testing = true;
     float value;
-    float bValue = this->baseGamestate->evaluate();
+    float bValue = this->baseGamestate->evaluate(duel->getPlayer(duel->getTurnPlayer()));
     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
     card = this->tempGamestate->getCardFromCopyId(c);
     CardBase* cardBase = card->getCardName();
@@ -207,8 +204,10 @@ void Bot::testSpecialMinion(int c, Duel* duel, Option& option)
                 {
                     this->material1 = cardA;
                     this->material2 = cardB;
+                    player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     this->tempGamestate->summonSpecialMinion(this->tempGamestate->getCardFromCopyId(c));
-                    value = this->tempGamestate->evaluate();
+                    this->tempGamestate->passTurn();
+                    value = this->tempGamestate->evaluate(player);
                     Option new_option;
                     new_option.setValue(value-bValue);
                     new_option.getTargets()->push_back({firstIds[i],secondIds[j]});
@@ -240,6 +239,7 @@ void Bot::saveOption(Option& option)
 }
 void Bot::testOptionCombos(Duel* duel, short n)
 {
+    this->generateBaseGamestate(duel);
     for (int i = 0; i<n; i++)
     {
         if (i == 0)
@@ -265,7 +265,6 @@ void Bot::testOptionCombos(Duel* duel, short n)
 void Bot::generateOptions(Duel* duel, Option& option)
 {
     Player* player;
-    this->generateBaseGamestate(duel);
     player = duel->getPlayer(duel->getTurnPlayer());
     short n_hand = player->getHandSize();
     for (int z = 0;z<n_hand;z++)
@@ -273,7 +272,6 @@ void Bot::generateOptions(Duel* duel, Option& option)
         this->testCardFromHand(player->getHand()->at(z)->getCopyId(), duel, option);
     }
     short n_special = player->getSpecialDeckSize();
-    this->generateBaseGamestate(duel);
     for (int z = 0;z<n_special;z++)
     {
         this->testSpecialMinion(player->getSpecialDeck()->at(z)->getCopyId(), duel, option);
@@ -288,6 +286,7 @@ void Bot::performAction(Duel* duel, Option& option, bool display)
         Card* card = duel->getCardFromCopyId(id);
         short place = card->getPlace();
         std::string name = card->getName();
+
         if (place == 4)
             {
                 card = duel->getCardFromCopyId(id);
@@ -374,32 +373,38 @@ void Bot::endTesting()
 }
 void Bot::testCardBattle(short c, Duel* duel)
 {
-    float bv = this->baseGamestate->evaluate();
+    float bv = this->baseGamestate->evaluate(this->baseGamestate->getPlayer(this->baseGamestate->getTurnPlayer()));
     short n_defenders = this->baseGamestate->getDefendersList()->getTargetsNumber();
     for (int i=0;i<n_defenders;i++)
     {
         this->generateTempGamestate(duel);
+        Player* player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+        this->tempGamestate->generateAttackersList(player);
+        this->tempGamestate->generateDefendersList(player);
         Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()->at(c);
         Card* defender = this->tempGamestate->getDefendersList()->getTargetList()->at(i);
 
         this->tempGamestate->combat(attacker,defender);
-        float v = this->tempGamestate->evaluate();
+        float v = this->tempGamestate->evaluate(player);
         this->saveAttackOption(attacker->getCopyId(),defender->getCopyId(),v-bv);
     }
     if (n_defenders == 0)
     {
         this->generateTempGamestate(duel);
+        Player* player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
+        this->tempGamestate->generateAttackersList(player);
         Card* attacker = this->tempGamestate->getAttackersList()->getTargetList()->at(c);
         this->tempGamestate->directAttack(attacker);
-        float v = this->tempGamestate->evaluate();
+        float v = this->tempGamestate->evaluate(player);
         this->saveAttackOption(attacker->getCopyId(),-1,v-bv);
     }
 }
 void Bot::testBattlePhase(Duel* duel)
 {
-
     this->generateBaseGamestate(duel);
-
+    Player* player = this->baseGamestate->getPlayer(this->baseGamestate->getTurnPlayer());
+    this->baseGamestate->generateAttackersList(player);
+    this->baseGamestate->generateDefendersList(player);
     short n_attackers = this->baseGamestate->getAttackersList()->getTargetsNumber();
     for (int i=0;i<n_attackers;i++)
     {
@@ -408,10 +413,12 @@ void Bot::testBattlePhase(Duel* duel)
 }
 void Bot::conductBattlePhase(Duel* duel)
 {
+
     while(true)
     {
         this->generateBaseGamestate(duel);
         this->testBattlePhase(duel);
+
         int n_options = this->getOptionsNumber();
         if (n_options==0) { this->endTesting(); break;}
         else
@@ -421,8 +428,10 @@ void Bot::conductBattlePhase(Duel* duel)
             int cardId = this->options[option].getCardIds()->at(0);
             int target = this->options[option].getTargets()->at(0)[0];
             if (val<=0) {break;}
-            duel->generateAttackersList();
-            duel->generateDefendersList();
+
+            Player* player = duel->getPlayer(duel->getTurnPlayer());
+            duel->generateAttackersList(player);
+            duel->generateDefendersList(player);
             Card* attacker = duel->getCardFromCopyId(cardId);
             if (target!=-1)
             {
@@ -438,19 +447,28 @@ void Bot::conductBattlePhase(Duel* duel)
         this->endTesting();
         if (duel->getDuelEnded()) {return;}
     }
+
 }
 void Bot::playTurn(Duel* duel)
 {
             while (true)
             {
+
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
                 this->testOptionCombos(duel, 2);
+
                 int n_options = this->getOptionsNumber();
 
                 if (n_options==0) { this->endTesting(); break;}
                 int option = this->getBestOption();
+                qDebug()<<n_options<<" "<<option;
                 float val = this->options[option].getValue();
-                if (val<=0) {this->endTesting(); break;}
+
+                if (val<=0) {
+                    this->endTesting();
+
+                    break;}
+
                 this->performAction(duel, this->options[option], true);
                 this->endTesting();
                 if (duel->getDuelEnded())
@@ -460,6 +478,7 @@ void Bot::playTurn(Duel* duel)
             }
             if (duel->getTurnCount()>1){this->conductBattlePhase(duel);}
             if (!duel->getDuelEnded()){duel->passTurn();}
+
 
 }
 

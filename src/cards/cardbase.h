@@ -21,6 +21,9 @@ private:
     std::string cardText;
     Card* cardEntity;
     std::vector<Card*> usedMaterials;
+    std::vector<Card*> cardTargets;
+    std::vector<int> numericValues;
+    std::vector<bool> booleanValues;
     TargetList* targetList;
     short requiredMaterialsNumber;
     bool hasOnTurnStart = false;
@@ -117,10 +120,15 @@ public:
     virtual void getSecondMaterialList(Duel* duel, Card* card) {};
     virtual void getThirdMaterialList(Duel* duel, Card* card) {};
 
-    virtual void copy(Duel* duel, CardBase* c) {};
-    virtual short getShort(short n) {return -1;};
-    virtual Card* getCard(short n) { return nullptr;};
-    virtual bool getBool(short n) {return -1;};
+    void copy(Duel* duel, CardBase* c);
+    std::vector<Card*>* getCardTargets() {return &this->cardTargets;}
+    std::vector<Card*>* getUsedMaterials() {return &this->usedMaterials;}
+    std::vector<int>* getNumericValues() {return &this->numericValues;}
+    std::vector<bool>* getBooleanValues() {return &this->booleanValues;}
+    void resetCardTargets() {this->cardTargets = std::vector<Card*>(0);}
+    void resetUsedMaterials() {this->usedMaterials = std::vector<Card*>(0);}
+    void resetNumericValues() {this->numericValues = std::vector<int>(0);}
+    void resetBooleanValues() {this->booleanValues = std::vector<bool>(0);}
 
     void allMinionsOnField(Duel* duel);
     void cardsInHandWithTheSameName(Player* player, const std::string& name);

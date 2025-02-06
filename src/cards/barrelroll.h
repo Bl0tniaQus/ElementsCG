@@ -15,16 +15,10 @@ public:
         "Barrel Roll", //name
         "barrelroll",
         "Target 1 air minion you control: it gains spell immunity until the start of your next turn."
-    ) {this->setHasOnSpell(1);this->target = nullptr;};
+    ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
     void onTurnStart(Duel * duel, Card * card) override;
-    void copy(Duel* duel, CardBase* c) override;
-    Card* getCard(short n) override;
-    short getShort(short n) override;
 private:
-    Card* target;
-    short playerId;
-
 };
 
 #endif

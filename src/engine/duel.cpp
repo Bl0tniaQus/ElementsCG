@@ -580,10 +580,9 @@ void Duel::passTurn()
     opponent->changeMana(2);
     this->turnStartEffects();
 }
-void Duel::generateAttackersList()
+void Duel::generateAttackersList(Player* player)
 {
     std::vector<Card*> attackers = std::vector<Card*>(0);
-    Player* player = this->getPlayer(this->turnPlayer);
     for (int i=0;i<5;i++)
     {
         Zone* zone = &player->getMinionField()[i];
@@ -598,13 +597,12 @@ void Duel::generateAttackersList()
     }
     this->getAttackersList()->setTargetList(attackers);
 }
-void Duel::generateDefendersList()
+void Duel::generateDefendersList(Player* player)
 {
     std::vector<Card*> defenders = std::vector<Card*>(0);
-    Player* player = this->getPlayer(this->turnPlayer)->getOpponent();
     for (int i=0;i<5;i++)
     {
-        Zone* zone = &player->getMinionField()[i];
+        Zone* zone = &player->getOpponent()->getMinionField()[i];
         Card* card = zone->getCard();
         if (card!=nullptr)
         {
@@ -619,27 +617,32 @@ Card* Duel::getCardFromCopyId(int id)
     std::vector<Card>* deck;
     n_deck = players[0].getOriginalDeckSize();
     deck = players[0].getOriginalDeck();
+    int id_card;
     for (int i=0;i<n_deck;i++)
     {
-        if (deck->at(i).getCopyId()==id) return &deck->at(i);
+        id_card = deck->at(i).getCopyId();
+        if (id_card==id) return &deck->at(i);
     }
     n_special = players[0].getOriginalSpecialDeckSize();
     deck = players[0].getOriginalSpecialDeck();
     for (int i=0;i<n_special;i++)
     {
-        if (deck->at(i).getCopyId()==id) return &deck->at(i);
+        id_card = deck->at(i).getCopyId();
+        if (id_card==id) return &deck->at(i);
     }
     n_deck = players[1].getOriginalDeckSize();
     deck = players[1].getOriginalDeck();
     for (int i=0;i<n_deck;i++)
     {
-        if (deck->at(i).getCopyId()==id) return &deck->at(i);
+        id_card = deck->at(i).getCopyId();
+        if (id_card==id) return &deck->at(i);
     }
     n_special = players[1].getOriginalSpecialDeckSize();
     deck = players[1].getOriginalSpecialDeck();
     for (int i=0;i<n_special;i++)
     {
-        if (deck->at(i).getCopyId()==id) return &deck->at(i);
+        id_card = deck->at(i).getCopyId();
+        if (id_card==id) return &deck->at(i);
     }
     return nullptr;
 }

@@ -16,7 +16,7 @@ void DrillDragon::getSecondMaterialList(Duel* duel, Card* card)
 }
 void DrillDragon::onAttack(Duel* duel, Card* card, Card* target)
 {
-    this->effectUsed = false;
+    this->getBooleanValues()->clear();
     if (!card->getIsNegated()&&target!=nullptr)
     {
         if (target->getElement() == "Earth")
@@ -24,7 +24,7 @@ void DrillDragon::onAttack(Duel* duel, Card* card, Card* target)
             this->firstEffectLog(duel,card);
 
             duel->changeStats(card,2,0);
-            this->effectUsed = true;
+            this->getBooleanValues()->push_back(true);
         }
 
     }
@@ -32,12 +32,13 @@ void DrillDragon::onAttack(Duel* duel, Card* card, Card* target)
 
 void DrillDragon::afterAttack(Duel* duel, Card* card, Card* target, short damage)
 {
-    if (!card->getIsNegated()&&this->effectUsed)
+    if (this->getBooleanValues()->size() == 0) {return;}
+    if (!card->getIsNegated()&&this->getBooleanValues()->size()==1)
     {
         this->firstEffectLog(duel,card);
         duel->changeStats(card,-2,0);
     }
-    this->effectUsed = false;
+    this->getBooleanValues()->clear();
 }
 
 
