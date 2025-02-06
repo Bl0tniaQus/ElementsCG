@@ -47,4 +47,4 @@ int main(int argc, char *argv[])
 //TODO deck copy(utwórz, połącz, utwórz połączenie)
 //TODO bot combinations
 //TODO copy ids instead of target list indexes in bot decisions
-//TODO gamestate evaluate
+//TODO make different evaluations based on turn end and current gamestate

@@ -2,6 +2,7 @@
 #define CARDBASE_H
 #include <string>
 #include <vector>
+#include <QDebug>
 class Card;
 class Duel;
 class TargetList;

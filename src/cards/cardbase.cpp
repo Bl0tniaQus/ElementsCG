@@ -37,7 +37,6 @@ void CardBase::copy(Duel* duel, CardBase* c)
     int nc = c->getCardTargets()->size();
     this->usedMaterials = std::vector<Card*>(nm);
     this->cardTargets = std::vector<Card*>(nc);
-
     for (int i = 0; i<nm; i++)
     {
         this->usedMaterials[i] = duel->getCardFromCopyId(c->getUsedMaterials()->at(i)->getCopyId());
@@ -45,6 +44,10 @@ void CardBase::copy(Duel* duel, CardBase* c)
     for (int i = 0; i<nc; i++)
     {
         this->cardTargets[i] = duel->getCardFromCopyId(c->getCardTargets()->at(i)->getCopyId());
+        if (this->cardTargets[i]==nullptr)
+        {
+            qDebug()<<"tak nie powinno być";
+        }
     }
 }
 

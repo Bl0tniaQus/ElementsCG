@@ -117,6 +117,14 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 }
             }
         }
+        for (short j = 0; j<originalDeckSize; j++)
+        {
+            originalDeckCopy->at(j).copyCardName(originalDeck->at(j).getCardName());
+        }
+        for (short j = 0; j<originalSpecialDeckSize; j++)
+        {
+            originalSpecialDeckCopy->at(j).copyCardName(originalSpecialDeck->at(j).getCardName());
+        }
         player_new->setDeck(deckCopy);
         player_new->setSpecialDeck(specialDeckCopy);
         std::vector<Card*> handCopy = std::vector<Card*>(handSize);
