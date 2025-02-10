@@ -4,11 +4,12 @@
 #include "player.h"
 Card::Card()
 {
-    this->cardName = nullptr;
+    this->cardName = new CardBase;
 }
 Card::Card(int entryId)
 {
-    this->cardName = this->getCardNameById(entryId);
+    delete this->cardName;
+    this->cardName = getCardNameById(entryId);
     this->cardName->bindCard(this);
     this->copyId = ++Card::COPYID;
     this->attacks = 1;
@@ -27,7 +28,8 @@ Card::Card(int entryId)
 void Card::getValuesFromId(int entryId, bool noCopyId)
 {
     if (!noCopyId) {this->copyId = ++Card::COPYID;}
-    this->cardName = this->getCardNameById(entryId);
+    delete this->cardName;
+    this->cardName = getCardNameById(entryId);
     this->cardName->bindCard(this);
     this->attacks = 1;
     if (this->getCardType()==2) {this->place = 4;}
@@ -51,7 +53,8 @@ void Card::copyProperties(Card* card)
     this->attack = card->getAttack();
     this->defence = card->getDefence();
     this->level = card->getLevel();
-    this->cardName = card->getCardNameById(card->getCardId());
+    delete this->cardName;
+    this->cardName = getCardNameById(card->getCardId());
     this->cardName->bindCard(this);
     this->barrier = card->getBarrier();
     this->isNegated = card->getIsNegated();
@@ -68,6 +71,7 @@ CardBase* Card::getCardNameById(int id)
     CardBase* cardbase;
     switch (id)
     {
+        case 0: cardbase = new GearToken; break;
         case 1: cardbase = new CopperWorm;break;
         case 2: cardbase = new SilverWolf;break;
         case 3: cardbase = new DragonoidWarrior;break;
@@ -111,6 +115,8 @@ CardBase* Card::getCardNameById(int id)
         case 41: cardbase = new WindUpRestart; break;
         case 42: cardbase = new SupplyBaloon; break;
         case 43: cardbase = new IrisVersicolor; break;
+        case 1000: cardbase = new Disassembly; break;
+        default: cardbase = new CardBase; break;
     }
     return cardbase;
 }
@@ -132,4 +138,9 @@ this->barrier = 0;
 this->isNegated = false;
 this->isSpellImmune = false;
 this->cost = this->cardName->getCost();
+}
+void Card::resetCardName()
+{
+    delete this->cardName;
+    this->cardName = new CardBase;
 }

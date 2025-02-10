@@ -71,6 +71,7 @@ set(PROJECT_SOURCES
         src/cards/wind-uprestart.cpp
         src/cards/supplybaloon.cpp
         src/cards/irisversicolor.cpp
+        src/cards/disassembly.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

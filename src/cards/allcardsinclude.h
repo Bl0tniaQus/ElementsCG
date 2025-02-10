@@ -1,6 +1,8 @@
 #ifndef ALLCARDS_H
 #define ALLCARDS_H
 
+#include "geartoken.h" //0
+
 #include "copperworm.h" //1
 #include "silverwolf.h" //2
 #include "dragonoidwarrior.h" //3
@@ -44,5 +46,6 @@
 #include "wind-uprestart.h" //41
 #include "supplybaloon.h" //42
 #include "irisversicolor.h" //43
+#include "disassembly.h" //1000
 
 #endif // ALLCARDS_H

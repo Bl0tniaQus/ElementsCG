@@ -12,9 +12,11 @@ Deck::Deck(short deckid)
     std::vector<short> spcards;
     if (deckid==0)
     {
-        cards = {3, 18, 4, 32, 31, 33, 35, 36, 37, 38, 42, 43};
-        counts = {3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1};
+        //cards = {3, 18, 4, 32, 31, 33, 35, 36, 37, 38, 42, 43};
+        //counts = {3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1};
         spcards = {8, 12, 9, 22, 19, 20, 21, 34, 39, 40};
+        cards = {1000};
+        counts = {10};
     }
     else if (deckid==1)
     {

@@ -5,6 +5,7 @@
 #include "../engine/duel.h"
 #include "../engine/card.h"
 #include "../engine/bot.h"
+#include "../engine/globals.h"
 #include <iostream>
 #include <QDebug>
 CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, std::string el, std::string n, std::string i, std::string ctx)
@@ -25,6 +26,14 @@ CardBase::CardBase(short cid, short c, short ct, short l, short a, short d, std:
     this->image = i;
     this->cardText = ctx;
 }
+CardBase::CardBase()
+{
+    this->usedMaterials = std::vector<Card*>(0);
+    this->cardTargets = std::vector<Card*>(0);
+    this->numericValues = std::vector<int>(0);
+    this->booleanValues = std::vector<bool>(0);
+    this->targetList = new TargetList;
+}
 CardBase::~CardBase()
 {
     delete this->targetList;
@@ -33,21 +42,23 @@ void CardBase::copy(Duel* duel, CardBase* c)
 {
     this->numericValues = std::vector<int>(*c->getNumericValues());
     this->booleanValues = std::vector<bool>(*c->getBooleanValues());
+    this->usedMaterialsIds = std::vector<int>(*c->getUsedMaterialsIds());
     int nm = c->getUsedMaterials()->size();
     int nc = c->getCardTargets()->size();
     this->usedMaterials = std::vector<Card*>(nm);
     this->cardTargets = std::vector<Card*>(nc);
+    Card* card;
     for (int i = 0; i<nm; i++)
     {
-        this->usedMaterials[i] = duel->getCardFromCopyId(c->getUsedMaterials()->at(i)->getCopyId());
+        card = c->getUsedMaterials()->at(i);
+        if (card->isToken()){this->usedMaterials[i] = card;}
+        else this->usedMaterials[i] = duel->getCardFromCopyId(card->getCopyId());
     }
     for (int i = 0; i<nc; i++)
     {
-        this->cardTargets[i] = duel->getCardFromCopyId(c->getCardTargets()->at(i)->getCopyId());
-        if (this->cardTargets[i]==nullptr)
-        {
-            qDebug()<<"tak nie powinno być";
-        }
+        card = c->getCardTargets()->at(i);
+        if (card->isToken()){this->cardTargets[i] = card;}
+        else this->cardTargets[i] = duel->getCardFromCopyId(card->getCopyId());
     }
 }
 
@@ -115,9 +126,18 @@ void CardBase::spellFromHandLog(Duel* duel, Card* card)
 {
     duel->appendLog(duel->cardFromHandLog(card),duel->getPlayerId(card->getOwner()));
 }
-void CardBase::setMaterials(std::vector<Card *> mats)
+void CardBase::setMaterials(std::vector<Card *>& mats)
 {
     this->usedMaterials = std::vector<Card*>(mats);
+    this->usedMaterialsIds = std::vector<int>(0);
+    for (Card* card : this->usedMaterials)
+    {
+        if (card->isToken()) {this->usedMaterialsIds.push_back(-1);}
+        else
+        {
+            this->usedMaterialsIds.push_back(card->getCopyId());
+        }
+    }
 }
 int CardBase::singleChoice(Duel* duel, Card* card)
 {
@@ -313,7 +333,13 @@ bool CardBase::specialSummon2(Duel* duel, Card* card)
             if (!b1 || !b2) {return false;}
         }
         this->release2Log(targetCard,targetCard2, duel);
-        this->setMaterials({targetCard, targetCard2});
+
+        std::vector<Card*> mats = std::vector<Card*>(0);
+        if (!targetCard->isToken()){mats.push_back(targetCard);}
+        else{mats.push_back(&tokenCatalog[targetCard->getCardId()]);}
+        if (!targetCard2->isToken()){mats.push_back(targetCard2);}
+        else{mats.push_back(&tokenCatalog[targetCard2->getCardId()]);}
+        this->setMaterials(mats);
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
         return true;
@@ -410,7 +436,14 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
             targetCard3 = card->getOwner()->getBot()->getThirdMaterial();
         }
         this->release3Log(targetCard,targetCard2,targetCard3, duel);
-        this->setMaterials({targetCard, targetCard2, targetCard3});
+        std::vector<Card*> mats = std::vector<Card*>(0);
+        if (!targetCard->isToken()){mats.push_back(targetCard);}
+        else{mats.push_back(&tokenCatalog[targetCard->getCardId()]);}
+        if (!targetCard2->isToken()){mats.push_back(targetCard2);}
+        else{mats.push_back(&tokenCatalog[targetCard2->getCardId()]);}
+        if (!targetCard3->isToken()){mats.push_back(targetCard3);}
+        else{mats.push_back(&tokenCatalog[targetCard3->getCardId()]);}
+        this->setMaterials(mats);
         duel->releaseForSpecialSummon(targetCard, card);
         duel->releaseForSpecialSummon(targetCard2, card);
         duel->releaseForSpecialSummon(targetCard3, card);

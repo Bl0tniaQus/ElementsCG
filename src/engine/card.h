@@ -61,6 +61,7 @@ public:
     bool getIsNegated() {return this->isNegated;}
     void setIsSpellImmune(bool si) {this->isSpellImmune = si;}
     bool getIsSpellImmune() {return this->isSpellImmune;}
+    bool isToken() {return this->cardName->isToken();}
     int getCopyId() {return this->copyId;}
     void setCopyId(int id) {this->copyId = id;}
     void copyProperties(Card* card);
@@ -68,7 +69,9 @@ public:
     short getTurnPlayed() {return this->turnPlayed;}
     void setTurnPlayed(short t) {this->turnPlayed = t;}
     CardBase* getCardName() {return this->cardName;}
-    CardBase* getCardNameById(int id);
+    static CardBase* getCardNameById(int id);
+    void setCardName(CardBase* c) {this->cardName = c;}
     void copyCardName(CardBase* c);
+    void resetCardName();
 };
 #endif // CARD_H

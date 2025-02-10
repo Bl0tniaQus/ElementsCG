@@ -67,10 +67,11 @@ Gamestate::Gamestate(Duel* duel):Duel()
         short originalSpecialDeckSize = player->getOriginalSpecialDeckSize();
         std::vector<Card>* originalDeck = player->getOriginalDeck();
         std::vector<Card>* originalSpecialDeck = player->getOriginalSpecialDeck();
-
+        std::vector<Card>* tokenDeck = player->getTokenDeck();
         Deck* OGDeck = new Deck(*originalDeck, *originalSpecialDeck);
         player_new->setOriginalDeck(*OGDeck->getDeck());
         player_new->setOriginalSpecialDeck(*OGDeck->getSpecialDeck());
+        player_new->setTokenDeck(*tokenDeck);
         delete OGDeck;
 
 
@@ -78,11 +79,13 @@ Gamestate::Gamestate(Duel* duel):Duel()
         std::vector<Card*> specialDeckCopy = std::vector<Card*>(specialDeckSize);
         std::vector<Card>* originalDeckCopy = player_new->getOriginalDeck();
         std::vector<Card>* originalSpecialDeckCopy = player_new->getOriginalSpecialDeck();
+
+        std::vector<Card>* tokenDeckCopy = player_new->getTokenDeck();
         player_new->setDeckOwnership();
         for (short j = 0; j<originalDeckSize; j++)
         {
             originalDeckCopy->at(j).copyProperties(&originalDeck->at(j));
-            originalDeckCopy->at(j).copyCardName(originalDeck->at(j).getCardName());
+            //originalDeckCopy->at(j).copyCardName(originalDeck->at(j).getCardName());
         }
 
         for (int j=0;j<deckSize;j++)
@@ -102,7 +105,7 @@ Gamestate::Gamestate(Duel* duel):Duel()
         for (short j = 0; j<originalSpecialDeckSize; j++)
         {
             originalSpecialDeckCopy->at(j).copyProperties(&originalSpecialDeck->at(j));
-            originalSpecialDeckCopy->at(j).copyCardName(originalSpecialDeck->at(j).getCardName());
+            //originalSpecialDeckCopy->at(j).copyCardName(originalSpecialDeck->at(j).getCardName());
         }
         for (int j=0;j<specialDeckSize;j++)
         {
@@ -124,6 +127,11 @@ Gamestate::Gamestate(Duel* duel):Duel()
         for (short j = 0; j<originalSpecialDeckSize; j++)
         {
             originalSpecialDeckCopy->at(j).copyCardName(originalSpecialDeck->at(j).getCardName());
+        }
+        for (short j = 0; j<10; j++)
+        {
+            tokenDeckCopy->at(j).copyProperties(&tokenDeck->at(j));
+            tokenDeckCopy->at(j).copyCardName(tokenDeck->at(j).getCardName());
         }
         player_new->setDeck(deckCopy);
         player_new->setSpecialDeck(specialDeckCopy);
@@ -188,6 +196,8 @@ Gamestate::Gamestate(Duel* duel):Duel()
         short originalDeckSizeOpp = this->getPlayer(!i)->getOriginalDeckSize();
         std::vector<Card>* originalSpecialDeckOpp =  this->getPlayer(!i)->getOriginalSpecialDeck();
         short originalSpecialDeckSizeOpp = this->getPlayer(!i)->getOriginalSpecialDeckSize();
+        std::vector<Card>* tokenDeck = this->getPlayer(i)->getTokenDeck();
+        std::vector<Card>* tokenDeckOpp = this->getPlayer(!i)->getTokenDeck();
         for (int j = 0; j<cardsOnFieldArr[i];j++)
         {
             bool found = false;
@@ -224,6 +234,7 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 {
                     originalDeckOpp->at(k).setOwner(this->getPlayer(i));
                     this->getPlayer(i)->getMinionField()[zone].bindCard(&originalDeckOpp->at(k));
+
                     found = true;
                     break;
                 }
@@ -236,6 +247,26 @@ Gamestate::Gamestate(Duel* duel):Duel()
                 {
                     originalSpecialDeckOpp->at(k).setOwner(this->getPlayer(i));
                     this->getPlayer(i)->getMinionField()[zone].bindCard(&originalSpecialDeckOpp->at(k));
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {continue;}
+            for (int k = 0; k<10;k++)
+            {
+                int originalId = tokenDeck->at(k).getCopyId();
+                if (id==originalId)
+                {
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&tokenDeck->at(k));
+                    this->getPlayer(i)->getMinionField()[zone].setUsed(true);
+                    found = true;
+                    break;
+                }
+                originalId = tokenDeckOpp->at(k).getCopyId();
+                if (id==originalId)
+                {
+                    tokenDeckOpp->at(k).setOwner(this->getPlayer(i));
+                    this->getPlayer(i)->getMinionField()[zone].bindCard(&tokenDeckOpp->at(k));
                     found = true;
                     break;
                 }

@@ -41,5 +41,7 @@
     <file alias="wind-uprestart">resources/images/wind-uprestart.jpg</file>
     <file alias="supplybaloon">resources/images/supplybaloon.jpg</file>
     <file alias="irisversicolor">resources/images/irisversicolor.jpg</file>
+    <file alias="geartoken">resources/images/geartoken.jpg</file>
+    <file alias="disassembly">resources/images/disassembly.jpg</file>
 </qresource>
 </RCC>

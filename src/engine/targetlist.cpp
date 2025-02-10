@@ -19,6 +19,12 @@ TargetList::~TargetList()
 {
 
 }
+void TargetList::targetListFromVector(std::vector<Card *>& v)
+{
+this->clearTargetList();
+this->targetList = std::vector<Card*>(v);
+}
+
 void TargetList::clearTargetList()
 {
     this->targetList = std::vector<Card*>(0);
@@ -157,7 +163,7 @@ std::vector<Card *> TargetList::filterOutCardName(std::vector<Card *>& l, const 
     std::vector<Card*> newl;
     for (Card* card : l)
     {
-        if (card->getName() == name)
+        if (card->getName() != name)
         {
             newl.push_back(card);
         }
@@ -262,7 +268,7 @@ std::vector<Card *> TargetList::cardsInGraveyard(Player* player)
 std::vector<Card *> TargetList::nTopCards(std::vector<Card *>& l, short n)
 {
     std::vector<Card*> targets(0);
-    for (int i = l.size()-(n+1); i<l.size(); i++)
+    for (int i = l.size()- n; i<l.size(); i++)
     {
         targets.push_back(l[i]);
     }

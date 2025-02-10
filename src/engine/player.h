@@ -24,6 +24,7 @@ private:
     std::vector<Card*> graveyard;
     std::vector<Card> originalDeck;
     std::vector<Card> originalSpecialDeck;
+    std::vector<Card> tokenDeck;
 
 public:
     Player();
@@ -61,6 +62,8 @@ public:
     void setGraveyard(std::vector<Card*>& graveyard);
     void setOriginalDeck(std::vector<Card>& deck);
     std::vector<Card>* getOriginalDeck() {return &this->originalDeck;}
+    void setTokenDeck(std::vector<Card>& deck);
+    std::vector<Card>* getTokenDeck() {return &this->tokenDeck;}
     void setSpecialDeck(std::vector<Card*>& deck);
     void setOriginalSpecialDeck(std::vector<Card>& deck);
     std::vector<Card>* getOriginalSpecialDeck() {return &this->originalSpecialDeck;}

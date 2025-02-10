@@ -72,6 +72,7 @@ void Bot::generateTempGamestate(Duel* duel)
 }
 void Bot::testCardFromHand(int c, Duel* duel, Option& option)
 {
+
     Player* player;
     Card* card;
     this->generateTempGamestate(duel);
@@ -122,8 +123,15 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
         }
         else
         {
+            this->generateTempGamestate(duel);
             player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
-            this->tempGamestate->passTurn();
+            card = this->tempGamestate->getCardFromCopyId(c);
+
+            //qDebug()<<QString::fromStdString(card->getName());
+            bool res = card->getCardName()->onSpell(this->tempGamestate, card);
+            if (res)
+            {
+                this->tempGamestate->passTurn();
             value = this->tempGamestate->evaluate(player);
             Option new_option;
             new_option.setValue(value-bValue);
@@ -137,6 +145,7 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
             else
             {
                 this->saveOption(new_option);
+            }
             }
         }
     }
@@ -235,11 +244,18 @@ void Bot::testSpecialMinion(int c, Duel* duel, Option& option)
 void Bot::saveOption(Option& option)
 {
     if (option.getCardIds()->size()>0)
+    {
+        if (option.getCardIds()->at(0)<=20) {
+            int breakpoint = 0;
+        }
         this->options.push_back(option);
+
+    }
 }
 void Bot::testOptionCombos(Duel* duel, short n)
 {
     this->generateBaseGamestate(duel);
+    this->options.clear();
     for (int i = 0; i<n; i++)
     {
         if (i == 0)
@@ -447,7 +463,7 @@ void Bot::conductBattlePhase(Duel* duel)
         this->endTesting();
         if (duel->getDuelEnded()) {return;}
     }
-
+    this->endTesting();
 }
 void Bot::playTurn(Duel* duel)
 {
@@ -461,9 +477,10 @@ void Bot::playTurn(Duel* duel)
 
                 if (n_options==0) { this->endTesting(); break;}
                 int option = this->getBestOption();
-                qDebug()<<n_options<<" "<<option;
-                float val = this->options[option].getValue();
+                Card* car = duel->getCardFromCopyId(this->options[option].getCardIds()->at(0));
 
+                float val = this->options[option].getValue();
+                qDebug()<<QString::fromStdString(car->getName())<<" "<<val<<" "<<n_options<<" "<<this->options[option].getCardIds()->at(0);
                 if (val<=0) {
                     this->endTesting();
 

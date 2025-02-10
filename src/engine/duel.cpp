@@ -24,6 +24,15 @@ Duel::Duel()
     this->logsSource = new short [0];
     this->logs = new std::string [0];
     this->n_logs = 0;
+
+    std::vector<Card>* td1 = this->players[0].getTokenDeck();
+    std::vector<Card>* td2 = this->players[1].getTokenDeck();
+    for (short i = 0; i<10; i++)
+    {
+        td1->at(i).setCopyId(i);
+        td2->at(i).setCopyId(i+10);
+    }
+
 }
 Duel::~Duel()
 {
@@ -169,6 +178,40 @@ void Duel::destruction(Card* card)
     }
 
 }
+void Duel::removeToken(Card* card)
+{
+    if (card->isToken())
+    {
+        card->setPlace(0);
+        card->returnToOriginal();
+        card->resetCardName();
+    }
+}
+void Duel::summonToken(Card* card, short token_id, Player* player, short zoneid)
+{
+    Player* owner = card->getOwner();
+    Card* unused_token = nullptr;
+    std::vector<Card>* tokenDeck = owner->getTokenDeck();
+    for (short i = 0; i<10; i++)
+    {
+        if (tokenDeck->at(i).getCardName()->getCardId() == -1)
+        {
+            unused_token = &tokenDeck->at(i);
+            break;
+        }
+    }
+    if (unused_token!=nullptr)
+    {
+        unused_token->setCardName(Card::getCardNameById(token_id));
+        unused_token->returnToOriginal();
+        unused_token->setPlace(2);
+        unused_token->setAttacks(1);
+        player->getMinionField()[zoneid].bindCard(unused_token);
+        player->getMinionField()[zoneid].setUsed(true);
+        this->onSummon(unused_token);
+    }
+
+}
 void Duel::releaseForSpecialSummon(Card* card, Card* sp_minion)
 {
     this->removeFromField(card);
@@ -178,19 +221,29 @@ void Duel::releaseForSpecialSummon(Card* card, Card* sp_minion)
 
 void Duel::toGraveyard(Card* card)
 {
-    card->setPlace(3);
-    Player* owner = card->getOriginalOwner();
-    card->returnToOriginal();
-    owner->addToGraveyard(card);
+    if (card->isToken()) {this->removeToken(card);}
+    else
+    {
+        card->setPlace(3);
+        Player* owner = card->getOriginalOwner();
+        card->returnToOriginal();
+        owner->addToGraveyard(card);
+    }
+
 }
 void Duel::toSpecialDeck(Card* card)
 {
-    if (card->getZone()!=nullptr&&card->getPlace()==2) {this->removeFromField(card);}
-    card->setPlace(4);
-    Player* owner = card->getOriginalOwner();
-    card->returnToOriginal();
-    owner->addToSpecialDeck(card);
-    this->appendLog(this->returnToHandLog(card),this->getPlayerId(card->getOwner()));
+    if (card->isToken()) {this->removeToken(card); this->appendLog(this->removeTokenLog(card),this->getPlayerId(card->getOwner()));}
+    else
+    {
+        if (card->getZone()!=nullptr&&card->getPlace()==2) {this->removeFromField(card);}
+        card->setPlace(4);
+        Player* owner = card->getOriginalOwner();
+        card->returnToOriginal();
+        owner->addToSpecialDeck(card);
+        this->appendLog(this->returnToHandLog(card),this->getPlayerId(card->getOwner()));
+    }
+
 }
 void Duel::removeFromField(Card* card)
 {
@@ -216,6 +269,7 @@ void Duel::summonMinion(Card *minion, short zoneid)
     if ((minion->getCardType()>0)&&(minion->getPlace()!=2)&&zoneid!=-1)
     {
         minion->setPlace(2);
+        minion->setAttacks(1);
         minion->getOwner()->getMinionField()[zoneid].bindCard(minion);
         minion->getOwner()->getMinionField()[zoneid].setUsed(true);
     }
@@ -226,6 +280,7 @@ void Duel::summonSpecialMinion(Card *minion)
         {
             this->summonMinion(minion,this->getEmptyMinionZone(minion->getOriginalOwner()));
             minion->getOriginalOwner()->removeFromSpecialDeck(minion);
+            minion->setAttacks(1);
             this->onSummon(minion);
             this->checkWinner();
         }
@@ -240,24 +295,27 @@ bool Duel::activateSpell(Card *spell)
 }
 void Duel::toHand(Card* card)
 {
-    if (card->getCardType()==2) {this->toSpecialDeck(card);}
-    else{
-        short originalPlace = card->getPlace();
-        if (originalPlace == 1 || originalPlace==4) {return;}
-        card->setPlace(1);
-        card->returnToOriginal();
-        if (card->getZone()!=nullptr&&originalPlace==2) {this->removeFromField(card);}
-        card->getOriginalOwner()->addToHand(card);
-        if (originalPlace == 2 || originalPlace == 3)
-        {
-            this->appendLog(this->returnToHandLog(card),this->getPlayerId(card->getOwner()));
+    if (card->isToken()) {this->removeToken(card);}
+    else
+    {
+        if (card->getCardType()==2) {this->toSpecialDeck(card);}
+        else{
+            short originalPlace = card->getPlace();
+            if (originalPlace == 1 || originalPlace==4) {return;}
+            card->setPlace(1);
+            card->returnToOriginal();
+            if (card->getZone()!=nullptr&&originalPlace==2) {this->removeFromField(card);}
+            card->getOriginalOwner()->addToHand(card);
+            if (originalPlace == 2 || originalPlace == 3)
+            {
+                this->appendLog(this->returnToHandLog(card),this->getPlayerId(card->getOwner()));
+            }
+            if (originalPlace == 0)
+            {
+                this->appendLog(this->addToHandLog(card),this->getPlayerId(card->getOwner()));
+            };
         }
-        if (originalPlace == 0)
-        {
-            this->appendLog(this->addToHandLog(card),this->getPlayerId(card->getOwner()));
-        };
     }
-
 }
 void Duel::searchCard(Card* card)
 {
@@ -614,10 +672,22 @@ void Duel::generateDefendersList(Player* player)
 Card* Duel::getCardFromCopyId(int id)
 {
     short n_deck,n_special;
+    int id_card;
     std::vector<Card>* deck;
+    std::vector<Card>* deck2;
+    deck = players[0].getTokenDeck();
+    deck2 = players[1].getTokenDeck();
+    for (int i = 0; i<10; i++)
+    {
+        id_card = deck->at(i).getCopyId();
+        if (id_card==id) return &deck->at(i);
+        id_card = deck2->at(i).getCopyId();
+        if (id_card==id) return &deck2->at(i);
+    }
+
     n_deck = players[0].getOriginalDeckSize();
     deck = players[0].getOriginalDeck();
-    int id_card;
+
     for (int i=0;i<n_deck;i++)
     {
         id_card = deck->at(i).getCopyId();
@@ -1051,6 +1121,13 @@ std::string Duel::addToHandLog(Card* card)
     std::string playername = card->getOriginalOwner()->getName();
     std::string str;
     str = "[" + playername +"]"+" has added ["+ card_name +"] to their hand";
+    return str;
+}
+std::string Duel::removeTokenLog(Card* card)
+{
+    std::string card_name = std::string(card->getName());
+    std::string str;
+    str = "[" + card_name +"]"+" was removed from the field";
     return str;
 }
 std::string Duel::excavateCardLog(Card* card)

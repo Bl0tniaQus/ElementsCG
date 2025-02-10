@@ -20,6 +20,7 @@ public:
     bool cardNotNull(Card* card);
     void clearTargetList();
     void addToTargetList(Card* card);
+    void targetListFromVector(std::vector<Card*>& v);
     std::vector<Card*> allMinionsOnField(Duel* duel);
     std::vector<Card*> cardsInGraveyard(Player* player);
     std::vector<Card*> cardsInHand(Player* player);

@@ -10,7 +10,7 @@ class Player;
 class CardBase
 {
 private:
-    short cardId;
+    short cardId = -1;
     short cost;
     short cardType; //(0 - spell, 1 - minion, 2 - spminion)
     short level;
@@ -24,6 +24,7 @@ private:
     std::vector<Card*> usedMaterials;
     std::vector<Card*> cardTargets;
     std::vector<int> numericValues;
+    std::vector<int> usedMaterialsIds;
     std::vector<bool> booleanValues;
     TargetList* targetList;
     short requiredMaterialsNumber;
@@ -38,8 +39,9 @@ private:
     bool hasOnSpecialSummonRelease = false;
     bool hasOnSpell = false;
     bool hasOnDestroy = false;
+    bool token = false;
 public:
-    CardBase() {};
+    CardBase();;
     virtual ~CardBase();
     CardBase(short cid, short c, short ct, short l, short a, short d, std::string el, std::string n, std::string i, std::string ctx);
     void bindCard(Card* card) {this->cardEntity = card;}
@@ -49,7 +51,7 @@ public:
     short getLevel() {return this->level;}
     short getAttack() {return this->attack;}
     std::string getCardText() {return this->cardText;}
-    void setMaterials(std::vector<Card*> mats);
+    void setMaterials(std::vector<Card*>& mats);
     short getMaterialNumber() {return this->usedMaterials.size();}
     short getRequiredMaterialsNumber() {return this->requiredMaterialsNumber;}
     void setRequiredMaterialsNumber(short n) {this->requiredMaterialsNumber = n;}
@@ -58,7 +60,7 @@ public:
     std::string getName() {return this->name;}
     std::string getImage() {return this->image;}
     Card* getCardEntity() {return this->cardEntity;}
-
+    void setToken() {this->token = true;}
 
     bool getHasOnTurnStart() {return this->hasOnTurnStart;}
     void setHasOnTurnStart(bool t) {this->hasOnTurnStart = t;}
@@ -82,7 +84,7 @@ public:
     void setHasOnSpecialSummonRelease(bool t) {this->hasOnSpecialSummonRelease = t;}
     bool getHasOnSpell() {return this->hasOnSpell;}
     void setHasOnSpell(bool t) {this->hasOnSpell = t;}
-
+    bool isToken() {return this->token;}
     TargetList* getTargetList() {return this->targetList;}
     void setTargetList(std::vector<Card*>& tl);
     void clearTargetList();
@@ -92,7 +94,6 @@ public:
     void secondEffectLog(Duel* duel, Card* card);
     void thirdEffectLog(Duel* duel, Card* card);
     void spellFromHandLog(Duel* duel, Card* card);
-
     void release2Log(Card* c1, Card* c2, Duel* duel);
     void release3Log(Card* c1, Card* c2, Card* c3, Duel* duel);
 
@@ -125,9 +126,11 @@ public:
     std::vector<Card*>* getCardTargets() {return &this->cardTargets;}
     std::vector<Card*>* getUsedMaterials() {return &this->usedMaterials;}
     std::vector<int>* getNumericValues() {return &this->numericValues;}
+    std::vector<int>* getUsedMaterialsIds() {return &this->usedMaterialsIds;}
     std::vector<bool>* getBooleanValues() {return &this->booleanValues;}
     void resetCardTargets() {this->cardTargets = std::vector<Card*>(0);}
     void resetUsedMaterials() {this->usedMaterials = std::vector<Card*>(0);}
+    void resetUsedMaterialsIds() {this->usedMaterialsIds = std::vector<int>(0);}
     void resetNumericValues() {this->numericValues = std::vector<int>(0);}
     void resetBooleanValues() {this->booleanValues = std::vector<bool>(0);}
 

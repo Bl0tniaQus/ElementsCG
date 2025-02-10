@@ -16,12 +16,12 @@ Player::Player()
     this->specialDeck = std::vector<Card*>(0);
     this->originalDeck = std::vector<Card>(0);
     this->originalSpecialDeck = std::vector<Card>(0);
+    this->tokenDeck = std::vector<Card>(10);
     this->minionField = new Zone [5];
     for (int i=0;i<5;i++)
     {
         this->minionField[i].setId(i);
     }
-
 }
 void Player::setName(const std::string& name)
 {
@@ -42,6 +42,14 @@ void Player::changeMana(short val)
 void Player::setHand(std::vector<Card*>& hand)
 {
     this->hand = std::vector<Card*>(hand);
+}
+void Player::setTokenDeck(std::vector<Card>& deck)
+{
+    this->tokenDeck = std::vector<Card>(10);
+    for (int i=0;i<10;i++)
+    {
+        this->tokenDeck[i].copyProperties(&deck[i]);
+    }
 }
 void Player::setOriginalDeck(std::vector<Card>& deck)
 {
@@ -95,6 +103,11 @@ void Player::setDeckOwnership()
     {
         this->specialDeck[i]->setOwner(this);
         this->specialDeck[i]->setOriginalOwner(this);
+    }
+    for (int i=0;i<10;i++)
+    {
+        this->tokenDeck[i].setOwner(this);
+        this->tokenDeck[i].setOriginalOwner(this);
     }
 }
 void Player::setSpecialDeck(std::vector<Card*>& deck)

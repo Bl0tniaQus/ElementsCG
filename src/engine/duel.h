@@ -55,6 +55,7 @@ public:
     void playFromHand(Card* card);
     void summonFromHand(Card* minion, short zoneid);
     void summonFromGraveyard(Card* minion, short zoneid);
+    void summonToken(Card* card, short token_id, Player* player, short zoneid);
     bool onSpell(Card* card);
     void onSummon(Card* card);
     void onTurnEnd(Card* card);
@@ -76,6 +77,7 @@ public:
     void excavateCard(Card* card);
     void startDuel(Deck *deck0, Deck* deck1);
     int makeSpellChoice(Card* card);
+    void removeToken(Card* card);
     short makeSpecialMinionMaterialChoice(Card* card);
     void addTurnEndLingeringEffect(Card* card);
     void clearTurnEndLingeringEffects();
@@ -96,6 +98,7 @@ public:
     std::string summonLog(Card* card);
     std::string returnToHandLog(Card* card);
     std::string addToHandLog(Card* card);
+    std::string removeTokenLog(Card* card);
     std::string attackLog(Card* attacker, Card* defender);
     std::string directAttackLog(Card* attacker);
     std::string statChangeLog(Card* card, short a_new, short d_new);

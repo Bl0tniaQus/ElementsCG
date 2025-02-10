@@ -8,6 +8,14 @@
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
+
+    for (short i = 0; i<tokenCatalog.size(); i++)
+    {
+        tokenCatalog[i].getValuesFromId(i);
+        tokenCatalog[i].setPlace(0);
+    }
+
+
    /* Duel* duel = new Duel;
     duel->getPlayer(1)->setBot(&bot);
     Deck* deck = new Deck(0);
