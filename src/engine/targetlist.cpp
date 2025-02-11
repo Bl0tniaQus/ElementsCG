@@ -274,6 +274,22 @@ std::vector<Card *> TargetList::nTopCards(std::vector<Card *>& l, short n)
     }
     return targets;
 }
+std::vector<Card *> TargetList::filterUniqueNames(std::vector<Card *>& l)
+{
+    std::vector<Card*> targets(0);
+    std::vector<int> ids(0);
+    for (Card* c : l)
+    {
+        int cnt = std::count(ids.begin(), ids.end(), c->getCardId());
+        if (cnt==0)
+        {
+            targets.push_back(c);
+            ids.push_back(c->getCardId());
+        }
+    }
+    return targets;
+}
+
 
 
 

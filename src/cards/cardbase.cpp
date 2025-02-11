@@ -453,130 +453,130 @@ bool CardBase::specialSummon3(Duel* duel, Card* card)
 }
 void CardBase::allMinionsOnField(Duel* duel)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
     this->setTargetList(targets);
 }
 void CardBase::cardsInHandWithTheSameName(Player* player, const std::string& name)
 {
-    std::vector<Card*> targets = this->targetList->cardsInHand(player);
-    targets = this->targetList->filterCardName(targets, name);
+    std::vector<Card*> targets = TargetList::cardsInHand(player);
+    targets = TargetList::filterCardName(targets, name);
     this->setTargetList(targets);
 }
 void CardBase::cardsWithSameElementInTargetList(const std::string& element)
 {
     std::vector<Card*> targets(*this->targetList->getTargetList());
-    targets = this->targetList->filterOneElement(targets, element);
+    targets = TargetList::filterOneElement(targets, element);
     this->setTargetList(targets);
 }
 void CardBase::cardsInHandWithCommonNamePart(Player* player, const std::string& namePart)
 {
-    std::vector<Card*> targets = this->targetList->cardsInHand(player);
-    targets = this->targetList->filterNamePart(targets, namePart);
+    std::vector<Card*> targets = TargetList::cardsInHand(player);
+    targets = TargetList::filterNamePart(targets, namePart);
     this->setTargetList(targets);
 }
 void CardBase::cardsInDeckWithCommonNamePart(Player* player, const std::string& namePart)
 {
-    std::vector<Card*> targets = this->targetList->cardsInDeck(player);
-    targets = this->targetList->filterNamePart(targets, namePart);
+    std::vector<Card*> targets = TargetList::cardsInDeck(player);
+    targets = TargetList::filterNamePart(targets, namePart);
     this->setTargetList(targets);
 }
 void CardBase::minionsInYourGraveyardWithSameElementAndMaximumLevel(Player* player, const std::string& element, short lvl)
 {
-    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterOneElement(targets, element);
-    targets = this->targetList->filterLevelRange(targets, 0, lvl);
+    std::vector<Card*> targets = TargetList::cardsInGraveyard(player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterOneElement(targets, element);
+    targets = TargetList::filterLevelRange(targets, 0, lvl);
     this->setTargetList(targets);
 }
 void CardBase::cardsInYourGraveyardWithSameElement(Player* player, const std::string& element)
 {
-    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
-    targets = this->targetList->filterOneElement(targets, element);
+    std::vector<Card*> targets = TargetList::cardsInGraveyard(player);
+    targets = TargetList::filterOneElement(targets, element);
     this->setTargetList(targets);
 }
 void CardBase::cardsInYourGraveyardWithExactName(Player* player, const std::string& name)
 {
-    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
-    targets = this->targetList->filterCardName(targets, name);
+    std::vector<Card*> targets = TargetList::cardsInGraveyard(player);
+    targets = TargetList::filterCardName(targets, name);
     this->setTargetList(targets);
 }
 void CardBase::specialMinionsInYourGraveyardWithSameElement(Player* player, const std::string& element)
 {
-    std::vector<Card*> targets = this->targetList->cardsInGraveyard(player);
-    targets = this->targetList->filterCardType(targets, 2);
-    targets = this->targetList->filterOneElement(targets, element);
+    std::vector<Card*> targets = TargetList::cardsInGraveyard(player);
+    targets = TargetList::filterCardType(targets, 2);
+    targets = TargetList::filterOneElement(targets, element);
     this->setTargetList(targets);
 }
 void CardBase::specialMinionsOnYourFieldWithSameElement(Duel* duel, Player* player, const std::string& element)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterCardType(targets, 2);
-    targets = this->targetList->filterOneElement(targets, element);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterCardType(targets, 2);
+    targets = TargetList::filterOneElement(targets, element);
     this->setTargetList(targets);
 }
 void CardBase::minionsInHandWithMaximumLevel(Player* player, short level)
 {
-    std::vector<Card*> targets = this->targetList->cardsInHand(player);
-    targets = this->targetList->filterCardType(targets, 1);
-    targets = this->targetList->filterLevelRange(targets, 0, level);
+    std::vector<Card*> targets = TargetList::cardsInHand(player);
+    targets = TargetList::filterCardType(targets, 1);
+    targets = TargetList::filterLevelRange(targets, 0, level);
     this->setTargetList(targets);
 }
 void CardBase::minionsOnYourFieldWithCommonNamePart(Duel* duel, Player* player, const std::string& namePart)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterNamePart(targets, namePart);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterNamePart(targets, namePart);
     this->setTargetList(targets);
 }
 void CardBase::minionsOnYourFieldWithSameElement(Duel* duel, Player* player, const std::string& element)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterOneElement(targets, element);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterOneElement(targets, element);
     this->setTargetList(targets);
 }
 void CardBase::minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Player* player, const std::string& element, short lvl)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterOneElement(targets, element);
-    targets = this->targetList->filterLevelRange(targets, lvl, 100);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterOneElement(targets, element);
+    targets = TargetList::filterLevelRange(targets, lvl, 100);
     this->setTargetList(targets);
 }
 void CardBase::minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Player* player, const std::string& element, short lvl)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterOneElement(targets, element);
-    targets = this->targetList->filterLevelRange(targets, 0, lvl);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterOneElement(targets, element);
+    targets = TargetList::filterLevelRange(targets, 0, lvl);
     this->setTargetList(targets);
 }
 void CardBase::minionsOnYourFieldWithExactName(Duel* duel, Player* player, const std::string& name)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterCardName(targets, name);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterCardName(targets, name);
     this->setTargetList(targets);
 }
 void CardBase::minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Player* player, const std::string& element1, const std::string& element2, short lvl)
 {
-    std::vector<Card*> targets = this->targetList->allMinionsOnField(duel);
-    targets = this->targetList->filterPlayer(targets, player);
-    targets = this->targetList->filterOutCardType(targets, 0);
-    targets = this->targetList->filterTwoElements(targets, element1, element2);
-    targets = this->targetList->filterLevelRange(targets, lvl, 100);
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterTwoElements(targets, element1, element2);
+    targets = TargetList::filterLevelRange(targets, lvl, 100);
     this->setTargetList(targets);
 }
 void CardBase::nTopCardsFromDeck(Player* player, short n)
 {
-    std::vector<Card*> targets = this->targetList->cardsInDeck(player);
-    targets = this->targetList->nTopCards(targets, n);
+    std::vector<Card*> targets = TargetList::cardsInDeck(player);
+    targets = TargetList::nTopCards(targets, n);
     this->setTargetList(targets);
 }
 short CardBase::highestLevelInTargetList()

@@ -2,6 +2,7 @@
 #include "card.h"
 #include <iostream>
 #include <QDebug>
+#include <thread>
 
 Option::Option(Option& op1, Option& op2)
 {
@@ -128,7 +129,11 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
             card = this->tempGamestate->getCardFromCopyId(c);
 
             //qDebug()<<QString::fromStdString(card->getName());
-            bool res = card->getCardName()->onSpell(this->tempGamestate, card);
+            bool res = true;
+            if (card->getCardType()==0){card->getCardName()->onSpell(this->tempGamestate, card);}
+            else {
+                this->tempGamestate->playFromHand(card);
+            }
             if (res)
             {
                 this->tempGamestate->passTurn();
@@ -198,6 +203,7 @@ void Bot::testSpecialMinion(int c, Duel* duel, Option& option)
         thirdIds[i] = thirdList->at(i)->getCopyId();
     }
     Card* cardA; Card* cardB; Card* cardC;
+    std::vector<std::vector<int>> checked(0);
     if (cardBase->getRequiredMaterialsNumber()==2)
     {
 
@@ -208,9 +214,16 @@ void Bot::testSpecialMinion(int c, Duel* duel, Option& option)
                 this->generateTempGamestate(duel);
                 cardA = this->tempGamestate->getCardFromCopyId(firstIds[i]);
                 cardB = this->tempGamestate->getCardFromCopyId(secondIds[j]);
+                int idA = cardA->getCopyId();
+                int idB = cardB->getCopyId();
+                std::vector<int> pair = {idA,idB};
+                int cnt = std::count(checked.begin(), checked.end(), pair);
+                if (cnt > 0 ) continue;
 
                 if (cardA!=cardB)
                 {
+                    checked.push_back({idA,idB});
+                    checked.push_back({idB,idA});
                     this->material1 = cardA;
                     this->material2 = cardB;
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
@@ -245,11 +258,7 @@ void Bot::saveOption(Option& option)
 {
     if (option.getCardIds()->size()>0)
     {
-        if (option.getCardIds()->at(0)<=20) {
-            int breakpoint = 0;
-        }
         this->options.push_back(option);
-
     }
 }
 void Bot::testOptionCombos(Duel* duel, short n)
@@ -282,15 +291,18 @@ void Bot::generateOptions(Duel* duel, Option& option)
 {
     Player* player;
     player = duel->getPlayer(duel->getTurnPlayer());
-    short n_hand = player->getHandSize();
-    for (int z = 0;z<n_hand;z++)
+    short n;
+    std::vector<Card*> hand = TargetList::filterUniqueNames(*player->getHand());
+    n = hand.size();
+    for (int z = 0;z<n;z++)
     {
-        this->testCardFromHand(player->getHand()->at(z)->getCopyId(), duel, option);
+        this->testCardFromHand(hand[z]->getCopyId(), duel, option);
     }
-    short n_special = player->getSpecialDeckSize();
-    for (int z = 0;z<n_special;z++)
+    std::vector<Card*> sp = TargetList::filterUniqueNames(*player->getSpecialDeck());
+    n = sp.size();
+    for (int z = 0;z<n;z++)
     {
-        this->testSpecialMinion(player->getSpecialDeck()->at(z)->getCopyId(), duel, option);
+        this->testSpecialMinion(sp[z]->getCopyId(), duel, option);
     }
 
 }
