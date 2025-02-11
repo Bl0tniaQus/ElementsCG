@@ -1,7 +1,6 @@
 #ifndef BOT_H
 #define BOT_H
 #include "gamestate.h"
-
 class Option
 {
 private:
@@ -73,6 +72,7 @@ public:
     void endTesting();
     void playTurn(Duel* duel);
     void generateOptions(Duel* duel, Option& option);
+    void optionGenerationThread(Duel* duel, std::vector<Option>& opts);
     Card* getFirstMaterial() {return this->material1;}
     Card* getSecondMaterial() {return this->material2;}
     Card* getThirdMaterial() {return this->material3;}

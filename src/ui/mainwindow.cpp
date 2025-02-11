@@ -16,6 +16,19 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     delete this->ui->playerNameUselessTab;
     delete this->ui->opponentNameUselessTab;
     delete this->ui->duelLogUselessTab;
+    QPixmap heart = QPixmap(":/life");
+    this->ui->heartPlayer->setScaledContents(true);
+    this->ui->heartPlayer->setPixmap(heart);
+    this->ui->heartOpponent->setScaledContents(true);
+    this->ui->heartOpponent->setPixmap(heart);
+    this->ui->playerLifeValue->raise();
+    this->ui->playerLifeValue->setGeometry(this->ui->heartPlayer->geometry());
+    this->ui->playerLifeValue->resize(51,42);
+    this->ui->playerLifeValue->setStyleSheet("color:black; font-size:20px; font-weight:bold;");
+    this->ui->opponentLifeValue->raise();
+    this->ui->opponentLifeValue->setGeometry(this->ui->heartOpponent->geometry());
+    this->ui->opponentLifeValue->resize(51,42);
+    this->ui->opponentLifeValue->setStyleSheet("color:black; font-size:20px; font-weight:bold;");
     connect(this->ui->startDuelButton, &QPushButton::released, this, &MainWindow::startDuel);
 }
 

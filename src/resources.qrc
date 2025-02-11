@@ -1,5 +1,12 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+    <file alias="life">resources/images/life.png</file>
+    <file alias="backgroundearth">resources/images/background_earth.jpg</file>
+    <file alias="backgroundair">resources/images/background_air.jpg</file>
+    <file alias="backgroundlight">resources/images/background_light.jpg</file>
+    <file alias="backgroundfire">resources/images/background_fire.jpg</file>
+    <file alias="backgrounddark">resources/images/background_dark.jpg</file>
+    <file alias="backgroundwater">resources/images/background_water.jpg</file>
     <file alias="dragonoidwarrior">resources/images/dragonoidwarrior.jpg</file>
     <file alias="copperworm">resources/images/copperworm.jpg</file>
     <file alias="tungstenfirefly">resources/images/tungstenfirefly.jpg</file>

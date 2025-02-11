@@ -12,31 +12,38 @@ void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
        QString text = QString::fromStdString(card->getCardText());
        QString name = QString::fromStdString(card->getName());
        QString color = "black";
+       QString background = "";
        QString TL,TR,BL,BR;
        std::string attribute = card->getElement();
        if (attribute=="Earth")
        {
         color = "#854500";
+        background = "backgroundearth";
        }
        else if (attribute == "Air")
        {
         color = "green";
+        background = "backgroundair";
        }
        else if (attribute == "Light")
        {
-        color = "yellow";
+        color = "#d2d24a";
+        background = "backgroundlight";
        }
        else if (attribute == "Dark")
        {
-        color = "purple";
+        color = "#713e71";
+        background = "backgrounddark";
        }
        else if (attribute == "Fire")
        {
-        color = "red";
+        color = "#d03d3d";
+        background = "backgroundfire";
        }
-       else if (attribute == "Air")
+       else if (attribute == "Water")
        {
-        color = "blue";
+        color = "#469dfa";
+        background = "backgroundwater";
        }
 
        char type = card->getCardType();
@@ -66,12 +73,14 @@ void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
        this->ui->cardHighlight->setScaledContents(true);
        this->ui->cardText->setText(text);
        this->ui->cardName->setText(name);
-       this->ui->leftPanel->setStyleSheet("border: 7px solid "+color+";");
-       this->ui->cardHighlight->setStyleSheet("border: 5px dashed "+color+";");
-       this->ui->cardTextFrame->setStyleSheet("border: 5px dashed "+color+";");
+       this->ui->leftPanel->setStyleSheet("border: 10px solid "+color+"; border-radius:20px; background-image:url(://"+background+");");
+       this->ui->cardHighlight->setStyleSheet("border:none; background:none;");
+       this->ui->cardTextFrame->setStyleSheet("border:none; background:none;");
        this->ui->cardTextTL->setText(TL);
+       this->ui->cardTextTL->setStyleSheet("background:none;");
        this->ui->cardTextBL->setText(BL);
        this->ui->cardTextT->setText(QString::fromStdString(attribute));
+       this->ui->cardText->setStyleSheet("border:none; border-radius: 0px; border-top: 3px solid "+color+"; border-bottom: 3px solid "+color+"; padding-top:4px; background:none;");
        this->ui->cardTextTR->setText(TR);
        this->ui->cardTextBR->setText(BR);
     }

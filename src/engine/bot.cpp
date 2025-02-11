@@ -2,8 +2,6 @@
 #include "card.h"
 #include <iostream>
 #include <QDebug>
-#include <thread>
-
 Option::Option(Option& op1, Option& op2)
 {
     this->cardIds = std::vector<int>(0);
@@ -483,7 +481,7 @@ void Bot::playTurn(Duel* duel)
             {
 
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
-                this->testOptionCombos(duel, 2);
+                this->testOptionCombos(duel, 3);
 
                 int n_options = this->getOptionsNumber();
 
