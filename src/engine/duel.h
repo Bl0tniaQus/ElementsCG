@@ -65,6 +65,7 @@ public:
     void onDestroy(Card* card);
     void onCombat(Card* card);
     void updateBoard();
+    void botThinking(bool v);
     void summonSpecialMinion(Card *minion);
     void DuelControl(Deck *deck0, Deck* deck1);
     void generateAttackersList(Player* player);

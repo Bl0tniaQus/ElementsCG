@@ -101,6 +101,37 @@
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="geometry">
+         <rect>
+          <x>680</x>
+          <y>410</y>
+          <width>160</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>3</number>
+        </property>
+        <property name="pageStep">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>2</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::NoTicks</enum>
+        </property>
+        <property name="tickInterval">
+         <number>1</number>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="stackedWidgetPage2">
        <widget class="QFrame" name="leftPanel">
@@ -1046,7 +1077,7 @@
          <rect>
           <x>400</x>
           <y>720</y>
-          <width>331</width>
+          <width>221</width>
           <height>91</height>
          </rect>
         </property>
@@ -1064,43 +1095,36 @@
          <attribute name="title">
           <string/>
          </attribute>
-         <widget class="QLabel" name="playerSummonLimitLabel">
-          <property name="geometry">
-           <rect>
-            <x>200</x>
-            <y>20</y>
-            <width>91</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Summon limit:</string>
-          </property>
-         </widget>
          <widget class="QLabel" name="playerManaValue">
           <property name="geometry">
            <rect>
-            <x>110</x>
-            <y>20</y>
+            <x>80</x>
+            <y>10</y>
             <width>31</width>
             <height>31</height>
            </rect>
           </property>
           <property name="text">
            <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
          <widget class="QLabel" name="playerDeckCount">
           <property name="geometry">
            <rect>
-            <x>180</x>
-            <y>20</y>
+            <x>140</x>
+            <y>10</y>
             <width>31</width>
             <height>31</height>
            </rect>
           </property>
           <property name="text">
            <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
          <widget class="QLabel" name="playerLifeValue">
@@ -1119,37 +1143,11 @@
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
-         <widget class="QLabel" name="playerManaLabel">
-          <property name="geometry">
-           <rect>
-            <x>70</x>
-            <y>20</y>
-            <width>51</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Mana:</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="playerDeckLabel">
-          <property name="geometry">
-           <rect>
-            <x>140</x>
-            <y>20</y>
-            <width>41</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Deck:</string>
-          </property>
-         </widget>
          <widget class="QLabel" name="playerSummonLimitValue">
           <property name="geometry">
            <rect>
-            <x>290</x>
-            <y>20</y>
+            <x>170</x>
+            <y>10</y>
             <width>31</width>
             <height>31</height>
            </rect>
@@ -1157,11 +1155,53 @@
           <property name="text">
            <string/>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
          <widget class="QLabel" name="heartPlayer">
           <property name="geometry">
            <rect>
             <x>10</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="manaPlayer">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="deckPlayer">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="summonLimitPlayer">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
             <y>0</y>
             <width>51</width>
             <height>51</height>
@@ -1183,7 +1223,7 @@
          <rect>
           <x>400</x>
           <y>0</y>
-          <width>651</width>
+          <width>401</width>
           <height>91</height>
          </rect>
         </property>
@@ -1205,7 +1245,7 @@
          <widget class="QLabel" name="opponentManaValue">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>60</x>
             <y>10</y>
             <width>31</width>
             <height>31</height>
@@ -1214,18 +1254,8 @@
           <property name="text">
            <string/>
           </property>
-         </widget>
-         <widget class="QLabel" name="opponentManaLabel">
-          <property name="geometry">
-           <rect>
-            <x>70</x>
-            <y>10</y>
-            <width>51</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Mana:</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
          <widget class="QLabel" name="opponentLifeValue">
@@ -1247,8 +1277,8 @@
          <widget class="QLabel" name="opponentDeckCount">
           <property name="geometry">
            <rect>
-            <x>250</x>
-            <y>10</y>
+            <x>170</x>
+            <y>20</y>
             <width>31</width>
             <height>31</height>
            </rect>
@@ -1256,37 +1286,14 @@
           <property name="text">
            <string/>
           </property>
-         </widget>
-         <widget class="QLabel" name="opponentHandLabel">
-          <property name="geometry">
-           <rect>
-            <x>140</x>
-            <y>10</y>
-            <width>41</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Hand:</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="opponentDeckLabel">
-          <property name="geometry">
-           <rect>
-            <x>210</x>
-            <y>10</y>
-            <width>41</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Deck:</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
          <widget class="QLabel" name="opponentHandCount">
           <property name="geometry">
            <rect>
-            <x>180</x>
+            <x>120</x>
             <y>10</y>
             <width>31</width>
             <height>31</height>
@@ -1295,11 +1302,14 @@
           <property name="text">
            <string/>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
          <widget class="QLabel" name="opponentSummonLimitValue">
           <property name="geometry">
            <rect>
-            <x>490</x>
+            <x>240</x>
             <y>10</y>
             <width>41</width>
             <height>31</height>
@@ -1308,11 +1318,14 @@
           <property name="text">
            <string/>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
          <widget class="QLabel" name="opponentSpecialDeckCount">
           <property name="geometry">
            <rect>
-            <x>330</x>
+            <x>220</x>
             <y>10</y>
             <width>31</width>
             <height>31</height>
@@ -1321,31 +1334,8 @@
           <property name="text">
            <string/>
           </property>
-         </widget>
-         <widget class="QLabel" name="opponentSpecialDeckLabel">
-          <property name="geometry">
-           <rect>
-            <x>270</x>
-            <y>10</y>
-            <width>61</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Sp. Deck:</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="opponentSummonLimitLabel">
-          <property name="geometry">
-           <rect>
-            <x>380</x>
-            <y>10</y>
-            <width>111</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Summon limit:</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
          <widget class="QLabel" name="heartOpponent">
@@ -1359,6 +1349,97 @@
           </property>
           <property name="text">
            <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="spinningCircle">
+          <property name="geometry">
+           <rect>
+            <x>340</x>
+            <y>20</y>
+            <width>31</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="manaOpponent">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="handOpponent">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="deckOpponent">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="specialDeckOpponent">
+          <property name="geometry">
+           <rect>
+            <x>210</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="summonLimitOpponent">
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>0</y>
+            <width>51</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="botThinking">
+          <property name="geometry">
+           <rect>
+            <x>330</x>
+            <y>0</y>
+            <width>71</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Thinking</string>
           </property>
          </widget>
         </widget>

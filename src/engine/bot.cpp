@@ -443,8 +443,9 @@ void Bot::conductBattlePhase(Duel* duel)
     while(true)
     {
         this->generateBaseGamestate(duel);
+        this->toggleThinking(duel, true);
         this->testBattlePhase(duel);
-
+        this->toggleThinking(duel, false);
         int n_options = this->getOptionsNumber();
         if (n_options==0) { this->endTesting(); break;}
         else
@@ -481,8 +482,9 @@ void Bot::playTurn(Duel* duel)
             {
 
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
+                this->toggleThinking(duel, true);
                 this->testOptionCombos(duel, 3);
-
+                this->toggleThinking(duel, false);
                 int n_options = this->getOptionsNumber();
 
                 if (n_options==0) { this->endTesting(); break;}
@@ -507,6 +509,10 @@ void Bot::playTurn(Duel* duel)
             if (!duel->getDuelEnded()){duel->passTurn();}
 
 
+}
+void Bot::toggleThinking(Duel* duel, bool v)
+{
+    duel->botThinking(v);
 }
 
 

@@ -1,6 +1,12 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file alias="life">resources/images/life.png</file>
+    <file alias="life">resources/images/lifeicon.png</file>
+    <file alias="mana">resources/images/manaicon.png</file>
+    <file alias="deck">resources/images/deckicon.png</file>
+    <file alias="spdeck">resources/images/spdeckicon.png</file>
+    <file alias="hand">resources/images/handicon.png</file>
+    <file alias="summonlimit">resources/images/summonlimiticon.png</file>
+    <file alias="spinningcircle">resources/images/spinningcircle.gif</file>
     <file alias="backgroundearth">resources/images/background_earth.jpg</file>
     <file alias="backgroundair">resources/images/background_air.jpg</file>
     <file alias="backgroundlight">resources/images/background_light.jpg</file>

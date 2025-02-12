@@ -35,6 +35,7 @@ private:
     Card* material2;
     Card* material3;
     int targetId = -1;
+
 public:
     Bot();
     ~Bot();
@@ -79,5 +80,6 @@ public:
     int getTargetId() {return this->targetId;}
     void setTargetId(int id) {this->targetId = id;}
     void performAction(Duel* duel, Option& option, bool display = false);
+    void toggleThinking(Duel* duel, bool v);
 };
 #endif // BOT_H

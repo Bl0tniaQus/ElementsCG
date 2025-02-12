@@ -5,6 +5,7 @@
 #include "../engine/zone.h"
 #include <iostream>
 #include <QDebug>
+#include <QMovie>
 #include <QScrollBar>
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), duelThread(this)
 {
@@ -17,18 +18,111 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     delete this->ui->opponentNameUselessTab;
     delete this->ui->duelLogUselessTab;
     QPixmap heart = QPixmap(":/life");
+    QPixmap mana = QPixmap(":/mana");
+    QPixmap hand = QPixmap(":/hand");
+    QPixmap spdeck = QPixmap(":/spdeck");
+    QPixmap deck = QPixmap(":/deck");
+    QPixmap sl = QPixmap(":/summonlimit");
+    QMovie* circle = new QMovie(":/spinningcircle");
+    QString styles_black = "QToolTip {background-color:#353535; color:white;} *{color:black; font-size:20px; font-weight:bold;}";
+    QString styles_white = "QToolTip {background-color:#353535; color:white;} *{color:white; font-size:20px; font-weight:bold;}";
     this->ui->heartPlayer->setScaledContents(true);
     this->ui->heartPlayer->setPixmap(heart);
-    this->ui->heartOpponent->setScaledContents(true);
-    this->ui->heartOpponent->setPixmap(heart);
+    this->ui->heartPlayer->setStyleSheet(styles_black);
+    this->ui->heartPlayer->setToolTip("Hit points");
+    this->ui->manaPlayer->setScaledContents(true);
+    this->ui->manaPlayer->setPixmap(mana);
+    this->ui->manaPlayer->setStyleSheet(styles_black);
+    this->ui->manaPlayer->setToolTip("Mana");
+    this->ui->deckPlayer->setScaledContents(true);
+    this->ui->deckPlayer->setPixmap(deck);
+    this->ui->deckPlayer->setStyleSheet(styles_black);
+    this->ui->deckPlayer->setToolTip("Cards in deck");
+    this->ui->summonLimitPlayer->setStyleSheet(styles_black);
+    this->ui->summonLimitPlayer->setToolTip("Remaining normal summons");
+    this->ui->summonLimitPlayer->setScaledContents(true);
+    this->ui->summonLimitPlayer->setPixmap(sl);
+    this->ui->playerLifeValue->setToolTip("Hit Points");
     this->ui->playerLifeValue->raise();
     this->ui->playerLifeValue->setGeometry(this->ui->heartPlayer->geometry());
     this->ui->playerLifeValue->resize(51,42);
-    this->ui->playerLifeValue->setStyleSheet("color:black; font-size:20px; font-weight:bold;");
+    this->ui->playerLifeValue->setStyleSheet(styles_black);
+    this->ui->playerManaValue->setToolTip("Mana");
+    this->ui->playerManaValue->raise();
+    this->ui->playerManaValue->setGeometry(this->ui->manaPlayer->geometry());
+    this->ui->playerManaValue->resize(51,42);
+    this->ui->playerManaValue->setStyleSheet(styles_black);
+    this->ui->playerDeckCount->setToolTip("Cards in deck");
+    this->ui->playerDeckCount->raise();
+    this->ui->playerDeckCount->setGeometry(this->ui->deckPlayer->geometry());
+    this->ui->playerDeckCount->resize(51,42);
+    this->ui->playerDeckCount->setStyleSheet(styles_white);
+    this->ui->playerSummonLimitValue->setToolTip("Remaining normal summons");
+    this->ui->playerSummonLimitValue->raise();
+    this->ui->playerSummonLimitValue->setGeometry(this->ui->summonLimitPlayer->geometry());
+    this->ui->playerSummonLimitValue->resize(51,42);
+    this->ui->playerSummonLimitValue->setStyleSheet(styles_black);
+
+
+    this->ui->heartOpponent->setScaledContents(true);
+    this->ui->heartOpponent->setPixmap(heart);
+    this->ui->heartOpponent->setStyleSheet(styles_black);
+    this->ui->heartOpponent->setToolTip("Hit points");
+    this->ui->manaOpponent->setScaledContents(true);
+    this->ui->manaOpponent->setPixmap(mana);
+    this->ui->manaOpponent->setStyleSheet(styles_black);
+    this->ui->manaOpponent->setToolTip("Mana");
+    this->ui->handOpponent->setScaledContents(true);
+    this->ui->handOpponent->setPixmap(hand);
+    this->ui->handOpponent->setStyleSheet(styles_black);
+    this->ui->handOpponent->setToolTip("Cards in hand");
+    this->ui->deckOpponent->setScaledContents(true);
+    this->ui->deckOpponent->setPixmap(deck);
+    this->ui->deckOpponent->setStyleSheet(styles_black);
+    this->ui->deckOpponent->setToolTip("Cards in deck");
+    this->ui->specialDeckOpponent->setScaledContents(true);
+    this->ui->specialDeckOpponent->setPixmap(spdeck);
+    this->ui->specialDeckOpponent->setStyleSheet(styles_black);
+    this->ui->specialDeckOpponent->setToolTip("Cards in sp. deck");
+    this->ui->summonLimitOpponent->setScaledContents(true);
+    this->ui->summonLimitOpponent->setPixmap(sl);
+    this->ui->summonLimitOpponent->setStyleSheet(styles_black);
+    this->ui->summonLimitOpponent->setToolTip("Remaining normal summons");
+
+    this->ui->opponentLifeValue->setToolTip("Hit points");
     this->ui->opponentLifeValue->raise();
     this->ui->opponentLifeValue->setGeometry(this->ui->heartOpponent->geometry());
     this->ui->opponentLifeValue->resize(51,42);
-    this->ui->opponentLifeValue->setStyleSheet("color:black; font-size:20px; font-weight:bold;");
+    this->ui->opponentLifeValue->setStyleSheet(styles_black);
+    this->ui->opponentManaValue->setToolTip("Mana");
+    this->ui->opponentManaValue->raise();
+    this->ui->opponentManaValue->setGeometry(this->ui->manaOpponent->geometry());
+    this->ui->opponentManaValue->resize(51,42);
+    this->ui->opponentManaValue->setStyleSheet(styles_black);
+    this->ui->opponentHandCount->setToolTip("Cards in hand");
+    this->ui->opponentHandCount->raise();
+    this->ui->opponentHandCount->setGeometry(this->ui->handOpponent->geometry());
+    this->ui->opponentHandCount->resize(51,42);
+    this->ui->opponentHandCount->setStyleSheet(styles_white);
+    this->ui->opponentDeckCount->setToolTip("Cards in deck");
+    this->ui->opponentDeckCount->raise();
+    this->ui->opponentDeckCount->setGeometry(this->ui->deckOpponent->geometry());
+    this->ui->opponentDeckCount->resize(51,42);
+    this->ui->opponentDeckCount->setStyleSheet(styles_white);
+    this->ui->opponentSpecialDeckCount->setToolTip("Cards in sp. deck");
+    this->ui->opponentSpecialDeckCount->raise();
+    this->ui->opponentSpecialDeckCount->setGeometry(this->ui->specialDeckOpponent->geometry());
+    this->ui->opponentSpecialDeckCount->resize(51,42);
+    this->ui->opponentSpecialDeckCount->setStyleSheet(styles_white);
+    this->ui->opponentSummonLimitValue->setToolTip("Remaining normal summons");
+    this->ui->opponentSummonLimitValue->raise();
+    this->ui->opponentSummonLimitValue->setGeometry(this->ui->summonLimitOpponent->geometry());
+    this->ui->opponentSummonLimitValue->resize(51,42);
+    this->ui->opponentSummonLimitValue->setStyleSheet(styles_black);
+    this->botThinking(false);
+    this->ui->spinningCircle->setMovie(circle);
+    circle->start();
+    this->ui->spinningCircle->setScaledContents(true);
     connect(this->ui->startDuelButton, &QPushButton::released, this, &MainWindow::startDuel);
 }
 
@@ -79,6 +173,7 @@ void MainWindow::startDuel()
     connect(this->bridge, &DuelUiBridge::drawTurnPlayer, this, &MainWindow::turnPlayer);
     connect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
     connect(this->ui->endDuelButton, &QPushButton::released, this, &MainWindow::clearDuel);
+    connect(this->bridge, &DuelUiBridge::botThinkingSignal, this, &MainWindow::botThinking);
 
     this->bridge->moveToThread(&duelThread);
     duelThread.start();
@@ -944,7 +1039,7 @@ void MainWindow::setLogLabels()
         logs_new[i]->setFrameShape(QFrame::Box);
         QString color;
         short source = this->duel->getLogSources()[i];
-        if (source==0) {color = "blue";}
+        if (source==0) {color = "#3366ff";}
         else if (source==1) {color = "red";}
         else if (source==2) {color = "white";}
         logs_new[i]->setStyleSheet("border:none; border-left:4px solid "+ color + ";");
@@ -1062,7 +1157,7 @@ void MainWindow::clearDuel()
     disconnect(this->bridge, &DuelUiBridge::drawTurnPlayer, this, &MainWindow::turnPlayer);
     disconnect(this->ui->endTurnButton, &QPushButton::released, this, &MainWindow::turnEnd);
     disconnect(this->ui->endDuelButton, &QPushButton::released, this, &MainWindow::clearDuel);
-
+    disconnect(this->bridge, &DuelUiBridge::botThinkingSignal, this, &MainWindow::botThinking);
     this->duelThread.exit();
     delete this->duel;
     delete this->bridge;
@@ -1076,6 +1171,12 @@ void MainWindow::turnPlayer()
     QString qstr = QString::fromStdString(str);
     this->ui->turnPlayerLabel->setText(qstr);
 }
+void MainWindow::botThinking(bool v)
+{
+    this->ui->spinningCircle->setVisible(v);
+    this->ui->botThinking->setVisible(v);
+}
+
 void MainWindow::loadDecks()
 {
     this->ui->playerDeckSelectTraining->setInsertPolicy(QComboBox::InsertAtBottom);

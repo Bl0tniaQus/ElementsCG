@@ -14,15 +14,6 @@ int main(int argc, char *argv[])
         tokenCatalog[i].getValuesFromId(i);
         tokenCatalog[i].setPlace(0);
     }
-
-
-   /* Duel* duel = new Duel;
-    duel->getPlayer(1)->setBot(&bot);
-    Deck* deck = new Deck(0);
-    Deck* deck2 = new Deck(0);
-    duel->DuelControl(deck, deck2);
-    delete deck;
-    delete deck2;*/
     QApplication a(argc, argv);
     //shoutout to QuantumCD for theme
     //https://gist.github.com/QuantumCD/6245215
@@ -39,7 +30,6 @@ int main(int argc, char *argv[])
     darkPalette.setColor(QPalette::ButtonText, Qt::white);
     darkPalette.setColor(QPalette::BrightText, Qt::red);
     darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-
     darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 

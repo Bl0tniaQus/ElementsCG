@@ -97,6 +97,7 @@ public slots:
     void turnEnd();
     void turnPlayer();
     void endDuel(short result);
+    void botThinking(bool v);
 signals:
     void duelStartSignal();
     void handAction(short id);

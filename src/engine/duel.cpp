@@ -969,7 +969,13 @@ void Duel::updateBoard()
         this->uiBridge->updateBoard();
     }
 }
-
+void Duel::botThinking(bool v)
+{
+    if (this->uiBridge!=nullptr)
+    {
+        this->uiBridge->botThinking(v);
+    }
+}
 void Duel::turnStartLog()
 {
     std::string str = "Turn "+std::to_string(this->turnCount);
@@ -1176,6 +1182,7 @@ std::string Duel::duelResultLog(short res)
     }
     return str;
 }
+
 
 
 

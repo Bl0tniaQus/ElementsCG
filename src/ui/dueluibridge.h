@@ -38,6 +38,7 @@ public:
     short makeSpecialMinionMaterialChoice(Card* card);
     void setDecks(int a, int b) {this->playerDeck = a; this->opponentDeck = b;}
     void delay(int ms);
+    void botThinking(bool v);
 public slots:
     void initiateDuel();
     void playFromHand(short id);
@@ -63,6 +64,7 @@ signals:
     void drawLastMaterialTargets(Card* card);
     void waitForSpellTarget();
     void duelEndSignal(short result);
+    void botThinkingSignal(bool v);
 };
 
 #endif

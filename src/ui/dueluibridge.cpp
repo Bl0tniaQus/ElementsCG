@@ -200,9 +200,12 @@ void DuelUiBridge::delay(int ms)
 {
     this->updateBoard();
     QThread::msleep(ms);
-
-
 }
+void DuelUiBridge::botThinking(bool v)
+{
+        emit botThinkingSignal(v);
+}
+
 
 
 
