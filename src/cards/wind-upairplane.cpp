@@ -8,11 +8,33 @@ bool WindUpAirplane::specialSummon(Duel* duel, Card* card)
 }
 void WindUpAirplane::getFirstMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithSameElementAndMinimumLevel(duel,card->getOwner(),"Air",3);
+    this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
 }
 void WindUpAirplane::getSecondMaterialList(Duel* duel, Card* card)
 {
-    this->minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(duel,card->getOwner(),"Air","Earth",3);
+    this->minionsOnYourFieldWithOneOfTwoElements(duel,card->getOwner(),"Air","Earth");
+}
+void WindUpAirplane::onSummon(Duel* duel, Card* card)
+{
+    if (!card->getIsNegated())
+    {
+        int val = this->getNumericValues()->at(0);
+        val = val + 2;
+        this->getNumericValues()->at(0) = val;
+        this->effectLog(duel, card);
+        duel->changeStats(card,2,0);
+    }
+}
+void WindUpAirplane::onTurnStart(Duel* duel, Card* card)
+{
+    card->setAttacks(1);
+    int val = this->getNumericValues()->at(0);
+    if (!card->getIsNegated() && val > 0)
+    {
+        this->getNumericValues()->at(0) = val - 1;
+        this->effectLog(duel, card);
+        duel->changeStats(card,-1,0);
+    }
 }
 
 

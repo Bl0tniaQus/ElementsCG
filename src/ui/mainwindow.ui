@@ -33,7 +33,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="stackedWidgetPage1">
        <widget class="QPushButton" name="startDuelButton">
@@ -101,11 +101,11 @@
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QSlider" name="difficultySlider">
         <property name="geometry">
          <rect>
-          <x>680</x>
-          <y>410</y>
+          <x>660</x>
+          <y>430</y>
           <width>160</width>
           <height>24</height>
          </rect>
@@ -130,6 +130,45 @@
         </property>
         <property name="tickInterval">
          <number>1</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="difficulty">
+        <property name="geometry">
+         <rect>
+          <x>660</x>
+          <y>390</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Difficulty</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="easy">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>450</y>
+          <width>31</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Easy</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="hard">
+        <property name="geometry">
+         <rect>
+          <x>800</x>
+          <y>450</y>
+          <width>31</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Hard</string>
         </property>
        </widget>
       </widget>

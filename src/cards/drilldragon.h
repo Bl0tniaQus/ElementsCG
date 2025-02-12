@@ -10,11 +10,11 @@ public:
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         7, //level
         5, //attack
-        4, //defence
+        5, //defence
         "Air", //element
         "Drill Dragon", //name
         "drilldragon",
-        "[Lv. 3 or higher air minion + Lv.3 or higher earth or air minion]\n1) When this attacks an earth minion: it gains 2 attack for that attack."
+        "[Lv. 3 or higher air minion + Lv.3 or higher earth or air minion]\n1) When this attacks an earth minion: it gains 4 attack for that attack."
     ) {this->setRequiredMaterialsNumber(2);this->setHasOnAttack(1); this->setHasAfterAttack(1);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;

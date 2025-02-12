@@ -573,6 +573,14 @@ void CardBase::minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel,
     targets = TargetList::filterLevelRange(targets, lvl, 100);
     this->setTargetList(targets);
 }
+void CardBase::minionsOnYourFieldWithOneOfTwoElements(Duel* duel, Player* player, const std::string& element1, const std::string& element2)
+{
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterOutCardType(targets, 0);
+    targets = TargetList::filterTwoElements(targets, element1, element2);
+    this->setTargetList(targets);
+}
 void CardBase::nTopCardsFromDeck(Player* player, short n)
 {
     std::vector<Card*> targets = TargetList::cardsInDeck(player);

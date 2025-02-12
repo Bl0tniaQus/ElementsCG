@@ -134,6 +134,7 @@ void MainWindow::startDuel()
 {
     int playerDeck = this->ui->playerDeckSelectTraining->currentIndex()+1;
     int opponentDeck = this->ui->opponentDeckSelectTraining->currentIndex()+1;
+    bot.setDifficulty(this->ui->difficultySlider->value());
     this->ui->targetBox->setVisible(false);
     this->ui->endDuelButton->setVisible(false);
     this->ui->endDuelButton->setDisabled(true);

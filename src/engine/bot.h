@@ -20,6 +20,7 @@ public:
 class Bot
 {
 private:
+    short difficulty = 2;
     Gamestate* baseGamestate;
     Gamestate* tempGamestate;
     Gamestate* testingGamestate;
@@ -81,5 +82,6 @@ public:
     void setTargetId(int id) {this->targetId = id;}
     void performAction(Duel* duel, Option& option, bool display = false);
     void toggleThinking(Duel* duel, bool v);
+    void setDifficulty(short v) {this->difficulty = v;}
 };
 #endif // BOT_H

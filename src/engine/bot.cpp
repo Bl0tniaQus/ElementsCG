@@ -483,7 +483,7 @@ void Bot::playTurn(Duel* duel)
 
                 Player* player = duel->getPlayer(duel->getTurnPlayer());
                 this->toggleThinking(duel, true);
-                this->testOptionCombos(duel, 3);
+                this->testOptionCombos(duel, this->difficulty);
                 this->toggleThinking(duel, false);
                 int n_options = this->getOptionsNumber();
 

@@ -31,7 +31,7 @@ void DragonoidStormChaser::afterAttack(Duel* duel, Card* card, Card* attacker, s
 }
 void DragonoidStormChaser::afterDefence(Duel* duel, Card* card, Card* attacker, short damage)
 {
-        this->afterDefence(duel,card,nullptr,0);
+        this->afterAttack(duel,card,nullptr,0);
 }
 
 

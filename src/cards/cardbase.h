@@ -150,6 +150,7 @@ public:
     void minionsOnYourFieldWithSameElement(Duel* duel, Player* player, const std::string& element);
     void minionsOnYourFieldWithSameElementAndMinimumLevel(Duel* duel, Player* player, const std::string& element, short lvl);
     void minionsOnYourFieldWithSameElementAndMaximumLevel(Duel* duel, Player* player, const std::string&, short lvl);
+    void minionsOnYourFieldWithOneOfTwoElements(Duel* duel, Player* player, const std::string& element1, const std::string& element2);
     void minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Player* player, const std::string& element1, const std::string& element2, short lvl);
     void minionsOnYourFieldWithExactName(Duel* duel, Player* player, const std::string& name);
 };

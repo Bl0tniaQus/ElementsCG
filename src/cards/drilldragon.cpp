@@ -23,7 +23,7 @@ void DrillDragon::onAttack(Duel* duel, Card* card, Card* target)
         {
             this->firstEffectLog(duel,card);
 
-            duel->changeStats(card,2,0);
+            duel->changeStats(card,4,0);
             this->getBooleanValues()->push_back(true);
         }
 
@@ -36,7 +36,7 @@ void DrillDragon::afterAttack(Duel* duel, Card* card, Card* target, short damage
     if (!card->getIsNegated()&&this->getBooleanValues()->size()==1)
     {
         this->firstEffectLog(duel,card);
-        duel->changeStats(card,-2,0);
+        duel->changeStats(card,-4,0);
     }
     this->getBooleanValues()->clear();
 }

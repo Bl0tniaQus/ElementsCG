@@ -14,11 +14,13 @@ public:
         "Air", //element
         "Wind-up Airplane", //name
         "wind-upairplane",
-        "[]\n1) "
-    ) {this->setRequiredMaterialsNumber(2);};
+        "[1 air minion + 1 air or earth minion]\nWhen this card is summoned: gain +2 attack and at the start of every turn lose -1 attack gained by this effect."
+    ) {this->setRequiredMaterialsNumber(2); this->setHasOnSummon(true); this->setHasOnTurnStart(true); this->getNumericValues()->push_back(0);};
     bool specialSummon(Duel* duel, Card* card) override;
     void getFirstMaterialList(Duel * duel, Card * card) override;
     void getSecondMaterialList(Duel* duel, Card* card) override;
+    void onSummon(Duel* duel, Card* card) override;
+    void onTurnStart(Duel* duel, Card* card) override;
 };
 
 #endif
