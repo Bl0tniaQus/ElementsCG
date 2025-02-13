@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     delete this->ui->playerNameUselessTab;
     delete this->ui->opponentNameUselessTab;
     delete this->ui->duelLogUselessTab;
+    this->ui->confirmTargetButton->setStyleSheet("font-weight:bold;");
+    this->ui->cancelTargetButton->setStyleSheet("font-weight:bold;");
     QPixmap heart = QPixmap(":/life");
     QPixmap mana = QPixmap(":/mana");
     QPixmap hand = QPixmap(":/hand");
@@ -743,8 +745,8 @@ void MainWindow::setDefenderTargetImages()
     connect(this->ui->confirmTargetButton, &QPushButton::released, this, &MainWindow::defenderConfirm);
     connect(this->ui->cancelTargetButton, &QPushButton::released, this, &MainWindow::defenderCancel);
 
-    this->ui->cancelTargetButton->setText("Back");
     this->ui->confirmTargetButton->setText("Attack");
+    this->ui->cancelTargetButton->setText("Back");
     for (i=0;i<this->n_targets;i++)
     {
         delete this->targetImages[i];

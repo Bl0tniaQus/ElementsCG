@@ -599,6 +599,7 @@ void Duel::changeLevel(Card* card, short l)
 }
 void Duel::changeBarrier(Card* card, short b)
 {
+    if (b<0) {b = 0;}
     this->appendLog(this->barrierChangeLog(card,b), this->getPlayerId(card->getOwner()));
     card->setBarrier(b);
 }
@@ -1097,9 +1098,7 @@ std::string Duel::barrierChangeLog(Card* card, short b)
 {
     std::string card_name = std::string(card->getName());
     short barrier_before = card->getBarrier();
-    short barrier_new = barrier_before + b;
-    if (barrier_new<0) {barrier_new = 0;}
-    std::string str = "["+ card_name + "]'s barrier:  " + std::to_string(barrier_before) + " -> " + std::to_string(barrier_new);
+    std::string str = "["+ card_name + "]'s barrier:  " + std::to_string(barrier_before) + " -> " + std::to_string(b);
     return str;
 }
 std::string Duel::statChangeLog(Card* card, short a_new, short d_new)
