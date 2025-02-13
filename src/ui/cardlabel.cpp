@@ -1,7 +1,9 @@
 #include "cardlabel.h"
+
 CardLabel::CardLabel()
 {
     this->card = nullptr;
+    this->setCursor(Qt::PointingHandCursor);
 }
 void CardLabel::mouseMoveEvent(QMouseEvent* mouseEvent)
 {
