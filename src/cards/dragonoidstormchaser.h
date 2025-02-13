@@ -5,7 +5,7 @@ class DragonoidStormChaser : public CardBase
 {
 public:
     DragonoidStormChaser():CardBase(
-        19, //card id
+        2502, //card id
         6, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         6, //level

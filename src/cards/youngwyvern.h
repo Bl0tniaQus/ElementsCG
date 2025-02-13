@@ -5,7 +5,7 @@ class YoungWyvern : public CardBase
 {
 public:
     YoungWyvern():CardBase(
-        12, //card id
+        2501, //card id
         5, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level

@@ -5,7 +5,7 @@ class Nailpecker : public CardBase
 {
 public:
     Nailpecker():CardBase(
-        36, //card id
+        2014, //card id
         2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         2, //level

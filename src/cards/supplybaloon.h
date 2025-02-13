@@ -5,7 +5,7 @@ class SupplyBaloon : public CardBase
 {
 public:
     SupplyBaloon():CardBase(
-        42, //card id
+        2018, //card id
         4, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         4, //level

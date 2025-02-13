@@ -5,7 +5,7 @@ class AmberTreant : public CardBase
 {
 public:
     AmberTreant():CardBase(
-        20, //card id
+        1501, //card id
         6, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         6, //level

@@ -5,7 +5,7 @@ class TopazAmberFossil : public CardBase
 {
 public:
     TopazAmberFossil():CardBase(
-        28, //card id
+        1007, //card id
         2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         1, //level

@@ -31,10 +31,6 @@ bool Magnetize::onSpell(Duel* duel, Card* card)
                     targets->at(i)->setAttacks(0);
                 }
             }
-            if (targetCard == nullptr)
-            {
-                qDebug()<<"no dzialaj no";
-            }
             this->getCardTargets()->push_back(targetCard);
             this->getNumericValues()->push_back(atk);
             duel->changeStats(targetCard,atk,0);

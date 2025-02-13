@@ -5,7 +5,7 @@ class DragonoidScout : public CardBase
 {
 public:
     DragonoidScout():CardBase(
-        7, //card id
+        2003, //card id
         3, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         3, //level

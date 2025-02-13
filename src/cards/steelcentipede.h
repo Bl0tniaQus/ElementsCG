@@ -5,7 +5,7 @@ class SteelCentipede : public CardBase
 {
 public:
     SteelCentipede():CardBase(
-        21, //card id
+        1502, //card id
         5, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level

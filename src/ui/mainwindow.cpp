@@ -1041,7 +1041,7 @@ void MainWindow::setLogLabels()
         QString color;
         short source = this->duel->getLogSources()[i];
         if (source==0) {color = "#3366ff";}
-        else if (source==1) {color = "red";}
+        else if (source==1) {color = "#e14b3d";}
         else if (source==2) {color = "white";}
         logs_new[i]->setStyleSheet("border:none; border-left:4px solid "+ color + ";");
         logs_new[i]->setVisible(true);
@@ -1167,10 +1167,14 @@ void MainWindow::clearDuel()
 void MainWindow::turnPlayer()
 {
     short tc = this->duel->getTurnCount();
+    short tp = this->duel->getTurnPlayer();
     std::string name = std::string(this->duel->getPlayer(this->duel->getTurnPlayer())->getName());
-    std::string str = "Turn " + std::to_string(tc) + " [" + name + "]";
+    std::string color;
+    if (tp == 0) {color = "#3366ff";}
+    if (tp == 1) {color = "#e14b3d";}
+    std::string str = "Turn " + std::to_string(tc) +"<br/><span style=\"color:"+color+";\">[" + name + "]</span>";
     QString qstr = QString::fromStdString(str);
-    this->ui->turnPlayerLabel->setText(qstr);
+    this->ui->turnCountLabel->setText(qstr);
 }
 void MainWindow::botThinking(bool v)
 {
@@ -1185,9 +1189,11 @@ void MainWindow::loadDecks()
 
     this->ui->playerDeckSelectTraining->addItem("Starter Deck: Earth");
     this->ui->playerDeckSelectTraining->addItem("Starter Deck: Air");
+    this->ui->playerDeckSelectTraining->addItem("Starter Deck: Wind-Up");
 
     this->ui->opponentDeckSelectTraining->addItem("Starter Deck: Earth");
     this->ui->opponentDeckSelectTraining->addItem("Starter Deck: Air");
+    this->ui->opponentDeckSelectTraining->addItem("Starter Deck: Wind-Up");
 
 }
 

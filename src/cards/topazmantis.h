@@ -5,7 +5,7 @@ class TopazMantis : public CardBase
 {
 public:
     TopazMantis():CardBase(
-        22, //card id
+        1503, //card id
         7, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level

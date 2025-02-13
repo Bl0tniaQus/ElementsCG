@@ -5,7 +5,7 @@ class FlyingLizard : public CardBase
 {
 public:
     FlyingLizard():CardBase(
-        38, //card id
+        2016, //card id
         3, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         2, //level

@@ -5,7 +5,7 @@ class PaperAirplane : public CardBase
 {
 public:
     PaperAirplane():CardBase(
-        32, //card id
+        2011, //card id
         0, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         1, //level

@@ -5,7 +5,7 @@ class ShieldBash : public CardBase
 {
 public:
     ShieldBash():CardBase(
-        26, //card id
+        1012, //card id
         2, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

@@ -33,7 +33,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="stackedWidgetPage1">
        <widget class="QPushButton" name="startDuelButton">
@@ -981,8 +981,8 @@
        <widget class="QPushButton" name="endTurnButton">
         <property name="geometry">
          <rect>
-          <x>920</x>
-          <y>730</y>
+          <x>940</x>
+          <y>740</y>
           <width>141</width>
           <height>51</height>
          </rect>
@@ -1001,8 +1001,8 @@
        <widget class="QPushButton" name="battlePhaseButton">
         <property name="geometry">
          <rect>
-          <x>740</x>
-          <y>730</y>
+          <x>780</x>
+          <y>740</y>
           <width>141</width>
           <height>51</height>
          </rect>
@@ -1568,12 +1568,12 @@
          <string>End Duel</string>
         </property>
        </widget>
-       <widget class="QLabel" name="turnPlayerLabel">
+       <widget class="QLabel" name="turnCountLabel">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>750</y>
-          <width>381</width>
+          <x>800</x>
+          <y>10</y>
+          <width>251</width>
           <height>81</height>
          </rect>
         </property>

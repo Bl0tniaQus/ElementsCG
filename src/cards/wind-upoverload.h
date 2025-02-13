@@ -5,7 +5,7 @@ class WindUpOverload : public CardBase
 {
 public:
     WindUpOverload():CardBase(
-        37, //card id
+        2015, //card id
         3, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

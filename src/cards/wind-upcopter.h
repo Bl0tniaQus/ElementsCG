@@ -5,7 +5,7 @@ class WindUpCopter : public CardBase
 {
 public:
     WindUpCopter():CardBase(
-        35, //card id
+        2013, //card id
         4, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         4, //level

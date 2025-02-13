@@ -5,7 +5,7 @@ class DragonoidCall : public CardBase
 {
 public:
     DragonoidCall():CardBase(
-        14, //card id
+        2007, //card id
         4, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

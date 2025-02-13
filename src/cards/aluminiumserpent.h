@@ -5,7 +5,7 @@ class AluminiumSerpent : public CardBase
 {
 public:
     AluminiumSerpent():CardBase(
-        17, //card id
+        1004, //card id
         2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         2, //level

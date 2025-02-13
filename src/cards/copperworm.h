@@ -5,7 +5,7 @@ class CopperWorm : public CardBase
 {
 public:
     CopperWorm():CardBase(
-        1, //card id
+        1000, //card id
         1, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         1, //level

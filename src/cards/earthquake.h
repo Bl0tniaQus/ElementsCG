@@ -5,7 +5,7 @@ class Earthquake : public CardBase
 {
 public:
     Earthquake():CardBase(
-        29, //card id
+        1008, //card id
         8, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

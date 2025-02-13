@@ -289,6 +289,22 @@ std::vector<Card *> TargetList::filterUniqueNames(std::vector<Card *>& l)
     }
     return targets;
 }
+std::vector<Card *> TargetList::filterHavingElementInMaterialList(std::vector<Card *>& l, const std::string& element)
+{
+    std::vector<Card*> targets(0);
+    for (Card* c : l)
+    {
+        std::vector<Card*> materials = std::vector<Card*>(*c->getCardName()->getUsedMaterials());
+        for (Card* m : materials)
+        {
+            if (m->getElement()==element)
+            {
+                targets.push_back(c); break;
+            }
+        }
+    }
+    return targets;
+}
 
 
 

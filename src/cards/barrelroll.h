@@ -5,7 +5,7 @@ class BarrelRoll : public CardBase
 {
 public:
     BarrelRoll():CardBase(
-        33, //card id
+        2012, //card id
         2, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

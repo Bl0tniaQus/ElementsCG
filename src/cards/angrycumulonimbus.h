@@ -5,7 +5,7 @@ class AngryCumulonimbus : public CardBase
 {
 public:
     AngryCumulonimbus():CardBase(
-        23, //card id
+        2503, //card id
         5, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level

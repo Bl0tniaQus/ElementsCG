@@ -600,6 +600,28 @@ short CardBase::highestLevelInTargetList()
     }
     return lvl;
 }
+short CardBase::highestOriginalLevelInTargetList()
+{
+    short lvl = -1;
+    short nt = this->getTargetList()->getTargetsNumber();
+    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
+
+    for (short i = 0; i<nt; i++)
+    {
+        short card_lvl = targets->at(i)->getOriginalLevel();
+        if (card_lvl>lvl) {lvl = card_lvl;}
+    }
+    return lvl;
+}
+void CardBase::specialMinionsOnYourFieldSpecialSummonedWithElement(Duel* duel, Player* player, const std::string& element)
+{
+    std::vector<Card*> targets = TargetList::allMinionsOnField(duel);
+    targets = TargetList::filterPlayer(targets, player);
+    targets = TargetList::filterCardType(targets, 2);
+    targets = TargetList::filterHavingElementInMaterialList(targets, element);
+    this->setTargetList(targets);
+}
+
 
 
 

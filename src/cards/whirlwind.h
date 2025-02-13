@@ -5,7 +5,7 @@ class Whirlwind : public CardBase
 {
 public:
     Whirlwind():CardBase(
-        4, //card id
+        2001, //card id
         7, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

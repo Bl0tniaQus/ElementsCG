@@ -97,7 +97,8 @@ void Bot::testCardFromHand(int c, Duel* duel, Option& option)
                     this->generateTempGamestate(duel);
                     player = this->tempGamestate->getPlayer(this->tempGamestate->getTurnPlayer());
                     card = this->tempGamestate->getCardFromCopyId(c);
-                    this->tempGamestate->playFromHand(card);
+                    bool res = this->tempGamestate->activateSpell(card);
+                    if (!res) {break;}
                     this->tempGamestate->passTurn();
                     value = this->tempGamestate->evaluate(player);
                     if (this->targetId!=-1)
@@ -492,7 +493,7 @@ void Bot::playTurn(Duel* duel)
                 Card* car = duel->getCardFromCopyId(this->options[option].getCardIds()->at(0));
 
                 float val = this->options[option].getValue();
-                qDebug()<<QString::fromStdString(car->getName())<<" "<<val<<" "<<n_options<<" "<<this->options[option].getCardIds()->at(0);
+                //qDebug()<<QString::fromStdString(car->getName())<<" "<<val<<" "<<n_options<<" "<<this->options[option].getCardIds()->at(0);
                 if (val<=0) {
                     this->endTesting();
 

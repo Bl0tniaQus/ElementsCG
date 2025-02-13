@@ -7,7 +7,6 @@ void WyvernHatchling::onSummon(Duel* duel, Card* card)
     if (mana>=12)
     {
         this->effectLog(duel, card);
-
         duel->changeLevel(card,5);
 
     }

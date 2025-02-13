@@ -5,7 +5,7 @@ class Breeze : public CardBase
 {
 public:
     Breeze():CardBase(
-        24, //card id
+        2008, //card id
         3, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

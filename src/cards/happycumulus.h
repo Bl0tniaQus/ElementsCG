@@ -5,7 +5,7 @@ class HappyCumulus : public CardBase
 {
 public:
     HappyCumulus():CardBase(
-        10, //card id
+        2004, //card id
         2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         2, //level

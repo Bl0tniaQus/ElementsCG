@@ -5,7 +5,7 @@ class LithiumLizard : public CardBase
 {
 public:
     LithiumLizard():CardBase(
-        18, //card id
+        1005, //card id
         3, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         3, //level

@@ -5,7 +5,7 @@ class Recycle : public CardBase
 {
 public:
     Recycle():CardBase(
-        30, //card id
+        1009, //card id
         3, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

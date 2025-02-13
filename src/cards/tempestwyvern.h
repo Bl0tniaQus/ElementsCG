@@ -5,7 +5,7 @@ class TempestWyvern : public CardBase
 {
 public:
     TempestWyvern():CardBase(
-        9, //card id
+        2500, //card id
         8, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         8, //level

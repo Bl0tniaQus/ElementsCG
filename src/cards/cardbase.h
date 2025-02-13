@@ -112,6 +112,7 @@ public:
     int singleChoice(Duel* duel, Card* card);
     //common effect targets
     short highestLevelInTargetList();
+    short highestOriginalLevelInTargetList();
 
     bool checkSummoningConditions2(Duel* duel, Card* card);
     bool checkSummoningConditions3(Duel* duel, Card* card);
@@ -153,6 +154,7 @@ public:
     void minionsOnYourFieldWithOneOfTwoElements(Duel* duel, Player* player, const std::string& element1, const std::string& element2);
     void minionsOnYourFieldWithOneOfTwoElementsAndMinimumLevel(Duel* duel, Player* player, const std::string& element1, const std::string& element2, short lvl);
     void minionsOnYourFieldWithExactName(Duel* duel, Player* player, const std::string& name);
+    void specialMinionsOnYourFieldSpecialSummonedWithElement(Duel* duel, Player* player, const std::string& element);
 };
 
 #endif

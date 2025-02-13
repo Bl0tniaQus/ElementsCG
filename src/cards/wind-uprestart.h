@@ -5,7 +5,7 @@ class WindUpRestart : public CardBase
 {
 public:
     WindUpRestart():CardBase(
-        41, //card id
+        2017, //card id
         1, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

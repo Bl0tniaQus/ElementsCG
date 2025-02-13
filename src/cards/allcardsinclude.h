@@ -3,49 +3,57 @@
 
 #include "geartoken.h" //0
 
-#include "copperworm.h" //1
-#include "silverwolf.h" //2
-#include "dragonoidwarrior.h" //3
-#include "whirlwind.h" //4
-#include "dragonoidsage.h" //5
-#include "tungstenfirefly.h" //6
-#include "dragonoidscout.h" //7
-#include "brassbeetle.h" //8
-#include "tempestwyvern.h" //9
-#include "happycumulus.h" //10
-#include "sadnimbus.h" //11
-#include "youngwyvern.h" //12
-#include "lightning.h" //13
-#include "dragonoidcall.h" //14
-#include "extraction.h" //15
-#include "excavation.h" //16
-#include "aluminiumserpent.h" //17
-#include "lithiumlizard.h" //18
-#include "dragonoidstormchaser.h" //19
-#include "ambertreant.h" //20
-#include "steelcentipede.h" //21
-#include "topazmantis.h" //22
-#include "angrycumulonimbus.h" //23
-#include "breeze.h" //24
-#include "wyvernhatchling.h" //25
-#include "shieldbash.h" //26
-#include "magnetize.h" //27
-#include "topazamberfossil.h" //28
-#include "earthquake.h" //29
-#include "recycle.h" //30
-#include "supplydrop.h" //31
-#include "paperairplane.h" //32
-#include "barrelroll.h" //33
-#include "drilldragon.h" //34
-#include "wind-upcopter.h" //35
-#include "nailpecker.h" //36
-#include "wind-upoverload.h" //37
-#include "flyinglizard.h" //38
-#include "wind-upairplane.h" //39
-#include "wind-upbiplane.h" //40
-#include "wind-uprestart.h" //41
-#include "supplybaloon.h" //42
-#include "irisversicolor.h" //43
-#include "disassembly.h" //1000
+
+
+#include "copperworm.h" //1000
+#include "silverwolf.h" //1001
+#include "tungstenfirefly.h" //1002
+#include "excavation.h" //1003
+#include "aluminiumserpent.h" //1004
+#include "lithiumlizard.h" //1005
+#include "magnetize.h" //1006
+#include "topazamberfossil.h" //1007
+#include "earthquake.h" //1008
+#include "recycle.h" //1009
+#include "disassembly.h" //1010
+#include "extraction.h" //1011
+#include "shieldbash.h" //1012
+#include "irisversicolor.h" //1013
+
+#include "brassbeetle.h" //1500
+#include "ambertreant.h" //1501
+#include "steelcentipede.h" //1502
+#include "topazmantis.h" //1503
+
+#include "dragonoidwarrior.h" //2000
+#include "whirlwind.h" //2001
+#include "dragonoidsage.h" //2002
+#include "dragonoidscout.h" //2003
+#include "happycumulus.h" //2004
+#include "sadnimbus.h" //2005
+#include "lightning.h" //2006
+#include "dragonoidcall.h" //2007
+#include "breeze.h" //2008
+#include "wyvernhatchling.h" //2009
+#include "supplydrop.h" //2010
+#include "paperairplane.h" //2011
+#include "barrelroll.h" //2012
+#include "wind-upcopter.h" //2013
+#include "nailpecker.h" //2014
+#include "wind-upoverload.h" //2015
+#include "flyinglizard.h" //2016
+#include "wind-uprestart.h" //2017
+#include "supplybaloon.h" //2018
+
+#include "tempestwyvern.h" //2500
+#include "youngwyvern.h" //2501
+#include "dragonoidstormchaser.h" //2502
+#include "angrycumulonimbus.h" //2503
+#include "drilldragon.h" //2504
+#include "wind-upairplane.h" //2505
+#include "wind-upbiplane.h" //2506
+
+
+
 
 #endif // ALLCARDS_H

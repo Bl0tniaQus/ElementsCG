@@ -5,7 +5,7 @@ class SadNimbus : public CardBase
 {
 public:
     SadNimbus():CardBase(
-        11, //card id
+        2005, //card id
         2, //cost
         1, //card type (0 - spell, 1 - minion, 2 - spminion)
         2, //level

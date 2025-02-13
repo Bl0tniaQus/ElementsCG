@@ -5,7 +5,7 @@ class Magnetize : public CardBase
 {
 public:
     Magnetize():CardBase(
-        27, //card id
+        1006, //card id
         4, //cost
         0, //card type (0 - spell, 1 - minion, 2 - spminion)
         -1, //level

@@ -5,7 +5,7 @@ class BrassBeetle : public CardBase
 {
 public:
     BrassBeetle():CardBase(
-        8, //card id
+        1500, //card id
         5, //cost
         2, //card type (0 - spell, 1 - minion, 2 - spminion)
         5, //level
