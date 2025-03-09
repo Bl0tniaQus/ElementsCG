@@ -6,7 +6,9 @@
 bool DragonoidCall::onSpell(Duel* duel, Card* card)
 {
     this->cardsInHandWithCommonNamePart(card->getOwner(),"Dragonoid");
-    std::vector<Card*>* targets = this->getTargetList()->getTargetList();
+    std::vector<Card*> targets(*this->getTargetList()->getTargetList());
+    targets = TargetList::filterCardType(targets, 1);
+    this->setTargetList(targets);
     int target = singleChoice(duel,card);
     if (target==-1) {return false;}
     else
