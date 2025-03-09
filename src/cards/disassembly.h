@@ -14,7 +14,7 @@ public:
         "Earth", //element
         "Disassembly", //name
         "disassembly",
-        "Target one special minion you control that was special summoned using an earth minion as material: that special minion loses -2/-2 and a \"Gear token\" [L1 0/0] is summoned to your side of the field. That token's level become equal to the lowest level among earth minions used to summon targeted minion."
+        "Target one special minion you control that was special summoned using an earth minion as material: that special minion loses -2/-2 and a \"Gear token\" [L1 0/0] is summoned to your side of the field. That token's level becomes equal to the lowest level among earth minions used to summon the targeted minion."
     ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 

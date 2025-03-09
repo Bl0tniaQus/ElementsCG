@@ -16,12 +16,12 @@ bool Recycle::onSpell(Duel* duel, Card* card)
         this->spellFromHandLog(duel,card);
         this->spellCost(card);
         this->cardsInYourGraveyardWithExactName(card->getOwner(), targetCard->getName());
-        std::vector<Card*> targets2 = TargetList::filterUniqueNames(*this->getTargetList()->getTargetList());
-        short n = targets2.size();
+        std::vector<Card*>* targets2 = this->getTargetList()->getTargetList();
+        short n = targets2->size();
         for (short i = 0; i<n; i++)
         {
-            targets2[i]->getOriginalOwner()->removeFromGraveyard(targets2[i]);
-            duel->toHand(targets2[i]);
+            targets2->at(i)->getOriginalOwner()->removeFromGraveyard(targets2->at(i));
+            duel->toHand(targets2->at(i));
         }
         return true;
     }
