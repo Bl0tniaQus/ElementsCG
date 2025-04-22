@@ -14,7 +14,7 @@ public:
         "Air", //element
         "Wind-up Restart", //name
         "wind-uprestart",
-        "Target 1 air minion you control that wasn't summoned this turn: trigger it's on summon effect."
+        "Target 1 air minion you control: trigger it's on summon effect."
     ) {this->setHasOnSpell(1);};
     bool onSpell(Duel* duel, Card* card) override;
 };

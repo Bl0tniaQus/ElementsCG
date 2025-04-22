@@ -218,6 +218,18 @@ std::vector<Card*> TargetList::filterCardType(std::vector<Card *>& l, short type
     }
     return newl;
 }
+std::vector<Card*> TargetList::filterHavingOnSummonEffect(std::vector<Card *>& l)
+{
+    std::vector<Card*> newl;
+    for (Card* card : l)
+    {
+        if (card->getCardName()->getHasOnSummon())
+        {
+            newl.push_back(card);
+        }
+    }
+    return newl;
+}
 std::vector<Card*> TargetList::filterOutCardType(std::vector<Card *>& l, short type)
 {
     std::vector<Card*> newl;

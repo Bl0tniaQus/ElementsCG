@@ -38,6 +38,7 @@ public:
     static std::vector<Card*> filterCardType(std::vector<Card*>& l, short type);
     static std::vector<Card*> filterOutCardType(std::vector<Card*>& l, short type);
     static std::vector<Card*> filterHavingElementInMaterialList(std::vector<Card*>& l, const std::string& element);
+    static std::vector<Card*> filterHavingOnSummonEffect(std::vector<Card*>& l);
     static std::vector<Card*> nTopCards(std::vector<Card*>& l, short n);
     static std::vector<Card*> filterUniqueNames(std::vector<Card*>& l);
     static std::vector<Card*> listSum(std::vector<Card*>& a, std::vector<Card*>& b);

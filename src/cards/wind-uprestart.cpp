@@ -7,6 +7,9 @@ bool WindUpRestart::onSpell(Duel* duel, Card* card)
 {
     this->minionsOnYourFieldWithSameElement(duel,card->getOwner(),"Air");
     std::vector<Card*>* targets = this->getTargetList()->getTargetList();
+
+    std::vector<Card*> targetss = TargetList::filterHavingOnSummonEffect(*targets);
+    this->setTargetList(targetss);
     short nt = this->getTargetList()->getTargetsNumber();
     if (nt<1) {return false;}
     int target = singleChoice(duel,card);

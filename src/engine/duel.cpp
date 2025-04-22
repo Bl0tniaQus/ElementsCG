@@ -1098,7 +1098,7 @@ std::string Duel::barrierChangeLog(Card* card, short b)
 {
     std::string card_name = std::string(card->getName());
     short barrier_before = card->getBarrier();
-    std::string str = "["+ card_name + "]'s barrier:  " + std::to_string(barrier_before) + " -> " + std::to_string(b);
+    std::string str = "["+ card_name + "]'s barrier:  " + std::to_string(barrier_before) + " -> " + std::to_string(barrier_before + b);
     return str;
 }
 std::string Duel::statChangeLog(Card* card, short a_new, short d_new)
