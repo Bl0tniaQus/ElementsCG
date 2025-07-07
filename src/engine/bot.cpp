@@ -493,7 +493,7 @@ void Bot::playTurn(Duel* duel)
                 Card* car = duel->getCardFromCopyId(this->options[option].getCardIds()->at(0));
 
                 float val = this->options[option].getValue();
-                //qDebug()<<QString::fromStdString(car->getName())<<" "<<val<<" "<<n_options<<" "<<this->options[option].getCardIds()->at(0);
+                qDebug()<<QString::fromStdString(car->getName())<<" "<<val<<" "<<n_options<<" "<<this->options[option].getCardIds()->at(0);
                 if (val<=0) {
                     this->endTesting();
 
