@@ -108,7 +108,7 @@ CardBase* Card::getCardNameById(int id)
         case 2012: cardbase = new BarrelRoll;break;
         case 2013: cardbase = new WindUpCopter;break;
         case 2014: cardbase = new Nailpecker;break;
-        case 2015: cardbase = new WindUpRestart;break; //Overload
+        case 2015: cardbase = new WindUpOverload;break; //Overload
         case 2016: cardbase = new FlyingLizard;break;
         case 2017: cardbase = new WindUpRestart;break;
         case 2018: cardbase = new SupplyBaloon;break;
